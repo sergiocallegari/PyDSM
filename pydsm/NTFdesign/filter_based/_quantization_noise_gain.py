@@ -37,7 +37,6 @@ def quantization_noise_gain(NTF, H):
     The computation is practiced as
 
     .. math:: \int_{\omega=0}^{\infty} |H(j\omega)|^2 |NTF(j\omega)|^2 d\omega
-
     """
     def fprod(h1, h2, f):
         return np.abs(evalTF(h1,np.exp(1j*2*np.pi*f)))**2* \
