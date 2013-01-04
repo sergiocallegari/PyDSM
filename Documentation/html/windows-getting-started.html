@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting started guide for Windows systems &mdash; PyDSM 0.5.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.5.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDSM 0.5.1 documentation" href="index.html" />
+    <link rel="up" title="Getting Started" href="getting-started.html" />
+    <link rel="next" title="Reference guide" href="reference.html" />
+    <link rel="prev" title="Getting started guide for Linux systems" href="linux-getting-started.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference.html" title="Reference guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="linux-getting-started.html" title="Getting started guide for Linux systems"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyDSM 0.5.1 documentation</a> &raquo;</li>
+          <li><a href="getting-started.html" accesskey="U">Getting Started</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started-guide-for-windows-systems">
+<h1>Getting started guide for Windows systems<a class="headerlink" href="#getting-started-guide-for-windows-systems" title="Permalink to this headline">¶</a></h1>
+<p>The installation of PyDSM involves two main steps. The installation of
+its pre-requisites and the installation of PyDSM itself.</p>
+<p>Due to its prerequisites, <strong>PyDSM is currently only available for a 32
+bit Python environment in Windows.</strong> This is due to the current lack
+of a good 64 bit free fortran compiler for the windows platform and is
+likely to change shortly. Note that there is no issue in case you have
+a 64 bit Windows platform: the following instructions will guide in
+installing a 32 bit Python environment that should work just fine on
+it. If you really need a 64 bit PyDSM (e.g., because you want to
+simulate delta sigma modulators for very long time spans in a single
+shot, which may require access to a large amount of memory), please
+consider using <a class="reference internal" href="linux-getting-started.html"><em>Linux</em></a>. Alternatively, it
+may be possible to build all the PyDSM prerequisites and PyDSM itself
+with a 64 bit Python environment using a commercial compiler. However,
+with this you are on your own (the <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">pythonlibs site by Christoph
+Gohlke</a> may be a good starting point). As a further alternative, some
+commercial distributions of Python, such as
+<a class="reference external" href="http://www.activestate.com/activepython">ActiveState Python</a> or <a class="reference external" href="http://www.enthought.com/products/epd.php">Enthought Python</a>
+[<a class="reference external" href="http://www.activestate.com/activepython">http://www.activestate.com/activepython</a> ActiveState Python] or
+[<a class="reference external" href="http://www.enthought.com/products/epd.php">http://www.enthought.com/products/epd.php</a> Enthought Python] should
+provide support for PyDSM in a 64 bit environment on Windows out of
+the box. However, this is also untested.</p>
+<div class="section" id="installation-of-the-prerequisites">
+<h2>Installation of the prerequisites<a class="headerlink" href="#installation-of-the-prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>Following the above introduction, these notes focus on 32 bit Windows
+or 64 bit Windows with 32 bit Python.</p>
+<div class="section" id="steps-that-can-be-practiced-using-a-python-distribution">
+<h3>Steps that can be practiced using a Python distribution<a class="headerlink" href="#steps-that-can-be-practiced-using-a-python-distribution" title="Permalink to this headline">¶</a></h3>
+<p>First of all, note that rather than installing all the prerequisites
+one by one, it can be convenient to install a Python distribution that
+automatically includes most of them. Here we use <a class="reference external" href="http://code.google.com/p/pythonxy/">Python(x,y)</a> that
+is a scientific Python distribution for 32 bit Windows XP/Vista/7 (and
+most likely 8 too). It includes Numpy, Scipy, Matplotlib, Cython,
+Spyder, the MinGW C compiler and CVXOPT. Obviously, it is also
+possible to use other Python distributions, or to install the
+prerequisites one by one, but with this you are on your own.</p>
+<p>Note that although Python(x,y) includes most of the prerequisites of
+PyDSM, it may not install all of them by default. Thus, during the
+setup of PyDSM make sure that Numpy, Scipy, Matplotlib, Cython,
+Spyder, the MinGW C compiler and CVXOPT are actually included. The
+sub-packaged being installed can anyway be re-configured at any time
+by simply re-running the installer or using the plugin manager.</p>
+<p>Setting up Python(x,y) is expected to take you just a few minutes.</p>
+</div>
+<div class="section" id="steps-that-must-be-practiced-manually">
+<h3>Steps that must be practiced manually<a class="headerlink" href="#steps-that-must-be-practiced-manually" title="Permalink to this headline">¶</a></h3>
+<p>One of the prerequisites of PyDSM, namely <em>CVXPY</em>, is too young to be
+available in Python distributions. Thus, it needs to be installed
+manually. This is by no means hard, though.</p>
+<p>This code is available at the <a class="reference external" href="http://www.stanford.edu/~ttinoco/cvxpy/">CVXPY</a> site. Please, look there for
+documentation and for extended installation instructions.
+Unfortunately, so far the <a class="reference external" href="http://code.google.com/p/cvxpy/downloads/list">CVXPY download site</a> is still empty,
+meaning that the code can only be downloaded with a specific tool for
+accessing the <a class="reference external" href="http://code.google.com/p/cvxpy/source/checkout">CVXPY download repository</a>. Since some may find this
+impractical, we are providing a development snapshot for convenience
+at the <a class="reference external" href="http://code.google.com/p/pydsm/downloads/list">PyDSM download site</a>.</p>
+<p>Once, you have the source code of CVXPY, unzip it, enter its directory
+and launch the <cite>setup.py</cite> file as:</p>
+<div class="highlight-python"><pre>python setup.py install --user</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">--user</span></tt> option is there to make a personal installation.</p>
+<div class="section" id="warning">
+<h4>Warning<a class="headerlink" href="#warning" title="Permalink to this headline">¶</a></h4>
+<p>There is a bug in the Python <tt class="docutils literal"><span class="pre">setuptools</span></tt> that may cause Spyder (and
+possibly other Python programs) not to start after the use of setup.py
+illustrated above. Thus, after the installation of CVXPY, check if
+Spyder works. If it does not start, do the following:</p>
+<ol class="arabic simple">
+<li>Go to the directory where your personal Python packages get
+installed. This may be something like <tt class="docutils literal"><span class="pre">C:\Users\&lt;your</span>
+<span class="pre">username&gt;\AppData\Roaming\Python\Python2.7\site-packages</span></tt></li>
+<li>Move away the <tt class="docutils literal"><span class="pre">setuptools.pth</span></tt> file (e.g. rename it to
+<tt class="docutils literal"><span class="pre">setuptools.pth.bak</span></tt>) since it messes up the directives by which
+the Python environment searches its components.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="installation-of-pydsm-itself">
+<h2>Installation of PyDSM itself<a class="headerlink" href="#installation-of-pydsm-itself" title="Permalink to this headline">¶</a></h2>
+<p>After all the prerequisites above are satisfied, you may eventually
+proceed to installing PyDSM itself. Note that, differently from Linux,
+in Windows we satisfy the last prerequisite, namely the availability
+of the CBlas libraries together with the installation of PyDSM itself.</p>
+<p>Download the PyDSM source from the <a class="reference external" href="http://code.google.com/p/pydsm/downloads/list">PyDSM download site</a>, then unzip
+it.</p>
+<p>Download a prebuilt ATLAS library for Windows from the <a class="reference external" href="http://code.google.com/p/pydsm/downloads/list">PyDSM download
+site</a>. ATLAS is a provider of CBlas. Since its compilation in Windows
+can be rather cumbersome, we deliver a prebuilt version of it for
+convenience. This is taken from the <a class="reference external" href="http://www.netlib.org/atlas/archives/windows/">Netlib archive of prebuilt ATLAS
+libraries for Windows</a>. Note that ATLAS is distributed under a BSD
+licence from the <a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS sourceforge site</a>. Look there for further
+information about licensing or for the source code. Also note that the
+prebuilt libraries from Netlib tend to lag behind the official ATLAS
+and will certainly not be fully optimized for your hardware. For
+maximum performance, compile your own ATLAS, use a commercial version
+of Blas, or move to Linux.</p>
+<p>Unzip the ATLAS libraries too and move their main folder <em>inside</em> the
+PyDSM source folder, renaming it <tt class="docutils literal"><span class="pre">ATLAS</span></tt>.</p>
+<p>Finally, open a command prompt inside the PyDSM source folder and
+launch the <tt class="docutils literal"><span class="pre">setup.py</span></tt> file as:</p>
+<div class="highlight-python"><pre>python setup.py install --user</pre>
+</div>
+<p>Alternatively, you may run some tests on the code before installing it</p>
+<div class="highlight-python"><pre>python setup.py test</pre>
+</div>
+<p>However, note that the tests are currently rather incomplete.</p>
+</div>
+<div class="section" id="using-the-code">
+<h2>Using the code<a class="headerlink" href="#using-the-code" title="Permalink to this headline">¶</a></h2>
+<p>To use PyDSM, open your Python interpreter (or the Spyder development
+environment) and</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pydsm</span>
+</pre></div>
+</div>
+<p>This command should not report any error. After issuing it, the PyDSM
+functions should be available under the <tt class="docutils literal"><span class="pre">pydsm</span></tt> namespace.</p>
+<p>Please, refer to the PyDSM reference for further information on how to
+take advantage of the code. It may also be helpful to check this
+documentation for information on how to reproduce the results in the
+paper</p>
+<blockquote>
+<div>Sergio Callegari, Federico Bizzarri <em>&#8220;Output Filter Aware
+Optimization of the Noise Shaping Properties of ΔΣ Modulators via
+Semi-Definite Programming&#8221;</em>, IEEE Transactions on Circuits and
+systems - Part I: Regular Papers.</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting started guide for Windows systems</a><ul>
+<li><a class="reference internal" href="#installation-of-the-prerequisites">Installation of the prerequisites</a><ul>
+<li><a class="reference internal" href="#steps-that-can-be-practiced-using-a-python-distribution">Steps that can be practiced using a Python distribution</a></li>
+<li><a class="reference internal" href="#steps-that-must-be-practiced-manually">Steps that must be practiced manually</a><ul>
+<li><a class="reference internal" href="#warning">Warning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation-of-pydsm-itself">Installation of PyDSM itself</a></li>
+<li><a class="reference internal" href="#using-the-code">Using the code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="linux-getting-started.html"
+                        title="previous chapter">Getting started guide for Linux systems</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="reference.html"
+                        title="next chapter">Reference guide</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/windows-getting-started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference.html" title="Reference guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="linux-getting-started.html" title="Getting started guide for Linux systems"
+             >previous</a> |</li>
+        <li><a href="index.html">PyDSM 0.5.1 documentation</a> &raquo;</li>
+          <li><a href="getting-started.html" >Getting Started</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Sergio Callegari.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
