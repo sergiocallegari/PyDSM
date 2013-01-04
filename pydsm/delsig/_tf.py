@@ -31,8 +31,8 @@ def evalTF(tf, x):
     y : ndarray
         value(s) of transfer function at the given complex values.
 
-    Note
-    ----
+    Notes
+    -----
     x corresponds to 's' or 'z' in CT or DT transfer functions respectively.
     Thus it should be 1j*omega or exp(1j*omega*T).
     """
