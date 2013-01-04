@@ -30,7 +30,7 @@ cdef extern from "cblas.h":
 
 def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
                 int store_xn=False, int store_xmax=False, int store_y=False):
-        
+
     # Make sure that nlev is a 1D int array
     cdef np.ndarray c_nlev
     try:
@@ -41,8 +41,8 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
     except (ValueError, TypeError):
          raise PyDsmError(\
             "invalid argument: nlev must be convertible into a 1D int array")
-        
-    # Make sure that input is a matrix    
+
+    # Make sure that input is a matrix
     cdef np.ndarray c_u
     try:
         c_u = np.asarray(u, dtype=np.float64, order='C')
@@ -53,12 +53,12 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
     except (ValueError, TypeError):
         raise PyDsmError(\
             "invalid argument: u must be convertible into a 2D float array")
-        
+
     cdef int nu = c_u.shape[0]
     cdef int nq = c_nlev.shape[0]
-       
+
     cdef int order
-    
+
     try:
         if type(arg2)==tuple and len(arg2)==3:
             # Assume ntf in zpk form
@@ -80,7 +80,7 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
             order = ABCD.shape[0]-nq
     except (ValueError, TypeError):
         raise PyDsmError('incorrect modulator specification')
-    
+
     cdef np.ndarray c_x0, c_x0_temp
     # Assure that the state is a column vector
     try:
@@ -95,9 +95,9 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
                 raise TypeError()
     except (ValueError, TypeError):
         raise PyDsmError('incorrect initial condition specification')
-    c_x0_temp = np.empty_like(c_x0) 
-        
-    cdef np.ndarray A, B1, B2, C, D1 
+    c_x0_temp = np.empty_like(c_x0)
+
+    cdef np.ndarray A, B1, B2, C, D1
     # Build ISO Model
     # note that B=hstack((B1, B2))
     if form == 1:
@@ -126,7 +126,7 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
         B2 = np.asarray(np.dot(S, B2), dtype=np.float64, order='C')
         C = np.asarray(np.hstack(([[1.]], np.zeros((1,order-1)))),\
             dtype=np.float64, order='C')
-        # C=C*Sinv; 
+        # C=C*Sinv;
         # D2 = 0;
         # !!!! Assume stf=1
         B1 = -B2
@@ -143,7 +143,7 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
         y = np.empty((nq, N), dtype=np.float64)
     else:
         y = np.empty((0,0), dtype=np.float64)
-    cdef np.ndarray xn    
+    cdef np.ndarray xn
     if store_xn:
         # Need to store the state information
         xn = np.empty((order, N), dtype=np.float64)
@@ -153,10 +153,10 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
         xmax = np.abs(c_x0)
     else:
         xmax = np.empty(0, dtype=np.float64)
-        
+
     # y0 is output before the quantizer
     cdef np.ndarray y0 = np.empty(nq, dtype=np.float64)
-           
+
     cdef int i
     for i in xrange(N):
         # I guess the coefficients in A, B, C, D should be real...
@@ -176,7 +176,7 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
         ds_quantize(nq, <double*>(y0.data), 1, \
             <int *>(c_nlev.data), 1, \
             <double *>(v.data)+i, N)
-        # Compute c_x0 = np.dot(A, c_x0) + 
+        # Compute c_x0 = np.dot(A, c_x0) +
         #   np.dot(B, np.vstack((u[:, i], v[:, i])))
         cblas_dgemv(CblasRowMajor, CblasNoTrans, order, order,\
             1.0, <double *>(A.data), order, \
@@ -192,7 +192,7 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
             1.0, <double*>(c_x0_temp.data), 1)
         # c_x0[:,1] = c_x0_temp[:,1]
         cblas_dcopy(order, <double*>(c_x0_temp.data), 1,\
-            <double*>(c_x0.data), 1)                       
+            <double*>(c_x0.data), 1)
         if store_xn:
             # Save the next state
             #xn[:, i] = c_x0
@@ -206,11 +206,11 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
     if not store_xn:
         xn = c_x0
     return v.squeeze(), xn.squeeze(), xmax, y.squeeze()
-    
 
-cdef inline double dbl_sat(double x, double a, double b): 
+
+cdef inline double dbl_sat(double x, double a, double b):
     return a if x <= a else b if x>=b else x
-        
+
 cdef inline void ds_quantize(int N, double* y, int y_stride, \
     int* n, int n_stride, \
     double* v, int v_stride):
@@ -219,12 +219,12 @@ cdef inline void ds_quantize(int N, double* y, int y_stride, \
     cdef double L
     for qi in range(N):
         if n[qi*n_stride] % 2 == 0:
-            v[qi*v_stride] = 2*floor(0.5*y[qi*y_stride])+1                
+            v[qi*v_stride] = 2*floor(0.5*y[qi*y_stride])+1
         else:
             v[qi*v_stride] = 2*floor(0.5*y[qi*y_stride]+1)
         L = n[qi*n_stride]-1
         v[qi*v_stride]=dbl_sat(v[qi*v_stride],-L,L)
-    
+
 cdef inline void track_vabsmax(int N,\
     double* vabsmax, int vabsmax_stride,\
     double* x, int x_stride):
@@ -234,4 +234,3 @@ cdef inline void track_vabsmax(int N,\
         absx=fabs(x[i*x_stride])
         if absx > vabsmax[i*vabsmax_stride]:
             vabsmax[i*vabsmax_stride]=absx
-                             

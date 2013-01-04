@@ -48,12 +48,12 @@ def ds_f1f2(OSR=64, f0=0, complex_flag=False):
             f1 = 0;
             f2 = 0.5/OSR
     return f1, f2
-    
+
 def ds_optzeros(n, opt=1):
     """
     Helper function for synthesizeNTF.
-    
-    Returns the zeros which minimize the in-band noise power of 
+
+    Returns the zeros which minimize the in-band noise power of
     a delta-sigma modulator's NTF.
     """
     if opt == 0:
@@ -90,16 +90,16 @@ def ds_optzeros(n, opt=1):
             optZeros = np.asarray([0, 0.40584371, 0.74153078, 0.94910785])
         elif n == 8:
             if opt == 1:
-                optZeros = np.asarray([0.18343709, 0.52553345, 0.79666684, 
+                optZeros = np.asarray([0.18343709, 0.52553345, 0.79666684,
                                        0.96028993])
             else:
                 optZeros = np.asarray([0, 0.50563161, 0.79017286, 0.95914731])
         elif n == 9:
-            optZeros = np.asarray([0, 0.32425101, 0.61337056, 0.83603082, 
+            optZeros = np.asarray([0, 0.32425101, 0.61337056, 0.83603082,
                                    0.9681602])
         elif n == 10:
             if opt == 1:
-                optZeros = np.asarray([0.1834370913, 0.5255334458, 
+                optZeros = np.asarray([0.1834370913, 0.5255334458,
                                        0.7966668433, 0.9602899327])
             else:
                 optZeros = np.asarray([0, 0.41572267, 0.67208682, 0.86238894,

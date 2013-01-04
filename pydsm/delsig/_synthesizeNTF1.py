@@ -23,7 +23,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
         dw = np.pi/(2*osr)
     else:
         dw = np.pi/osr
-        
+
     if opt.ndim == 0:
         # opt is a number
         if opt == 0:
@@ -40,13 +40,13 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
         z = np.exp(1j*z)
     else:
         z = opt
-    
-    zp = z[np.angle(z) > 0]    
+
+    zp = z[np.angle(z) > 0]
     x0 = (np.angle(zp)-2*np.pi*f0) * osr / np.pi
     if opt.size == 1 and opt == 4 and f0 != 0:
         # Do not optimize the zeros at f0
-        np.delete(x0, np.nonzero(is_negligible(x0)))        
-        
+        np.delete(x0, np.nonzero(is_negligible(x0)))
+
     p = np.zeros(order)
     k = 1
     Hinf_itn_limit = 100
@@ -65,12 +65,12 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
             # Lowpass design
             HinfLimit = 2**order
             # !!! The limit is actually lower for opt=1 and low OSR
-            if H_inf >= HinfLimit: 
+            if H_inf >= HinfLimit:
                 warn('Unable to achieve specified Hinf.\n'
-                    'Setting all NTF poles to zero.', 
+                    'Setting all NTF poles to zero.',
                     PyDsmWarning)
-                p = np.zeros(order)            
-            else:      
+                p = np.zeros(order)
+            else:
                 x = 0.3**(order-1)   # starting guess
                 converged = False
                 for itn in xrange(1, Hinf_itn_limit+1):
@@ -81,17 +81,17 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                     # Reflect poles to be inside the unit circle
                     out = abs(p)>1
                     p[out] = 1/p[out]
-                    # The following is not exactly what delsig does. 
+                    # The following is not exactly what delsig does.
                     # We do not have an identical cplxpair
                     p = cplxpair(p)
                     f = np.real(evalTF((z, p, k), z_inf))-H_inf
-                    if itn == 1: 
+                    if itn == 1:
                         delta_x = -f/100
                     else:
                         delta_x = -f*delta_x/(f-fprev)
 
                     xplus = x+delta_x
-                    if xplus > 0: 
+                    if xplus > 0:
                         x = xplus
                     else:
                         x = x*0.1
@@ -123,13 +123,13 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                 # Reflect poles to be inside the unit circle
                 out = abs(p)>1
                 p[out] = 1/p[out]
-                # The following is not exactly what delsig does. 
+                # The following is not exactly what delsig does.
                 p = cplxpair(p)
                 f = np.real(evalTF((z, p, k), z_inf))-H_inf
-                if itn == 1: 
+                if itn == 1:
                     delta_x = -f/100
                 else:
-                    delta_x = -f*delta_x/(f-fprev)        
+                    delta_x = -f*delta_x/(f-fprev)
                 xplus = x+delta_x
                 if xplus > 0:
                     x = xplus
@@ -145,7 +145,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                     break
                 if itn == Hinf_itn_limit:
                     warn('Danger! Iteration limit exceeded.', PyDsmWarning)
-    
+
         # ---- Zero optimization part
         if (opt.size == 1 and opt < 3) or opt.size > 1:
             # Do not optimize the zeros

@@ -21,14 +21,14 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
                 store_xn=False, store_xmax=False, store_y=False):
     """
     Computes the output of a general delta-sigma modulator.
-    
+
     Parameters
     ----------
     u : array_like or matrix_like
         modulator input. Multiple inputs are allowed. In this case,
         u is a matrix with as many rows as the desired inputs
     arg2 : tuple
-        modulator structure in ABDC matrix form or modulator NTF 
+        modulator structure in ABDC matrix form or modulator NTF
         as zpk tuple. In the latter case, the modulator STF is assumed
         to be unitary.
     nlev : int or array of ints, optional
@@ -46,7 +46,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     store_y : bool, optional
         switch controlling the storage of input quantizer values.
         See description of return values. Defaults to False.
-        
+
     Returns
     -------
     v : ndarray
@@ -64,44 +64,44 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
         maximum absolute value reached by the state variables.
         If store_xmax is set to True, then xmax is a vector with as many
         entries as the number of state variables. Otherwise it is null.
-        y -> samples at the quantizer input(s), one per input sample.        
+        y -> samples at the quantizer input(s), one per input sample.
     y : ndarray
         samples at the quantizer input(s), one per input sample.
         If store_y is set to True, then y records the quantizer(s)
         input(s). If there are multiple quantizers, then y is a matrix,
         with as many columns as the number of samples and as many rows as
         the number of quantizers. If store_y is False, then y is null.
-        
+
     Raises
     ------
     PyDsmError
         'Incorrect modulator specification', if the modulator specification
         is inconsistent.
-        
+
     Warns
     -----
     PyDsmWarning
         'Running the slow version of simulateDSM.', if the simulator being
         used is the slow one, coded in pure Python.
-     
+
     Notes
     -----
     The quantizer is ideal, producing integer outputs centered about zero.
     Quantizers with an even number of levels are of the mid-rise type and
-    produce outputs which are odd integers. Quantizers with an odd number of 
+    produce outputs which are odd integers. Quantizers with an odd number of
     levels are of the mid-tread type and produce outputs which are even
     integers.
-    
+
     The modulator structure being simulated is a block diagonal one, as
     returned by the zpk2ss function.
-    
+
     Setting store_xn, store_xmax and store_y to False speeds up the operation.
 
     There are actually two simulators, sharing this function as a front end.
     One of them is coded in pure python and quite slow. The other one is
     coded in C (actually in Cython), and directly accesses low level cblas
     functions. The codebase to be used is controlled by the module switch
-    `use_fast_simulator`.     
+    `use_fast_simulator`.
     """
 
     if use_fast_simulator:

@@ -23,18 +23,18 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
                 store_xn=False, store_xmax=False, store_y=False):
 
     warn('Running the slow version of simulateDSM.', PyDsmWarning)
-    
+
     # Make sure that nlev is an array
-    nlev=np.asarray(nlev).reshape(1)    
-    
-    # Make sure that input is a matrix    
+    nlev=np.asarray(nlev).reshape(1)
+
+    # Make sure that input is a matrix
     u = np.asarray(u)
     if u.ndim == 1:
         u = u.reshape(1, -1)
-    
+
     nu = u.shape[0]
     nq = np.size(nlev)
-    
+
     if type(arg2)==tuple and len(arg2)==3:
         # Assume ntf in zpk form
         (ntf_z, ntf_p, ntf_k) = arg2
@@ -49,13 +49,13 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
             order = ABCD.shape[0]-nq
         else:
             raise PyDsmError('Incorrect modulator specification')
-    
+
     # Assure that the state is a column vector
     if np.isscalar(x0) and x0 == 0:
         x0 = np.zeros((order, 1))
     else:
         x0 = np.array(x0).reshape(-1, 1)
-        
+
     if form == 1:
         A = ABCD[0:order, 0:order]
         B = ABCD[0:order, order:order+nu+nq]
@@ -75,7 +75,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
         A = np.dot(np.dot(S, A), Sinv)
         B2 = np.dot(S, B2)
         C = np.hstack(([[1]], np.zeros((1,order-1))))
-        # C=C*Sinv; 
+        # C=C*Sinv;
         # D2 = 0;
         # !!!! Assume stf=1
         B1 = -B2
@@ -97,7 +97,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
         xmax = np.abs(x0)
     else:
         xmax = np.empty(0)
-        
+
     for i in xrange(N):
         # I guess the coefficients in A, B, C, D should be real...
         y0 = np.real(np.dot(C, x0) + np.dot(D1, u[:, i]))
@@ -114,10 +114,10 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     if not store_xn:
         xn = x0
     return v.squeeze(), xn.squeeze(), xmax, y.squeeze()
-    
+
 def ds_quantize(y, n):
     """Quantize a signal according to a given number of levels.
-    
+
     Parameters
     ----------
     y : real or array of reals
@@ -127,27 +127,27 @@ def ds_quantize(y, n):
         number of quantization levels. Can be a vector to specify multiple
         quantizers, in this case, y must have as many rows as the entries in
         n
-        
+
     Returns
     -------
     z : real or ndarray
         quantized signal (1 sample!). A column vector with
         more than 1 row if there are multiple quantizers.
-            
+
     Notes
     -----
     y is quantized to:
-        
+
     * an odd integer in [-n+1, n-1], if n is even, or
     * an even integer in [-n, n], if n is odd.
 
-    This definition gives the same step height for both mid-riser and 
+    This definition gives the same step height for both mid-riser and
     mid-tread quantizers.
     """
     v=np.empty_like(y)
     for qi in xrange(np.size(n)):
         if np.remainder(n[qi], 2) == 0:
-            v[qi] = 2*np.floor(0.5*y[qi])+1 
+            v[qi] = 2*np.floor(0.5*y[qi])+1
         else:
             v[qi] = 2*np.floor(0.5*(y[qi]+1))
         L = n[qi]-1

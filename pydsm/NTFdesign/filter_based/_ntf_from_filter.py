@@ -22,7 +22,7 @@ def synthesize_ntf_from_filter_ir(h_ir, P, gamma=1.5, mult="auto",
     """
     Synthesize a FIR NTF based on the impulse response of the filter
     in charge of removing the quantization noise
-    
+
     Parameters
     ----------
     h_ir : array_like of reals
@@ -37,7 +37,7 @@ def synthesize_ntf_from_filter_ir(h_ir, P, gamma=1.5, mult="auto",
         in the matrix Q defining the quadratic form to 1.
     options : dict, optional
         parameters for the SDP optimizer, see the documentation of `cvxpy`
-        
+
     Returns
     -------
     ntf : ndarray
@@ -51,7 +51,7 @@ def synthesize_ntf_from_q0(q0, gamma=1.5, mult="auto",
     """
     Synthesize a FIR NTF based a quadratic form defining the quantization
     noise gain
-    
+
     Parameters
     ----------
     q0 : array_like
@@ -64,7 +64,7 @@ def synthesize_ntf_from_q0(q0, gamma=1.5, mult="auto",
         in the matrix Q defining the quadratic form to 1.
     options : dict, optional
         parameters for the SDP optimizer, see the documentation of `cvxpy`
-        
+
     Returns
     -------
     ntf : ndarray

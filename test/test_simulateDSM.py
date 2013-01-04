@@ -27,10 +27,10 @@ class TestSimulateDSM(unittest.TestCase):
                     0.77776708+0.j ]),
              1)
         N = 8192
-        f=85 
+        f=85
         u = 0.5*np.sin(2.*np.pi*f/N*np.arange(N))
         v, d1, d2, d3 = simulateDSM(u, H)
         np.testing.assert_equal(v, d)
-        
+
 if __name__ == '__main__':
     unittest.main()

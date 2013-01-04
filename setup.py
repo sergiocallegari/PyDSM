@@ -54,11 +54,11 @@ class test (Command):
 # We want the default compiler to be mingw32 in windows
 ccompiler._default_compilers=\
         (('nt', 'mingw32'),)+ccompiler._default_compilers
-        
+
 # Prepare the extension modules
 ext_modules=[
     Extension('pydsm.delsig._simulateDSM_fast',
-              ['pydsm/delsig/_simulateDSM_fast.pyx'])]    
+              ['pydsm/delsig/_simulateDSM_fast.pyx'])]
 
 # Fix stuff for Windows
 plat=platform.system()
@@ -75,7 +75,7 @@ if plat=='Windows':
                   #include_dirs=[numpy.get_include(), './ATLAS'],
                   #library_dirs=['./ATLAS'],
                   #libraries=['atlas'],
-                  #extra_compile_args=['-D__USE_MINGW_ANSI_STDIO'])], 
+                  #extra_compile_args=['-D__USE_MINGW_ANSI_STDIO'])],
 
 setup(name='pydsm',
       version=__version__,

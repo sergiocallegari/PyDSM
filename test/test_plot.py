@@ -12,7 +12,7 @@ class TestPlotPZ(unittest.TestCase):
 
     def setUp(self):
         pass
-    
+
     def test_default(self):
         ntf = synthesizeNTF()
         plotPZ(ntf)

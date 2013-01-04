@@ -13,7 +13,7 @@ noise.
 
 The algorithms used in these routines are extensively described in
 
-Sergio Callegari, Federico Bizzarri "Output Filter Aware Optimization of the 
+Sergio Callegari, Federico Bizzarri "Output Filter Aware Optimization of the
 Noise Shaping Properties of ΔΣ Modulators via Semi-Definite Programming",
 IEEE Transactions on Circuits and Systems I: Regular Papers.
 """

@@ -20,22 +20,22 @@ __import__("scipy.integrate")
 def fft_centered(x, fs=1):
     """
     Computes a *centered* FFT.
-    
-    Provides an FFT function where the output vector has the zero frequency 
+
+    Provides an FFT function where the output vector has the zero frequency
     at its center. This is more suitable for plotting.
-    
+
     Parameters
     ----------
     x : array_like
         1-D sequence to compute the FFT upon
-        
+
     Returns
     ------
     X : ndarray
         samples of the DFT of the input vector
     ff : ndarray
         vector of frequencies corresponding to the samples in X
-        
+
     Other parameters
     ----------------
     fs : real, optional

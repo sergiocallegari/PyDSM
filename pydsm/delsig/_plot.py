@@ -21,7 +21,7 @@ __all__=["plotPZ"]
 def plotPZ(H, color='b', markersize=5, showlist=False):
     """
     Plots the poles and zeros of a transfer function.
-    
+
     Parameters
     ----------
     H : tuple
@@ -29,7 +29,7 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
     showlist : bool
         if showlist is true, a list of the poles and zeros is superimposed
         onto the plot.
-        
+
     Other parameters
     ----------------
     color : string or list of strings, optional
@@ -38,11 +38,11 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
     markersize : real, optional
         size of the markers used to represent the poles and the zeros
         (defaults to 5)
-        
+
     Notes
     -----
-    See `matplotlib` for info about color codes.        
-    
+    See `matplotlib` for info about color codes.
+
     """
 
     pole_fmt = {'marker': 'x', 'markersize': markersize}
@@ -59,16 +59,16 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
         H = tf2zpk(**H)
     z = cplxpair(H[0])
     p = cplxpair(H[1])
- 
+
     hold_status = plt.ishold()
     plt.grid(True)
 
-    # Plot x and o for poles and zeros, respectively    
+    # Plot x and o for poles and zeros, respectively
     plt.plot(p.real, p.imag, linestyle='None', **pole_fmt)
     plt.hold(True)
     if len(z) > 0:
         plt.plot(z.real, z.imag, linestyle='None', **zero_fmt)
-        
+
     # Draw unit circle, real axis and imag axis
     circle = np.exp(2j*np.pi*np.linspace(0, 1, 100))
     plt.plot(circle.real, circle.imag)
@@ -108,10 +108,10 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
                     str_z = '%+.4f' % zz[i].real
                 else:
                     str_z = '%+.4f+/-j%.4f' % (zz[i].real, zz[i].imag)
-                plt.text(0, y, str_z, 
+                plt.text(0, y, str_z,
                          horizontalalignment = 'left',
                          verticalalignment = 'center')
                 y = y - 0.1
-     
+
     if not hold_status:
         plt.hold(False)

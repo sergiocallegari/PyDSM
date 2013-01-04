@@ -19,14 +19,14 @@ import numpy as np
 def raw_acorr(x, N):
     """
     Computes the raw autocorrelation of a vector up to lag N.
-    
+
     Parameters
     ----------
     x : array_like
         1-D sequence to compute the auto-correlation upon
     N : int
         the maximum (positive) lag of the raw auto-correlation to return.
-        
+
     Returns
     -------
     q : ndarray
@@ -37,20 +37,20 @@ def raw_acorr(x, N):
     Notes
     -----
     The routine does not make any check on the length of x and N. It
-    is responsibility of the user to assure that len(x)>=N. In some cases 
+    is responsibility of the user to assure that len(x)>=N. In some cases
     (but only in some cases), zero padding is practiced.
     """
-    m=len(x)  
+    m=len(x)
     q=np.asarray([
         np.dot(x[k:m], x[0:m-k])
-    for k in xrange(N+1)])    
+    for k in xrange(N+1)])
     return q
 
 
 def raw_xcorr(x, y, N):
     """
     Computes the raw crosscorrelation between two vectors up to lag N.
-    
+
     Parameters
     ----------
     x : array_like
@@ -59,7 +59,7 @@ def raw_xcorr(x, y, N):
         second 1-D vector
     N : int
         the maximum (positive) lag of the raw cross-correlation to return.
-        
+
     Returns
     -------
     q : ndarray
@@ -78,4 +78,4 @@ def raw_xcorr(x, y, N):
     q=np.asarray([
         np.dot(y[k:min(my,mx+k)], x[0:min(my-k,mx)])
     for k in xrange(N+1)])
-    return q    
+    return q

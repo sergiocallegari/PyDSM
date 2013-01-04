@@ -20,17 +20,17 @@ __import__("scipy.signal")
 def impulse_response(h, m=None, db=80):
     """
     Computes the filter impulse response
-    
+
     Parameters
     ----------
     h : tuple_like
         the filter definition either in zpk or in nd form.
-        
+
     Returns
     -------
     ir : ndarray
         the truncated impulse response
-        
+
     Other parameters
     ----------------
     m : int, optional
@@ -39,7 +39,7 @@ def impulse_response(h, m=None, db=80):
     db : real, optional
         a hint about how to guess the length where the impuls response
         should be truncated (defaults to 80)
-        
+
     Notes
     -----
     The guess about the lenght where the impulse response can be truncated
@@ -60,7 +60,7 @@ def impulse_response(h, m=None, db=80):
 def guess_ir_length(h, db=80):
     """
     Tries to estimate an appropriate length for the filter response
-    
+
     Parameters
     ----------
     h : tuple_like
@@ -69,19 +69,19 @@ def guess_ir_length(h, db=80):
         a hint about how to guess the length where the impulse response
         should be truncated. This is defined on a log scale. The larger
         the longer the resulting length. Defaults to 80.
-        
+
     Returns
     -------
     m : int
         a guess about the appropriate number of samples to represent the
         filter impulse response with the required accuracy
-        
+
     Notes
     -----
     The guess is based on the slowlest pole of the filter, considering when
     its response is attenuated to -db. This can be by far too optimistic in
     some cases and particularly when there are overlapping or similar poles.
-    
+
     Do not try to use this function for filters with poles in 1.
     """
     # Put h in zpk form if it is in tf form

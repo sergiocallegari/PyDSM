@@ -7,7 +7,7 @@
 A collection of routines for the synthesis of Delta Sigma modulators.
 =====================================================================
 
-The delsig_optimize_NTF variable specifies whether to use optimization 
+The delsig_optimize_NTF variable specifies whether to use optimization
 techniques in the delsig_synthesizeNTF function.
 """
 

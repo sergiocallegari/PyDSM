@@ -19,13 +19,13 @@ class TestIR(unittest.TestCase):
         pass
 
     def test_butt_bp8_ir(self):
-        # Generate filter. 
+        # Generate filter.
         # 8th order bandpass filter
         # Freq. passed to butterworth is normalized between 0 and 1
         # where 1 is the Nyquist frequency
-        fsig=1000.        
+        fsig=1000.
         B=400.
-        OSR=64  
+        OSR=64
         fphi=B*OSR*2
         w0=2*fsig/fphi
         B0=2*B/fphi
