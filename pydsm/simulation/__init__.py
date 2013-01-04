@@ -12,6 +12,6 @@ code for the delsig_simulateDSM modulator simulator.
 """
 
 # Promote some functions/global variables to the simulation namespace
-from ..delsig import simulateDSM as delsig_simulateDSM
-from ..delsig import ds_quantize as delsig_ds_quantize
-from ..delsig import use_fast_simulator as delsig_use_fast_simulator
+from ..delsig import simulateDSM
+from ..delsig import ds_quantize
+from ..delsig import use_fast_simulator
