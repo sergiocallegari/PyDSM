@@ -22,20 +22,22 @@ def quantization_noise_gain(NTF, H):
 
     Parameters
     ----------
-        NTF : tuple
-            NTF definition in zpk or nd form
-        H : tuple
-            output filter definition in zpk or nd form
+    NTF : tuple
+        NTF definition in zpk or nd form
+    H : tuple
+        output filter definition in zpk or nd form
 
     Returns
     -------
-        a : real
-            noise power gain
+    a : real
+        noise power gain
 
     Notes
     -----
     The computation is practiced as
-        int_{w=0}^{inf} |H(jw)|^2 |NTF(jw)|^2 dw
+
+    .. math:: \int_{\omega=0}^{\infty} |H(j\omega)|^2 |NTF(j\omega)|^2 d\omega
+
     """
     def fprod(h1, h2, f):
         return np.abs(evalTF(h1,np.exp(1j*2*np.pi*f)))**2* \
@@ -48,15 +50,15 @@ def quantization_noise_gain_ir(NTF, H):
 
     Parameters
     ----------
-        NTF : tuple
-            NTF definition in zpk or nd form
-        H : tuple
-            output filter definition in zpk or nd form
+    NTF : tuple
+        NTF definition in zpk or nd form
+    H : tuple
+        output filter definition in zpk or nd form
 
     Returns
     -------
-        a : real
-            noise power gain
+    a : real
+        noise power gain
 
     Notes
     -----
