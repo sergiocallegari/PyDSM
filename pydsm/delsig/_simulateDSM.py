@@ -101,8 +101,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     One of them is coded in pure python and quite slow. The other one is
     coded in C (actually in Cython), and directly accesses low level cblas
     functions. The codebase to be used is controlled by the module switch
-    `use_fast_simulator` in the `delsig` module or `delsig_use_fast_simulator`
-    in the `simulation` module.     
+    `use_fast_simulator`.     
     """
 
     if use_fast_simulator:

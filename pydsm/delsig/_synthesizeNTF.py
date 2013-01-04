@@ -81,8 +81,7 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     Notes
     -----
     This is actually a wrapper function which calls the appropriate version 
-    of synthesizeNTF, based on a control flag. Flag is `optimize_NTF` in
-    the delsig module or `delsig_optimize_NTF` in the synthesis module. It
+    of synthesizeNTF, based on the control flag `optimize_NTF` which
     determines whether to use optimization tools.
     
     Parameter H_inf is used to enforce the Lee stability criterion.

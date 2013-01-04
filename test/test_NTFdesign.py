@@ -4,7 +4,7 @@
 import unittest
 import numpy as np
 
-from pydsm.delsig import synthesizeNTF
+from pydsm.NTFdesign.delsig import synthesizeNTF
 from pydsm.utilities import cplxpair
 
 __all__=["TestSynthesizeNTF"]

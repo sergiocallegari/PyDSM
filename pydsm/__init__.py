@@ -16,6 +16,5 @@ from pydsm.version import __version__, __delsig_version__
 
 # Promote some key functions to the pydsm namespace
 import delsig
-from pydsm.delsig import evalTF
-from pydsm.synthesis import delsig_synthesizeNTF
-from pydsm.simulation import delsig_simulateDSM
+import NTFdesign
+import simulation
