@@ -63,7 +63,6 @@ ext_modules=[
 # Fix stuff for Windows
 plat=platform.system()
 if plat=='Windows':
-    print('Windows environment detected')
     ext_modules=[
         Extension('pydsm.delsig._simulateDSM_fast',
                   ['pydsm/delsig/_simulateDSM_fast.pyx'],
@@ -71,25 +70,32 @@ if plat=='Windows':
                   library_dirs=['./ATLAS'],
                   libraries=['atlas'],
                   define_macros=[('__USE_MINGW_ANSI_STDIO','1')])]
-                  #,
-                  #include_dirs=[numpy.get_include(), './ATLAS'],
-                  #library_dirs=['./ATLAS'],
-                  #libraries=['atlas'],
-                  #extra_compile_args=['-D__USE_MINGW_ANSI_STDIO'])],
 
 setup(name='pydsm',
       version=__version__,
-      description="""
-      Python Based ΔΣ modulator design tools.
-      Portion of code ported to python from the DELSIG toolbox by
-      R. Schreier.
-      """,
+      description='Python Based ΔΣ modulator design tools',
       author='Sergio Callegari',
       author_email='sergio.callegari@unibo.it',
       url='http://code.google.com/p/pydsm',
       packages = ['pydsm', 'pydsm.simulation', 'pydsm.NTFdesign',
                   'pydsm.NTFdesign.filter_based', 'pydsm.delsig'],
       ext_modules=cythonize(ext_modules),
-      requires=['scipy(>=0.10.1)', 'numpy(>=1.6.1)', 'matplotlib(>= 1.1.0)'],
+      requires=['scipy(>=0.10.1)',
+                'numpy(>=1.6.1)',
+                'matplotlib(>= 1.1.0)',
+                'cvxopt(>=1.1.4)',
+                'cython(>=0.16)'],
       cmdclass = {'test': test},
+      license = 'Simplified BSD License',
+      platforms = ['Linux','Windows','Mac'],
+      long_description = """
+Python Based ΔΣ modulator design tools.
+
+Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
+Optimization of the Noise Shaping Properties of ΔΣ Modulators via
+Semi-Definite Programming', IEEE Transactions on Circuits and Systems
+I, 2013 and others.
+
+Portion of code ported to python from the DELSIG toolbox by R. Schreier.
+""",
      )
