@@ -1,0 +1,606 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The delsig module &mdash; PyDSM 0.5.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.5.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDSM 0.5.1 documentation" href="index.html" />
+    <link rel="up" title="Reference guide" href="reference.html" />
+    <link rel="next" title="The NTFdesign module" href="ntf-design-module.html" />
+    <link rel="prev" title="Reference guide" href="reference.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ntf-design-module.html" title="The NTFdesign module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="reference.html" title="Reference guide"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyDSM 0.5.1 documentation</a> &raquo;</li>
+          <li><a href="reference.html" accesskey="U">Reference guide</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-delsig">
+<span id="the-delsig-module"></span><h1>The delsig module<a class="headerlink" href="#module-delsig" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-pydsm.delsig"></span><p>Functions in this module are accessed by importing <tt class="docutils literal"><span class="pre">pydsm</span></tt> and
+looking in the <tt class="docutils literal"><span class="pre">pydsm.delsig</span></tt> module.</p>
+<div class="section" id="key-functions">
+<h2>Key functions<a class="headerlink" href="#key-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pydsm.delsig.synthesizeNTF">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">synthesizeNTF</tt><big>(</big><em>order=3</em>, <em>osr=64</em>, <em>opt=0</em>, <em>H_inf=1.5</em>, <em>f0=0.0</em><big>)</big><a class="headerlink" href="#pydsm.delsig.synthesizeNTF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synthesizes a noise transfer function for a delta-sigma modulator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>order</strong> : int, optional</p>
+<blockquote>
+<div><p>the order of the modulator, defaults to 3</p>
+</div></blockquote>
+<p><strong>osr</strong> : int, optional</p>
+<blockquote>
+<div><p>the oversamping ratio (based on the actual signal bandwidth)</p>
+</div></blockquote>
+<p><strong>opt</strong> : int or list, optional</p>
+<blockquote>
+<div><p>flag for optimized zeros, defaults to 0</p>
+<ul class="simple">
+<li>0 -&gt; not optimized,</li>
+<li>1 -&gt; optimized,</li>
+<li>2 -&gt; optimized with at least one zero at band-center,</li>
+<li>3 -&gt; optimized zeros (Requires MATLAB6 and Optimization Toolbox)</li>
+<li>[z] -&gt; zero locations in complex form</li>
+</ul>
+</div></blockquote>
+<p><strong>H_inf</strong> : real, optional</p>
+<blockquote>
+<div><p>max allowed peak value of the NTF. Defaults to 1.5</p>
+</div></blockquote>
+<p><strong>f0</strong> : real, optional</p>
+<blockquote>
+<div><p>center frequency, defaults to 0.
+1 corresponds to the sampling frequency, so that 0.5 is the
+maximum value. Value 0 specifies an LP modulator.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>ntf</strong> : tuple</p>
+<blockquote>
+<div><p>noise transfer function in zpk form.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><p class="first"><strong>ValueError</strong> :</p>
+<blockquote>
+<div><p>&#8216;Error. f0 must be less than 0.5&#8217; if f0 is out of range</p>
+<p>&#8216;Order must be even for a bandpass modulator.&#8217; if the order is
+incompatible with the modulator type.</p>
+<p>&#8216;The opt vector must be of length xxx&#8217; if opt is used to explicitly
+pass the NTF zeros and these are in the wrong number.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Warns :</th><td class="field-body"><p class="first"><strong>PyDsmWarning</strong> :</p>
+<blockquote class="last">
+<div><p>&#8216;Creating a lowpass ntf.&#8217; if the center frequency is different
+from zero, but so low that a low pass modulator must be designed.</p>
+<p>&#8216;Unable to achieve specified H_inf ...&#8217; if the desired H_inf
+cannot be achieved.</p>
+<p>&#8216;Danger! Iteration limit exceeded&#8217; if the routine converges too
+slowly.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This is actually a wrapper function which calls the appropriate version
+of synthesizeNTF, based on the control flag <cite>optimize_NTF</cite> which
+determines whether to use optimization tools.</p>
+<p>Parameter H_inf is used to enforce the Lee stability criterion.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydsm.delsig.simulateDSM">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">simulateDSM</tt><big>(</big><em>u</em>, <em>arg2</em>, <em>nlev=2</em>, <em>x0=0</em>, <em>store_xn=False</em>, <em>store_xmax=False</em>, <em>store_y=False</em><big>)</big><a class="headerlink" href="#pydsm.delsig.simulateDSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the output of a general delta-sigma modulator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>u</strong> : array_like or matrix_like</p>
+<blockquote>
+<div><p>modulator input. Multiple inputs are allowed. In this case,
+u is a matrix with as many rows as the desired inputs</p>
+</div></blockquote>
+<p><strong>arg2</strong> : tuple</p>
+<blockquote>
+<div><p>modulator structure in ABDC matrix form or modulator NTF
+as zpk tuple. In the latter case, the modulator STF is assumed
+to be unitary.</p>
+</div></blockquote>
+<p><strong>nlev</strong> : int or array of ints, optional</p>
+<blockquote>
+<div><p>number of levels in quantizer. Multiple quantizers can be
+specified by making nlev a vector. Deraults to 2.</p>
+</div></blockquote>
+<p><strong>x0</strong> : array_like of reals or 0</p>
+<blockquote>
+<div><p>modulator intitial state vector. Assigning it to 0 is a shorthand
+for an appropriate length zero vector. Defaults to 0.</p>
+</div></blockquote>
+<p><strong>store_xn</strong> : bool, optional</p>
+<blockquote>
+<div><p>switch controlling the storage of state evolution.
+See description of return values. Defaults to False.</p>
+</div></blockquote>
+<p><strong>store_xmax</strong> : bool, optional</p>
+<blockquote>
+<div><p>switch controlling the storage of maxima in state variables.
+See description of return values. Defaults to False.</p>
+</div></blockquote>
+<p><strong>store_y</strong> : bool, optional</p>
+<blockquote>
+<div><p>switch controlling the storage of input quantizer values.
+See description of return values. Defaults to False.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>v</strong> : ndarray</p>
+<blockquote>
+<div><p>samples at the output of the modulator, one per input sample.
+If there are multiple quantizers, then v is a matrix, with as many
+columns as the number of samples and as many rows as the number of
+quantizers.</p>
+</div></blockquote>
+<p><strong>xn</strong> : ndarray</p>
+<blockquote>
+<div><p>internal state of the modulator. If store_xn is set to True, then
+it includes a state snapshot per input sample. In this case, xn
+is a matrix, with as many columns as the number of samples and as
+many rows as the number of state variables. If store_xn is False,
+then xn is a vector containing a snapshot of the last state.</p>
+</div></blockquote>
+<p><strong>xmax</strong> : ndarray</p>
+<blockquote>
+<div><p>maximum absolute value reached by the state variables.
+If store_xmax is set to True, then xmax is a vector with as many
+entries as the number of state variables. Otherwise it is null.
+y -&gt; samples at the quantizer input(s), one per input sample.</p>
+</div></blockquote>
+<p><strong>y</strong> : ndarray</p>
+<blockquote>
+<div><p>samples at the quantizer input(s), one per input sample.
+If store_y is set to True, then y records the quantizer(s)
+input(s). If there are multiple quantizers, then y is a matrix,
+with as many columns as the number of samples and as many rows as
+the number of quantizers. If store_y is False, then y is null.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><p class="first"><strong>PyDsmError</strong> :</p>
+<blockquote>
+<div><p>&#8216;Incorrect modulator specification&#8217;, if the modulator specification
+is inconsistent.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Warns :</th><td class="field-body"><p class="first"><strong>PyDsmWarning</strong> :</p>
+<blockquote class="last">
+<div><p>&#8216;Running the slow version of simulateDSM.&#8217;, if the simulator being
+used is the slow one, coded in pure Python.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The quantizer is ideal, producing integer outputs centered about zero.
+Quantizers with an even number of levels are of the mid-rise type and
+produce outputs which are odd integers. Quantizers with an odd number of
+levels are of the mid-tread type and produce outputs which are even
+integers.</p>
+<p>The modulator structure being simulated is a block diagonal one, as
+returned by the zpk2ss function.</p>
+<p>Setting store_xn, store_xmax and store_y to False speeds up the operation.</p>
+<p>There are actually two simulators, sharing this function as a front end.
+One of them is coded in pure python and quite slow. The other one is
+coded in C (actually in Cython), and directly accesses low level cblas
+functions. The codebase to be used is controlled by the module switch
+<cite>use_fast_simulator</cite>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="other-selected-functions">
+<h2>Other selected functions<a class="headerlink" href="#other-selected-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="delta-sigma-utility">
+<h3>Delta Sigma Utility<a class="headerlink" href="#delta-sigma-utility" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="pydsm.delsig.rmsGain">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">rmsGain</tt><big>(</big><em>H</em>, <em>f1</em>, <em>f2</em>, <em>N=100</em><big>)</big><a class="headerlink" href="#pydsm.delsig.rmsGain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the root mean-square gain of a DT transfer function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>H</strong> : tuple</p>
+<blockquote>
+<div><p>transfer function either in (z,p,k) or (n,d) form</p>
+</div></blockquote>
+<p><strong>f1</strong> : real</p>
+<blockquote>
+<div><p>lower bound of frequency band on which the transfer function
+is evaluated</p>
+</div></blockquote>
+<p><strong>f2</strong> : real</p>
+<blockquote>
+<div><p>upper bound of frequency band on which the transfer function
+is evaluated</p>
+</div></blockquote>
+<p><strong>N</strong> : int, optional</p>
+<blockquote>
+<div><p>number of points where the transfer function is evaluated in the
+interval. Defaults to 100.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>rms</strong> : real</p>
+<blockquote class="last">
+<div><p>rms value of the discrete time transfer function.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The discrete-time transer function H is evaluated in the frequency band
+(f1,f2).  Spanning of the bandwidth is linear. Frequencies are normalized
+in the [0,0.5] interval.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="general-utility">
+<h3>General Utility<a class="headerlink" href="#general-utility" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="pydsm.delsig.dbv">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">dbv</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#pydsm.delsig.dbv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a voltage (or current) ratio to dB.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : real or array_like of reals</p>
+<blockquote>
+<div><p>argument should be strictly positive</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y</strong> : real or array_like of reals</p>
+<blockquote class="last">
+<div><p>20*log10(x)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydsm.delsig.dbp">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">dbp</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#pydsm.delsig.dbp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a power ratio to dB.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : real or array_like of reals</p>
+<blockquote>
+<div><p>argument should be strictly positive</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y</strong> : real or array_like of reals</p>
+<blockquote class="last">
+<div><p>10*log10(x)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydsm.delsig.dbm">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">dbm</tt><big>(</big><em>v</em>, <em>R=50.0</em><big>)</big><a class="headerlink" href="#pydsm.delsig.dbm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts argument from rms voltage to dBm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>v</strong> : real or array_like of reals</p>
+<blockquote>
+<div><p>rms value to be converted in dBm</p>
+</div></blockquote>
+<p><strong>R</strong> : real, optional</p>
+<blockquote>
+<div><p>value of test resistor (defaults to 50)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y</strong> : real or array_like of reals</p>
+<blockquote class="last">
+<div><p>dBm value corresponding to the power provided by the rms voltag v
+on the test resistor R, normalized over the reference value of 1mW</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydsm.delsig.undbv">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">undbv</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#pydsm.delsig.undbv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts argument from db to a voltage ratio.</p>
+<p>Inverse of <cite>dbv</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : real or array_like of reals</p>
+<blockquote>
+<div><p>value to convert</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y</strong> : real or array_like of reals</p>
+<blockquote class="last">
+<div><p>10^(x/20)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydsm.delsig.undbp">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">undbp</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#pydsm.delsig.undbp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts argument from db to a power ratio.</p>
+<p>Inverse of <cite>dbp</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : real or array_like of reals</p>
+<blockquote>
+<div><p>value to convert</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y</strong> : real or array_like of reals</p>
+<blockquote class="last">
+<div><p>10^(x/10)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydsm.delsig.undbm">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">undbm</tt><big>(</big><em>x</em>, <em>R=50.0</em><big>)</big><a class="headerlink" href="#pydsm.delsig.undbm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts argument from dBm power to rms voltage.</p>
+<p>Inverse of <cite>dbm</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>x</strong> : real or array_like of reals</p>
+<blockquote>
+<div><p>value to convert</p>
+</div></blockquote>
+<p><strong>R</strong> : real, optional</p>
+<blockquote>
+<div><p>test resistor</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y</strong> : real or array_like of reals</p>
+<blockquote class="last">
+<div><p>rms voltage that applied over a resistor R gives a power equal to x
+in dBm (i.e. referred to 1mW)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydsm.delsig.evalTF">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">evalTF</tt><big>(</big><em>tf</em>, <em>x</em><big>)</big><a class="headerlink" href="#pydsm.delsig.evalTF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates a transfer function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>tf</strong> : tuple</p>
+<blockquote>
+<div><p>transfer function in zpk or nd form</p>
+</div></blockquote>
+<p><strong>x</strong> : complex or array_like of complex</p>
+<blockquote>
+<div><p>value or vector of values where the tf is to be evaluated</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>y</strong> : ndarray</p>
+<blockquote class="last">
+<div><p>value(s) of transfer function at the given complex values.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>x corresponds to &#8216;s&#8217; or &#8216;z&#8217; in CT or DT transfer functions respectively.
+Thus it should be 1j*omega or exp(1j*omega*T).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="graphing">
+<h3>Graphing<a class="headerlink" href="#graphing" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="pydsm.delsig.plotPZ">
+<tt class="descclassname">pydsm.delsig.</tt><tt class="descname">plotPZ</tt><big>(</big><em>H</em>, <em>color='b'</em>, <em>markersize=5</em>, <em>showlist=False</em><big>)</big><a class="headerlink" href="#pydsm.delsig.plotPZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the poles and zeros of a transfer function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>H</strong> : tuple</p>
+<blockquote>
+<div><p>transfer function in pzk or nd form</p>
+</div></blockquote>
+<p><strong>showlist</strong> : bool</p>
+<blockquote>
+<div><p>if showlist is true, a list of the poles and zeros is superimposed
+onto the plot.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first"><strong>color</strong> : string or list of strings, optional</p>
+<blockquote>
+<div><p>color or colors to plot the poles and the zeros (defaults to &#8216;b&#8217;
+meaning black)</p>
+</div></blockquote>
+<p><strong>markersize</strong> : real, optional</p>
+<blockquote class="last">
+<div><p>size of the markers used to represent the poles and the zeros
+(defaults to 5)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>See <cite>matplotlib</cite> for info about color codes.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The delsig module</a><ul>
+<li><a class="reference internal" href="#key-functions">Key functions</a></li>
+<li><a class="reference internal" href="#other-selected-functions">Other selected functions</a><ul>
+<li><a class="reference internal" href="#delta-sigma-utility">Delta Sigma Utility</a></li>
+<li><a class="reference internal" href="#general-utility">General Utility</a></li>
+<li><a class="reference internal" href="#graphing">Graphing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="reference.html"
+                        title="previous chapter">Reference guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ntf-design-module.html"
+                        title="next chapter">The NTFdesign module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/delsig-module.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ntf-design-module.html" title="The NTFdesign module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="reference.html" title="Reference guide"
+             >previous</a> |</li>
+        <li><a href="index.html">PyDSM 0.5.1 documentation</a> &raquo;</li>
+          <li><a href="reference.html" >Reference guide</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Sergio Callegari.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
