@@ -13,8 +13,8 @@ DELSIG helpers routines
 
 import numpy as np
 from math import ceil, sqrt
-from _padding import padl, padr
-from _tf import rmsGain
+from ._padding import padl, padr
+from ._tf import rmsGain
 from ..utilities import db
 
 __all__=["ds_synNTFobj1", "ds_f1f2", "ds_optzeros"]

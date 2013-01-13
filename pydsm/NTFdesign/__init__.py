@@ -11,5 +11,5 @@ The delsig_optimize_NTF variable specifies whether to use optimization
 techniques in the delsig_synthesizeNTF function.
 """
 
-import filter_based
-import delsig
+from . import filter_based
+from . import delsig

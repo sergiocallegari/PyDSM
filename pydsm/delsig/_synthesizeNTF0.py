@@ -9,9 +9,9 @@
 import numpy as np
 from warnings import warn
 from ..errors import PyDsmWarning, PyDsmError
-from _tf import evalTF
+from ._tf import evalTF
 from ..utilities import cplxpair
-from _ds import ds_optzeros
+from ._ds import ds_optzeros
 
 def synthesizeNTF0(order, osr, opt, H_inf, f0):
     # Determine the zeros.
