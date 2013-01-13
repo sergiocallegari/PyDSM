@@ -12,9 +12,9 @@ Some code ported from the DELSIG toolbox, copyrighted by R. Schreier.
 """
 
 # Read version info
-from pydsm.version import __version__, __delsig_version__
+from .version import __version__, __delsig_version__
 
 # Promote some key functions to the pydsm namespace
-import delsig
-import NTFdesign
-import simulation
+from . import delsig
+from . import NTFdesign
+from . import simulation

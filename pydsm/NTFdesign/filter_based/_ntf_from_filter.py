@@ -11,7 +11,7 @@ Synthesize a FIR NTF from specs of filter used to remove quantization noise
 import numpy as np
 import scipy as sp
 __import__("scipy.linalg")
-from _q0_from_filter import q0_from_filter_imp_response
+from ._q0_from_filter import q0_from_filter_imp_response
 import cvxpy
 
 __all__=["synthesize_ntf_from_filter_ir",

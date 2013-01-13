@@ -10,10 +10,10 @@ import numpy as np
 from scipy.optimize import fmin_l_bfgs_b
 from warnings import warn
 from ..errors import PyDsmWarning, PyDsmError
-from _tf import evalTF
+from ._tf import evalTF
 from ..utilities import cplxpair, is_negligible
-from _ds import ds_optzeros, ds_synNTFobj1
-from _padding import padl
+from ._ds import ds_optzeros, ds_synNTFobj1
+from ._padding import padl
 
 def synthesizeNTF1(order, osr, opt, H_inf, f0):
     # Determine the zeros.

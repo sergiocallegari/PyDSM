@@ -8,10 +8,8 @@ Entry point for DELSIG-like Delta-Sigma modulator simulator
 ===========================================================
 """
 
-from _simulateDSM_slow import simulateDSM as \
-    simulateDSM_slow
-from _simulateDSM_fast import simulateDSM as \
-    simulateDSM_fast
+from ._simulateDSM_slow import simulateDSM as simulateDSM_slow
+from ._simulateDSM_fast import simulateDSM as simulateDSM_fast
 
 __all__=["use_fast_simulator", "simulateDSM"]
 

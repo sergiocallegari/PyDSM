@@ -14,8 +14,8 @@ Entry point for DELSIG-like Delta-Sigma NTF synthesis function
 import numpy as np
 from warnings import warn, filterwarnings
 from ..errors import PyDsmWarning
-from _synthesizeNTF0 import synthesizeNTF0
-from _synthesizeNTF1 import synthesizeNTF1
+from ._synthesizeNTF0 import synthesizeNTF0
+from ._synthesizeNTF1 import synthesizeNTF1
 
 __all__=["optimize_NTF", "synthesizeNTF"]
 

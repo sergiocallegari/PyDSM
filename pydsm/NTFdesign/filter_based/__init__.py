@@ -18,6 +18,6 @@ Noise Shaping Properties of ΔΣ Modulators via Semi-Definite Programming",
 IEEE Transactions on Circuits and Systems I: Regular Papers.
 """
 
-from _q0_from_filter import *
-from _quantization_noise_gain import *
-from _ntf_from_filter import *
+from ._q0_from_filter import *
+from ._quantization_noise_gain import *
+from ._ntf_from_filter import *
