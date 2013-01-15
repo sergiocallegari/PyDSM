@@ -20,7 +20,9 @@ __all__=["synthesize_ntf_from_filter_ir",
 def synthesize_ntf_from_filter_ir(h_ir, P, gamma=1.5, mult="auto",
                                  options={}):
     """
-    Synthesize a FIR NTF based on the impulse response of the filter
+    Synthesize a FIR NTF based on the ΔΣ modulator output filter.
+
+    The ΔΣ modulator NTF is designed after the impulse response of the filter
     in charge of removing the quantization noise
 
     Parameters
@@ -49,8 +51,7 @@ def synthesize_ntf_from_filter_ir(h_ir, P, gamma=1.5, mult="auto",
 def synthesize_ntf_from_q0(q0, gamma=1.5, mult="auto",
                           options={}):
     """
-    Synthesize a FIR NTF based a quadratic form defining the quantization
-    noise gain
+    Synthesize a FIR NTF from quadratic form defining quantization noise gain.
 
     Parameters
     ----------

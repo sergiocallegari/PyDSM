@@ -158,7 +158,8 @@ IEEE Transactions on Circuits and Systems I: Regular Papers.</p>
 <dl class="function">
 <dt id="pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter_ir">
 <tt class="descclassname">pydsm.NTFdesign.filter_based.</tt><tt class="descname">synthesize_ntf_from_filter_ir</tt><big>(</big><em>h_ir</em>, <em>P</em>, <em>gamma=1.5</em>, <em>mult='auto'</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter_ir" title="Permalink to this definition">¶</a></dt>
-<dd><p>Synthesize a FIR NTF based on the impulse response of the filter
+<dd><p>Synthesize a FIR NTF based on the ΔΣ modulator output filter.</p>
+<p>The ΔΣ modulator NTF is designed after the impulse response of the filter
 in charge of removing the quantization noise</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -202,8 +203,7 @@ in the matrix Q defining the quadratic form to 1.</p>
 <dl class="function">
 <dt id="pydsm.NTFdesign.filter_based.synthesize_ntf_from_q0">
 <tt class="descclassname">pydsm.NTFdesign.filter_based.</tt><tt class="descname">synthesize_ntf_from_q0</tt><big>(</big><em>q0</em>, <em>gamma=1.5</em>, <em>mult='auto'</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#pydsm.NTFdesign.filter_based.synthesize_ntf_from_q0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Synthesize a FIR NTF based a quadratic form defining the quantization
-noise gain</p>
+<dd><p>Synthesize a FIR NTF from quadratic form defining quantization noise gain.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
