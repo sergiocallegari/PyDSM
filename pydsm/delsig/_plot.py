@@ -30,7 +30,7 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
         if showlist is true, a list of the poles and zeros is superimposed
         onto the plot.
 
-    Other parameters
+    Other Parameters
     ----------------
     color : string or list of strings, optional
         color or colors to plot the poles and the zeros (defaults to 'b'
