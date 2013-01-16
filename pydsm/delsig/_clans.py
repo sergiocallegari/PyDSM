@@ -67,7 +67,7 @@ from ._dsclansNTF import dsclansNTF
 
 __all__=["clans"]
 
-def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0):
+def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, options={}):
     u"""
     Synthesize the NTF for a ΔΣM w/ multibit quantizer by the CLANS method.
 
@@ -90,6 +90,15 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0):
     opt : int, optional
         opt parameter passed to ``synthesizeNTF`` which is used to compute the
         NTF zero location and the initial pole location for the optimizer
+
+    Other Parameters
+    ----------------
+    options : dict
+        extra options to be passed to the optimizer. These include: ``acc``
+        (the requested accuracy), defaulting to 1e-6; ``epsilon`` (the step
+        size for finite-difference derivative estimates), defaulting to
+        1.4901161193847656e-08; and ``iter`` (the maximum number of
+        iterations), defaulting to 100.
 
     Returns
     -------
@@ -117,13 +126,14 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0):
     The computation is based on a nonlinear, nonlinearly constrained
     optimization. Since the optimizer used here is different from the
     optimizer used in other toolboxes implementing this funciton,
-    the results may differ.
+    the results may differ. The current optimizer is ``fmin_slsqp``.
 
     The parameters used to control the optimizer are taken at their default
     values. With it, for the sample parameters provided in the DELSIG
     toolbox manual, this function and the DELSIG's clans return the same NTF.
     However, it this is suboptimal. For more aggressive accuracy settings
-    the optimizer used here would find a better NTF.
+    the optimizer used here would find a better NTF. Use the ``options``
+    parameters to pass the desired settings.
 
     The function internally calls ``synthesizeNTF``, and rises the same
     exceptions as ``synthesizeNTF``.
@@ -177,7 +187,8 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0):
 
     # Run the optimizer
     x = fmin_slsqp(_dsclansObj6a,x,ieqcons=(_dsclansObj6b,),
-                   args=(order, osr, nq, rmax, Hz), iprint=-1)
+                   args=(order, osr, nq, rmax, Hz), disp=-1,
+                   **options)
     return dsclansNTF(x, order, rmax, Hz)
 
 def _dsclansObj6a(x, order, osr, nq, rmax, Hz):
