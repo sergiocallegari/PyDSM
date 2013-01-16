@@ -3,7 +3,7 @@
 # Copyright (c) 2012, Sergio Callegari
 # All rights reserved.
 
-"""
+u"""
 Output filter based NTF synthesis
 =================================
 

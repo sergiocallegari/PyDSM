@@ -19,7 +19,7 @@ __all__=["synthesize_ntf_from_filter_ir",
 
 def synthesize_ntf_from_filter_ir(h_ir, P, gamma=1.5, mult="auto",
                                  options={}):
-    """
+    u"""
     Synthesize a FIR NTF based on the ΔΣ modulator output filter.
 
     The ΔΣ modulator NTF is designed after the impulse response of the filter
