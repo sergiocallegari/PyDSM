@@ -36,7 +36,7 @@ def fft_centered(x, fs=1):
     ff : ndarray
         vector of frequencies corresponding to the samples in X
 
-    Other parameters
+    Other Parameters
     ----------------
     fs : real, optional
         sample frequency for the input vector (defaults to 1)

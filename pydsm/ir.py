@@ -31,7 +31,7 @@ def impulse_response(h, m=None, db=80):
     ir : ndarray
         the truncated impulse response
 
-    Other parameters
+    Other Parameters
     ----------------
     m : int, optional
         the number of samples after which the impulse response should be
