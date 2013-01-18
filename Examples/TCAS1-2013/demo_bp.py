@@ -25,9 +25,9 @@ B=400.
 OSR=64
 fphi=B*OSR*2
 # Lee constraint
-gamma=1.5
+H_inf=1.5
 # FIR Order
-P=40
+order=40
 # Signal amplitude
 A=0.75
 
@@ -47,12 +47,12 @@ hz_ir=impulse_response(hz, db=60)
 
 # Compute the optimal NTF
 print("... computing optimal NTF")
-ntf_opti=synthesize_ntf_from_filter_ir(hz_ir, P, gamma=gamma)
-ntf_opti_zpk=(np.roots(ntf_opti),np.zeros(P),1)
+ntf_opti=synthesize_ntf_from_filter_ir(order, hz_ir, H_inf=H_inf)
+ntf_opti_zpk=(np.roots(ntf_opti),np.zeros(order),1)
 
 # Compute an NTF with DELSIG, for comparison
 print("... computing delsig NTF")
-ntf_delsig=synthesizeNTF(4, OSR, 3, gamma, w0/2)
+ntf_delsig=synthesizeNTF(4, OSR, 3, H_inf, w0/2)
 
 # Determine freq values for which plots are created
 fmin=10**np.ceil(np.log10(2*B/OSR))
