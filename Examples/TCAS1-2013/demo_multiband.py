@@ -14,7 +14,7 @@ import scipy as sp
 __import__("scipy.signal")
 import matplotlib.pyplot as plt
 from pydsm.ir import impulse_response
-from pydsm.delsig import synthesizeNTF, simulateDSM, evalTF
+from pydsm.delsig import simulateDSM, evalTF
 from pydsm.delsig import dbv, dbp
 from pydsm.NTFdesign.filter_based import quantization_noise_gain, \
     synthesize_ntf_from_filter_ir
@@ -27,9 +27,9 @@ B2=4000.
 OSR=64
 fphi=(B1+B2)*OSR*2
 # Lee constraint
-gamma=1.5
+H_inf=1.5
 # FIR Order
-P=50
+order=50
 # Signal amplitude
 A1=0.45
 A2=0.45
@@ -62,8 +62,8 @@ hz_ir=impulse_response(hz, db=60)
 
 # Compute the optimal NTF
 print("... computing optimal NTF")
-ntf_opti=synthesize_ntf_from_filter_ir(hz_ir, P, gamma=gamma)
-ntf_opti_zpk=(np.roots(ntf_opti),np.zeros(P),1)
+ntf_opti=synthesize_ntf_from_filter_ir(order, hz_ir, H_inf=H_inf)
+ntf_opti_zpk=(np.roots(ntf_opti),np.zeros(order),1)
 
 # Determine freq values for which plots are created
 fmin=10**np.ceil(np.log10(10))

@@ -157,7 +157,7 @@ IEEE Transactions on Circuits and Systems I: Regular Papers.</p>
 <span class="target" id="module-NTFdesign.filter_based"></span><p><strong>Key functions</strong></p>
 <dl class="function">
 <dt id="pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter_ir">
-<tt class="descclassname">pydsm.NTFdesign.filter_based.</tt><tt class="descname">synthesize_ntf_from_filter_ir</tt><big>(</big><em>h_ir</em>, <em>P</em>, <em>gamma=1.5</em>, <em>mult='auto'</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter_ir" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pydsm.NTFdesign.filter_based.</tt><tt class="descname">synthesize_ntf_from_filter_ir</tt><big>(</big><em>order</em>, <em>h_ir</em>, <em>H_inf=1.5</em>, <em>normalize='auto'</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter_ir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Synthesize a FIR NTF based on the ΔΣ modulator output filter.</p>
 <p>The ΔΣ modulator NTF is designed after the impulse response of the filter
 in charge of removing the quantization noise</p>
@@ -165,19 +165,19 @@ in charge of removing the quantization noise</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>h_ir</strong> : array_like of reals</p>
-<blockquote>
-<div><p>filter impulse response</p>
-</div></blockquote>
-<p><strong>P</strong> : int</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>order</strong> : int</p>
 <blockquote>
 <div><p>Delta sigma modulator order</p>
 </div></blockquote>
-<p><strong>gamma</strong> : real, optional</p>
+<p><strong>h_ir</strong> : array_like of reals</p>
+<blockquote>
+<div><p>filter impulse response</p>
+</div></blockquote>
+<p><strong>H_inf</strong> : real, optional</p>
 <blockquote>
 <div><p>Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion</p>
 </div></blockquote>
-<p><strong>mult</strong> : string or real, optional</p>
+<p><strong>normalize</strong> : string or real, optional</p>
 <blockquote>
 <div><p>Normalization to apply to the quadratic form used in the NTF
 selection. Defaults to &#8216;auto&#8217; which means setting the top left entry
@@ -202,7 +202,7 @@ in the matrix Q defining the quadratic form to 1.</p>
 <p><strong>Auxiliary Functions</strong></p>
 <dl class="function">
 <dt id="pydsm.NTFdesign.filter_based.synthesize_ntf_from_q0">
-<tt class="descclassname">pydsm.NTFdesign.filter_based.</tt><tt class="descname">synthesize_ntf_from_q0</tt><big>(</big><em>q0</em>, <em>gamma=1.5</em>, <em>mult='auto'</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#pydsm.NTFdesign.filter_based.synthesize_ntf_from_q0" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pydsm.NTFdesign.filter_based.</tt><tt class="descname">synthesize_ntf_from_q0</tt><big>(</big><em>q0</em>, <em>H_inf=1.5</em>, <em>normalize='auto'</em>, <em>options={}</em><big>)</big><a class="headerlink" href="#pydsm.NTFdesign.filter_based.synthesize_ntf_from_q0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Synthesize a FIR NTF from quadratic form defining quantization noise gain.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -212,11 +212,11 @@ in the matrix Q defining the quadratic form to 1.</p>
 <blockquote>
 <div><p>first row of the Toeplitz symmetric matrix defining the quadratic form</p>
 </div></blockquote>
-<p><strong>gamma</strong> : real, optional</p>
+<p><strong>H_inf</strong> : real, optional</p>
 <blockquote>
 <div><p>Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion</p>
 </div></blockquote>
-<p><strong>mult</strong> : string or real, optional</p>
+<p><strong>normalize</strong> : string or real, optional</p>
 <blockquote>
 <div><p>Normalization to apply to the quadratic form used in the NTF
 selection. Defaults to &#8216;auto&#8217; which means setting the top left entry
