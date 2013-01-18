@@ -32,9 +32,9 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     ----------
     order : int, optional
         the order of the modulator, defaults to 3
-    osr : int, optional
+    osr : float, optional
         the oversamping ratio (based on the actual signal bandwidth)
-    opt : int or list, optional
+    opt : int or list of floats, optional
         flag for optimized zeros, defaults to 0
 
         * 0 -> not optimized,
