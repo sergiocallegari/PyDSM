@@ -5,6 +5,8 @@
 # All rights reserved.
 
 import sys
+import os
+import shutil
 from distutils.core import setup
 from distutils.core import Command
 from distutils import ccompiler
@@ -12,6 +14,7 @@ from distutils.extension import Extension
 from Cython.Build import cythonize
 import platform
 import numpy
+
 
 # Find version
 execfile('pydsm/version.py')
@@ -36,8 +39,7 @@ class test (Command):
         self.build_platlib = build.build_platlib
 
     def run (self):
-        # Invoke the 'build' command to "build" pure Python modules
-        # (ie. copy 'em into the build tree)
+        # Invoke the 'build' command
         self.run_command ('build')
         # remember old sys.path to restore it afterwards
         old_path = sys.path[:]
@@ -50,6 +52,35 @@ class test (Command):
         suite = TEST.unittest.TestLoader().loadTestsFromModule(TEST)
         TEST.unittest.TextTestRunner(verbosity=2).run(suite)
         sys.path = old_path[:]
+
+class build_doc (Command):
+    description = "Build the documentation"
+
+    user_options = [
+        ('preclean', None,
+         'Clean docs first')]
+
+    def initialize_options (self):
+        self.build_base = 'build'
+        self.preclean = False
+
+    def finalize_options (self):
+        build = self.get_finalized_command('build')
+        self.build_purelib = build.build_purelib
+        self.build_platlib = build.build_platlib
+
+    def run (self):
+        # Invoke the 'build' command
+        self.run_command ('build')
+        # Make the docs
+        os.chdir('doc')
+        if self.preclean:
+            os.system('make clean')
+        os.system('make html')
+        os.chdir('..')
+        shutil.rmtree('Documentation/html',ignore_errors=True)
+        shutil.copytree('doc/build/html','Documentation/html')
+        shutil.rmtree('Documentation/html/_sources')
 
 # We want the default compiler to be mingw32 in windows
 ccompiler._default_compilers=\
@@ -85,17 +116,16 @@ setup(name='pydsm',
                 'matplotlib(>= 1.1.0)',
                 'cvxopt(>=1.1.4)',
                 'cython(>=0.16)'],
-      cmdclass = {'test': test},
+      cmdclass = {'test': test, 'build_doc': build_doc},
       license = 'Simplified BSD License',
       platforms = ['Linux','Windows','Mac'],
       long_description = """
-Python Based ΔΣ modulator design tools.
+      Python Based ΔΣ modulator design tools.
 
-Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
-Optimization of the Noise Shaping Properties of ΔΣ Modulators via
-Semi-Definite Programming', IEEE Transactions on Circuits and Systems
-I, 2013 and others.
+    Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
+    Optimization of the Noise Shaping Properties of ΔΣ Modulators via
+    Semi-Definite Programming', IEEE Transactions on Circuits and Systems
+    I, 2013 and others.
 
-Portion of code ported to python from the DELSIG toolbox by R. Schreier.
-""",
-     )
+    Portion of code ported to python from the DELSIG toolbox by R. Schreier.
+    """)
