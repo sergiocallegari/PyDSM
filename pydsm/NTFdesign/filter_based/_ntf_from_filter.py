@@ -43,7 +43,7 @@ def synthesize_ntf_from_filter_ir(order, h_ir, H_inf=1.5, normalize="auto",
     Returns
     -------
     ntf : ndarray
-        coefficients of the FIR NTF
+        FIR NTF in zpk form
     """
     q0=q0_from_filter_imp_response(h_ir, order)
     return synthesize_ntf_from_q0(q0, H_inf, normalize, options)
@@ -69,7 +69,7 @@ def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto",
     Returns
     -------
     ntf : ndarray
-        coefficients of the FIR NTF
+        FIR NTF in zpk form
     """
     order=q0.shape[0]-1
     if normalize=='auto':
@@ -85,7 +85,6 @@ def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto",
     B=cvxpy.matrix(np.vstack((np.zeros((order-1,1)),1)))
     C=(cvxpy.matrix(np.eye(order,order)[:,::-1])*ar).T
     D=cvxpy.matrix([[1]])
-    # If X is symmetric, then M is symmetric ?
     M1=A.T*X
     M2=M1*B
     M=cvxpy.vstack(( \
@@ -100,4 +99,4 @@ def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto",
         p.options[opt]=val
     p.solve()
     ntf_ir=np.hstack((1,np.asarray(ar.value.T)[0]))
-    return ntf_ir
+    return (np.roots(ntf_ir), np.zeros(order), 1.)

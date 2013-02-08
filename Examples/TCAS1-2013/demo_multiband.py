@@ -63,7 +63,6 @@ hz_ir=impulse_response(hz, db=60)
 # Compute the optimal NTF
 print("... computing optimal NTF")
 ntf_opti=synthesize_ntf_from_filter_ir(order, hz_ir, H_inf=H_inf)
-ntf_opti_zpk=(np.roots(ntf_opti),np.zeros(order),1)
 
 # Determine freq values for which plots are created
 fmin=10**np.ceil(np.log10(10))
@@ -72,7 +71,7 @@ ff=np.logspace(np.log10(fmin),np.log10(fmax),1000)
 
 # Compute frequency response data
 resp_filt=np.abs(evalTF(hz,np.exp(1j*2*np.pi*ff/fphi)))
-resp_opti=np.abs(evalTF((ntf_opti,[1]),np.exp(1j*2*np.pi*ff/fphi)))
+resp_opti=np.abs(evalTF(ntf_opti,np.exp(1j*2*np.pi*ff/fphi)))
 
 # Plot frequency response
 plt.figure()
@@ -83,7 +82,7 @@ plt.suptitle("Output filter and NTFs")
 
 # Check merit factors
 ffl=np.linspace(fmin, fmax, 1000)
-pg_opti=np.abs(evalTF((ntf_opti,[1]),np.exp(1j*2*np.pi*ffl/fphi)))* \
+pg_opti=np.abs(evalTF(ntf_opti,np.exp(1j*2*np.pi*ffl/fphi)))* \
     np.abs(evalTF(hz,np.exp(1j*2*np.pi*ffl/fphi)))
 plt.figure()
 plt.plot(ffl,pg_opti**2,'r', label="Optimal NTF")
@@ -92,7 +91,7 @@ plt.suptitle("Merit factor integrand")
 
 # Compute expected behavior
 sigma2_e=1./3
-noise_power_opti_1=quantization_noise_gain(hz, (ntf_opti,[1]))*sigma2_e
+noise_power_opti_1=quantization_noise_gain(hz, ntf_opti)*sigma2_e
 print("Expected optimal noise level {} ({} dB)\nExpected SNR {} dB".format( \
     noise_power_opti_1, dbp(noise_power_opti_1), \
         dbp(0.5*A1**2+0.5*A2**2)-dbp(noise_power_opti_1)))
@@ -110,7 +109,7 @@ uud=uu+dither
 
 # Simulate the DSM
 print("Simulating optimal NTF")
-xx_opti = simulateDSM(uud, ntf_opti_zpk)[0]
+xx_opti = simulateDSM(uud, ntf_opti)[0]
 
 print("Applying the reconstrution filter")
 hz_ab=sp.signal.zpk2tf(*hz)
