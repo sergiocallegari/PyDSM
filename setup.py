@@ -53,34 +53,6 @@ class test (Command):
         TEST.unittest.TextTestRunner(verbosity=2).run(suite)
         sys.path = old_path[:]
 
-class build_doc (Command):
-    description = "Build the documentation"
-
-    user_options = [
-        ('preclean', None,
-         'Clean docs first')]
-
-    def initialize_options (self):
-        self.build_base = 'build'
-        self.preclean = False
-
-    def finalize_options (self):
-        build = self.get_finalized_command('build')
-        self.build_purelib = build.build_purelib
-        self.build_platlib = build.build_platlib
-
-    def run (self):
-        # Invoke the 'build' command
-        self.run_command ('build')
-        # Make the docs
-        os.chdir('doc')
-        if self.preclean:
-            os.system('make clean')
-        os.system('make html')
-        os.chdir('..')
-        shutil.rmtree('Documentation/html',ignore_errors=True)
-        shutil.copytree('doc/build/html','Documentation/html')
-        shutil.rmtree('Documentation/html/_sources')
 
 # We want the default compiler to be mingw32 in windows
 ccompiler._default_compilers=\
@@ -116,7 +88,7 @@ setup(name='pydsm',
                 'matplotlib(>= 1.1.0)',
                 'cvxopt(>=1.1.4)',
                 'cython(>=0.16)'],
-      cmdclass = {'test': test, 'build_doc': build_doc},
+      cmdclass = {'test': test},
       license = 'Simplified BSD License',
       platforms = ['Linux','Windows','Mac'],
       long_description = """
