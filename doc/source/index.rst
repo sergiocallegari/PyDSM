@@ -15,7 +15,7 @@ Contents:
    getting-started
    reference
    replicate-tcas
-
+   changelog
 
 Indices and tables
 ==================
