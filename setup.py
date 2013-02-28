@@ -76,7 +76,7 @@ if plat=='Windows':
 
 setup(name='pydsm',
       version=__version__,
-      description='Python Based ΔΣ modulator design tools',
+      description=u'Python Based ΔΣ modulator design tools',
       author='Sergio Callegari',
       author_email='sergio.callegari@unibo.it',
       url='http://code.google.com/p/pydsm',
@@ -91,7 +91,7 @@ setup(name='pydsm',
       cmdclass = {'test': test},
       license = 'Simplified BSD License',
       platforms = ['Linux','Windows','Mac'],
-      long_description = """
+      long_description = u"""
       Python Based ΔΣ modulator design tools.
 
     Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
