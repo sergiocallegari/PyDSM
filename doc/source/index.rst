@@ -14,7 +14,7 @@ Contents:
    intro
    getting-started
    reference
-   replicate-tcas
+   replicate-results
    changelog
 
 Indices and tables
