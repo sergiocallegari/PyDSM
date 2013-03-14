@@ -61,7 +61,7 @@ and Atlas will be satisfied, and you may need to take care of
 installing (newer) versions of Numpy, Scipy, Matplotlib, Cython and
 CVXOPT. To this aim, you can either:
 
-* Download the source packages  from the PyPy_ repository, unpack them
+* Download the source packages  from the PyPi_ repository, unpack them
   and launch  the ``setup.py`` script with command  ``install``. It is
   advisable to use  the ``--user`` option with the  install command to
   make  a  personal  installation  that does  not  require  super-user
@@ -149,7 +149,7 @@ paper
   Semi-Definite Programming"*, IEEE Transactions on Circuits and
   systems - Part I: Regular Papers.
 
-.. _PyPy : http://pypi.python.org/pypi
+.. _PyPi : http://pypi.python.org/pypi
 .. _CVXPY : http://www.stanford.edu/~ttinoco/cvxpy/
 .. _CVXPY download site : http://code.google.com/p/cvxpy/downloads/list
 .. _CVXPY download repository : http://code.google.com/p/cvxpy/source/checkout

@@ -12,22 +12,6 @@ and requires a `Python 2.7`_  environment. A port to Python
 Apart from the generic Python environment, there are other
 prerequisites too:
 
-Cython_ :
-    A language to write C extensions for the Python language. This is
-    actually necessary only for compiling the code. Tested with
-    versions 0.16.x and 0.17.x, should work with later releases too.
-
-A development version of the CBlas library :
-    Blas is a library of routines for performing basic vector and
-    matrix operations. CBlas is its edition suitable for C code
-    development. By development version, version of Cblas incluing
-    headers files is intended. The latter are used to compile the code
-    only, while the Cblas runtime is necessary all the time. CBlas may
-    be available from many sources including Netlib_, etc.
-
-A C compiler :
-    This is used only for compiling the code.
-
 Numpy_ :
     A powerful library that adds vector and matrix manipulation
     routines to Python. Currently tested with version 1.6.2, should
@@ -48,8 +32,29 @@ CVXOPT_ :
 
 CVXPY_ :
     A free software package for modeling convex optimization problems
-    in Python. Currently tested with version 0.0.1 of the library,
-    should work with later releases too.
+    in Python. Currently tested with the still unreleased version 0.0.1
+    of the library, should work with later releases too.
+
+Furthermore, the following pre-requisites may exist in case one wants to build
+from source (which is expected in Linux and optional in windows):
+
+Cython_ :
+    A language to write C extensions for the Python language. This is
+    actually necessary only for compiling the code. Tested with
+    versions 0.16.x and 0.17.x, should work with later releases too.
+
+A development version of the CBlas library :
+    Blas is a library of routines for performing basic vector and
+    matrix operations. CBlas is its edition suitable for C code
+    development. By development version, a version of Cblas including
+    headers files is intended. The latter are used to compile the code
+    only, while the Cblas runtime is necessary all the time. CBlas may
+    be available from many sources including Netlib_, etc.
+    This requisite does not exist in windows, where the blas code included
+    in scipy is used.
+
+A C compiler :
+    This is used only for compiling the code.
 
 Although the prerequisites appear to be numerous, their management is
 actually quite easy.

@@ -1,7 +1,7 @@
 Getting started guide for Windows systems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The installation of PyDSM involves two main steps. The installation of
+The installation of PyDSM involves two major steps: the installation of
 its pre-requisites and the installation of PyDSM itself.
 
 Due to its prerequisites, **PyDSM is currently only available for a 32
@@ -65,10 +65,14 @@ Unfortunately, so far the `CVXPY download site`_ is still empty,
 meaning that the code can only be downloaded with a specific tool for
 accessing the `CVXPY download repository`_. Since some may find this
 impractical, we are providing a development snapshot for convenience
-at the `PyDSM download site`_.
+at the `PyDSM download site`_. This is available either in source form
+or as an installer (more convenient).
 
-Once, you have the source code of CVXPY, unzip it, enter its directory
-and launch the `setup.py` file as::
+In case you want to use the installer, just download the CVXPY
+``.exe`` file and run it.
+
+Otherwise, once you have the source code of CVXPY, unzip it, enter its
+directory and launch the `setup.py` file as::
 
   python setup.py install --user
 
@@ -96,34 +100,21 @@ Installation of PyDSM itself
 
 After all the prerequisites above are satisfied, you may eventually
 proceed to installing PyDSM itself. Note that, differently from Linux,
-in Windows we satisfy the last prerequisite, namely the availability
-of the CBlas libraries together with the installation of PyDSM itself.
+in Windows there is no dependency on an external CBlas library.
 
-Download the PyDSM source from the `PyDSM download site`_, then unzip
-it.
+Since version 0.7.0 an installer is available, simplifying the setup
+on Windows. To use it, just download the pydsm ``.exe`` file from the
+`PyDSM download site`_, and run it.
 
-Download a prebuilt ATLAS library for Windows from the `PyDSM download
-site`_. ATLAS is a provider of CBlas. Since its compilation in Windows
-can be rather cumbersome, we deliver a prebuilt version of it for
-convenience. This is taken from the `Netlib archive of prebuilt ATLAS
-libraries for Windows`_. Note that ATLAS is distributed under a BSD
-licence from the `ATLAS sourceforge site`_. Look there for further
-information about licensing or for the source code. Also note that the
-prebuilt libraries from Netlib tend to lag behind the official ATLAS
-and will certainly not be fully optimized for your hardware. For
-maximum performance, compile your own ATLAS, use a commercial version
-of Blas, or move to Linux.
-
-Unzip the ATLAS libraries too and move their main folder *inside* the
-PyDSM source folder, renaming it ``ATLAS``.
-
-Finally, open a command prompt inside the PyDSM source folder and
-launch the ``setup.py`` file as::
+Alternatively, if you prefer compiling the source code, download it
+from the `PyDSM download site`_, then unzip it. Finally, open a
+command prompt inside the PyDSM source folder and launch the
+``setup.py`` file as::
 
    python setup.py install --user
 
-Alternatively, you may run some tests on the code before installing it
-::
+One of the advantages of using the source version is that you may run
+some tests on the code before installing it ::
 
    python setup.py test
 
