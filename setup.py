@@ -65,18 +65,41 @@ ext_modules=[
     Extension('pydsm.delsig._simulateDSM_scipy_blas',
               ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'])]
 
+description=u'Python Based ΔΣ modulator design tools'
+long_description=u"""
+Python Based ΔΣ modulator design tools.
+
+Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
+Optimization of the Noise Shaping Properties of ΔΣ Modulators via
+Semi-Definite Programming', IEEE Transactions on Circuits and Systems I,
+2013 and others.
+
+Portion of code ported to python from the DELSIG toolbox by R. Schreier.
+"""
+
 # Fix stuff for Windows
-plat=platform.system()
-if plat=='Windows':
+if platform.system()=='Windows':
     ext_modules=[
         Extension('pydsm.delsig._simulateDSM_scipy_blas',
                   ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'],
                   define_macros=[('__USE_MINGW_ANSI_STDIO','1')],
                   include_dirs=[numpy.get_include()])]
+    description='Python Based Delta-Sigma modulator design tools'
+    long_description="""
+Python Based Delta-Sigma modulator design tools.
+
+Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
+Optimization of the Noise Shaping Properties of Delta-Sigma Modulators via
+Semi-Definite Programming', IEEE Transactions on Circuits and Systems I,
+2013 and others.
+
+Portion of code ported to python from the DELSIG toolbox by R. Schreier.
+"""
+
 
 setup(name='pydsm',
       version=__version__,
-      description=u'Python Based ΔΣ modulator design tools',
+      description=description,
       author='Sergio Callegari',
       author_email='sergio.callegari@unibo.it',
       url='http://pydsm.googlecode.com',
@@ -91,13 +114,4 @@ setup(name='pydsm',
       cmdclass = {'test': test},
       license = 'Simplified BSD License',
       platforms = ['Linux','Windows','Mac'],
-      long_description = u"""
-      Python Based ΔΣ modulator design tools.
-
-    Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
-    Optimization of the Noise Shaping Properties of ΔΣ Modulators via
-    Semi-Definite Programming', IEEE Transactions on Circuits and Systems
-    I, 2013 and others.
-
-    Portion of code ported to python from the DELSIG toolbox by R. Schreier.
-    """)
+      long_description = long_description)
