@@ -45,7 +45,7 @@ def synthesize_ntf_from_filter_ir(order, h_ir, H_inf=1.5, normalize="auto",
     ntf : ndarray
         FIR NTF in zpk form
     """
-    q0=q0_from_filter_imp_response(h_ir, order)
+    q0=q0_from_filter_imp_response(order, h_ir)
     return synthesize_ntf_from_q0(q0, H_inf, normalize, options)
 
 def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto",

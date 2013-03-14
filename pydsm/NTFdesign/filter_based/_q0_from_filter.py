@@ -15,7 +15,7 @@ from ...correlations import raw_acorr
 
 __all__=["q0_from_filter_imp_response"]
 
-def q0_from_filter_imp_response(h_ir, P):
+def q0_from_filter_imp_response(P, h_ir):
     """
     Computes Q matrix from the output filter impulse response
 
