@@ -17,7 +17,7 @@ from pydsm.ir import impulse_response
 from pydsm.delsig import simulateDSM, evalTF
 from pydsm.delsig import dbv, dbp
 from pydsm.NTFdesign.filter_based import quantization_noise_gain, \
-    synthesize_ntf_from_filter_ir
+    synthesize_ntf_from_filter_imp
 
 # Signal specification
 fsig1=1000.
@@ -62,7 +62,7 @@ hz_ir=impulse_response(hz, db=60)
 
 # Compute the optimal NTF
 print("... computing optimal NTF")
-ntf_opti=synthesize_ntf_from_filter_ir(order, hz_ir, H_inf=H_inf)
+ntf_opti=synthesize_ntf_from_filter_imp(order, hz_ir, H_inf=H_inf)
 
 # Determine freq values for which plots are created
 fmin=10**np.ceil(np.log10(10))
