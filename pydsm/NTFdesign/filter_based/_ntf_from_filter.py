@@ -13,12 +13,23 @@ import scipy as sp
 __import__("scipy.linalg")
 from ._q0_from_filter import q0_from_filter_imp_response
 import cvxpy
+from warnings import warn
+from ...errors import PyDsmWarning
 
-__all__=["synthesize_ntf_from_filter_ir",
-         "synthesize_ntf_from_q0"]
+__all__=["synthesize_ntf_from_filter_imp",
+         "synthesize_ntf_from_q0",
+         "synthesize_ntf_from_filter_ir"]
 
 def synthesize_ntf_from_filter_ir(order, h_ir, H_inf=1.5, normalize="auto",
-                                 options={}):
+                                  options={}):
+    warn('Deprecated function synthesize_ntf_from_filter_ir.\n'
+        'Will be removed shortly.\n'
+        'Use synthesize_ntf_from_filter_imp instead.', PyDsmWarning)
+    return synthesize_ntf_from_filter_imp(order, h_ir, H_inf, normalize,
+                                          options)
+
+def synthesize_ntf_from_filter_imp(order, h_ir, H_inf=1.5, normalize="auto",
+                                   options={}):
     u"""
     Synthesize a FIR NTF based on the ΔΣ modulator output filter.
 
