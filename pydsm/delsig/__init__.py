@@ -16,4 +16,4 @@ from ._tf import *
 from ._plot import *
 from ._synthesizeNTF import *
 from ._simulateDSM import *
-from ._simulateDSM_slow import *
+from ._simulateDSM_scipy import *

@@ -60,19 +60,19 @@ ccompiler._default_compilers=\
 
 # Prepare the extension modules
 ext_modules=[
-    Extension('pydsm.delsig._simulateDSM_fast',
-              ['pydsm/delsig/_simulateDSM_fast.pyx'])]
+    Extension('pydsm.delsig._simulateDSM_cblas',
+              ['pydsm/delsig/_simulateDSM_cblas.pyx']),
+    Extension('pydsm.delsig._simulateDSM_scipy_blas',
+              ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'])]
 
 # Fix stuff for Windows
 plat=platform.system()
 if plat=='Windows':
     ext_modules=[
-        Extension('pydsm.delsig._simulateDSM_fast',
-                  ['pydsm/delsig/_simulateDSM_fast.pyx'],
-                  include_dirs=[numpy.get_include(), './ATLAS'],
-                  library_dirs=['./ATLAS'],
-                  libraries=['atlas'],
-                  define_macros=[('__USE_MINGW_ANSI_STDIO','1')])]
+        Extension('pydsm.delsig._simulateDSM_scipy_blas',
+                  ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'],
+                  define_macros=[('__USE_MINGW_ANSI_STDIO','1')],
+                  include_dirs=[numpy.get_include()])]
 
 setup(name='pydsm',
       version=__version__,

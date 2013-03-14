@@ -3,30 +3,32 @@
 # Copyright (c) 2012, Sergio Callegari
 # All rights reserved.
 
-# distutils: libraries = cblas
-
 """
-Fast simulator for a generic delta sigma modulator
-==================================================
+Fast simulator for a generic delta sigma modulator using scipy blas
+===================================================================
 """
 
+from cpython cimport PyCObject_AsVoidPtr
 import numpy as np
 cimport numpy as np
+np.import_array()
 import scipy as sp
 __import__('scipy.signal')
+__import__('scipy.linalg')
 from ..errors import PyDsmError
 from libc.math cimport floor, fabs
 
-cdef extern from "cblas.h":
-    enum CBLAS_ORDER:     CblasRowMajor, CblasColMajor
-    enum CBLAS_TRANSPOSE: CblasNoTrans, CblasTrans, CblasConjTrans
-    void cblas_dgemv(CBLAS_ORDER order, \
-        CBLAS_TRANSPOSE TransA, int M, int N,\
-        double alpha, double *A, int lda,\
-        double *X, int incX,\
-        double beta, double *Y, int incY)
-    void cblas_dcopy(int N, double *X, int incX,\
-        double *Y, int incY)
+ctypedef void (*dgemv_ptr) (char *trans, int *m, int *n,\
+    double *alpha, double *a, int *lda, double *x, int *incx,\
+    double *beta,  double *y, int *incy)
+ctypedef void (*dcopy_ptr) (int *N, double *x, int *incx,\
+    double *y, int*incy)
+cdef dgemv_ptr dgemv=<dgemv_ptr>PyCObject_AsVoidPtr(\
+    sp.linalg.fblas.dgemv._cpointer)
+cdef dcopy_ptr dcopy=<dcopy_ptr>PyCObject_AsVoidPtr(\
+    sp.linalg.fblas.dcopy._cpointer)
+
+include '_simulateDSM_helper.pxi'
 
 def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
                 int store_xn=False, int store_xmax=False, int store_y=False):
@@ -137,67 +139,66 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
     cdef int N = c_u.shape[1]
     # v is output vector
     cdef np.ndarray v = np.empty((nq, N), dtype=np.float64)
-    cdef np.ndarray y
+    cdef np.ndarray y = np.empty(0, dtype=np.float64)
     if store_y:
         # Need to store the quantizer input
         y = np.empty((nq, N), dtype=np.float64)
-    else:
-        y = np.empty((0,0), dtype=np.float64)
-    cdef np.ndarray xn
+    cdef np.ndarray xn = np.empty(0, dtype=np.float64)
     if store_xn:
         # Need to store the state information
         xn = np.empty((order, N), dtype=np.float64)
-    cdef np.ndarray xmax
+    cdef np.ndarray xmax = np.empty(0, dtype=np.float64)
     if store_xmax:
         # Need to keep track of the state maxima
         xmax = np.abs(c_x0)
-    else:
-        xmax = np.empty(0, dtype=np.float64)
 
     # y0 is output before the quantizer
     cdef np.ndarray y0 = np.empty(nq, dtype=np.float64)
 
     cdef int i
+    cdef int one=1
+    cdef double onedot = 1.0
+    cdef double zerodot = 0.0
     for i in xrange(N):
         # I guess the coefficients in A, B, C, D should be real...
         # Compute y0 = np.dot(C, c_x0) + np.dot(D1, u[:, i])
-        cblas_dgemv(CblasRowMajor, CblasNoTrans, nq, order,\
-            1.0, <double *>(C.data), order, \
-            <double*>(c_x0.data), 1, \
-            0.0, <double*>(y0.data), 1)
-        cblas_dgemv(CblasRowMajor, CblasNoTrans, nq, nu,\
-            1.0, <double *>(D1.data), nu, \
-            <double*>(c_u.data)+i, N, \
-            1.0, <double*>(y0.data), 1)
+        dgemv('T', &order, &nq,\
+            &onedot, <double *>(C.data), &order, \
+            <double*>(c_x0.data), &one, \
+            &zerodot, <double*>(y0.data), &one)
+        dgemv('T', &nu, &nq,\
+            &onedot, <double *>(D1.data), &nu, \
+            <double*>(c_u.data)+i, &N, \
+            &onedot, <double*>(y0.data), &one)
         if store_y:
             #y[:, i] = y0[:]
-            cblas_dcopy(nq, <double*>(y0.data), 1,\
-            <double*>(y.data)+i, N)
+            dcopy(&nq, <double*>(y0.data), &one,\
+            <double*>(y.data)+i, &N)
         ds_quantize(nq, <double*>(y0.data), 1, \
             <int *>(c_nlev.data), 1, \
             <double *>(v.data)+i, N)
         # Compute c_x0 = np.dot(A, c_x0) +
         #   np.dot(B, np.vstack((u[:, i], v[:, i])))
-        cblas_dgemv(CblasRowMajor, CblasNoTrans, order, order,\
-            1.0, <double *>(A.data), order, \
-            <double*>(c_x0.data), 1,\
-            0.0, <double*>(c_x0_temp.data), 1)
-        cblas_dgemv(CblasRowMajor, CblasNoTrans, order, nu,\
-            1.0, <double *>(B1.data), nu, \
-            <double*>(c_u.data)+i, N, \
-            1.0, <double*>(c_x0_temp.data), 1)
-        cblas_dgemv(CblasRowMajor, CblasNoTrans, order, nq,\
-            1.0, <double *>(B2.data), nq, \
-            <double*>(v.data)+i, N, \
-            1.0, <double*>(c_x0_temp.data), 1)
+        dgemv('T', &order, &order,\
+            &onedot, <double *>(A.data), &order, \
+            <double*>(c_x0.data), &one,\
+            &zerodot, <double*>(c_x0_temp.data), &one)
+        dgemv('T', &nu, &order,\
+            &onedot, <double *>(B1.data), &nu, \
+            <double*>(c_u.data)+i, &N, \
+            &onedot, <double*>(c_x0_temp.data), &one)
+        dgemv('T', &nq, &order,\
+            &onedot, <double *>(B2.data), &nq, \
+            <double*>(v.data)+i, &N, \
+            &onedot, <double*>(c_x0_temp.data), &one)
         # c_x0[:,1] = c_x0_temp[:,1]
-        cblas_dcopy(order, <double*>(c_x0_temp.data), 1,\
-            <double*>(c_x0.data), 1)
+        dcopy(&order, <double*>(c_x0_temp.data), &one,\
+            <double*>(c_x0.data), &one)
         if store_xn:
             # Save the next state
             #xn[:, i] = c_x0
-            cblas_dcopy(order, <double*>(c_x0.data), 1,\
-            <double*>(xn.data)+i, N)
+            dcopy(&order, <double*>(c_x0.data), &one,\
+            <double*>(xn.data)+i, &N)
         if store_xmax:
             # Keep track of the state maxima
             # xmax = np.max((np.abs(x0), xmax), 0)
@@ -206,31 +207,3 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
     if not store_xn:
         xn = c_x0
     return v.squeeze(), xn.squeeze(), xmax, y.squeeze()
-
-
-cdef inline double dbl_sat(double x, double a, double b):
-    return a if x <= a else b if x>=b else x
-
-cdef inline void ds_quantize(int N, double* y, int y_stride, \
-    int* n, int n_stride, \
-    double* v, int v_stride):
-    """Quantize a signal according to a given number of levels."""
-    cdef int qi
-    cdef double L
-    for qi in range(N):
-        if n[qi*n_stride] % 2 == 0:
-            v[qi*v_stride] = 2*floor(0.5*y[qi*y_stride])+1
-        else:
-            v[qi*v_stride] = 2*floor(0.5*y[qi*y_stride]+1)
-        L = n[qi*n_stride]-1
-        v[qi*v_stride]=dbl_sat(v[qi*v_stride],-L,L)
-
-cdef inline void track_vabsmax(int N,\
-    double* vabsmax, int vabsmax_stride,\
-    double* x, int x_stride):
-    cdef int i
-    cdef double absx
-    for i in range(N):
-        absx=fabs(x[i*x_stride])
-        if absx > vabsmax[i*vabsmax_stride]:
-            vabsmax[i*vabsmax_stride]=absx
