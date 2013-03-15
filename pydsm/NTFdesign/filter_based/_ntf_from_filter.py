@@ -13,7 +13,8 @@ from ..weighting import synthesize_ntf_from_q0
 from warnings import warn
 from ...errors import PyDsmWarning
 
-__all__=["synthesize_ntf_from_filter_imp",
+__all__=["synthesize_ntf_from_filter",
+         "synthesize_ntf_from_filter_imp",
          "synthesize_ntf_from_filter_mag",
          "synthesize_ntf_from_filter_ir"]
 

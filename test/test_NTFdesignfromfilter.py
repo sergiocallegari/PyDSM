@@ -9,8 +9,7 @@ import scipy as sp
 __import__("scipy.signal")
 from pydsm.ir import impulse_response
 from pydsm.delsig import evalTF
-from pydsm.NTFdesign.filter_based import (synthesize_ntf_from_filter_imp,
-                                          synthesize_ntf_from_filter_mag,
+from pydsm.NTFdesign.filter_based import (synthesize_ntf_from_filter,
                                           quantization_noise_gain,
                                           quantization_noise_gain_by_conv)
 
@@ -41,10 +40,10 @@ class TestNTF_Filter(unittest.TestCase):
         ir=impulse_response(hz,db=80)
         def mr(f):
             return np.abs(evalTF(hz,np.exp(2j*np.pi*f)))
-        ntf1=synthesize_ntf_from_filter_mag(order, mr,
-                                            options={'show_progress':False})
-        ntf2=synthesize_ntf_from_filter_imp(order, ir,
-                                            options={'show_progress':False})
+        ntf1=synthesize_ntf_from_filter(order, mr, 'mag',
+                                        options={'show_progress':False})
+        ntf2=synthesize_ntf_from_filter(order, ir, 'imp',
+                                        options={'show_progress':False})
         mf1=quantization_noise_gain(ntf1,hz)
         mf2=quantization_noise_gain(ntf2,hz)
         np.testing.assert_almost_equal(mf1,mf2,decimal=12)
