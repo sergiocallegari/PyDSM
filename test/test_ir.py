@@ -39,5 +39,11 @@ class TestIR(unittest.TestCase):
         np.testing.assert_allclose(db(vv1/vv2),np.zeros_like(vv1),\
             rtol=0,atol=3)
 
+    def test_fir_ir(self):
+        fir=np.asarray([1.0,0.5,0.25,0.125])
+        zpk=(np.roots(fir),np.zeros(4),1)
+        ir=impulse_response(zpk,db=80)
+        np.testing.assert_allclose(fir,ir)
+
 if __name__ == '__main__':
     unittest.main()

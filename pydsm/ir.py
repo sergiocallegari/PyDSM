@@ -88,7 +88,7 @@ def guess_ir_length(h, db=80):
     if len(h) == 2:
         h = sp.signal.tf2zpk(*h)
     pp=h[1]
-    t_z=len(h[0])
+    t_z=len(h[0])+1
     if len(pp) == 0:
         t_p=0
     else:
@@ -99,7 +99,9 @@ def guess_ir_length(h, db=80):
         # one to the other or overlapping.
         # Furthermore, this code should not be called if there is
         # a pole in z=1.
+        os=np.seterr(divide='ignore')
         sr=np.log(np.abs(pp))
+        np.seterr(**os)
         # Take slowlest pole
         wmin=np.min(np.abs(sr))
         # 1/omega min is time constant in sample periods.
