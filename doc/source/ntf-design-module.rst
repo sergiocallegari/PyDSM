@@ -35,11 +35,9 @@ module of PyDSM <delsig-module>`.
 
 **Key functions**
 
-.. autofunction:: pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter_imp
-.. autofunction:: pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter_mag
+.. autofunction:: pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter
 
 **Auxiliary Functions**
 
-.. autofunction:: pydsm.NTFdesign.filter_based.q0_from_filter_imp_response
-.. autofunction:: pydsm.NTFdesign.filter_based.q0_from_filter_mag_response
+.. autofunction:: pydsm.NTFdesign.filter_based.q0_from_filter
 .. autofunction:: pydsm.NTFdesign.filter_based.quantization_noise_gain
