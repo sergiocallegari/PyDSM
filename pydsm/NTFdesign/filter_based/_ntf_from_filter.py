@@ -123,12 +123,12 @@ def synthesize_ntf_from_filter(order, F, F_type='zpk', H_inf=1.5,
         Delta sigma modulator order
     F : tuple or callable or array_like
         filter specification, the format depends on parameter F_type.
-        a zpk or nd tuple if F_type is 'zpk' or 'nd', respectively.
+        a zpk or ba tuple if F_type is 'zpk' or 'ba', respectively.
         a function of f, for f in [0,1/2] if F_type is 'mag'
         an array containing an impulse response if F_type is 'imp'
     F_type : str
         string indicating the type of filter specification. Can be 'zpk',
-        'nd', 'mag' or 'imp'.
+        'ba', 'mag' or 'imp'.
     H_inf : real, optional
         Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
     normalize : string or real, optional

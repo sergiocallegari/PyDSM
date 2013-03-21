@@ -95,12 +95,12 @@ def q0_from_filter(P, F, F_type='zpk',
         order of the FIR to be eventually synthesized
     F : tuple or array_like or callable
         output filter description.
-        This is given by a zpk or nd form if F_type is 'zpk' or 'nd'.
+        This is given by a zpk or ba form if F_type is 'zpk' or 'ba'.
         It is a magnitude response (function of f, with f in [0,1/2]) if
         F_type is 'mag'.
         It is an impulse response if F_type is 'imp'.
     F_type : str
-        string indicating how F is expressed. Can be 'zpk', 'nd', 'mag' or
+        string indicating how F is expressed. Can be 'zpk', 'ba', 'mag' or
         'imp'
 
     Returns
@@ -118,7 +118,7 @@ def q0_from_filter(P, F, F_type='zpk',
     -----
     The Q matrix being synthesized has (P+1) times (P+1) entries.
     """
-    if F_type=='zpk' or F_type=='nd':
+    if F_type=='zpk' or F_type=='ba':
         w = lambda f: np.abs(evalTF(F,np.exp(2j*np.pi*f)))**2
         q0 = q0_from_noise_weighting(P, w, integrator_params)
     elif F_type=='imp':

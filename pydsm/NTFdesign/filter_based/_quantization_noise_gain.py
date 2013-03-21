@@ -27,14 +27,14 @@ def quantization_noise_gain(NTF, H, H_type='zpk'):
     NTF : tuple
         NTF definition in zpk or nd form
     H : tuple or callable or array_like
-        output filter definition in zpk or nd form if H_type='zpk' or 'nd'
+        output filter definition in zpk or ba form if H_type='zpk' or 'ba'
         (in this case, H is a tuple with 3 or 2 entries);
         output filter magnitude response if H_type='mag' (in this case, H is
         a callable with argument f in [0,1/2]);
         output filter impulse response if H_type='imp' (in this case, H is an
         array)
     H_type : str
-        type of specification for parameter H. One of: 'zpk', 'nd', 'mag' or
+        type of specification for parameter H. One of: 'zpk', 'ba', 'mag' or
         'imp'
 
     Returns
@@ -52,7 +52,7 @@ def quantization_noise_gain(NTF, H, H_type='zpk'):
         \left|\mathit{NTF}
         \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 df
     """
-    if H_type=='zpk' or H_type=='nd':
+    if H_type=='zpk' or H_type=='ba':
         w = lambda f: np.abs(evalTF(H,np.exp(2j*np.pi*f)))**2
     elif H_type=='imp':
         w = lambda f: np.abs(evalTF((H,1),np.exp(2j*np.pi*f)))**2
@@ -72,12 +72,12 @@ def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
     NTF : tuple
         NTF definition in zpk or nd form
     H : tuple or array_like
-        output filter definition in zpk or nd form if H_type='zpk' or 'nd'
+        output filter definition in zpk or nd form if H_type='zpk' or 'ba'
         (in this case, H is a tuple with 3 or 2 entries);
         output filter impulse response if H_type='imp' (in this case, H is an
         array)
     H_type : str
-        type of specification for parameter H. One of: 'zpk', 'nd', or
+        type of specification for parameter H. One of: 'zpk', 'ba', or
         'imp'
     db : real
         a precision hint for the computation of impulse responses
@@ -93,7 +93,7 @@ def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
     in the impulse response of the cascaded filter NTF*H
     """
     h1_ir=impulse_response(NTF, db=db)
-    if H_type=='zpk' or H_type=='nd':
+    if H_type=='zpk' or H_type=='ba':
         h2_ir=impulse_response(H, db=db)
     elif H_type=='imp':
         h2_ir = H
