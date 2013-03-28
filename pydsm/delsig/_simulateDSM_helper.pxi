@@ -26,3 +26,9 @@ cdef inline void track_vabsmax(int N,\
         absx=fabs(x[i*x_stride])
         if absx > vabsmax[i*vabsmax_stride]:
             vabsmax[i*vabsmax_stride]=absx
+
+cdef inline double *dbldata(np.ndarray arr):
+    return <double *>np.PyArray_DATA(arr)
+
+cdef inline int *intdata(np.ndarray arr):
+    return <int *>np.PyArray_DATA(arr)

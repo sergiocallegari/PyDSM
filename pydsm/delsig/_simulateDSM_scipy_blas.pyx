@@ -160,50 +160,49 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
     cdef double onedot = 1.0
     cdef double zerodot = 0.0
     for i in xrange(N):
-        # I guess the coefficients in A, B, C, D should be real...
         # Compute y0 = np.dot(C, c_x0) + np.dot(D1, u[:, i])
         dgemv('T', &order, &nq,\
-            &onedot, <double *>(C.data), &order, \
-            <double*>(c_x0.data), &one, \
-            &zerodot, <double*>(y0.data), &one)
+            &onedot, dbldata(C), &order, \
+            dbldata(c_x0), &one, \
+            &zerodot, dbldata(y0), &one)
         dgemv('T', &nu, &nq,\
-            &onedot, <double *>(D1.data), &nu, \
-            <double*>(c_u.data)+i, &N, \
-            &onedot, <double*>(y0.data), &one)
+            &onedot, dbldata(D1), &nu, \
+            dbldata(c_u)+i, &N, \
+            &onedot, dbldata(y0), &one)
         if store_y:
             #y[:, i] = y0[:]
-            dcopy(&nq, <double*>(y0.data), &one,\
-            <double*>(y.data)+i, &N)
-        ds_quantize(nq, <double*>(y0.data), 1, \
-            <int *>(c_nlev.data), 1, \
-            <double *>(v.data)+i, N)
+            dcopy(&nq, dbldata(y0), &one,\
+            dbldata(y)+i, &N)
+        ds_quantize(nq, dbldata(y0), 1, \
+            intdata(c_nlev), 1, \
+            dbldata(v)+i, N)
         # Compute c_x0 = np.dot(A, c_x0) +
         #   np.dot(B, np.vstack((u[:, i], v[:, i])))
         dgemv('T', &order, &order,\
-            &onedot, <double *>(A.data), &order, \
-            <double*>(c_x0.data), &one,\
-            &zerodot, <double*>(c_x0_temp.data), &one)
+            &onedot, dbldata(A), &order, \
+            dbldata(c_x0), &one,\
+            &zerodot, dbldata(c_x0_temp), &one)
         dgemv('T', &nu, &order,\
-            &onedot, <double *>(B1.data), &nu, \
-            <double*>(c_u.data)+i, &N, \
-            &onedot, <double*>(c_x0_temp.data), &one)
+            &onedot, dbldata(B1), &nu, \
+            dbldata(c_u)+i, &N, \
+            &onedot, dbldata(c_x0_temp), &one)
         dgemv('T', &nq, &order,\
-            &onedot, <double *>(B2.data), &nq, \
-            <double*>(v.data)+i, &N, \
-            &onedot, <double*>(c_x0_temp.data), &one)
+            &onedot, dbldata(B2), &nq, \
+            dbldata(v)+i, &N, \
+            &onedot, dbldata(c_x0_temp), &one)
         # c_x0[:,1] = c_x0_temp[:,1]
-        dcopy(&order, <double*>(c_x0_temp.data), &one,\
-            <double*>(c_x0.data), &one)
+        dcopy(&order, dbldata(c_x0_temp), &one,\
+            dbldata(c_x0), &one)
         if store_xn:
             # Save the next state
             #xn[:, i] = c_x0
-            dcopy(&order, <double*>(c_x0.data), &one,\
-            <double*>(xn.data)+i, &N)
+            dcopy(&order, dbldata(c_x0), &one,\
+            dbldata(xn)+i, &N)
         if store_xmax:
             # Keep track of the state maxima
             # xmax = np.max((np.abs(x0), xmax), 0)
-            track_vabsmax(order, <double*>(xmax.data), 1,\
-                <double*>(c_x0.data), 1)
+            track_vabsmax(order, dbldata(xmax), 1,\
+                dbldata(c_x0), 1)
     if not store_xn:
         xn = c_x0
     return v.squeeze(), xn.squeeze(), xmax, y.squeeze()

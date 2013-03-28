@@ -161,50 +161,49 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
 
     cdef int i
     for i in xrange(N):
-        # I guess the coefficients in A, B, C, D should be real...
         # Compute y0 = np.dot(C, c_x0) + np.dot(D1, u[:, i])
         cblas_dgemv(CblasRowMajor, CblasNoTrans, nq, order,\
-            1.0, <double *>(C.data), order, \
-            <double*>(c_x0.data), 1, \
-            0.0, <double*>(y0.data), 1)
+            1.0, dbldata(C), order, \
+            dbldata(c_x0), 1, \
+            0.0, dbldata(y0), 1)
         cblas_dgemv(CblasRowMajor, CblasNoTrans, nq, nu,\
-            1.0, <double *>(D1.data), nu, \
-            <double*>(c_u.data)+i, N, \
-            1.0, <double*>(y0.data), 1)
+            1.0, dbldata(D1), nu, \
+            dbldata(c_u)+i, N, \
+            1.0, dbldata(y0), 1)
         if store_y:
             #y[:, i] = y0[:]
-            cblas_dcopy(nq, <double*>(y0.data), 1,\
-            <double*>(y.data)+i, N)
-        ds_quantize(nq, <double*>(y0.data), 1, \
-            <int *>(c_nlev.data), 1, \
-            <double *>(v.data)+i, N)
+            cblas_dcopy(nq, dbldata(y0), 1,\
+            dbldata(y)+i, N)
+        ds_quantize(nq, dbldata(y0), 1, \
+            intdata(c_nlev), 1, \
+            dbldata(v)+i, N)
         # Compute c_x0 = np.dot(A, c_x0) +
         #   np.dot(B, np.vstack((u[:, i], v[:, i])))
         cblas_dgemv(CblasRowMajor, CblasNoTrans, order, order,\
-            1.0, <double *>(A.data), order, \
-            <double*>(c_x0.data), 1,\
-            0.0, <double*>(c_x0_temp.data), 1)
+            1.0, dbldata(A), order, \
+            dbldata(c_x0), 1,\
+            0.0, dbldata(c_x0_temp), 1)
         cblas_dgemv(CblasRowMajor, CblasNoTrans, order, nu,\
-            1.0, <double *>(B1.data), nu, \
-            <double*>(c_u.data)+i, N, \
-            1.0, <double*>(c_x0_temp.data), 1)
+            1.0, dbldata(B1), nu, \
+            dbldata(c_u)+i, N, \
+            1.0, dbldata(c_x0_temp), 1)
         cblas_dgemv(CblasRowMajor, CblasNoTrans, order, nq,\
-            1.0, <double *>(B2.data), nq, \
-            <double*>(v.data)+i, N, \
-            1.0, <double*>(c_x0_temp.data), 1)
+            1.0, dbldata(B2), nq, \
+            dbldata(v)+i, N, \
+            1.0, dbldata(c_x0_temp), 1)
         # c_x0[:,1] = c_x0_temp[:,1]
-        cblas_dcopy(order, <double*>(c_x0_temp.data), 1,\
-            <double*>(c_x0.data), 1)
+        cblas_dcopy(order, dbldata(c_x0_temp), 1,\
+            dbldata(c_x0), 1)
         if store_xn:
             # Save the next state
             #xn[:, i] = c_x0
-            cblas_dcopy(order, <double*>(c_x0.data), 1,\
-            <double*>(xn.data)+i, N)
+            cblas_dcopy(order, dbldata(c_x0), 1,\
+            dbldata(xn)+i, N)
         if store_xmax:
             # Keep track of the state maxima
             # xmax = np.max((np.abs(x0), xmax), 0)
-            track_vabsmax(order, <double*>(xmax.data), 1,\
-                <double*>(c_x0.data), 1)
+            track_vabsmax(order, dbldata(xmax), 1,\
+                dbldata(c_x0), 1)
     if not store_xn:
         xn = c_x0
     return v.squeeze(), xn.squeeze(), xmax, y.squeeze()
