@@ -6,6 +6,7 @@ from test_NTFdesign import *
 from test_plot import *
 from test_pad import *
 from test_simulateDSM import *
+from test_simulateDSM2 import *
 from test_ir import *
 
 if __name__ == '__main__':
