@@ -19,3 +19,11 @@ Changelog
      ``q0_from_filter_imp_response``.
    - Fixed passing of options to ``synthesize_ntf_from_q0`` and
      ``synthesize_ntf_from_filter_imp``
+
+0.7.1
+   - Fix computation of impulse response of filters that are already in
+     FIR form.
+   - Avoid direct access to numpy array data in Cython code. This is in
+     preparation for future releases of numpy where direct access to
+     array data is already deprecated.
+   - Implement the synthesizeChebyshevNTF NTF design strategy from DELSIG.
