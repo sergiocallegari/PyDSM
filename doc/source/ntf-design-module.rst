@@ -15,6 +15,7 @@ module of PyDSM <delsig-module>`.
 .. module:: NTFdesign.delsig
 
 .. autofunction:: pydsm.NTFdesign.delsig.synthesizeNTF
+.. autofunction:: pydsm.NTFdesign.delsig.synthesizeChebyshevNTF
 
 .. automodule:: pydsm.NTFdesign.filter_based
 .. module:: NTFdesign.filter_based

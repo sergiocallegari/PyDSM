@@ -12,6 +12,8 @@ Key functions
 
 .. autofunction:: pydsm.delsig.synthesizeNTF
 
+.. autofunction:: pydsm.delsig.synthesizeChebyshevNTF
+
 .. autofunction:: pydsm.delsig.simulateDSM
 
 Other selected functions
