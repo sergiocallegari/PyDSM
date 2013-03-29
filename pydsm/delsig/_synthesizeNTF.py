@@ -26,7 +26,7 @@ optimize_NTF = True
 
 def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     """
-    Synthesizes a noise transfer function for a delta-sigma modulator.
+    Synthesizes an NTF for a DS modulator by Schreier's approach.
 
     Parameters
     ----------
@@ -85,6 +85,9 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     determines whether to use optimization tools.
 
     Parameter H_inf is used to enforce the Lee stability criterion.
+
+    If osr or H_inf are low, then the NTF is non optimal. Use
+    synthesizeChebyshevNTF instead.
     """
     if f0 > 0.5:
         raise ValueError('Error. f0 must be less than 0.5.')

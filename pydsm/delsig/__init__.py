@@ -15,5 +15,6 @@ from ._padding import *
 from ._tf import *
 from ._plot import *
 from ._synthesizeNTF import *
+from ._synthesizeChebyshevNTF import *
 from ._simulateDSM import *
 from ._simulateDSM_scipy import *

@@ -4,13 +4,12 @@
 import unittest
 import numpy as np
 
-from pydsm.NTFdesign.delsig import synthesizeNTF
+from pydsm.NTFdesign.delsig import synthesizeNTF, synthesizeChebyshevNTF
 from pydsm.utilities import cplxpair
 
-__all__=["TestSynthesizeNTF"]
+__all__=["TestSynthesizeNTF", "TestSynthesizeChebyshevNTF"]
 
 class TestSynthesizeNTF(unittest.TestCase):
-
     def setUp(self):
         pass
 
@@ -68,6 +67,39 @@ class TestSynthesizeNTF(unittest.TestCase):
         e_p = [0.6692, 0.7652 - 0.2795j, 0.7652 + 0.2795j]
         e_p = cplxpair(e_p)
         np.testing.assert_almost_equal(k, e_k, 6)
+        np.testing.assert_almost_equal(z, e_z, 4)
+        np.testing.assert_almost_equal(p, e_p, 4)
+
+class TestSynthesizeChebyshevNTF(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_8_4_3(self):
+        order = 8
+        osr = 4
+        h_inf = 3
+        z, p, k = synthesizeChebyshevNTF(order, osr, 1, h_inf)
+        e_k = 1
+        e_z = [716.675171843707e-003 + 697.407125044473e-003j,
+               716.675171843707e-003 - 697.407125044473e-003j,
+               987.024523733349e-003 + 160.569578528934e-003j,
+               987.024523733349e-003 - 160.569578528934e-003j,
+               787.924470008031e-003 + 615.771897347195e-003j,
+               787.924470008031e-003 - 615.771897347195e-003j,
+               899.412094416429e-003 + 437.101686587289e-003j,
+               899.412094416429e-003 - 437.101686587289e-003j]
+        e_p = [626.054825241768e-003 + 122.563529859845e-003j,
+               626.054825241768e-003 - 122.563529859845e-003j,
+               603.812988962951e-003 + 354.087262468194e-003j,
+               603.812988962951e-003 - 354.087262468194e-003j,
+               583.053683660931e-003 + 552.205015613472e-003j,
+               583.053683660931e-003 - 552.205015613472e-003j,
+               599.974045233308e-003 + 710.003702019636e-003j,
+               599.974045233308e-003 - 710.003702019636e-003j]
+        e_z = cplxpair(e_z)
+        e_p = cplxpair(e_p)
+        np.testing.assert_almost_equal(k, e_k, 4)
         np.testing.assert_almost_equal(z, e_z, 4)
         np.testing.assert_almost_equal(p, e_p, 4)
 
