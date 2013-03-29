@@ -8,6 +8,8 @@ Code ported from the DELSIG toolbox by R. Schreier
 ==================================================
 """
 
+__delsig_version__ = "7.4"
+
 # The delsig module reflects the flat organization of the original DELSIG
 from ._decibel import *
 from ._ds import *

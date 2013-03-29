@@ -12,7 +12,7 @@ Some code ported from the DELSIG toolbox, copyrighted by R. Schreier.
 """
 
 # Read version info
-from .version import __version__, __delsig_version__
+from .version import __version__
 
 # Promote some key functions to the pydsm namespace
 from . import delsig
