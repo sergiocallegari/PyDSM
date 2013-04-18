@@ -27,3 +27,8 @@ Changelog
      preparation for future releases of numpy where direct access to
      array data is already deprecated.
    - Implement the synthesizeChebyshevNTF NTF design strategy from DELSIG.
+
+0.7.2
+   - Make codebase compatible with scipy 0.12.0
+   - Make delsig module contain its reference delsig version
+   - Minor fixes to the documentation
