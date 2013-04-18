@@ -19,10 +19,13 @@ def evalTF(tf, x):
     """
     Evaluates a transfer function.
 
+    This function can be used either for discrete time or continuous time
+    transfer functions (see the notes).
+
     Parameters
     ----------
     tf : tuple
-        transfer function in zpk or nd form
+        transfer function in zpk or ba form
     x : complex or array_like of complex
         value or vector of values where the tf is to be evaluated
 
@@ -33,8 +36,16 @@ def evalTF(tf, x):
 
     Notes
     -----
-    x corresponds to 's' or 'z' in CT or DT transfer functions respectively.
-    Thus it should be 1j*omega or exp(1j*omega*T).
+    Parameter x corresponds to 's' or 'z' in CT or DT transfer functions
+    respectively. Thus it should be 1j*omega or exp(1j*omega*T).
+
+    With respect to the tf parameter, zpk form is a triple containing a list
+    of zeros, a list of poles and a scalar gain. The ba form (also called tf
+    form in the scipy documentation) is a couple containing a list of the
+    numerator coefficients and a list of the denominator coefficients. The
+    coefficients are sorted from the higher power of 's' or 'z' to the lower,
+    so that the last coefficient is in fact the constant term in the
+    numerator/denominator polynomial.
     """
     if len(tf) == 3:
         return evalRPoly(tf[0], x, tf[2])/evalRPoly(tf[1], x, 1)
