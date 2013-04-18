@@ -55,6 +55,7 @@ def evalTF(tf, x):
 def evalRPoly(roots, x, k=1):
     """
     Compute the value of a polynomial that is given in terms of its roots.
+    Roots at infinity are removed before the computation.
 
     Parameters
     ----------
