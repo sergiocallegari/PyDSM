@@ -7,7 +7,8 @@ its prerequisites and the installation of PyDSM itself.
 Installation of the prerequisites
 '''''''''''''''''''''''''''''''''
 
-Installing the prerequisites with Linux is quite easy if your system is based on a modern Linux distribution like Ubuntu, Fedora, etc.
+Installing the prerequisites with Linux is quite easy if your system
+is based on a modern Linux distribution like Ubuntu, Fedora, etc.
 
 Steps that can be practiced using the distribution package manager
 ``````````````````````````````````````````````````````````````````

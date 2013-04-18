@@ -3,7 +3,7 @@ Introduction
 
 PyDSM is a Python Delta Sigma Modulator toolbox. It contains tools for
 experimenting with ΔΣ modulators. Currently, it is still relatively
-reduced and focuses mostly on the experimentation of different
+small and mostly focused on the experimentation of different
 techniques for the design of the modulator Noise Transfer Function
 (NTF). Furthermore, the current codebase contains means to simulate a
 generic modulator.
