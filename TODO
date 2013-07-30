@@ -1,0 +1,18 @@
+- [delsig] Apply fixes from 7.3 to 7.4
+- [delsig] Look into quadrature modulators
+- [delsig] implement findPattern
+- [delsig] implement calculateSNR
+- [delsig] implement simulateSNR
+- reuse common code between _simulateDSM_scipy_blas and
+  _simulateDSM_cblas
+- implement quadratic form
+- implement scanner with quadratic form
+- [sdtoolbox] implement calcSNR
+- [sdtoolbox] sinusx
+- port to winpython [32 and 64 bit]
+- port to macos
+- add tutorial
+- let tests be run individually
+- [cython] in the cython simulator use np.double and np.intc for casting
+- move zpk and ba representations to named tuple model
+- avoid __import__ statements and follow http://docs.scipy.org/doc/scipy/reference/api.html
