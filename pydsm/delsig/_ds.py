@@ -55,6 +55,29 @@ def ds_optzeros(n, opt=1):
 
     Returns the zeros which minimize the in-band noise power of
     a delta-sigma modulator's NTF.
+
+    Parameters
+    ----------
+    n : int
+        the number of optimized zeros to return
+    opt : int, optional
+        flag for optimized zeros, defaults to 1
+        0 -> not optimized
+        1 -> optimized
+
+    Returns
+    -------
+    zeros : ndarray of reals
+        the zeros for the modulator as normalized angular frequencies.
+
+    Notes
+    -----
+    The zeros are always located on the complex unit circle. As such,
+    they are returned as normalized angular frequencies, not as complex
+    values. See also Sec. 4.3.1 in [1]_
+
+    .. [1] Richard Schreier, Gabor C. Temes, "Understanding Delta-Sigma Data
+       Converters," IEEE Press and Wiley Interscience, 2005.
     """
     if opt == 0:
         optZeros = np.zeros(ceil(n/2.))
