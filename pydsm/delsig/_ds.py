@@ -82,6 +82,7 @@ def ds_optzeros(n, opt=1):
         flag for optimized zeros, defaults to 1
         0 -> not optimized
         1 -> optimized
+        2 -> optimized with at least one zero at band-center
 
     Returns
     -------
