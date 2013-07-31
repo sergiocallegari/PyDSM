@@ -171,8 +171,8 @@ def ds_optzeros(n, opt=1):
             raise ValueError('Optimized zeros for n>14 are not available.')
 
     # Sort the zeros and replicate them.
-    z = np.sort_complex(optZeros).reshape(-1)
-    optZeros = np.zeros(n, complex)
+    z = np.sort(optZeros)
+    optZeros = np.zeros(n)
     m = 0
     if (n%2) == 1:
         optZeros[0] = z[0]
