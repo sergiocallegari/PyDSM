@@ -33,20 +33,38 @@ def ds_synNTFobj1(x, p, osr, f0):
 
     return db(rmsGain((z, p, 1), f1, f2))
 
-def ds_f1f2(OSR=64, f0=0, complex_flag=False):
+def ds_f1f2(osr=64, f0=0, complex_flag=False):
     """
     Helper function.
+
+    Returns the lower and higher extremes of the signal band for a
+    delta-sigma modulator, as normalized frequencies.
+
+    Parameters
+    ----------
+    osr : float, optional
+        the oversamping ratio
+    f0 : float, optional
+        normalized center frequency for BP modulators, or 0 for LP modulators.
+        Defaults to 0.
+    complex_flag : bool, optional
+        flag indicating if the modulator is quadrature type.
+
+    Returns
+    -------
+    f1f2 : tuple with two entries corresponding to the lower and
+        higher extremes of the signal band.
     """
     if complex_flag:
-        f1 = f0-0.5/OSR
-        f2 = f0+0.5/OSR
+        f1 = f0-0.5/osr
+        f2 = f0+0.5/osr
     else:
-        if f0 > 0.25/OSR:
-            f1 = f0-0.25/OSR
-            f2 = f0+0.25/OSR
+        if f0 > 0.25/osr:
+            f1 = f0-0.25/osr
+            f2 = f0+0.25/osr
         else:
             f1 = 0;
-            f2 = 0.5/OSR
+            f2 = 0.5/osr
     return f1, f2
 
 def ds_optzeros(n, opt=1):
