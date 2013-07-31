@@ -72,7 +72,6 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                 p = np.zeros(order)
             else:
                 x = 0.3**(order-1)   # starting guess
-                converged = False
                 for itn in xrange(1, Hinf_itn_limit+1):
                     me2 = -0.5*(x**(2./order))
                     w = (2*np.arange(order)+1)*np.pi/order
@@ -97,7 +96,6 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                         x = x*0.1
                     fprev = f
                     if abs(f) < 1e-10 or abs(delta_x) < 1e-10:
-                        converged = True
                         break
                     if x > 1e6:
                         warn('Unable to achieve specified Hinf.\n'
