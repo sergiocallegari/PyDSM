@@ -46,7 +46,8 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     H_inf : real, optional
         max allowed peak value of the NTF. Defaults to 1.5
     f0 : real, optional
-        center frequency, defaults to 0.
+        center frequency for BP modulators, or 0 for LP modulators.
+        Defaults to 0.
         1 corresponds to the sampling frequency, so that 0.5 is the
         maximum value. Value 0 specifies an LP modulator.
 
