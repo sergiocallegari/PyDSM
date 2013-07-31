@@ -45,7 +45,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
     x0 = (np.angle(zp)-2*np.pi*f0) * osr / np.pi
     if opt.size == 1 and opt == 4 and f0 != 0:
         # Do not optimize the zeros at f0
-        np.delete(x0, np.nonzero(is_negligible(x0)))
+        x0 = np.delete(x0, np.nonzero(is_negligible(x0)))
 
     p = np.zeros(order)
     k = 1
