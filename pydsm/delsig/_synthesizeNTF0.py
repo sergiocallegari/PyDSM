@@ -34,7 +34,7 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
             # Bandpass design-- shift and replicate the zeros.
             order = order*2
             z = z + 2*np.pi*f0
-            z = np.concatenate((z.conj(), -z.conj()))
+            z = np.vstack((z,-z)).transpose().flatten()
         z = np.exp(1j*z)
     else:
         z = opt
