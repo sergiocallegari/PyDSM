@@ -40,7 +40,8 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
         * 0 -> not optimized,
         * 1 -> optimized,
         * 2 -> optimized with at least one zero at band-center,
-        * 3 -> optimized zeros (Requires MATLAB6 and Optimization Toolbox)
+        * 3 -> optimized zeros (with optimizer)
+        * 4 -> same as 3, but with at least one zero at band-center
         * [z] -> zero locations in complex form
 
     H_inf : real, optional
