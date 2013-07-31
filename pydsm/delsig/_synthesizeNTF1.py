@@ -29,7 +29,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
         if opt == 0:
             z = np.zeros(order)
         else:
-            z = dw*ds_optzeros(order, 1 + (opt-1) % 2)
+            z = dw*ds_optzeros(order, 1 + np.fmod(opt-1, 2))
         if z.size == 0:
             raise PyDsmError('Cannot synthesize NTF zeros')
         if f0 != 0:
