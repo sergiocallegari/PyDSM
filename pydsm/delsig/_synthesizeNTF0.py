@@ -57,7 +57,7 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
             x = 0.3**(order-1)   # starting guess
             for itn in xrange(1, itn_limit+1):
                 me2 = -0.5*(x**(2./order))
-                w = (2*np.arange(order)+1)*np.pi/order
+                w = (2*np.arange(1,order+1)+1)*np.pi/order
                 mb2 = 1+me2*np.exp(1j*w)
                 p = mb2 - np.sqrt(mb2**2-1)
                 # Reflect poles to be inside the unit circle
