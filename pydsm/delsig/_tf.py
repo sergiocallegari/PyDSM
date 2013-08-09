@@ -82,7 +82,12 @@ def evalRPoly(roots, x, k=1):
 
 def rmsGain(H, f1, f2, N=100):
     """
-    Compute the root mean-square gain of a DT transfer function.
+    Compute the root-mean-square gain of a DT transfer function.
+
+    The computation is practiced on an assigned frequency interval.
+    By root-mean-square, it is meant that the magnitude response of the
+    transfer function is squared and averaged over the band of interest.
+    Then, the square root of this averaged value is returned.
 
     Parameters
     ----------
@@ -108,6 +113,9 @@ def rmsGain(H, f1, f2, N=100):
     The discrete-time transer function H is evaluated in the frequency band
     (f1,f2).  Spanning of the bandwidth is linear. Frequencies are normalized
     in the [0,0.5] interval.
+
+    This computation could be practiced much more accurately and possibly
+    faster, using algorithms for the numerical computation of integrals.
     """
     w = np.linspace(2*np.pi*f1, 2*np.pi*f2, N)
-    return np.linalg.norm( evalTF(H, np.exp(1j*w))) / np.sqrt(N)
+    return np.linalg.norm(evalTF(H, np.exp(1j*w))) / np.sqrt(N)
