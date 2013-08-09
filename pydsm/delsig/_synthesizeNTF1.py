@@ -159,8 +159,8 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
             # options = optimset(options,'LargeScale','off');
             # options = optimset(options,'Display','off');
             # %options = optimset(options,'Display','iter');
-            opt_result = fmin_l_bfgs_b(lambda x: ds_synNTFobj1(x, p, osr, f0),
-                                       x0, approx_grad=True, bounds=zip(lb,ub))
+            opt_result = fmin_l_bfgs_b(ds_synNTFobj1, x0, args=(p, osr, f0),
+                                       approx_grad=True, bounds=zip(lb,ub))
             x=opt_result[0]
             x0 = x
             z = np.exp(2j*np.pi*(f0+0.5/osr*x))
