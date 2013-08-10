@@ -80,24 +80,27 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     converged = False
     f_p = 0.
 
-    # Recall that in cheby2 parameters are:
+    # Design is based on a Chebyshev type II filter, designed with the cheby2
+    # function. Recall that a Chebyshev type II filter is monothonic in the
+    # pass-band and equiripple in the stop-band.
+    # In cheby2 parameters are:
     #   N : order
-    #   Rs : stopband attn (stop band ripple down from peak passband in dB)
+    #   Rs : stopband attenuation
+    #        this is measured from the peak value in the pass-band
+    #        to the peak(s) of the stop-band, in dB
     #   Wn : stopband edge frequency (normalized so that 1 is fs/2 for DT
-    #        filters). Must be a couple of frequencies for stop band filter
+    #        filters). Must be a couple of frequencies for stop band filters
     #   btype : filter type (e.g. 'low', 'high', 'stop')
     #   analog : non zero for a CT filter (defaults to DT)
     #   output : 'ba' or 'zpk'
+    # The filter that is returned has peak gain at 1 in the pass-band
+
     for itn in xrange(itn_limit):
         if f0 == 0:
             z, p, k = cheby2(order, x, 1./osr, 'high', output='zpk')
         else:
             z, p, k = cheby2(order/2, x, 2*f1f2, 'stop',
                                        output='zpk')
-        # print("\nitn: {0:d} - x = {1:e}".format(itn+1,x))
-        # print(z)
-        # print(p)
-        # print(k)
         f = 1./k - H_inf
         # print (x, f)
         if f>0:
