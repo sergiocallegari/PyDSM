@@ -12,8 +12,7 @@ DELSIG-like synthesizeChebyshevNTF
 """
 
 import numpy as np
-import scipy as sp
-__import__("scipy.signal")
+from scipy.signal import cheby2
 from ._ds import ds_f1f2
 from ..utilities import cplxpair
 
@@ -91,9 +90,9 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     #   output : 'ba' or 'zpk'
     for itn in xrange(itn_limit):
         if f0 == 0:
-            z, p, k = sp.signal.cheby2(order, x, 1./osr, 'high', output='zpk')
+            z, p, k = cheby2(order, x, 1./osr, 'high', output='zpk')
         else:
-            z, p, k = sp.signal.cheby2(order/2, x, 2*f1f2, 'stop',
+            z, p, k = cheby2(order/2, x, 2*f1f2, 'stop',
                                        output='zpk')
         # print("\nitn: {0:d} - x = {1:e}".format(itn+1,x))
         # print(z)
