@@ -3,4 +3,4 @@
 # Copyright (c) 2012, Sergio Callegari
 # All rights reserved.
 
-__version__ = "0.7.2"
+__version__ = "0.7.3"
