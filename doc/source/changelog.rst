@@ -32,3 +32,9 @@ Changelog
    - Make codebase compatible with scipy 0.12.0
    - Make delsig module contain its reference delsig version
    - Minor fixes to the documentation
+
+0.7.3
+   - Apply fixes introduced in DELSIG 7.4
+   - Make port of DELSIG functions more consistent with DELSIG
+   - Provide better documentation to some functions
+   - Bug fixes
