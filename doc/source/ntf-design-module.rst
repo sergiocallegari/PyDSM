@@ -17,15 +17,29 @@ module of PyDSM <delsig-module>`.
 .. autofunction:: pydsm.NTFdesign.delsig.synthesizeNTF
 .. autofunction:: pydsm.NTFdesign.delsig.synthesizeChebyshevNTF
 
+.. automodule:: pydsm.NTFdesign.weighting
+.. module:: NTFdesign.weighting
+
+**Key functions**
+
+.. autofunction:: pydsm.NTFdesign.weighting.synthesize_ntf_from_noise_weighting
+
+**Auxiliary Functions**
+
+.. autofunction:: pydsm.NTFdesign.weighting.q0_from_noise_weighting
+.. autofunction:: pydsm.NTFdesign.weighting.synthesize_ntf_from_q0
+
+
 .. automodule:: pydsm.NTFdesign.filter_based
 .. module:: NTFdesign.filter_based
 
 **Key functions**
 
 .. autofunction:: pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter_imp
+.. autofunction:: pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter_mag
 
 **Auxiliary Functions**
 
-.. autofunction:: pydsm.NTFdesign.filter_based.synthesize_ntf_from_q0
 .. autofunction:: pydsm.NTFdesign.filter_based.q0_from_filter_imp_response
+.. autofunction:: pydsm.NTFdesign.filter_based.q0_from_filter_mag_response
 .. autofunction:: pydsm.NTFdesign.filter_based.quantization_noise_gain
