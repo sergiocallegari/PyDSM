@@ -21,7 +21,7 @@ __all__=["q0_from_noise_weighting"]
 def q0_from_noise_weighting(P, noise_weighting, \
     integrator_params={'epsabs':1E-14, 'epsrel':1E-9}):
     """
-    Computes Q matrix from the output filter magnitude response
+    Computes Q matrix from a noise weighting function
 
     Parameters
     ----------
