@@ -17,7 +17,7 @@ from ...delsig import evalTF
 __all__ = ["quantization_weighted_noise_gain"]
 
 def quantization_weighted_noise_gain(NTF, w):
-    """
+    r"""
     Computes the quantization noise power gain
 
     Parameters
@@ -36,8 +36,10 @@ def quantization_weighted_noise_gain(NTF, w):
     -----
     The computation is practiced as
 
-    .. math:: \int_{f=0}^{\frac{1}{2}} \left|NTF\left(\mathrm{e}^{\mathrm{i}
-    2\pi f}\right)\right|^2 w(f) df
+    .. math::
+        \int_{f=0}^{\frac{1}{2}}
+        \left|\mathit{NTF}
+        \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) df
     """
     return sp.integrate.quad(lambda f: \
         np.abs(evalTF(NTF,np.exp(2j*np.pi*f)))**2 * w(f), 0, 0.5)[0]

@@ -19,7 +19,7 @@ from ...errors import PyDsmError
 __all__ = ["quantization_noise_gain", "quantization_noise_gain_by_conv"]
 
 def quantization_noise_gain(NTF, H, H_type='zpk'):
-    """
+    r"""
     Computes the quantization noise power gain
 
     Parameters
@@ -46,9 +46,11 @@ def quantization_noise_gain(NTF, H, H_type='zpk'):
     -----
     In the default case the computation is practiced as
 
-    .. math:: \int_{f=0}^{} \left|H\left(\mathrm{e}^{\mathrm{i}
-    2\pi f}\right)\right|^2 \left|NTF\left(\\mathrm{e}^{\mathrm{i}
-    2\pi f}right)\right|^2 df
+    .. math::
+        \int_{f=0}^{\frac{1}{2}}
+        \left|H\left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2
+        \left|\mathit{NTF}
+        \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 df
     """
     if H_type=='zpk' or H_type=='nd':
         w = lambda f: np.abs(evalTF(H,np.exp(2j*np.pi*f)))**2
