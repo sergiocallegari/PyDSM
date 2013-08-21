@@ -84,7 +84,7 @@ def q0_from_filter_mag_response(P, h_mag,\
                           integrator_params=integrator_params)
 
 
-def q0_from_filter(P, F, F_type,
+def q0_from_filter(P, F, F_type='zpk',
                    integrator_params={'epsabs':1E-14, 'epsrel':1E-9}):
     """
     Computes Q matrix from the modulator output filter

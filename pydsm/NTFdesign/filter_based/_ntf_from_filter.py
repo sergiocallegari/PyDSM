@@ -8,8 +8,7 @@ Synthesize a FIR NTF from specs of filter used to remove quantization noise
 ===========================================================================
 """
 
-from ._q0_from_filter import (q0_from_filter_imp_response,
-                              q0_from_filter_mag_response)
+from ._q0_from_filter import q0_from_filter
 from ..weighting import synthesize_ntf_from_q0
 from warnings import warn
 from ...errors import PyDsmWarning
@@ -55,7 +54,7 @@ def synthesize_ntf_from_filter_imp(order, h_ir, H_inf=1.5, normalize="auto",
     ntf : ndarray
         FIR NTF in zpk form
     """
-    q0=q0_from_filter_imp_response(order, h_ir)
+    q0=q0_from_filter(order, h_ir, 'imp')
     return synthesize_ntf_from_q0(q0, H_inf, normalize, options)
 
 def synthesize_ntf_from_filter_mag(order, h_mag, H_inf=1.5, normalize="auto",
@@ -95,5 +94,5 @@ def synthesize_ntf_from_filter_mag(order, h_mag, H_inf=1.5, normalize="auto",
     vector q0 with `q0_from_filter_mag_response` (which lets the integrator
     params be specified), then use `synthesize_ntf_from_q0`.
     """
-    q0=q0_from_filter_mag_response(order, h_mag)
+    q0=q0_from_filter(order, h_mag, 'mag')
     return synthesize_ntf_from_q0(q0, H_inf, normalize, options)

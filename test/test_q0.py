@@ -7,8 +7,7 @@ import scipy as sp
 __import__("scipy.signal")
 from pydsm.ir import impulse_response
 from pydsm.delsig import evalTF
-from pydsm.NTFdesign.filter_based import \
-    q0_from_filter_imp_response, q0_from_filter_mag_response
+from pydsm.NTFdesign.filter_based import q0_from_filter
 
 __all__=["TestQ0"]
 
@@ -37,8 +36,8 @@ class TestQ0(unittest.TestCase):
         ir=impulse_response(hz,db=80)
         def mr(f):
             return np.abs(evalTF(hz,np.exp(2j*np.pi*f)))
-        q0_ir=q0_from_filter_imp_response(P, ir)
-        q0_mr=q0_from_filter_mag_response(P, mr)
+        q0_ir=q0_from_filter(P, ir, 'imp')
+        q0_mr=q0_from_filter(P, mr, 'mag')
         np.testing.assert_allclose(q0_ir, q0_mr, atol=1E-7, rtol=1E-5)
 
     def test_q0_butt_lp3(self):
@@ -57,8 +56,8 @@ class TestQ0(unittest.TestCase):
         ir=impulse_response(hz,db=80)
         def mr(f):
             return np.abs(evalTF(hz,np.exp(2j*np.pi*f)))
-        q0_ir=q0_from_filter_imp_response(P, ir)
-        q0_mr=q0_from_filter_mag_response(P, mr)
+        q0_ir=q0_from_filter(P, ir, 'imp')
+        q0_mr=q0_from_filter(P, mr, 'mag')
         np.testing.assert_allclose(q0_ir, q0_mr, atol=1E-7, rtol=1E-5)
 
 if __name__ == '__main__':
