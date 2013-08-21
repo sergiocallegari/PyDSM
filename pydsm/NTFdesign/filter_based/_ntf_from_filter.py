@@ -86,6 +86,14 @@ def synthesize_ntf_from_filter_mag(order, h_mag, H_inf=1.5, normalize="auto",
     -------
     ntf : ndarray
         FIR NTF in zpk form
+
+    Notes
+    -----
+    The computation of the NTF from the output filter magnitude response
+    involves computing an integral on the magnitude response. To control the
+    integration parameters, do not use this function. Rather, first compute a
+    vector q0 with `q0_from_filter_mag_response` (which lets the integrator
+    params be specified), then use `synthesize_ntf_from_q0`.
     """
     q0=q0_from_filter_mag_response(order, h_mag)
     return synthesize_ntf_from_q0(q0, H_inf, normalize, options)

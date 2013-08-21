@@ -39,12 +39,21 @@ def synthesize_ntf_from_noise_weighting(order, noise_weighting, H_inf=1.5,
         selection. Defaults to 'auto' which means setting the top left entry
         in the matrix Q defining the quadratic form to 1.
     options : dict, optional
-        parameters for the SDP optimizer, see the documentation of `cvxpy`
+        parameters for the SDP optimizer, see the documentation of `cvxpy`.
+        This includes 'show_progress' (default True).
 
     Returns
     -------
     ntf : ndarray
         FIR NTF in zpk form
+
+    Notes
+    -----
+    The computation of the NTF from the noise weighting involves computing
+    an integral on the noise weighting function. To control the integration
+    parameters, do not use this function. Rather, first compute a vector
+    q0 with `q0_from_noise_weighting` (which lets the integrator params be
+    specified), then use `synthesize_ntf_from_q0`.
     """
     q0=q0_from_noise_weighting(order, noise_weighting)
     return synthesize_ntf_from_q0(q0, H_inf, normalize, options)
@@ -66,7 +75,8 @@ def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto",
         selection. Defaults to 'auto' which means setting the top left entry
         in the matrix Q defining the quadratic form to 1.
     options : dict, optional
-        parameters for the SDP optimizer, see the documentation of `cvxpy`
+        parameters for the SDP optimizer, see the documentation of `cvxpy`.
+        This includes 'show_progress' (default True).
 
     Returns
     -------
