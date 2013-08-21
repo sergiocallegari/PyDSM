@@ -14,7 +14,7 @@ matplotlib.use('tkagg')
 import matplotlib.pyplot as plt
 from pydsm.delsig import dbv, dbp, evalTF, synthesizeNTF, simulateDSM
 from pydsm.ir import impulse_response
-from pydsm.NTFdesign.filter_based import (synthesize_ntf_from_filter_imp,
+from pydsm.NTFdesign.filter_based import (synthesize_ntf_from_filter,
                                           quantization_noise_gain)
 
 # Linearized motor model and default parameters
@@ -109,9 +109,9 @@ plt.ioff()
 hz0043_ir=impulse_response(hz0043)
 hz02_ir=impulse_response(hz02)
 hz06_ir=impulse_response(hz06)
-ntf0043=synthesize_ntf_from_filter_imp(P, hz0043_ir)
-ntf02=synthesize_ntf_from_filter_imp(P, hz02_ir)
-ntf06=synthesize_ntf_from_filter_imp(P, hz06_ir)
+ntf0043=synthesize_ntf_from_filter(P, hz0043_ir, 'imp')
+ntf02=synthesize_ntf_from_filter(P, hz02_ir, 'imp')
+ntf06=synthesize_ntf_from_filter(P, hz06_ir, 'imp')
 delsig_ntf=synthesizeNTF(DELSIG_P, OSR, 3, 1.5, 0)
 
 # Plot the NTFs
