@@ -97,8 +97,10 @@ def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto",
     constraint1=cvxpy.belongs(-M, cvxpy.semidefinite_cone)
     constraint2=cvxpy.belongs(X,cvxpy.semidefinite_cone)
     p=cvxpy.program(cvxpy.minimize(target),[constraint1, constraint2])
-    for opt, val in options.items():
-        p.options[opt]=val
-    p.solve()
+    p.options.update(options)
+    quiet = False
+    if options.has_key('show_progress'):
+        quiet=not options['show_progress']
+    p.solve(quiet)
     ntf_ir=np.hstack((1,np.asarray(ar.value.T)[0]))
     return (np.roots(ntf_ir), np.zeros(order), 1.)

@@ -47,7 +47,8 @@ def synthesize_ntf_from_filter_imp(order, h_ir, H_inf=1.5, normalize="auto",
         selection. Defaults to 'auto' which means setting the top left entry
         in the matrix Q defining the quadratic form to 1.
     options : dict, optional
-        parameters for the SDP optimizer, see the documentation of `cvxpy`
+        parameters for the SDP optimizer, see the documentation of `cvxpy`.
+        This includes 'show_progress' (default True).
 
     Returns
     -------
@@ -78,7 +79,8 @@ def synthesize_ntf_from_filter_mag(order, h_mag, H_inf=1.5, normalize="auto",
         selection. Defaults to 'auto' which means setting the top left entry
         in the matrix Q defining the quadratic form to 1.
     options : dict, optional
-        parameters for the SDP optimizer, see the documentation of `cvxpy`
+        parameters for the SDP optimizer, see the documentation of `cvxpy`.
+        This includes 'show_progress' (default True).
 
     Returns
     -------
