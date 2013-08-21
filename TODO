@@ -15,3 +15,5 @@
 - [cython] in the cython simulator use np.double and np.intc for casting
 - move zpk and ba representations to named tuple model
 - avoid __import__ statements and follow http://docs.scipy.org/doc/scipy/reference/api.html
+- [distutils] fix sdist
+- [distutils] add metadata
