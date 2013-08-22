@@ -5,8 +5,6 @@
 # All rights reserved.
 
 import sys
-import os
-import shutil
 from distutils.core import setup
 from distutils.core import Command
 from distutils import ccompiler
@@ -17,6 +15,7 @@ import numpy
 
 
 # Find version
+__version__=''
 execfile('pydsm/version.py')
 
 
