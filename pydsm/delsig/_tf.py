@@ -48,9 +48,12 @@ def evalTF(tf, x):
     numerator/denominator polynomial.
     """
     if len(tf) == 3:
-        return evalRPoly(tf[0], x, tf[2])/evalRPoly(tf[1], x, 1)
+        retval = np.asarray(evalRPoly(tf[0], x, tf[2]))/evalRPoly(tf[1], x, 1)
     elif len(tf) == 2:
-        return np.polyval(tf[0], x)/np.polyval(tf[1],x)
+        retval = np.asarray(np.polyval(tf[0], x))/np.polyval(tf[1],x)
+    if retval.size == 1:
+        return retval.item()
+    return retval
 
 def evalRPoly(roots, x, k=1):
     """
