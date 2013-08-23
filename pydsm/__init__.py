@@ -19,3 +19,4 @@ from . import delsig
 from . import NTFdesign
 from . import simulation
 from . import audio_weightings
+from . import iso226
