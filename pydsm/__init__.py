@@ -18,3 +18,4 @@ from .version import __version__
 from . import delsig
 from . import NTFdesign
 from . import simulation
+from . import audio_weightings
