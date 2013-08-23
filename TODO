@@ -17,3 +17,5 @@
 - avoid __import__ statements and follow http://docs.scipy.org/doc/scipy/reference/api.html
 - [distutils] fix sdist
 - [distutils] add metadata
+- [api] rename quantization_noise_gain as quantization_filtered_noise_gain
+- [cython] user numpy.require to assure that arrays have the right properties
