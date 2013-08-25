@@ -92,8 +92,10 @@ def ds_optzeros(n, opt=1):
     Notes
     -----
     The zeros are always located on the complex unit circle. As such,
-    they are returned as normalized angular frequencies, not as complex
-    values. See also Sec. 4.3.1 in [1]_
+    they are returned as frequencies, not as complex values.
+
+    The zero's frequencies are normalized with respect to the signal
+    bandwidth. See also Sec. 4.3.1 in [1]_
 
     .. [1] Richard Schreier, Gabor C. Temes, "Understanding Delta-Sigma Data
        Converters," IEEE Press and Wiley Interscience, 2005.
