@@ -14,3 +14,4 @@ techniques in the delsig_synthesizeNTF function.
 from . import filter_based
 from . import weighting
 from . import delsig
+from . import psychoacoustic
