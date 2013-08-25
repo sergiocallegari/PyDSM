@@ -104,12 +104,12 @@ def ds_optzeros(n, opt=1):
         optZeros = np.zeros(ceil(n/2.))
     else:
         if n == 1:
-            optZeros = 0.
+            optZeros = np.asarray([0.])
         elif n == 2:
             if opt == 1:
-                optZeros = sqrt(1./3)
+                optZeros = np.asarray([sqrt(1./3)])
             else:
-                optZeros = 0.
+                optZeros = np.asarray([0.])
         elif n == 3:
             optZeros = np.asarray([sqrt(3./5), 0.])
         elif n == 4:
