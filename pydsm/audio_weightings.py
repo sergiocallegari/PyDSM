@@ -132,9 +132,10 @@ def a_weighting(f, normal=True, power=True):
         return a_weighting(f, normal, power=False)**2
     w = (12200.0**2*f**4)/((f**2+20.6**2)*
         np.sqrt((f**2+107.7**2)*(f**2+737.9**2))*(f**2+12200.0**2))
-    return w if not normal else w*a_weighting.gain
+    return w if not normal else w*a_weighting_gain
 
-a_weighting.gain=1/a_weighting(1000, normal=False, power=False)
+# Set normalization gain
+a_weighting_gain=1/a_weighting(1000, normal=False, power=False)
 
 def b_weighting(f, normal=True, power=True):
     """Returns the B-weighting as a function of frequency.
@@ -159,9 +160,10 @@ def b_weighting(f, normal=True, power=True):
         return b_weighting(f, normal, power=False)**2
     w = (12200.0**2*f**3)/((f**2+20.6**2)*
         np.sqrt(f**2+158.5**2)*(f**2+12200.0**2))
-    return w if not normal else w*b_weighting.gain
+    return w if not normal else w*b_weighting_gain
 
-b_weighting.gain=1/b_weighting(1000, normal=False, power=False)
+# Set normalization gain
+b_weighting_gain=1/b_weighting(1000, normal=False, power=False)
 
 def c_weighting(f, normal=True, power=True):
     """Returns the C-weighting as a function of frequency.
@@ -186,9 +188,10 @@ def c_weighting(f, normal=True, power=True):
         return c_weighting(f, normal, power=False)**2
     w = (12200.0**2*f**2)/((f**2+20.6**2)*
        (f**2+12200.0**2))
-    return w if not normal else w*c_weighting.gain
+    return w if not normal else w*c_weighting_gain
 
-c_weighting.gain=1/c_weighting(1000, normal=False, power=False)
+# Set normalization gain
+c_weighting_gain=1/c_weighting(1000, normal=False, power=False)
 
 def d_weighting(f, normal=True, power=True):
     """Returns the D-weighting as a function of frequency.
@@ -259,6 +262,7 @@ def f_weighting(f, normal=True, power=True):
     p4=((6.62**2)+(14.29**2)-z1)**2 + 4.0*(6.62**2)*z1
     w = (g*((z1**3)*z2*(z3**3))/
         ((p1**3)*(p2**2)*(p3**4))*((1e5/p4)**20))
-    return w if not normal else w*f_weighting.gain
+    return w if not normal else w*f_weighting_gain
 
-f_weighting.gain=1/f_weighting(1000, normal=False, power=True)
+# Set normalization gain
+f_weighting_gain=1/f_weighting(1000, normal=False, power=True)
