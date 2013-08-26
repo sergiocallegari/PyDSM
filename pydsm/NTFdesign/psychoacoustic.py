@@ -15,8 +15,8 @@ from .. import audio_weightings
 from .weighting import synthesize_ntf_from_noise_weighting as \
     _synthesize_ntf_from_noise_weighting
 
-__all__=["dunn_optzeros", "dunn_optzeros_cplx", "synthesizeNTF_dunn",
-         "synthesizeNTF_from_audio_weighting"]
+__all__=["dunn_optzeros", "dunn_optzeros_cplx", "synthesize_ntf_dunn",
+         "synthesize_NTF_from_audio_weighting"]
 
 def dunn_optzeros(n):
     """
@@ -96,7 +96,7 @@ def dunn_optzeros_cplx(order, osr):
     w2=dunn_optzeros(order)/osr*np.pi
     return np.exp(1j*w2)
 
-def synthesizeNTF_dunn(order=3, OSR=64, H_inf=1.5):
+def synthesize_ntf_dunn(order=3, OSR=64, H_inf=1.5):
     """Synthesizes an NTF for a DS audio modulator by Dunn's approach.
 
     The signal bandwidth is 22.05 kHz.
@@ -145,13 +145,13 @@ def synthesizeNTF_dunn(order=3, OSR=64, H_inf=1.5):
     """
     return _synthesizeNTF(order, OSR, dunn_optzeros_cplx(order, OSR), H_inf, 0)
 
-def synthesizeNTF_from_audio_weighting(order, osr,
-                                       audio_weighting=
-                                           audio_weightings.f_weighting,
-                                       audio_band=22.05E3,
-                                       max_attn=120,
-                                       H_inf=1.5,
-                                       normalize="auto", options={}):
+def synthesize_ntf_from_audio_weighting(order, osr,
+                                        audio_weighting=
+                                            audio_weightings.f_weighting,
+                                        audio_band=22.05E3,
+                                        max_attn=120,
+                                        H_inf=1.5,
+                                        normalize="auto", options={}):
     u"""
     Synthesize a FIR NTF based on an audio weighting function.
 
