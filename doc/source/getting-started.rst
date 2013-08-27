@@ -3,7 +3,9 @@ Getting Started
 
 This software is meant to run on all major platforms (Linux, Windows,
 Mac, etc.). It is free software written so that all its prerequisites
-are free too. This means that anyone can try and use it.
+are free too. This means that anyone can try and use it. Currently,
+the developers are rutinely building and testing it on Linux and
+Windows 7.
 
 The code is written in Python with some C extensions for efficiency
 and requires a `Python 2.7`_  environment. A port to Python
@@ -14,17 +16,17 @@ prerequisites too:
 
 Numpy_ :
     A powerful library that adds vector and matrix manipulation
-    routines to Python. Currently tested with version 1.6.2, should
+    routines to Python. Currently tested with version 1.7.1, should
     work with other releases too.
 
 Scipy_ :
     A package of tools for science and engineering for
-    Python. Currently tested with version 0.11. Should work with later
+    Python. Currently tested with version 0.12. Should work with other
     releases too.
 
 Matplotlib_ :
-    A python plotting library. Currently tested with version 1.1.1,
-    should work with later releases too.
+    A python plotting library. Currently tested with version 1.3,
+    should work with other releases too.
 
 CVXOPT_ :
    A free software package for convex optimization based on the Python

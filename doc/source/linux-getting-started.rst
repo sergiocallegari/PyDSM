@@ -53,7 +53,7 @@ All the above is expected to take you just a few minutes.
 What to do if your distribution does not provide all of the above
 .................................................................
 
-It may be the case, that your Linux distribution does not hold all the
+It may be the case that your Linux distribution does not hold all the
 software above in a packaged version, or that it provides packages
 with not sufficiently up to date versions. In this situation, you may
 need to install some of the packages above in a less automated
@@ -141,14 +141,26 @@ This command should not report any error. After issuing it, the PyDSM
 functions should be available under the ``pydsm`` namespace.
 
 Please, refer to the PyDSM reference for further information on how to
-take advantage of the code. It may also be helpful to check this
-documentation for information on how to reproduce the results in the
-paper
+take advantage of the code. It may also be helpful to check the
+reference for information on how to reproduce the results in the papers
 
   Sergio Callegari, Federico Bizzarri *"Output Filter Aware
   Optimization of the Noise Shaping Properties of ΔΣ Modulators via
-  Semi-Definite Programming"*, IEEE Transactions on Circuits and
+  Semi-Definite Programming,"* IEEE Transactions on Circuits and
   systems - Part I: Regular Papers.
+
+  Sergio Callegari, Federico Bizzarri *"Should ΔΣ modulators used in
+  AC motor drives be adapted to the mechanical load of the motor?,"*
+  Proceedings of the 19th IEEE International Conference on
+  Electronics, Circuits and Systems (ICECS), 2012, pp. 849 - 852.
+
+  Sergio Callegari, Federico Bizzarri *"Noise Weighting in the
+  Design of ΔΣ Modulators (with a Psychoacoustic Coder as an
+  Example),"* IEEE Transactions on Circuits and Systems - Part II:
+  Express Briefs. To appear in 2013.
+
+If you find this code useful, please consider citing the above papers
+in your work.
 
 .. _PyPi : http://pypi.python.org/pypi
 .. _CVXPY : http://www.stanford.edu/~ttinoco/cvxpy/
