@@ -38,3 +38,16 @@ Changelog
    - Make port of DELSIG functions more consistent with DELSIG
    - Provide better documentation to some functions
    - Bug fixes
+
+0.8.0
+   - Add NTF design method based on a noise weighting function
+   - Provide a new module with standard audio weighting functions
+   - Provide a new module with ISO 226 equal loudness contours
+   - Provide a new module with NTF design methods for psychoacoustically
+     optimal modulators for audio signals
+   - Fix a regression in ``ds_optzeros`` introduced with version 0.7.3
+     and preventing some example code from running
+   - Add new examples from a recently published TCAS-II paper
+   - Use ``'ba'`` specifier for requiring filters in numerator/denominator form
+   - Make ``evalTF`` function more robust against complex overflow
+   - Bug fixes
