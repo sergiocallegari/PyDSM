@@ -16,7 +16,7 @@ from .weighting import synthesize_ntf_from_noise_weighting as \
     _synthesize_ntf_from_noise_weighting
 
 __all__=["dunn_optzeros", "dunn_optzeros_cplx", "synthesize_ntf_dunn",
-         "synthesize_NTF_from_audio_weighting"]
+         "synthesize_ntf_from_audio_weighting"]
 
 def dunn_optzeros(n):
     """
