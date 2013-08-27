@@ -18,9 +18,9 @@ It also includes the F-weighting proposed by R. A. Wannamaker.
 
 Notes
 -----
-The ANSI and IEC weightings are also described in Wikipedia [1]_
-and summarized in some illustrative web pages such as [2]_ and [3]_.
-The F-weighting is documented in [4]_.
+The ANSI and IEC weightings are also described in Wikipedia [A-weighting]_
+and summarized in some illustrative web pages such as [Cross-Spectrum]_ and
+[Product-Tech]_. The F-weighting is documented in [Wannamaker-1992]_.
 
 The weighting functions can be expressed either in terms of
 acoustic power or in terms of signal amplitude.
@@ -34,12 +34,13 @@ evaluation of the transfer function may require special care.
 
 References
 ----------
-.. [1] Wikipedia (http://en.wikipedia.org/wiki/A-weighting)
-.. [2] Cross spectrum (http://www.cross-spectrum.com/audio/weighting.html)
-.. [3] Product Technology Parters "Noise Measurement Briefing"
+.. [A-weighting] Wikipedia (http://en.wikipedia.org/wiki/A-weighting)
+.. [Cross-Spectrum]
+   Cross spectrum (http://www.cross-spectrum.com/audio/weighting.html)
+.. [Product-Tech] Product Technology Parters "Noise Measurement Briefing"
    (http://www.ptpart.co.uk/noise-measurement-briefing/)
-.. [4] Robert A. Wannamaker "Psychoacoustically Optimal Noise Shaping,"
-   J. Audio Eng. Soc., Vol. 40 No. 7/8 1992 July/August
+.. [Wannamaker-1992] Robert A. Wannamaker "Psychoacoustically Optimal Noise
+   Shaping," J. Audio Eng. Soc., Vol. 40 No. 7/8 1992 July/August
 """
 
 import numpy as np

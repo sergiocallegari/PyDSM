@@ -43,15 +43,16 @@ def dunn_optzeros(n):
     bandwidth, that is fixed at 22.05 kHz.
 
     This function is the equivalent of ds_optzeros in DELSIG. The tabled
-    zeros delivered by this function are from [1]_.  Note that this function
-    does not return the values that are tabled in [1]_, but scales them
-    by the reference audio bandwidth used in [1]_, namely 22.05 kHz.
+    zeros delivered by this function are from [Dunn-1997]_.  Note that this
+    function does not return the values that are tabled in [Dunn-1997]_, but
+    scales them by the reference audio bandwidth used in [Dunn-1997]_,
+    namely 22.05 kHz.
 
     References
     ----------
-    .. [1] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal Sigma
-       Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp. 212 - 223
-       (1997 April)
+    .. [Dunn-1997] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal
+       Sigma Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp.
+       212 - 223 (1997 April)
     """
     # These are the optimal zero placements in kHz for a 22.05 kHz bandwidth
     # as found in the paper by Dunn and Sandler
@@ -123,8 +124,8 @@ def synthesize_ntf_dunn(order=3, OSR=64, H_inf=1.5):
     -----
     This is not exactly Dunn's method (but it should be equivalent or
     slightly better). In fact, to avoid re-implementing the pole selection
-    algorithm, that in [1]_ is based on a Butterworth synthesis, here the
-    pole selection logic used in DELSIG's synthesizeNTF is recycled.
+    algorithm, that in [Dunn-1997]_ is based on a Butterworth synthesis, here
+    the pole selection logic used in DELSIG's synthesizeNTF is recycled.
     This should not make a big difference since DELSIG logic is anyway based
     on a pole positioning aimed at obtaining a maximally flat response of the
     NTF denominator in the signal band. This has the advantage of
@@ -139,9 +140,9 @@ def synthesize_ntf_dunn(order=3, OSR=64, H_inf=1.5):
 
     References
     ----------
-    .. [1] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal Sigma
-       Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp. 212 - 223
-       (1997 April)
+    .. [Dunn-1997] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal
+       Sigma Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp.
+       212 - 223 (1997 April)
     """
     return _synthesizeNTF(order, OSR, dunn_optzeros_cplx(order, OSR), H_inf, 0)
 

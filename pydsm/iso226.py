@@ -11,27 +11,30 @@ Loudness contours from ISO 226.
 
 Notes
 -----
-This module uses data from the latest revision of ISO 226 [1]_.
-For reference, also consider [2]_.
+This module uses data from the latest revision of ISO 226 [ISO226]_.
+For reference, also consider [Tackett-2005]_.
 
 The ISO standard provides the equal loudness contours as tabled data.
 Tables end at 12.5 kHz. Above this frequency equal-loudness-level data are
-relatively scarce and tend to be variable [3]_. Yet, it is known that the
-human ear has a precipitous decline in sensitivity with increasing frequency
-above 15 kHz, to the point that at about 20 kHz the percieved sound becomes
-negligible (> 100 dB attenuation) [4]_. For this reason, this module includes
-the possibility of delivering some modified ISO contours where the tabled
-data is augmented by creating a new data point at 20 kHz where the behavior
-found at 20 Hz is replicated.
+relatively scarce and tend to be variable [Suzuki-2003]_. Yet, it is known
+that the human ear has a precipitous decline in sensitivity with increasing
+frequency above 15 kHz, to the point that at about 20 kHz the percieved sound
+becomes negligible (> 100 dB attenuation) [Wannamaker-1992]_. For this reason,
+this module includes the possibility of delivering some modified ISO contours
+where the tabled data is augmented by creating a new data point at 20 kHz
+where the behavior found at 20 Hz is replicated.
 
 References
 ----------
-.. [1] ISO 226:2003 "Acoustics - Normal equal-loudness-level contours"
-.. [2] Jeff Tackett, "ISO 226 Equal-Loudness-Level Contour Signal," 2005
+.. [ISO226] ISO 226:2003 "Acoustics - Normal equal-loudness-level contours"
+.. [Tackett-2005] Jeff Tackett, "ISO 226 Equal-Loudness-Level Contour Signal,"
+   2005
    (http://www.mathworks.com/matlabcentral/fileexchange/7028)
-.. [3] Yoiti Suzuki et al, "Precise and Full-range Determination of
+.. [Suzuki-2003] Yoiti Suzuki et al, "Precise and Full-range Determination of
    Two-dimensional Equal Loudness Contours," 2003
    (http://www.nedo.go.jp/itd/grant-e/report/00pdf/is-01e.pdf)
+.. [Wannamaker-1992] Robert A. Wannamaker "Psychoacoustically Optimal Noise
+   Shaping", J. Audio Eng. Soc., Vol. 40, N. 7/8, 1992 July/August
 """
 
 import numpy as np
