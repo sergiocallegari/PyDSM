@@ -24,7 +24,7 @@ module of PyDSM <delsig-module>`.
 
 .. autofunction:: pydsm.NTFdesign.weighting.synthesize_ntf_from_noise_weighting
 
-**Auxiliary Functions**
+**Auxiliary functions**
 
 .. autofunction:: pydsm.NTFdesign.weighting.q0_from_noise_weighting
 .. autofunction:: pydsm.NTFdesign.weighting.synthesize_ntf_from_q0
@@ -37,7 +37,21 @@ module of PyDSM <delsig-module>`.
 
 .. autofunction:: pydsm.NTFdesign.filter_based.synthesize_ntf_from_filter
 
-**Auxiliary Functions**
+**Auxiliary functions**
 
 .. autofunction:: pydsm.NTFdesign.filter_based.q0_from_filter
 .. autofunction:: pydsm.NTFdesign.filter_based.quantization_noise_gain
+
+
+.. automodule:: pydsm.NTFdesign.psychoacoustic
+.. module:: NTFdesign.psichoacoustic
+
+**Key functions**
+
+.. autofunction:: pydsm.NTFdesign.psychoacoustic.synthesize_ntf_dunn
+.. autofunction:: pydsm.NTFdesign.psychoacoustic.synthesize_ntf_from_audio_weighting
+
+**Auxiliary functions**
+
+.. autofunction:: pydsm.NTFdesign.psychoacoustic.dunn_optzeros
+.. autofunction:: pydsm.NTFdesign.psychoacoustic.dunn_optzeros_cplx

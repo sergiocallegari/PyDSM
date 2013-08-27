@@ -19,6 +19,8 @@ resulting modulators.
    ntf-design-module
    simulation-module
    utility-modules
+   audio-weightings-module
+   iso226-module
 
 .. _DELSIG:
    http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox
