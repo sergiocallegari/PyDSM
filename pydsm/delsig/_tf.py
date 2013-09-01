@@ -117,6 +117,9 @@ def rmsGain(H, f1, f2, N=100):
     (f1,f2).  Spanning of the bandwidth is linear. Frequencies are normalized
     in the [0,0.5] interval.
 
+    Warning: the result of the computation is normalized in the number of
+    points used for the computation, but not on the frequency range.
+
     This computation could be practiced much more accurately and possibly
     faster, using algorithms for the numerical computation of integrals.
     """
