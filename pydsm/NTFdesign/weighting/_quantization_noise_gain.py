@@ -36,9 +36,9 @@ def quantization_weighted_noise_gain(NTF, w):
     The computation is practiced as
 
     .. math::
-        \int_{f=0}^{\frac{1}{2}}
+        2\int_{f=0}^{\frac{1}{2}}
         \left|\mathit{NTF}
         \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) df
     """
-    return sp.integrate.quad(lambda f: \
+    return 2*sp.integrate.quad(lambda f: \
         np.abs(evalTF(NTF,np.exp(2j*np.pi*f)))**2 * w(f), 0, 0.5)[0]

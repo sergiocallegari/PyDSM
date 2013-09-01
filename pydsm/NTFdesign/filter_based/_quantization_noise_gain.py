@@ -47,7 +47,7 @@ def quantization_noise_gain(NTF, H, H_type='zpk'):
     In the default case the computation is practiced as
 
     .. math::
-        \int_{f=0}^{\frac{1}{2}}
+        2\int_{f=0}^{\frac{1}{2}}
         \left|H\left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2
         \left|\mathit{NTF}
         \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 df
@@ -100,4 +100,4 @@ def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
     else:
         raise PyDsmError("Incorrect filter type specification")
     conv = sp.signal.convolve(h1_ir, h2_ir)
-    return np.sum(conv**2)/2
+    return np.sum(conv**2)
