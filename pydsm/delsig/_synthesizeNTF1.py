@@ -145,7 +145,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                     warn('Danger! Iteration limit exceeded.', PyDsmWarning)
 
         # ---- Zero optimization part
-        if (opt.size == 1 and opt < 3) or opt.size > 1:
+        if (opt.size == 1 and opt < 3) or opt.size > 1 or x0.size < 1:
             # Do not optimize the zeros
             opt_iteration = 0
         else:
