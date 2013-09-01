@@ -11,7 +11,6 @@ Computation of the noise power gain through the NTF and the output filter
 import numpy as np
 import scipy as sp
 __import__("scipy.integrate")
-from ...ir import impulse_response
 from ...delsig import evalTF
 
 __all__ = ["quantization_weighted_noise_gain"]
