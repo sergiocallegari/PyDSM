@@ -9,8 +9,7 @@ Computation of the noise power gain through the NTF and the output filter
 """
 
 import numpy as np
-import scipy as sp
-__import__("scipy.integrate")
+from scipy.integrate import quad
 from ...delsig import evalTF
 
 __all__ = ["quantization_weighted_noise_gain"]
@@ -40,5 +39,5 @@ def quantization_weighted_noise_gain(NTF, w):
         \left|\mathit{NTF}
         \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) df
     """
-    return 2*sp.integrate.quad(lambda f: \
+    return 2*quad(lambda f: \
         np.abs(evalTF(NTF,np.exp(2j*np.pi*f)))**2 * w(f), 0, 0.5)[0]
