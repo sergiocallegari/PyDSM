@@ -40,7 +40,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
         to be unitary.
     nlev : int or array of ints, optional
         number of levels in quantizer. Multiple quantizers can be
-        specified by making nlev a vector. Deraults to 2.
+        specified by making nlev a vector. Defaults to 2.
     x0 : array_like of reals or 0
         modulator intitial state vector. Assigning it to 0 is a shorthand
         for an appropriate length zero vector. Defaults to 0.
