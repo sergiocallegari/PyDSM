@@ -1,3 +1,7 @@
 .spyderproject
 *~
 *.pyc
+pydsm/delsig/_*.c
+build/
+doc/build/
+Documentation/
