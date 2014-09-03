@@ -1,4 +1,42 @@
-All the documentation for the PyDSM code (including a getting started
-guide) is available in the Documentation directory as html files.
+PyDSM
+=====
 
-Point your browser to Documentation/html/index.html
+*Python based ΔΣ modulator design tools*
+
+This is a Python/Scipy toolbox for the design and simulation of
+ΔΣ Modulators, with emphasis on digital modulators.
+
+Currently, it focuses on tools for the design of the modulator NTF. It
+also includes a fast simulator for digital modulators. Furthermore, it
+includes a Python/Scipy port of some functions from the `DELSIG
+toolbox
+<http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox>`_
+by R. Schreier.
+
+As a highlight, the code includes an original NTF design technique
+fully described in the papers:
+
+* Sergio Callegari, Federico Bizzarri *“Output Filter Aware
+  Optimization of the Noise Shaping Properties of ΔΣ Modulators via
+  Semi-Definite Programming”*, IEEE Transactions on Circuits and
+  systems - Part I: Regular Papers, Vol. 60, N. 9,
+  pp. 2352-2365. Sept. 2013. DOI: `10.1109/TCSI.2013.2239091
+  <http://dx.doi.org/10.1109/TCSI.2013.2239091>`_. Pre-print available
+  on `ArXiv <http://arxiv.org/abs/1302.3020>`__.
+* Sergio Callegari, Federico Bizzarri *“Noise Weighting in the Design
+  of ΔΣ Modulators (with a Psychoacoustic Coder as an Example),”* IEEE
+  Transactions on Circuits and Systems - Part II: Express Briefs,
+  Vol. 60, N. 11, pp. 756-760. Nov. 2013. DOI:
+  `10.1109/TCSII.2013.2281892
+  <http://dx.doi.org/10.1109/TCSII.2013.2281892>`_. Pre-print available
+  on `ArXiv <http://arxiv.org/abs/1309.6151>`__.
+
+If you find the code useful, *please cite these papers in your work*.
+
+----
+
+An introduction to the code is available on the project website at
+https://code.google.com/p/pydsm/wiki/Introduction.
+
+A copy of the code documentation is also available on the project
+website at https://code.google.com/p/pydsm/wiki/autodoc.

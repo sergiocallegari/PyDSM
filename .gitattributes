@@ -1,2 +1,3 @@
 .git* export-ignore
 ./makefile export-ignore
+README whitespace=cr-at-eol
