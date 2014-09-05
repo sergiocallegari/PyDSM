@@ -15,7 +15,7 @@ import sys, os
 from distutils.util import get_platform
 
 # Find version
-execfile('../../pydsm/version.py')
+execfile('../../pydsm/_version.py')
 
 # Find build dir
 pv=sys.version_info

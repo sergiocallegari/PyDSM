@@ -31,7 +31,7 @@ import numpy
 
 # Find version
 __version__=''
-execfile('pydsm/version.py')
+execfile('pydsm/_version.py')
 
 
 class test (Command):
