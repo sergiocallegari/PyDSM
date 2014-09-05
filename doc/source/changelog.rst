@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+0.8.2
+   - Fix some licensing issues
+
 0.8.1
    - Prevent synthesizeNTF failure if there are no zeros to optimize
    - Improve some docstrings
