@@ -19,7 +19,7 @@ Tables end at 12.5 kHz. Above this frequency equal-loudness-level data are
 relatively scarce and tend to be variable [Suzuki-2003]_. Yet, it is known
 that the human ear has a precipitous decline in sensitivity with increasing
 frequency above 15 kHz, to the point that at about 20 kHz the percieved sound
-becomes negligible (> 100 dB attenuation) [Wannamaker-1992]_. For this reason,
+becomes negligible (> 100 dB attenuation) [Wannamaker-1992a]_. For this reason,
 this module includes the possibility of delivering some modified ISO contours
 where the tabled data is augmented by creating a new data point at 20 kHz
 where the behavior found at 20 Hz is replicated.
@@ -33,7 +33,7 @@ References
 .. [Suzuki-2003] Yoiti Suzuki et al, "Precise and Full-range Determination of
    Two-dimensional Equal Loudness Contours," 2003
    (http://www.nedo.go.jp/itd/grant-e/report/00pdf/is-01e.pdf)
-.. [Wannamaker-1992] Robert A. Wannamaker "Psychoacoustically Optimal Noise
+.. [Wannamaker-1992a] Robert A. Wannamaker "Psychoacoustically Optimal Noise
    Shaping", J. Audio Eng. Soc., Vol. 40, N. 7/8, 1992 July/August
 """
 

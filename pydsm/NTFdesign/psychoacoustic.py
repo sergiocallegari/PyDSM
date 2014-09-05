@@ -43,14 +43,14 @@ def dunn_optzeros(n):
     bandwidth, that is fixed at 22.05 kHz.
 
     This function is the equivalent of ds_optzeros in DELSIG. The tabled
-    zeros delivered by this function are from [Dunn-1997]_.  Note that this
-    function does not return the values that are tabled in [Dunn-1997]_, but
-    scales them by the reference audio bandwidth used in [Dunn-1997]_,
+    zeros delivered by this function are from [Dunn-1997a]_.  Note that this
+    function does not return the values that are tabled in [Dunn-1997a]_, but
+    scales them by the reference audio bandwidth used in [Dunn-1997a]_,
     namely 22.05 kHz.
 
     References
     ----------
-    .. [Dunn-1997] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal
+    .. [Dunn-1997a] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal
        Sigma Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp.
        212 - 223 (1997 April)
     """
