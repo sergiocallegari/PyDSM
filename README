@@ -54,7 +54,7 @@ Part of this code, limited to the `delsig` module, is ported from the
 `DELSIG toolbox
 <http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox>`__
 copyright by R. Schreier and licensed under the BSD license, as
-specified in the `LICENSE` file inside the module.
+specified in the corresponding files.
 
 PyDSM is distributed in the hope that it will be useful, but WITHOUT
 ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or

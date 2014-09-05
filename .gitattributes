@@ -3,4 +3,3 @@
 /makefile export-ignore
 /README whitespace=cr-at-eol
 /COPYING whitespace=cr-at-eol
-/pydsm/delsig/LICENSE whitespace=cr-at-eol
