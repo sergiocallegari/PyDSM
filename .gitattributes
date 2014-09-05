@@ -1,4 +1,5 @@
 .git* export-ignore
+/src_templates export-ignore
 /makefile export-ignore
 /README whitespace=cr-at-eol
 /COPYING whitespace=cr-at-eol
