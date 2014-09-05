@@ -9,4 +9,4 @@ before attempting to regenerate the documentation.
 Regeneration of the documentation requires
 
 sphinx
-sphinxext (Extension to sphinx to manage doc in numpy standard)
+numpydoc (Extension to sphinx to manage doc in numpy standard)
