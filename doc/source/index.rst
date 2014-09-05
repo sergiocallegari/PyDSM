@@ -10,6 +10,7 @@ Contents:
    getting-started
    reference
    replicate-results
+   license
    changelog
 
 Indices and tables

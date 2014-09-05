@@ -43,3 +43,11 @@ Highlights of the current version consist in:
 
 If you find this code useful, *please consider citing the above papers
 in your work.*
+
+PyDSM is free software and is licensed as detailed in the
+:ref:`license` Section of this manual.
+
+PyDSM is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  This is also detailed together with
+the licensing information.
