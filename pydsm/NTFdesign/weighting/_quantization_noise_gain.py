@@ -29,7 +29,7 @@ from ...delsig import evalTF
 
 __all__ = ["quantization_weighted_noise_gain"]
 
-def quantization_weighted_noise_gain(NTF, w):
+def quantization_weighted_noise_gain(NTF, w, bounds=(0, 0.5)):
     r"""
     Computes the quantization noise power gain
 
@@ -37,8 +37,11 @@ def quantization_weighted_noise_gain(NTF, w):
     ----------
     NTF : tuple
         NTF definition in zpk or nd form
-    w : callable with argument f in [0,1/2]
-        noise weighting function
+    w : callable with argument f in [0,1/2] or None
+        noise weighting function. If set to None, no weighting is applied
+    bounds : 2 elements tuple, optional
+        the frequency range where the noise gain is computed. Defaults to
+        (0, 0.5)
 
     Returns
     -------
@@ -54,5 +57,9 @@ def quantization_weighted_noise_gain(NTF, w):
         \left|\mathit{NTF}
         \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) df
     """
-    return 2*quad(lambda f: \
-        np.abs(evalTF(NTF,np.exp(2j*np.pi*f)))**2 * w(f), 0, 0.5)[0]
+    if w != None:
+        return 2*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2 *
+                      w(f), bounds[0], bounds[1])[0]
+    else:
+        return 2*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2,
+                      bounds[0], bounds[1])[0]

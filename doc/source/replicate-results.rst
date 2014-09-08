@@ -9,6 +9,7 @@ Here, it is shown how to reproduce the results in
 .. toctree::
    :maxdepth: 2
 
+   replicate-icecs-2013
+   replicate-tcas2-2013
    replicate-tcas1-2013
    replicate-icecs-2012
-   replicate-tcas2-2013
