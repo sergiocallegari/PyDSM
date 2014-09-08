@@ -27,7 +27,7 @@ import numpy as np
 import scipy as sp
 __import__("scipy.linalg")
 from ._q0_from_weighting import q0_from_noise_weighting
-import cvxpy
+import cvxpy_tinoco
 
 __all__=["synthesize_ntf_from_noise_weighting",
          "synthesize_ntf_from_q0"]
@@ -103,25 +103,26 @@ def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto",
         q0=q0/q0[0]
     elif normalize!=None:
         q0=q0*normalize
-    Q=cvxpy.matrix(sp.linalg.toeplitz(q0[0:-1]))
-    L=cvxpy.matrix(2*q0[1:])
-    ar=cvxpy.variable(order,1, name='ar')
-    target=cvxpy.quad_form(ar,Q) + L*ar
-    X=cvxpy.variable(order, order, structure='symmetric', name='X')
-    A=cvxpy.matrix(np.eye(order,order,1))
-    B=cvxpy.matrix(np.vstack((np.zeros((order-1,1)),1)))
-    C=(cvxpy.matrix(np.eye(order,order)[:,::-1])*ar).T
-    D=cvxpy.matrix([[1]])
+    Q=cvxpy_tinoco.matrix(sp.linalg.toeplitz(q0[0:-1]))
+    L=cvxpy_tinoco.matrix(2*q0[1:])
+    ar=cvxpy_tinoco.variable(order,1, name='ar')
+    target=cvxpy_tinoco.quad_form(ar,Q) + L*ar
+    X=cvxpy_tinoco.variable(order, order, structure='symmetric', name='X')
+    A=cvxpy_tinoco.matrix(np.eye(order,order,1))
+    B=cvxpy_tinoco.matrix(np.vstack((np.zeros((order-1,1)),1)))
+    C=(cvxpy_tinoco.matrix(np.eye(order,order)[:,::-1])*ar).T
+    D=cvxpy_tinoco.matrix([[1]])
     M1=A.T*X
     M2=M1*B
-    M=cvxpy.vstack(( \
-        cvxpy.hstack((M1*A-X, M2, C.T)), \
-        cvxpy.hstack((M2.T, B.T*X*B-H_inf**2, D)), \
-        cvxpy.hstack((C, D, cvxpy.matrix([[-1]]))) \
+    M=cvxpy_tinoco.vstack(( \
+        cvxpy_tinoco.hstack((M1*A-X, M2, C.T)), \
+        cvxpy_tinoco.hstack((M2.T, B.T*X*B-H_inf**2, D)), \
+        cvxpy_tinoco.hstack((C, D, cvxpy_tinoco.matrix([[-1]]))) \
         ))
-    constraint1=cvxpy.belongs(-M, cvxpy.semidefinite_cone)
-    constraint2=cvxpy.belongs(X,cvxpy.semidefinite_cone)
-    p=cvxpy.program(cvxpy.minimize(target),[constraint1, constraint2])
+    constraint1=cvxpy_tinoco.belongs(-M, cvxpy_tinoco.semidefinite_cone)
+    constraint2=cvxpy_tinoco.belongs(X,cvxpy_tinoco.semidefinite_cone)
+    p=cvxpy_tinoco.program(cvxpy_tinoco.minimize(target),
+                           [constraint1, constraint2])
     p.options.update(options)
     quiet = False
     if options.has_key('show_progress'):
