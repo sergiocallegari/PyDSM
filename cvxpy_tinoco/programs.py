@@ -18,13 +18,13 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.arrays import *
-from cvxpy.scalars import *
-from cvxpy.constraints import *
-from cvxpy.procedures.expand import expand
-from cvxpy.procedures.re_eval import re_eval
-from cvxpy.procedures.solve_prog import solve_prog
+from .defs import *
+from .arrays import *
+from .scalars import *
+from .constraints import *
+from .procedures.expand import expand
+from .procedures.re_eval import re_eval
+from .procedures.solve_prog import solve_prog
 
 #***********************************************************************#
 # Class definition: cvxpy_program                                       #

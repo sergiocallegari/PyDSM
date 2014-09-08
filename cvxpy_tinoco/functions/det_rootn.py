@@ -18,12 +18,12 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.sets import *
-from cvxpy.utils import *
-from cvxpy.interface import *
-from cvxpy.arrays import cvxpy_matrix
-from cvxpy.functions.geo_mean import geo_mean
+from ..defs import *
+from ..sets import *
+from ..utils import *
+from ..interface import *
+from ..arrays import cvxpy_matrix
+from .geo_mean import geo_mean
 
 # det_rootn
 def det_rootn(x):

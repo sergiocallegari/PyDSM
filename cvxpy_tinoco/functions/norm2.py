@@ -18,12 +18,12 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.sets import *
-from cvxpy.utils import *
-from cvxpy.interface import *
-from cvxpy.arrays import cvxpy_matrix
-from cvxpy.functions.lambda_max import lambda_max
+from ..defs import *
+from ..sets import *
+from ..utils import *
+from ..interface import *
+from ..arrays import cvxpy_matrix
+from ..functions.lambda_max import lambda_max
 
 # Norm 2
 def norm2(X):

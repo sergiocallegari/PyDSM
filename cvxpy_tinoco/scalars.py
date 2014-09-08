@@ -18,7 +18,7 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
+from .defs import *
 from functools import reduce
 
 #***********************************************************************#
@@ -738,6 +738,6 @@ class cvxpy_tree(cvxpy_obj):
             raise TypeError('Invalid tree item')
         
 # Load modules
-from cvxpy.arrays import cvxpy_array,cvxpy_sparray
-from cvxpy.arrays import cvxpy_matrix,cvxpy_spmatrix
-from cvxpy.constraints import cvxpy_list
+from .arrays import cvxpy_array,cvxpy_sparray
+from .arrays import cvxpy_matrix,cvxpy_spmatrix
+from .constraints import cvxpy_list

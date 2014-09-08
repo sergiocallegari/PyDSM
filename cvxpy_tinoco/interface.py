@@ -18,10 +18,10 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.arrays import *
-from cvxpy.scalars import *
-from cvxpy.constraints import *
+from .defs import *
+from .arrays import *
+from .scalars import *
+from .constraints import *
 
 # Names
 __all__ = ["variable","variable_reset","parameter",
@@ -261,4 +261,4 @@ def belongs(x,S):
     return cvxpy_constr(x,BELONGS,S)
 
 # Load modules
-from cvxpy.programs import *
+from .programs import *

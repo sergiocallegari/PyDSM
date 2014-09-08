@@ -18,13 +18,13 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.utils import *
-from cvxpy.interface import *
-from cvxpy.functions.abs import abs
-from cvxpy.functions.square import square
-from cvxpy.arrays import cvxpy_matrix
-from cvxpy.arrays import cvxpy_array
+from ..defs import *
+from ..utils import *
+from ..interface import *
+from .abs import abs
+from .square import square
+from ..arrays import cvxpy_matrix
+from ..arrays import cvxpy_array
 
 # Huber 
 def huber(x,M=1):

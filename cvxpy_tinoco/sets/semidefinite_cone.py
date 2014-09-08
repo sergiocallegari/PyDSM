@@ -19,8 +19,8 @@
 
 import numpy as np
 import cvxopt as opt
-from cvxpy.defs import *
-from cvxpy.scalars import cvxpy_obj
+from ..defs import *
+from ..scalars import cvxpy_obj
 
 # Class definition
 class cvxpy_semidefinite_cone(object):

@@ -18,11 +18,11 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.utils import *
-from cvxpy.interface import *
-from cvxpy.functions.abs import abs
-from cvxpy.arrays import cvxpy_matrix
+from ..defs import *
+from ..utils import *
+from ..interface import *
+from ..functions.abs import abs
+from ..arrays import cvxpy_matrix
 
 # Norm 1
 def norm1(X):

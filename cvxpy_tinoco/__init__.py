@@ -17,10 +17,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>. #
 #***********************************************************************#
 
-from cvxpy.sets import *
-from cvxpy.utils import * 
-from cvxpy.functions import *
-from cvxpy.interface import *
+from .sets import *
+from .utils import * 
+from .functions import *
+from .interface import *
 
 
 

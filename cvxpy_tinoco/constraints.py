@@ -18,10 +18,10 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.scalars import cvxpy_obj
-from cvxpy.arrays import cvxpy_array
-from cvxpy.arrays import cvxpy_matrix
+from .defs import *
+from .scalars import cvxpy_obj
+from .arrays import cvxpy_array
+from .arrays import cvxpy_matrix
 from functools import reduce
 
 #***********************************************************************#

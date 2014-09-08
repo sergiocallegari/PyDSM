@@ -19,12 +19,12 @@
 
 import numpy as np
 import cvxopt as opt
-from cvxpy.procedures.expand import expand
-from cvxpy.defs import *
+from .expand import expand
+from ..defs import *
 import scipy.sparse as sp
 from cvxopt import solvers
-from cvxpy.scalars import cvxpy_obj
-from cvxpy.constraints import cvxpy_list
+from ..scalars import cvxpy_obj
+from ..constraints import cvxpy_list
 
 # Function: call_solver
 def call_solver(p,quiet):

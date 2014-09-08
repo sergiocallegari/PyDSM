@@ -18,7 +18,7 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
+from .defs import *
 import scipy.sparse as sp
 
 #***********************************************************************#
@@ -1018,6 +1018,6 @@ class cvxpy_sparray(object):
         return output[:-1]
         
 # Load modules
-from cvxpy.scalars import cvxpy_scalar_var
-from cvxpy.scalars import cvxpy_scalar_param
-from cvxpy.constraints import cvxpy_list
+from .scalars import cvxpy_scalar_var
+from .scalars import cvxpy_scalar_param
+from .constraints import cvxpy_list

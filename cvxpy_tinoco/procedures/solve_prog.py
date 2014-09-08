@@ -18,8 +18,8 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.procedures.call_solver import call_solver
+from ..defs import *
+from .call_solver import call_solver
 
 # Function
 def solve_prog(p,quiet):

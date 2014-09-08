@@ -19,10 +19,10 @@
 
 import numpy as np
 import cvxopt as opt
-from cvxpy.defs import *
-from cvxpy.scalars import cvxpy_obj
-from cvxpy.scalars import cvxpy_scalar_var
-from cvxpy.utils import vstack
+from ..defs import *
+from ..scalars import cvxpy_obj
+from ..scalars import cvxpy_scalar_var
+from ..utils import vstack
 
 # Class definition
 class cvxpy_kl_div_epi(object):

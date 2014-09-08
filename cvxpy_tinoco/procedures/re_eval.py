@@ -18,15 +18,15 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.utils import sum
-from cvxpy.arrays import *
-from cvxpy.scalars import *
-from cvxpy.constraints import *
-from cvxpy.interface import equals
-from cvxpy.interface import belongs
-from cvxpy.interface import less_equals
-from cvxpy.interface import greater_equals
+from ..defs import *
+from ..utils import sum
+from ..arrays import *
+from ..scalars import *
+from ..constraints import *
+from ..interface import equals
+from ..interface import belongs
+from ..interface import less_equals
+from ..interface import greater_equals
 
 # Function: re_eval
 def re_eval(arg,replace_map):

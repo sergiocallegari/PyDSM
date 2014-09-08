@@ -18,15 +18,15 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.scalars import *
-from cvxpy.constraints import *
-from cvxpy.interface import equals
-from cvxpy.interface import less_equals
-from cvxpy.interface import greater_equals
-from cvxpy.interface import variable
-from cvxpy.arrays import cvxpy_var
-from cvxpy.arrays import cvxpy_array
+from ..defs import *
+from ..scalars import *
+from ..constraints import *
+from ..interface import equals
+from ..interface import less_equals
+from ..interface import greater_equals
+from ..interface import variable
+from ..arrays import cvxpy_var
+from ..arrays import cvxpy_array
 
 # Function: expand
 def expand(arg):

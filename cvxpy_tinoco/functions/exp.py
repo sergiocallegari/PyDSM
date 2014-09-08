@@ -18,12 +18,12 @@
 #***********************************************************************#
 
 import numpy as np
-from cvxpy.defs import *
-from cvxpy.utils import *
-from cvxpy.sets import *
-from cvxpy.interface import *
-from cvxpy.arrays import cvxpy_array
-from cvxpy.arrays import cvxpy_matrix
+from ..defs import *
+from ..utils import *
+from ..sets import *
+from ..interface import *
+from ..arrays import cvxpy_array
+from ..arrays import cvxpy_matrix
 
 # exp
 def exp(x):

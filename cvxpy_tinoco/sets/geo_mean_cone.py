@@ -19,14 +19,14 @@
 
 import numpy as np
 import cvxopt as opt
-from cvxpy.defs import *
-from cvxpy.scalars import cvxpy_obj,cvxpy_scalar_var
-from cvxpy.utils import vstack,hstack
-from cvxpy.interface import belongs
-from cvxpy.interface import variable
-from cvxpy.interface import greater_equals
-from cvxpy.constraints import cvxpy_list
-from cvxpy.sets.semidefinite_cone import semidefinite_cone
+from ..defs import *
+from ..scalars import cvxpy_obj,cvxpy_scalar_var
+from ..utils import vstack,hstack
+from ..interface import belongs
+from ..interface import variable
+from ..interface import greater_equals
+from ..constraints import cvxpy_list
+from .semidefinite_cone import semidefinite_cone
 from functools import reduce
 
 # Class definition

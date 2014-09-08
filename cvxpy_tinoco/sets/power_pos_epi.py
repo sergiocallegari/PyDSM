@@ -19,9 +19,9 @@
 
 import numpy as np
 import cvxopt as opt
-from cvxpy.defs import *
-from cvxpy.scalars import cvxpy_obj
-from cvxpy.scalars import cvxpy_scalar_var
+from ..defs import *
+from ..scalars import cvxpy_obj
+from ..scalars import cvxpy_scalar_var
 
 # Class definition
 class cvxpy_power_pos_epi(object):
