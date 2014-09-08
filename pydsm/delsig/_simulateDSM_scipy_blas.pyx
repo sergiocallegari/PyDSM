@@ -121,7 +121,7 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
         A = np.asarray(ABCD[0:order, 0:order], dtype=np.float64, order='C')
         B1 = np.asarray(ABCD[0:order, order:order+nu],\
             dtype=np.float64, order='C')
-        B2 = np.asarray(ABCD[0:order+nu, order:order+nu+nq],\
+        B2 = np.asarray(ABCD[0:order, order+nu:order+nu+nq],\
             dtype=np.float64, order='C')
         C = np.asarray(ABCD[order:order+nq, 0:order],\
             dtype=np.float64, order='C')
