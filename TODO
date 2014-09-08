@@ -14,10 +14,17 @@
 - [tests] let tests be run individually
 - [cython] in the cython simulator use np.double and np.intc for casting
 - move zpk and ba representations to named tuple model
-- avoid __import__ statements and follow http://docs.scipy.org/doc/scipy/reference/api.html
+- avoid __import__ statements and follow
+  http://docs.scipy.org/doc/scipy/reference/api.html
 - [distutils] fix sdist
 - [distutils] add metadata
 - [api] rename quantization_noise_gain as quantization_filtered_noise_gain
 - [cython] user numpy.require to assure that arrays have the right properties
 - manage optimizer/integrator options better in ntf design functions based
   on cvxopt
+- [optimization] temporarily incorporate Tinoco's cvxpy into source trees
+  since it is not anymore distributed
+- [optimization] move to the newer cvxpy
+- [python] make python3 compatible
+- [python] make pep8 clean
+- [examples] provide notebook version of the examples
