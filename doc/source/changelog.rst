@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+0.8.3
+   - Fix a typo in the fast DSM simulator
+     (only affecting case where modulator structure is passed in ABCD form)
+   - Add example from ICECS 2013 paper
+   - Enhance ``quantization_weighted_noise_gain`` function
+
 0.8.2
    - Fix some licensing issues
 
