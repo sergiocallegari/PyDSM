@@ -73,9 +73,9 @@ def power_pos(x,p):
             z = variable()
             if p > 1.:
                 prog = program(minimize(t),
-                               [belongs(vstack((v,t)),
-                                        power_pos_epi(p)),
-                                less_equals(z,v)],
+                               [less_equals(z,v),
+                                belongs(vstack((v,t)),
+                                        power_pos_epi(p))],
                                [z],
                                name='power_pos')
             else:

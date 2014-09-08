@@ -127,7 +127,7 @@ class cvxpy_array(object):
         # Prepare left slice
         sl = [None,None,None]
         if np.isscalar(key[0]):
-            sl = [key[0],key[0]+1,1]
+            sl = [key[0],key[0]+type(key[0])(1),1]
         else:
             if key[0].start == None:
                 sl[0] = 0
@@ -145,7 +145,7 @@ class cvxpy_array(object):
         # Prepare right slices
         sr = [None,None,None]
         if np.isscalar(key[1]):
-            sr = [key[1],key[1]+1,1]
+            sr = [key[1],key[1]+type(key[1])(1),1]
         else:
             if key[1].start == None:
                 sr[0] = 0
@@ -919,7 +919,7 @@ class cvxpy_sparray(object):
         # Prepare left slice
         sl = [None,None,None]
         if np.isscalar(key[0]):
-            sl = [key[0],key[0]+1,1]
+            sl = [key[0],key[0]+type(key[0])(1),1]
         else:
             if key[0].start == None:
                 sl[0] = 0
@@ -937,7 +937,7 @@ class cvxpy_sparray(object):
         # Prepare right slices
         sr = [None,None,None]
         if np.isscalar(key[1]):
-            sr = [key[1],key[1]+1,1]
+            sr = [key[1],key[1]+type(key[1])(1),1]
         else:
             if key[1].start == None:
                 sr[0] = 0
