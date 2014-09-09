@@ -14,31 +14,30 @@ and requires a `Python 2.7`_  environment. A port to Python
 Apart from the generic Python environment, there are other
 prerequisites too:
 
-Numpy_ :
-    A powerful library that adds vector and matrix manipulation
-    routines to Python. Currently tested with version 1.7.1, should
-    work with other releases too.
+Numpy_ : A powerful library that adds vector and matrix manipulation
+    routines to Python. Currently tested with version 1.8.2, should
+    work with newer releases too. May work with previous releases.
 
-Scipy_ :
-    A package of tools for science and engineering for
-    Python. Currently tested with version 0.12. Should work with other
-    releases too.
+Scipy_ : A package of tools for science and engineering for
+    Python. Currently tested with version 0.14. Should work with newer
+    releases too. May work with previous releases.
 
-Matplotlib_ :
-    A python plotting library. Currently tested with version 1.3,
-    should work with other releases too.
+Matplotlib_ : A python plotting library. Currently tested with version
+    1.3, should work with newer releases too. May work with previous
+    releases.
 
-CVXOPT_ :
-   A free software package for convex optimization based on the Python
-   programming language. Currently tested with version 1.1.5.
+CVXOPT_ : A free software package for convex optimization based on the
+    Python programming language. Currently tested with version
+    1.1.7. Should work with newer releases too. May work with previous
+    releases.
 
 Furthermore, the following pre-requisites may exist in case one wants to build
 from source (which is expected in Linux and optional in windows):
 
-Cython_ :
-    A language to write C extensions for the Python language. This is
-    actually necessary only for compiling the code. Tested with
-    versions 0.16.x and 0.17.x, should work with later releases too.
+Cython_ : A language to write C extensions for the Python
+    language. This is actually necessary only for compiling the
+    code. Tested with versions 0.20.2, should work with newer releases
+    too. May work with previous releases.
 
 A development version of the CBlas library :
     Blas is a library of routines for performing basic vector and
@@ -50,7 +49,7 @@ A development version of the CBlas library :
     This requisite does not exist in windows, where the blas code included
     in scipy is used.
 
-A C compiler :
+A compiler for the C language:
     This is used only for compiling the code.
 
 Although the prerequisites appear to be numerous, their management is
