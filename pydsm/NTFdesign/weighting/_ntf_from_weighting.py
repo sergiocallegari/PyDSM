@@ -54,8 +54,20 @@ def synthesize_ntf_from_noise_weighting(order, noise_weighting, H_inf=1.5,
         selection. Defaults to 'auto' which means setting the top left entry
         in the matrix Q defining the quadratic form to 1.
     options : dict, optional
-        parameters for the SDP optimizer, see the documentation of `cvxpy`.
-        This includes 'show_progress' (default True).
+        parameters for the SDP optimizer. These include:
+
+        ``maxiters``
+            Maximum number of iterations (defaults to 100)
+        ``abstol``
+            Absolute accuracy (defaults to 1e-7)
+        ``reltol``
+            Relative accuracy (defaults to 1e-6)
+        ``feastol``
+            Tolerance for feasibility conditions (defaults to 1e-6)
+        ``show_progress``
+            Print progress (defaults to True)
+
+        See also the documentation of ``cvxopt`` for further information.
 
     Returns
     -------
@@ -90,8 +102,20 @@ def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto",
         selection. Defaults to 'auto' which means setting the top left entry
         in the matrix Q defining the quadratic form to 1.
     options : dict, optional
-        parameters for the SDP optimizer, see the documentation of `cvxpy`.
-        This includes 'show_progress' (default True).
+        parameters for the SDP optimizer. These include:
+
+        ``maxiters``
+            Maximum number of iterations (defaults to 100)
+        ``abstol``
+            Absolute accuracy (defaults to 1e-7)
+        ``reltol``
+            Relative accuracy (defaults to 1e-6)
+        ``feastol``
+            Tolerance for feasibility conditions (defaults to 1e-6)
+        ``show_progress``
+            Print progress (defaults to True)
+
+        See also the documentation of ``cvxopt`` for further information.
 
     Returns
     -------
