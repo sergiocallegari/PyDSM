@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+0.9.0
+   - Include a local version of the discontinued cvxpy package
+     by Tomas Tinoco de Ribera. This is a temporary measure
+
 0.8.3
    - Fix a typo in the fast DSM simulator
      (only affecting case where modulator structure is passed in ABCD form)
