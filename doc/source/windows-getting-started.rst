@@ -4,6 +4,9 @@ Getting started guide for Windows systems
 The installation of PyDSM involves two major steps: the installation of
 its pre-requisites and the installation of PyDSM itself.
 
+Note that not all version of PyDSM may be available with a Windows
+installer.
+
 **PyDSM is currently only available for 32 bit Python environments in
 Windows.** This does not mean that you cannot have PyDSM for a 64 bit
 Python environment in windows, but merely that a pre-compiled PyDSM
@@ -56,50 +59,6 @@ system.
 Setting up a Python distribution such as Python(x,y) or WinPython is
 expected to take just a few minutes.
 
-Steps that must be practiced manually
-`````````````````````````````````````
-
-One of the prerequisites of PyDSM, namely *CVXPY*, is too young to be
-available in Python distributions. Thus, it needs to be installed
-manually. This is by no means hard, though.
-
-This code is available at the CVXPY_ site. Please, look there for
-documentation and for extended installation instructions.
-Unfortunately, so far the `CVXPY download site`_ is still empty,
-meaning that the code can only be downloaded with a specific tool for
-accessing the `CVXPY download repository`_. Since some may find this
-impractical, we are providing a development snapshot for convenience
-at the `PyDSM download site`_. This is available either in source form
-or as an installer (easier).
-
-In case you want to use the installer, just download the CVXPY
-``.exe`` file and run it. Some Python distributions such as WinPython
-let you just drop the file on a *package manager* window to install
-it.
-
-Otherwise, once you have the source code of CVXPY, unzip it, enter its
-directory and launch the `setup.py` file as::
-
-  python setup.py install --user
-
-The ``--user`` option is there to make a personal installation.
-
-Warning
-.......
-
-There is a bug in the Python ``setuptools`` that *may* cause Spyder
-(and possibly other Python programs) not to start after the use of
-setup.py illustrated above. Thus, after the installation of CVXPY,
-check if Spyder works. If it does not start, do the following:
-
-#. Go to the directory where your personal Python packages get
-   installed. This may be something like ``C:\Users\<your
-   username>\AppData\Roaming\Python\Python2.7\site-packages``
-
-#. Move away the ``setuptools.pth`` file (e.g. rename it to
-   ``setuptools.pth.bak``) since it messes up the directives by which
-   the Python environment searches its components.
-
 
 Installation of PyDSM itself
 ''''''''''''''''''''''''''''
@@ -140,26 +99,12 @@ environment) and
 This command should not report any error. After issuing it, the PyDSM
 functions should be available under the ``pydsm`` namespace.
 
-Please, refer to the PyDSM reference for further information on how to
+Please, look at the PyDSM reference for further information on how to
 take advantage of the code. It may also be helpful to check the
-reference for information on how to reproduce the results in the papers
+reference for information on the scientific papers that describe the
+methods implemented in the package.
 
-  Sergio Callegari, Federico Bizzarri *"Output Filter Aware
-  Optimization of the Noise Shaping Properties of ΔΣ Modulators via
-  Semi-Definite Programming,"* IEEE Transactions on Circuits and
-  systems - Part I: Regular Papers.
-
-  Sergio Callegari, Federico Bizzarri *"Should ΔΣ modulators used in
-  AC motor drives be adapted to the mechanical load of the motor?,"*
-  Proceedings of the 19th IEEE International Conference on
-  Electronics, Circuits and Systems (ICECS), 2012, pp. 849 - 852.
-
-  Sergio Callegari, Federico Bizzarri *"Noise Weighting in the
-  Design of ΔΣ Modulators (with a Psychoacoustic Coder as an
-  Example),"* IEEE Transactions on Circuits and Systems - Part II:
-  Express Briefs. To appear in 2013.
-
-If you find this code useful, please consider citing the above papers
+If you find this code useful, please consider citing such papers
 in your work.
 
 .. _pythonlibs site by Christoph Gohlke :
@@ -168,9 +113,6 @@ in your work.
 .. _Enthought Python : http://www.enthought.com/products/epd.php
 .. _Python(x,y) : http://code.google.com/p/pythonxy/
 .. _WinPython 2.7.x 32 bit : http://code.google.com/p/winpython/
-.. _CVXPY : http://www.stanford.edu/~ttinoco/cvxpy/
-.. _CVXPY download site : http://code.google.com/p/cvxpy/downloads/list
-.. _CVXPY download repository : http://code.google.com/p/cvxpy/source/checkout
 .. _PyDSM download site : http://code.google.com/p/pydsm/downloads/list
 .. _Netlib archive of prebuilt ATLAS libraries for Windows :
    http://www.netlib.org/atlas/archives/windows/

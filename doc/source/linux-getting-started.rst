@@ -69,11 +69,10 @@ CVXOPT. To this aim, you can either:
   permissions  and  does not  interfere  with  the Linux  distribution
   packaging system.
 
-* Use ``easy_install`` or ``pip`` to automatize the steps above. These
-  are scripts that automatically download packages from Pypi and
-  install them. Again, remember to install with the ``--user`` option
-  if you want to avoid any kind of interference with the distribution
-  package manager.
+* Use ``pip`` to automatize the steps above. These are scripts that
+  automatically download packages from Pypi and install them. Again,
+  remember to install with the ``--user`` option if you want to avoid
+  any kind of interference with the distribution package manager.
 
 Some notes on ATLAS
 ...................
@@ -84,29 +83,6 @@ etc.). To get maximum performance, you may want to re-compile it. Your
 distribution will certainly provide instructions for this. For
 instance, Debian and Ubuntu tell you how to optimize the Atlas library
 in the file ``/usr/share/doc/libatlas3-base/README.Debian``.
-
-Steps that must be practiced manually
-`````````````````````````````````````
-
-One of the prerequisites of this code, namely *CVXPY* is too young to
-be available in the Linux distributions or on Pypi. Thus it needs to
-be installed manually. This is by no means hard, though.
-
-This code is available at the CVXPY_ site. Please, look there for
-documentation and for extended installation instructions.
-Unfortunately, so far the `CVXPY download site`_ is still empty,
-meaning that the code can only be downloaded with a specific tool for
-accessing the `CVXPY download repository`_. Since some may find this
-impractical, we are providing a development snapshot for convenience
-at the `PyDSM download site`_.
-
-Once, you have the source code of CVXPY, unzip it, enter its directory
-and launch the `setup.py` file as::
-
-  python setup.py install --user
-
-(on some systems you may need to use something like ``python2.7``
-instead of ``python``).
 
 Installation of PyDSM itself
 ''''''''''''''''''''''''''''
@@ -140,30 +116,13 @@ environment) and
 This command should not report any error. After issuing it, the PyDSM
 functions should be available under the ``pydsm`` namespace.
 
-Please, refer to the PyDSM reference for further information on how to
+Please, look at the PyDSM reference for further information on how to
 take advantage of the code. It may also be helpful to check the
-reference for information on how to reproduce the results in the papers
+reference for information on the scientific papers that describe the
+methods implemented in the package.
 
-  Sergio Callegari, Federico Bizzarri *"Output Filter Aware
-  Optimization of the Noise Shaping Properties of ΔΣ Modulators via
-  Semi-Definite Programming,"* IEEE Transactions on Circuits and
-  systems - Part I: Regular Papers.
-
-  Sergio Callegari, Federico Bizzarri *"Should ΔΣ modulators used in
-  AC motor drives be adapted to the mechanical load of the motor?,"*
-  Proceedings of the 19th IEEE International Conference on
-  Electronics, Circuits and Systems (ICECS), 2012, pp. 849 - 852.
-
-  Sergio Callegari, Federico Bizzarri *"Noise Weighting in the
-  Design of ΔΣ Modulators (with a Psychoacoustic Coder as an
-  Example),"* IEEE Transactions on Circuits and Systems - Part II:
-  Express Briefs. To appear in 2013.
-
-If you find this code useful, please consider citing the above papers
+If you find this code useful, please consider citing such papers
 in your work.
 
 .. _PyPi : http://pypi.python.org/pypi
-.. _CVXPY : http://www.stanford.edu/~ttinoco/cvxpy/
-.. _CVXPY download site : http://code.google.com/p/cvxpy/downloads/list
-.. _CVXPY download repository : http://code.google.com/p/cvxpy/source/checkout
 .. _PyDSM download site : http://code.google.com/p/pydsm/downloads/list

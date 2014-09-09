@@ -32,11 +32,6 @@ CVXOPT_ :
    A free software package for convex optimization based on the Python
    programming language. Currently tested with version 1.1.5.
 
-CVXPY_ :
-    A free software package for modeling convex optimization problems
-    in Python. Currently tested with the still unreleased version 0.0.1
-    of the library, should work with later releases too.
-
 Furthermore, the following pre-requisites may exist in case one wants to build
 from source (which is expected in Linux and optional in windows):
 
