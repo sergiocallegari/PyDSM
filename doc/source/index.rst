@@ -11,6 +11,7 @@ Contents:
    reference
    replicate-results
    license
+   included_code
    changelog
 
 Indices and tables
