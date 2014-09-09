@@ -125,4 +125,4 @@ If you find this code useful, please consider citing such papers
 in your work.
 
 .. _PyPi : http://pypi.python.org/pypi
-.. _PyDSM download site : http://code.google.com/p/pydsm/downloads/list
+.. _PyDSM download site : https://code.google.com/p/pydsm/wiki/download?tm=2

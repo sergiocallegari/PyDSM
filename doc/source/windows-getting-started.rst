@@ -4,14 +4,15 @@ Getting started guide for Windows systems
 The installation of PyDSM involves two major steps: the installation of
 its pre-requisites and the installation of PyDSM itself.
 
-Note that not all version of PyDSM may be available with a Windows
-installer.
+Note that **not all version of PyDSM may be available with a Windows
+installer**.
 
-**PyDSM is currently only available for 32 bit Python environments in
-Windows.** This does not mean that you cannot have PyDSM for a 64 bit
-Python environment in windows, but merely that a pre-compiled PyDSM
-for Windows is currently only built and tested with a 32 bit Python
-environment. This is likely to change shortly.
+When an installer is provided for Windows, **PyDSM binaries are
+currently only available for 32 bit Python environments.** This does
+not mean that you cannot have PyDSM for a 64 bit Python environment in
+Windows, but merely that a pre-compiled PyDSM for Windows is currently
+only built and tested with a 32 bit Python environment. This is likely
+to change.
 
 Note that there is no issue in case you have a 64 bit Windows
 platform, since you can easily install a 32 bit Python environment on
@@ -20,15 +21,14 @@ it.
 If you really need a 64 bit PyDSM (e.g., because you want to simulate
 delta sigma modulators for very long time spans in a single shot,
 which may require access to a large amount of memory), please consider
-using :doc:`Linux <linux-getting-started>`. Alternatively, you may
-succeed in buildin all the PyDSM prerequisites and PyDSM itself with a
-64 bit Python environment using a commercial compiler. However, with
-this you are on your own (the `pythonlibs site by Christoph Gohlke`_
-may be a good starting point). Some commercial distributions of
-Python, such as `ActiveState Python`_ or `Enthought Python`_
-[http://www.activestate.com/activepython ActiveState Python] or
-[http://www.enthought.com/products/epd.php Enthought Python] may
-support building PyDSM in a 64 bit environment on Windows
+using :doc:`Linux <linux-getting-started>`.
+
+Alternatively, you may succeed in buildin all the PyDSM prerequisites
+and PyDSM itself with a 64 bit Python environment using a commercial
+compiler. However, with this you are on your own (the `pythonlibs site
+by Christoph Gohlke`_ may be a good starting point). Some commercial
+distributions of Python, such as `ActiveState Python`_ or `Enthought
+Python`_ may support building PyDSM in a 64 bit environment on Windows
 easily. However, this is also untested.
 
 Installation of the prerequisites
@@ -113,7 +113,7 @@ in your work.
 .. _Enthought Python : http://www.enthought.com/products/epd.php
 .. _Python(x,y) : http://code.google.com/p/pythonxy/
 .. _WinPython 2.7.x 32 bit : http://code.google.com/p/winpython/
-.. _PyDSM download site : http://code.google.com/p/pydsm/downloads/list
+.. _PyDSM download site : https://code.google.com/p/pydsm/wiki/download?tm=2
 .. _Netlib archive of prebuilt ATLAS libraries for Windows :
    http://www.netlib.org/atlas/archives/windows/
 .. _ATLAS sourceforge site : http://math-atlas.sourceforge.net/
