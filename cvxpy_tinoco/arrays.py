@@ -96,9 +96,9 @@ class cvxpy_array(object):
             raise TypeError('Invalid Key')
         if len(key) != 2:
             raise TypeError('Invalid Key')
-        if (not (issubclass(type(key[0]),int) or 
+        if (not (issubclass(type(key[0]),(int,long)) or
                  issubclass(type(key[0]),np.integer)) or
-            not (issubclass(type(key[1]),int) or 
+            not (issubclass(type(key[1]),(int,long)) or
                  issubclass(type(key[1]),np.integer))):
             raise TypeError('Invalid Key')
         if key[0] < 0 or key[0] >= self.shape[0]:
@@ -115,11 +115,11 @@ class cvxpy_array(object):
             raise TypeError('Invalid Key')
         if len(key) != 2:
             raise TypeError('Invalid Key')
-        if (not (issubclass(type(key[0]),int) or 
+        if (not (issubclass(type(key[0]),(int,long)) or
                  issubclass(type(key[0]),np.integer)) and
             type(key[0]) is not slice):
             raise TypeError('Invalid Key')
-        if (not (issubclass(type(key[1]),int) or 
+        if (not (issubclass(type(key[1]),(int,long)) or
                  issubclass(type(key[1]),np.integer)) and
             type(key[1]) is not slice):
             raise TypeError('Invalid Key')
