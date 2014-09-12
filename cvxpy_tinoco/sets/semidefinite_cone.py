@@ -52,7 +52,7 @@ class cvxpy_semidefinite_cone(object):
     # Method: _construct
     def _construct(self,el,mp,n):
 
-        m = el.shape[0]
+        m = int(el.shape[0])
         G = opt.spmatrix(0.0,[],[],(m*m,n))
         h = opt.matrix(0.0,(m*m,1))
         for j in range(0,m,1):
