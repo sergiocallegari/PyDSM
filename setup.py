@@ -67,11 +67,6 @@ class test (Command):
         TEST.unittest.TextTestRunner(verbosity=2).run(suite)
         sys.path = old_path[:]
 
-
-# We want the default compiler to be mingw32 in windows
-ccompiler._default_compilers=\
-        (('nt', 'mingw32'),)+ccompiler._default_compilers
-
 # Prepare the extension modules
 ext_modules=[
     Extension('pydsm.delsig._simulateDSM_cblas',
