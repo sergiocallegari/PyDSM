@@ -11,8 +11,8 @@ looking in the ``pydsm.delsig`` module.
 **Key functions**
 
 .. autofunction:: pydsm.delsig.synthesizeNTF
-
 .. autofunction:: pydsm.delsig.synthesizeChebyshevNTF
+.. autofunction:: pydsm.delsig.clans
 
 .. autofunction:: pydsm.delsig.simulateDSM
 
