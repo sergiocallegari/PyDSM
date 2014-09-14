@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012, Sergio Callegari
+# Copyright (c) 2012-2014, Sergio Callegari
 # All rights reserved.
 
 # This file is part of PyDSM.
@@ -28,6 +28,7 @@ from test_ir import *
 from test_dtft import *
 from test_q0 import *
 from test_NTFdesignfromfilter import *
+from test_NTFdesign_minmax import *
 
 if __name__ == '__main__':
     unittest.main()

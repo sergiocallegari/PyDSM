@@ -29,3 +29,4 @@ from . import filter_based
 from . import weighting
 from . import delsig
 from . import psychoacoustic
+from . import minmax
