@@ -64,7 +64,8 @@ import cvxpy_tinoco as cvxpy
 
 __all__=['synthesize_ntf_minmax']
 
-def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False):
+def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
+                          options = {}):
     u"""
     Synthesize a FIR NTF for an LP or BP ΔΣ modulator by min-max optimization.
 
@@ -95,6 +96,21 @@ def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False):
         Flag controlling the pre-assignement of NTF zeros. If ``False``, the
         design is practiced without any zero pre-assignment. If ``True``, a
         zero is pre-assigned at the modulator center-band. Defaults to False.
+    options : dict, optional
+        parameters for the SDP optimizer. These include:
+
+        ``maxiters``
+            Maximum number of iterations (defaults to 100)
+        ``abstol``
+            Absolute accuracy (defaults to 1e-7)
+        ``reltol``
+            Relative accuracy (defaults to 1e-6)
+        ``feastol``
+            Tolerance for feasibility conditions (defaults to 1e-6)
+        ``show_progress``
+            Print progress (defaults to True)
+
+        See also the documentation of ``cvxopt`` for further information.
 
     Returns
     -------
@@ -150,6 +166,10 @@ def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False):
         return None
     F+=[cvxpy.greater_equals(g,0)]
     p=cvxpy.program(cvxpy.minimize(g),F)
-    p.solve()
+    p.options.update(options)
+    quiet = False
+    if options.has_key('show_progress'):
+        quiet=not options['show_progress']
+    p.solve(quiet)
     ntf = ss2zpk(A,B,np.asarray(c.value),D)
     return ntf
