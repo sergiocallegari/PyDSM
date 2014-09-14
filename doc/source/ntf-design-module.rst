@@ -43,7 +43,6 @@ module of PyDSM <delsig-module>`.
 .. autofunction:: pydsm.NTFdesign.filter_based.q0_from_filter
 .. autofunction:: pydsm.NTFdesign.filter_based.quantization_noise_gain
 
-
 .. automodule:: pydsm.NTFdesign.psychoacoustic
 .. module:: NTFdesign.psichoacoustic
 
@@ -56,3 +55,8 @@ module of PyDSM <delsig-module>`.
 
 .. autofunction:: pydsm.NTFdesign.psychoacoustic.dunn_optzeros
 .. autofunction:: pydsm.NTFdesign.psychoacoustic.dunn_optzeros_cplx
+
+.. automodule:: pydsm.NTFdesign.minmax
+.. module NTFdesign.minmax
+
+.. autofunction:: pydsm.NTFdesign.minmax.synthesize_ntf_minmax
