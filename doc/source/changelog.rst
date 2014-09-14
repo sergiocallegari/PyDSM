@@ -1,6 +1,13 @@
 Changelog
 ---------
 
+0.9.1
+   - Apply some fixes to the modulator simulator
+   - Make building for 64 bit windows possible
+   - Implement ``clans`` NTF design method
+   - Implement ``minmax`` NTF design method
+     (only single band LP, so far)
+
 0.9.0
    - Include a local version of the discontinued cvxpy package
      by Tomas Tinoco de Ribera. This is a temporary measure
