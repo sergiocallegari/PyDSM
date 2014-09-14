@@ -89,7 +89,8 @@ def dtft(x, fs=1, t0=0):
     fs : real, optional
         sample frequency for the input vector (defaults to 1)
     t0 : real, optional
-        the time when x[0] is sampled (defaults to 0)
+        the time when x[0] is sampled (defaults to 0). This is expressed
+        in sample intervals.
     """
     return lambda f: np.sum(x*np.exp(-2j*np.pi*f/fs*(np.arange(len(x))-t0)))
 
