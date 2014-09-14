@@ -31,7 +31,7 @@ cdef inline void ds_quantize(int N, double* y, int y_stride, \
         if n[qi*n_stride] % 2 == 0:
             v[qi*v_stride] = 2*floor(0.5*y[qi*y_stride])+1
         else:
-            v[qi*v_stride] = 2*floor(0.5*y[qi*y_stride]+1)
+            v[qi*v_stride] = 2*floor(0.5*(y[qi*y_stride]+1))
         L = n[qi*n_stride]-1
         v[qi*v_stride]=dbl_sat(v[qi*v_stride],-L,L)
 
