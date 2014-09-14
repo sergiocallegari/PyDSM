@@ -26,4 +26,5 @@ This modules provides code for the synthesis of the modulator NTF, based
 on the routines in the DELSIG toolkit by R. Schreier.
 """
 
-from ..delsig import synthesizeNTF, optimize_NTF, synthesizeChebyshevNTF
+from ..delsig import (synthesizeNTF, optimize_NTF, synthesizeChebyshevNTF,
+                      clans)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012, Sergio Callegari
+# Copyright (c) 2013, Sergio Callegari
 # All rights reserved.
 
 # This file is part of PyDSM.
@@ -47,21 +47,28 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-"""
-Code ported from the DELSIG toolbox by R. Schreier
-==================================================
-"""
+import numpy as np
 
-__delsig_version__ = "7.4"
+__all__ = ['dsclansNTF']
 
-# The delsig module reflects the flat organization of the original DELSIG
-from ._decibel import *
-from ._ds import *
-from ._padding import *
-from ._tf import *
-from ._plot import *
-from ._synthesizeNTF import *
-from ._synthesizeChebyshevNTF import *
-from ._clans import *
-from ._simulateDSM import *
-from ._simulateDSM_scipy import *
+def dsclansNTF(x, order, rmax, Hz):
+    # Helper function to convert clans parameters into an NTF in zpk form
+    # i.e. translate x into H.
+    #
+    # Wrt the original code proposal in the article by Kenney and Carley
+    # the relationship between (zeta, wn) and x has been changed (as in the
+    # code by R. Schreier), in order to guarantee left-half-plane roots for
+    # the s polynomial
+    Hp = np.zeros(len(Hz),dtype=complex)
+    odd = order % 2
+    if odd:
+        s = -x[0]**2
+        # Bilinear transform
+        Hp[0] = rmax*(1+s)/(1-s)
+    for i in xrange(odd, order, 2):
+        zeta=x[i]**2
+        wn=x[i+1]**2
+        s=np.roots((1, 2*zeta*wn, wn**2))
+        # Bilinear transform
+        Hp[i:i+2] = rmax*(1+s)/(1-s)
+    return (Hz, Hp, 1)

@@ -21,10 +21,12 @@
 import unittest
 import numpy as np
 
-from pydsm.NTFdesign.delsig import synthesizeNTF, synthesizeChebyshevNTF
+from pydsm.NTFdesign.delsig import (synthesizeNTF, synthesizeChebyshevNTF,
+                                    clans)
 from pydsm.utilities import cplxpair
 
-__all__=["TestSynthesizeNTF", "TestSynthesizeChebyshevNTF"]
+__all__=["TestSynthesizeNTF", "TestSynthesizeChebyshevNTF",
+         "TestClans"]
 
 class TestSynthesizeNTF(unittest.TestCase):
     def setUp(self):
@@ -116,6 +118,32 @@ class TestSynthesizeChebyshevNTF(unittest.TestCase):
                599.974045233308e-003 - 710.003702019636e-003j]
         e_z = cplxpair(e_z)
         e_p = cplxpair(e_p)
+        np.testing.assert_almost_equal(k, e_k, 4)
+        np.testing.assert_almost_equal(z, e_z, 4)
+        np.testing.assert_almost_equal(p, e_p, 4)
+
+
+class TestClans(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_5_32_5_095_1(self):
+        z, p, k = clans(5,32,5,0.95,1)
+        e_k = 1
+        e_z = [1.00000000000000e+000,
+               998.603018798634e-003 + 52.8394818885978e-003j,
+               998.603018798634e-003 - 52.8394818885978e-003j,
+               996.045312843931e-003 + 88.8466924631155e-003j,
+               996.045312843931e-003 - 88.8466924631155e-003j]
+        e_p = [418.352260015271e-003,
+               489.222137893601e-003 + 170.971685170035e-003j,
+               489.222137893601e-003 - 170.971685170035e-003j,
+               652.448968088646e-003 + 381.722332008184e-003j,
+               652.448968088646e-003 - 381.722332008184e-003j]
+        e_z = cplxpair(e_z)
+        e_p = cplxpair(e_p)
+        z = cplxpair(z)
+        p = cplxpair(p)
         np.testing.assert_almost_equal(k, e_k, 4)
         np.testing.assert_almost_equal(z, e_z, 4)
         np.testing.assert_almost_equal(p, e_p, 4)
