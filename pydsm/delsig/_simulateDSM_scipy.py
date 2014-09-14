@@ -95,7 +95,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     if np.isscalar(x0) and x0 == 0:
         x0 = np.zeros((order, 1))
     else:
-        x0 = np.array(x0).reshape(-1, 1)
+        x0 = np.array(x0, dtype=float).reshape(-1, 1)
 
     if form == 1:
         A = ABCD[0:order, 0:order]
