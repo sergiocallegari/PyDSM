@@ -24,7 +24,7 @@ from distutils.core import setup, Command
 from distutils.extension import Extension
 from Cython.Build import cythonize
 import platform
-import numpy
+import numpy as np
 
 
 # Find version
@@ -83,13 +83,13 @@ Semi-Definite Programming', IEEE Transactions on Circuits and Systems I,
 Portion of code ported to python from the DELSIG toolbox by R. Schreier.
 """
 
-# Fix stuff for Windows
+# Special requirements for the windows platform
 if platform.system()=='Windows':
+    # In windows, the cblas simulator is not built
     ext_modules=[
         Extension('pydsm.delsig._simulateDSM_scipy_blas',
                   ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'],
-                  define_macros=[('__USE_MINGW_ANSI_STDIO','1')],
-                  include_dirs=[numpy.get_include()])]
+                  include_dirs=[np.get_include()])]
 
 setup(name='pydsm',
       version=__version__,
