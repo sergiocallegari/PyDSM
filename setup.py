@@ -28,7 +28,7 @@ import numpy as np
 
 
 # Find version
-__version__=''
+__version__ = ''
 execfile('pydsm/_version.py')
 
 
@@ -40,19 +40,19 @@ class test (Command):
          'Testfile to run in the test directory'),
         ]
 
-    def initialize_options (self):
+    def initialize_options(self):
         self.build_base = 'build'
         self.test_dir = 'test'
         self.test_file = 'test_all'
 
-    def finalize_options (self):
+    def finalize_options(self):
         build = self.get_finalized_command('build')
         self.build_purelib = build.build_purelib
         self.build_platlib = build.build_platlib
 
-    def run (self):
+    def run(self):
         # Invoke the 'build' command
-        self.run_command ('build')
+        self.run_command('build')
         # remember old sys.path to restore it afterwards
         old_path = sys.path[:]
         # extend sys.path
@@ -60,20 +60,20 @@ class test (Command):
         sys.path.insert(0, self.build_platlib)
         sys.path.insert(0, self.test_dir)
         # build include path for test
-        TEST=__import__(self.test_file)
+        TEST = __import__(self.test_file)
         suite = TEST.unittest.TestLoader().loadTestsFromModule(TEST)
         TEST.unittest.TextTestRunner(verbosity=2).run(suite)
         sys.path = old_path[:]
 
 # Prepare the extension modules
-ext_modules=[
+ext_modules = [
     Extension('pydsm.delsig._simulateDSM_cblas',
               ['pydsm/delsig/_simulateDSM_cblas.pyx']),
     Extension('pydsm.delsig._simulateDSM_scipy_blas',
               ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'])]
 
-description='Python Based Delta-Sigma modulator design tools'
-long_description="""Python Based Delta-Sigma modulator design tools.
+description = 'Python Based Delta-Sigma modulator design tools'
+long_description = """Python Based Delta-Sigma modulator design tools.
 
 Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
 Optimization of the Noise Shaping Properties of Delta-Sigma Modulators via
@@ -84,31 +84,33 @@ Portion of code ported to python from the DELSIG toolbox by R. Schreier.
 """
 
 # Special requirements for the windows platform
-if platform.system()=='Windows':
+if platform.system() == 'Windows':
     # In windows, the cblas simulator is not built
-    ext_modules=[
+    ext_modules = [
         Extension('pydsm.delsig._simulateDSM_scipy_blas',
                   ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'],
                   include_dirs=[np.get_include()])]
 
-setup(name='pydsm',
-      version=__version__,
-      description=description,
-      author='Sergio Callegari',
-      author_email='sergio.callegari@unibo.it',
-      url='http://pydsm.googlecode.com',
-      packages = ['pydsm', 'pydsm.simulation', 'pydsm.NTFdesign',
-                  'pydsm.NTFdesign.filter_based', 'pydsm.delsig',
-                  'pydsm.NTFdesign.weighting', 'cvxpy_tinoco',
-		  'cvxpy_tinoco.functions', 'cvxpy_tinoco.procedures',
-		  'cvxpy_tinoco.sets'],
-      ext_modules=cythonize(ext_modules),
-      requires=['scipy(>=0.10.1)',
-                'numpy(>=1.6.1)',
-                'matplotlib(>= 1.1.0)',
-                'cvxopt(>=1.1.4)',
-                'cython(>=0.16)'],
-      cmdclass = {'test': test},
-      license = 'GNU GPL version 3 or any later version',
-      platforms = ['Linux','Windows','Mac'],
-      long_description = long_description)
+setup(
+    name='pydsm',
+    version=__version__,
+    description=description,
+    long_description=long_description,
+    author='Sergio Callegari',
+    author_email='sergio.callegari@unibo.it',
+    url='http://pydsm.googlecode.com',
+    license='GNU GPL version 3 or any later version',
+    platforms=['Linux', 'Windows', 'Mac'],
+    packages=['pydsm', 'pydsm.simulation', 'pydsm.NTFdesign',
+              'pydsm.NTFdesign.filter_based', 'pydsm.delsig',
+              'pydsm.NTFdesign.weighting', 'cvxpy_tinoco',
+              'cvxpy_tinoco.functions', 'cvxpy_tinoco.procedures',
+              'cvxpy_tinoco.sets'],
+    ext_modules=cythonize(ext_modules),
+    requires=['scipy(>=0.10.1)',
+              'numpy(>=1.6.1)',
+              'matplotlib(>= 1.1.0)',
+              'cvxopt(>=1.1.4)',
+              'cython(>=0.16)'],
+    cmdclass={'test': test}
+)
