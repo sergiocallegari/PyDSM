@@ -22,7 +22,7 @@
 import sys
 from distutils.core import setup, Command
 from distutils.extension import Extension
-from Cython.Build import cythonize
+from Cython.Distutils import build_ext
 import platform
 import numpy as np
 
@@ -107,11 +107,12 @@ setup(
               'pydsm.NTFdesign.weighting', 'cvxpy_tinoco',
               'cvxpy_tinoco.functions', 'cvxpy_tinoco.procedures',
               'cvxpy_tinoco.sets'],
-    ext_modules=cythonize(ext_modules),
+    ext_modules=ext_modules,
     requires=['scipy(>=0.10.1)',
               'numpy(>=1.6.1)',
               'matplotlib(>= 1.1.0)',
               'cvxopt(>=1.1.4)',
               'cython(>=0.16)'],
-    cmdclass={'test': test}
+    cmdclass={'test': test,
+              'build_ext': build_ext}
 )
