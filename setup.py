@@ -68,7 +68,8 @@ class test (Command):
 # Prepare the extension modules
 ext_modules = [
     Extension('pydsm.delsig._simulateDSM_cblas',
-              ['pydsm/delsig/_simulateDSM_cblas.pyx']),
+              ['pydsm/delsig/_simulateDSM_cblas.pyx'],
+              libraries=['cblas']),
     Extension('pydsm.delsig._simulateDSM_scipy_blas',
               ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'])]
 

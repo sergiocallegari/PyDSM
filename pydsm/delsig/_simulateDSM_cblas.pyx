@@ -18,8 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-# distutils: libraries = cblas
-
 """
 Fast simulator for a generic delta sigma modulator using external cblas
 =======================================================================
