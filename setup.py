@@ -124,6 +124,6 @@ setup(name='pydsm',
                 'cvxopt(>=1.1.4)',
                 'cython(>=0.16)'],
       cmdclass = {'test': test},
-      license = 'Simplified BSD License',
+      license = 'GNU GPL version 3 or any later version',
       platforms = ['Linux','Windows','Mac'],
       long_description = long_description)
