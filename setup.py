@@ -20,9 +20,7 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from distutils.core import setup
-from distutils.core import Command
-from distutils import ccompiler
+from distutils.core import setup, Command
 from distutils.extension import Extension
 from Cython.Build import cythonize
 import platform
