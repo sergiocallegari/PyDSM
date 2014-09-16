@@ -1,0 +1,8 @@
+include CHANGELOG COPYING MANIFEST.in
+recursive-include Examples *.py
+recursive-include pydsm *.pxi
+recursive-include test/Data *.csv
+graft doc
+prune doc/build
+exclude doc/source/*~
+recursive-exclude . .git*
