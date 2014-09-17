@@ -100,7 +100,7 @@ setup(
     author='Sergio Callegari',
     author_email='sergio.callegari@unibo.it',
     url='http://pydsm.googlecode.com',
-    license='GNU GPL version 3 or any later version',
+    license='GNU General Public License v3 or later (GPLv3+)',
     platforms=['Linux', 'Windows', 'Mac'],
     packages=['pydsm', 'pydsm.simulation', 'pydsm.NTFdesign',
               'pydsm.NTFdesign.filter_based', 'pydsm.delsig',
@@ -114,5 +114,25 @@ setup(
               'cvxopt(>=1.1.4)',
               'cython(>=0.16)'],
     cmdclass={'test': test,
-              'build_ext': build_ext}
+              'build_ext': build_ext},
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Environment :: Console',
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
+        'Intended Audience :: Developers',
+        ('License :: OSI Approved :: '
+         'GNU General Public License v3 or later (GPLv3+)'),
+        'Natural Language :: English',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Cython',
+        'Topic :: Education',
+        ('Topic :: Scientific/Engineering :: '
+         'Electronic Design Automation (EDA)')
+        ]
 )
