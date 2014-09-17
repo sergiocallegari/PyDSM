@@ -25,3 +25,4 @@
 - [python] make python3 compatible
 - [python] make pep8 clean
 - [examples] provide notebook version of the examples
+- [setup] add to setup some command to build documentation (docbuild, docdist)
