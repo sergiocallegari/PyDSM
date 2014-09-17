@@ -58,7 +58,8 @@ from ._padding import padl, padr
 from ._tf import rmsGain
 from ..utilities import db
 
-__all__=["ds_synNTFobj1", "ds_f1f2", "ds_optzeros"]
+__all__ = ["ds_synNTFobj1", "ds_f1f2", "ds_optzeros"]
+
 
 def ds_synNTFobj1(x, p, osr, f0):
     """
@@ -66,13 +67,14 @@ def ds_synNTFobj1(x, p, osr, f0):
     """
     z = np.exp(2j*np.pi*(f0+0.5/osr*x))
     if f0 > 0:
-        z = padl(z,len(p)/2, np.exp(2j*np.pi*f0))
+        z = padl(z, len(p)/2, np.exp(2j*np.pi*f0))
     z = np.concatenate((z, z.conj()))
     if f0 == 0:
         z = padr(z, len(p), 1)
     f1, f2 = ds_f1f2(osr, f0)
 
     return db(rmsGain((z, p, 1), f1, f2))
+
 
 def ds_f1f2(osr=64, f0=0, complex_flag=False):
     """
@@ -104,9 +106,10 @@ def ds_f1f2(osr=64, f0=0, complex_flag=False):
             f1 = f0-0.25/osr
             f2 = f0+0.25/osr
         else:
-            f1 = 0;
+            f1 = 0
             f2 = 0.5/osr
     return f1, f2
+
 
 def ds_optzeros(n, opt=1):
     """
@@ -217,12 +220,12 @@ def ds_optzeros(n, opt=1):
     z = np.sort(optZeros)
     optZeros = np.zeros(n)
     m = 0
-    if (n%2) == 1:
+    if (n % 2) == 1:
         optZeros[0] = z[0]
         z = z[1:]
         m = m+1
     for i in xrange(len(z)):
-        optZeros[m]   =  z[i]
+        optZeros[m] = z[i]
         optZeros[m+1] = -z[i]
         m = m+2
 

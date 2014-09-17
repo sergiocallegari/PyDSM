@@ -56,6 +56,7 @@ from ..utilities import cplxpair, is_negligible
 from ._ds import ds_optzeros, ds_synNTFobj1
 from ._padding import padl
 
+
 def synthesizeNTF1(order, osr, opt, H_inf, f0):
     # Determine the zeros.
     if f0 != 0:
@@ -77,7 +78,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
             # Bandpass design-- shift and replicate the zeros.
             order = order*2
             z = np.sort(z) + 2*np.pi*f0
-            z = np.vstack((z,-z)).transpose().flatten()
+            z = np.vstack((z, -z)).transpose().flatten()
         z = np.exp(1j*z)
     else:
         z = opt
@@ -108,18 +109,18 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
             # !!! The limit is actually lower for opt=1 and low OSR
             if H_inf >= HinfLimit:
                 warn('Unable to achieve specified Hinf.\n'
-                    'Setting all NTF poles to zero.',
-                    PyDsmWarning)
+                     'Setting all NTF poles to zero.',
+                     PyDsmWarning)
                 p = np.zeros(order)
             else:
                 x = 0.3**(order-1)   # starting guess
                 for itn in xrange(1, Hinf_itn_limit+1):
                     me2 = -0.5*(x**(2./order))
-                    w = (2*np.arange(1,order+1)+1)*np.pi/order
+                    w = (2*np.arange(1, order+1)+1)*np.pi/order
                     mb2 = 1+me2*np.exp(1j*w)
                     p = mb2 - np.sqrt(mb2**2-1)
                     # Reflect poles to be inside the unit circle
-                    out = abs(p)>1
+                    out = abs(p) > 1
                     p[out] = 1/p[out]
                     # The following is not exactly what delsig does.
                     # We do not have an identical cplxpair
@@ -160,7 +161,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                 mb2 = c2pif0 + e2*np.exp(1j*w)
                 p = mb2 - np.sqrt(mb2**2-1)
                 # Reflect poles to be inside the unit circle
-                out = abs(p)>1
+                out = abs(p) > 1
                 p[out] = 1/p[out]
                 # The following is not exactly what delsig does.
                 p = cplxpair(p)
@@ -179,7 +180,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                     break
                 if x > 1e6:
                     warn('Unable to achieve specified Hinf.\n'
-                        'Setting all NTF poles to zero.', PyDsmWarning)
+                         'Setting all NTF poles to zero.', PyDsmWarning)
                     p = np.zeros(order)
                     break
                 if itn == Hinf_itn_limit:
@@ -201,8 +202,8 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
             # options = optimset(options,'Display','off');
             # %options = optimset(options,'Display','iter');
             opt_result = fmin_l_bfgs_b(ds_synNTFobj1, x0, args=(p, osr, f0),
-                                       approx_grad=True, bounds=zip(lb,ub))
-            x=opt_result[0]
+                                       approx_grad=True, bounds=zip(lb, ub))
+            x = opt_result[0]
             x0 = x
             z = np.exp(2j*np.pi*(f0+0.5/osr*x))
             if f0 > 0:
@@ -210,7 +211,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
             z = np.concatenate((z, z.conj()))
             if f0 == 0:
                 z = padl(z, len(p), 1)
-            if  np.abs(np.real(evalTF((z, p, k), z_inf)) - H_inf ) < ftol:
+            if np.abs(np.real(evalTF((z, p, k), z_inf)) - H_inf) < ftol:
                 opt_iteration = 0
             else:
                 opt_iteration = opt_iteration - 1

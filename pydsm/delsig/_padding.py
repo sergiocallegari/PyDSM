@@ -54,7 +54,8 @@ DELSIG style matrix and vector padding routines
 
 import numpy as np
 
-__all__=["padl", "padr", "padt", "padb"]
+__all__ = ["padl", "padr", "padt", "padb"]
+
 
 def padl(x, n, val=0):
     """
@@ -84,6 +85,7 @@ def padl(x, n, val=0):
     else:
         return np.hstack((val*np.ones((x.shape[0], n-x.shape[1])), x))
 
+
 def padr(x, n, val=0):
     """Pad a matrix or a vector x on the right.
 
@@ -111,6 +113,7 @@ def padr(x, n, val=0):
     else:
         return np.hstack((x, (val*np.ones((x.shape[0], n-x.shape[1])))))
 
+
 def padt(x, n, val=0):
     """Pad a matrix x on the top.
 
@@ -133,6 +136,7 @@ def padt(x, n, val=0):
     The empty matrix is assumed to have 1 empty column.
     """
     return np.vstack((val*np.ones((n-x.shape[0], x.shape[1])), x))
+
 
 def padb(x, n, val=0):
     """Pad a matrix x on the bottom.

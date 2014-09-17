@@ -51,6 +51,7 @@ import numpy as np
 
 __all__ = ['dsclansNTF']
 
+
 def dsclansNTF(x, order, rmax, Hz):
     # Helper function to convert clans parameters into an NTF in zpk form
     # i.e. translate x into H.
@@ -59,16 +60,16 @@ def dsclansNTF(x, order, rmax, Hz):
     # the relationship between (zeta, wn) and x has been changed (as in the
     # code by R. Schreier), in order to guarantee left-half-plane roots for
     # the s polynomial
-    Hp = np.zeros(len(Hz),dtype=complex)
+    Hp = np.zeros(len(Hz), dtype=complex)
     odd = order % 2
     if odd:
         s = -x[0]**2
         # Bilinear transform
         Hp[0] = rmax*(1+s)/(1-s)
     for i in xrange(odd, order, 2):
-        zeta=x[i]**2
-        wn=x[i+1]**2
-        s=np.roots((1, 2*zeta*wn, wn**2))
+        zeta = x[i]**2
+        wn = x[i+1]**2
+        s = np.roots((1, 2*zeta*wn, wn**2))
         # Bilinear transform
         Hp[i:i+2] = rmax*(1+s)/(1-s)
     return (Hz, Hp, 1)
