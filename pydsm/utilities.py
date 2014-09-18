@@ -23,55 +23,62 @@ Utility functions for PyDSM
 ===========================
 """
 
-__all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot"]
+__all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS"]
 
-import sys
 import numpy as np
 
-def is_negligible(x, tol=100*sys.float_info.epsilon):
+
+EPS = np.finfo(float).eps
+
+
+def is_negligible(x, tol=100*EPS):
     """
     Checks if a number is close to zero.
 
     Parameters
     ----------
-    x : real
+    x : float, complex or array_like
         number to be checked
-    tol : real, optional
+    tol : float, optional
         absolute tolerance. Defaults to 100 times the system epsilon.
 
     Returns
     -------
-    y : bool
+    y : bool or array_like of bools
         whether the input number is really close to zero or not.
     """
-    return abs(np.asarray(x))<tol
+    return abs(np.asarray(x)) < tol
 
-def chop(x, tol=100*sys.float_info.epsilon):
+
+def chop(x, tol=100*EPS):
     """
-    Chops to zero the input numbers that are close to zero.
+    Chop to zero input numbers that are close to zero.
 
     Parameters
     ----------
-    x : real
+    x : float, complex or array_like
         number to process
-    tol : real, optional
+    tol : float, optional
         absolute tolerance. Defaults to 100 times the system epsilon.
 
     Returns
     -------
-    y : real
+    y : float
         y is zero if x is close to zero according to the tolerance.
         Alternatively, y is x.
 
     Notes
     -----
+    If the input is an array, it is always copied.
     See also `is_negligible`.
     """
+    x = np.asarray(x)
+    if np.iscomplexobj(x):
+        return chop(x.real, tol) + 1j*chop(x.imag, tol)
     y = np.copy(x)
     y[is_negligible(y, tol)] = 0.
-    if np.iscomplexobj(y):
-        y = chop(y.real, tol) + 1j*chop(y.imag, tol)
     return y
+
 
 def db(x, signal_type='voltage', R=1):
     """
@@ -104,9 +111,10 @@ def db(x, signal_type='voltage', R=1):
     if signal_type == 'power':
         return 10*np.log10(x)
     else:
-        return 10*np.log10(np.abs(x)**2/R)
+        return 10*np.log10(np.abs(x)**2./R)
 
-def cplxpair(x, tol=100*sys.float_info.epsilon):
+
+def cplxpair(x, tol=100*EPS):
     """
     Sorts values in input list by complex pairs.
 
@@ -151,6 +159,7 @@ def cplxpair(x, tol=100*sys.float_info.epsilon):
         if abs(x_cplx2[2*i]-np.conj(x_cplx2[2*i+1])) > tol:
             raise ValueError('Cannot identify complex pairs.')
     return np.concatenate((x_cplx2, x_real))
+
 
 def mdot(*args):
     """
