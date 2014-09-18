@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+0.10.0
+   - Ready setup script for distribution
+   - Implement partitionABCD in delsig module
+   - Make delsig module PEP8 compliant
+   - Some minor improvements to utility functions
+
 0.9.1
    - Apply some fixes to the modulator simulator
    - Make building for 64 bit windows possible
