@@ -56,6 +56,13 @@ Part of this code, limited to the `delsig` module, is ported from the
 copyright by R. Schreier and licensed under the BSD license, as
 specified in the corresponding files.
 
+Distribution temporarily includes a patched version of the `CVXPY`
+package by Tomas Tinoco de Rubira, that is currently discontinued,
+being replaced by the `CVXPY` package by Steven Diamond and Eric Chu
+and Stephen Boyd that provices more functionality and a different API.
+This code is copyright by Tomas Tinoco de Rubira and licensed under the GPLv3+,
+as specified in the corresponding files.
+
 PyDSM is distributed in the hope that it will be useful, but WITHOUT
 ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
