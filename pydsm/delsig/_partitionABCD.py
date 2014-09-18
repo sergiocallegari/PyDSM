@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012, Sergio Callegari
+# Copyright (c) 2014, Sergio Callegari
 # All rights reserved.
 
 # This file is part of PyDSM.
@@ -47,22 +47,38 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-"""
-Code ported from the DELSIG toolbox by R. Schreier
-==================================================
-"""
+import numpy as np
 
-__delsig_version__ = "7.4"
+__all__ = ['partitionABCD']
 
-# The delsig module reflects the flat organization of the original DELSIG
-from ._decibel import *
-from ._ds import *
-from ._padding import *
-from ._tf import *
-from ._plot import *
-from ._synthesizeNTF import *
-from ._synthesizeChebyshevNTF import *
-from ._clans import *
-from ._simulateDSM import *
-from ._simulateDSM_scipy import *
-from ._partitionABCD import *
+
+def partitionABCD(ABCD, m=None):
+    u"""Partition ABCD ss description in A, B, C, D for an m-input sytem
+
+    Parameters
+    ----------
+    ABCD : matrix like 2D
+        input ABCD matrix providing the state space representation
+    m : int or None, optional
+        number of inputs of state space system. If set to None, a guess
+        is made from the ABCD matrix size (defaults to None).
+
+    Returns
+    -------
+    (A, B, C, D) : tuple of 2D ndarrays
+        the individual matrices composing ABCD
+
+    Notes
+    -----
+    When the number of inputs is automatically guessed, the minimum
+    acceptable value is take, considering the the system must have at least
+    an input and an output.
+
+    If ABCD is an ndarray, then its content is not copyed in A, B, C, D.
+    """
+    ABCD = np.asarray(ABCD)
+    if m is None:
+        n = min(ABCD.shape)-1
+    else:
+        n = ABCD.shape[1]-m
+    return (ABCD[:n, :n], ABCD[:n, n:], ABCD[n:, :n], ABCD[n:, n:])
