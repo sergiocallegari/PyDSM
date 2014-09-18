@@ -20,18 +20,22 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from distutils.core import setup
-from distutils.core import Command
-from distutils import ccompiler
+import os
+from distutils.core import setup, Command
 from distutils.extension import Extension
-from Cython.Build import cythonize
+from Cython.Distutils import build_ext
 import platform
-import numpy
+import numpy as np
 
 
 # Find version
-__version__=''
+__version__ = ''
 execfile('pydsm/_version.py')
+
+
+def read_from_here(fname):
+    with open(os.path.join(os.path.dirname(__file__), fname)) as fp:
+        return fp.read()
 
 
 class test (Command):
@@ -42,19 +46,19 @@ class test (Command):
          'Testfile to run in the test directory'),
         ]
 
-    def initialize_options (self):
+    def initialize_options(self):
         self.build_base = 'build'
         self.test_dir = 'test'
         self.test_file = 'test_all'
 
-    def finalize_options (self):
+    def finalize_options(self):
         build = self.get_finalized_command('build')
         self.build_purelib = build.build_purelib
         self.build_platlib = build.build_platlib
 
-    def run (self):
+    def run(self):
         # Invoke the 'build' command
-        self.run_command ('build')
+        self.run_command('build')
         # remember old sys.path to restore it afterwards
         old_path = sys.path[:]
         # extend sys.path
@@ -62,68 +66,75 @@ class test (Command):
         sys.path.insert(0, self.build_platlib)
         sys.path.insert(0, self.test_dir)
         # build include path for test
-        TEST=__import__(self.test_file)
+        TEST = __import__(self.test_file)
         suite = TEST.unittest.TestLoader().loadTestsFromModule(TEST)
         TEST.unittest.TextTestRunner(verbosity=2).run(suite)
         sys.path = old_path[:]
 
 # Prepare the extension modules
-ext_modules=[
+ext_modules = [
     Extension('pydsm.delsig._simulateDSM_cblas',
-              ['pydsm/delsig/_simulateDSM_cblas.pyx']),
+              ['pydsm/delsig/_simulateDSM_cblas.pyx'],
+              libraries=['cblas']),
     Extension('pydsm.delsig._simulateDSM_scipy_blas',
               ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'])]
 
-description=u'Python Based ΔΣ modulator design tools'
-long_description=u"""
-Python Based ΔΣ modulator design tools.
+description = 'Python Based Delta-Sigma modulator design tools'
+# Long description can contain restructured text and goes on display
+# on Pypi
+long_description = (read_from_here('README') +
+                    '\n\n' +
+                    read_from_here('CHANGELOG'))
 
-Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
-Optimization of the Noise Shaping Properties of ΔΣ Modulators via
-Semi-Definite Programming', IEEE Transactions on Circuits and Systems I,
-2013 and others.
-
-Portion of code ported to python from the DELSIG toolbox by R. Schreier.
-"""
-
-# Fix stuff for Windows
-if platform.system()=='Windows':
-    ext_modules=[
+# Special requirements for the windows platform
+if platform.system() == 'Windows':
+    # In windows, the cblas simulator is not built
+    ext_modules = [
         Extension('pydsm.delsig._simulateDSM_scipy_blas',
                   ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'],
-                  define_macros=[('__USE_MINGW_ANSI_STDIO','1')],
-                  include_dirs=[numpy.get_include()])]
-    description='Python Based Delta-Sigma modulator design tools'
-    long_description="""
-Python Based Delta-Sigma modulator design tools.
+                  include_dirs=[np.get_include()])]
 
-Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
-Optimization of the Noise Shaping Properties of Delta-Sigma Modulators via
-Semi-Definite Programming', IEEE Transactions on Circuits and Systems I,
-2013 and others.
-
-Portion of code ported to python from the DELSIG toolbox by R. Schreier.
-"""
-
-
-setup(name='pydsm',
-      version=__version__,
-      description=description,
-      author='Sergio Callegari',
-      author_email='sergio.callegari@unibo.it',
-      url='http://pydsm.googlecode.com',
-      packages = ['pydsm', 'pydsm.simulation', 'pydsm.NTFdesign',
-                  'pydsm.NTFdesign.filter_based', 'pydsm.delsig',
-                  'pydsm.NTFdesign.weighting', 'cvxpy_tinoco',
-		  'cvxpy_tinoco.functions', 'cvxpy_tinoco.procedures',
-		  'cvxpy_tinoco.sets'],
-      ext_modules=cythonize(ext_modules),
-      requires=['scipy(>=0.10.1)',
-                'numpy(>=1.6.1)',
-                'matplotlib(>= 1.1.0)',
-                'cvxopt(>=1.1.4)',
-                'cython(>=0.16)'],
-      cmdclass = {'test': test},
-      license = 'GNU GPL version 3 or any later version',
-      platforms = ['Linux','Windows','Mac'],
-      long_description = long_description)
+setup(
+    name='pydsm',
+    version=__version__,
+    description=description,
+    long_description=long_description,
+    author='Sergio Callegari',
+    author_email='sergio.callegari@unibo.it',
+    url='http://pydsm.googlecode.com',
+    license='GNU General Public License v3 or later (GPLv3+)',
+    platforms=['Linux', 'Windows', 'Mac'],
+    packages=['pydsm', 'pydsm.simulation', 'pydsm.NTFdesign',
+              'pydsm.NTFdesign.filter_based', 'pydsm.delsig',
+              'pydsm.NTFdesign.weighting', 'cvxpy_tinoco',
+              'cvxpy_tinoco.functions', 'cvxpy_tinoco.procedures',
+              'cvxpy_tinoco.sets'],
+    ext_modules=ext_modules,
+    requires=['scipy(>=0.10.1)',
+              'numpy(>=1.6.1)',
+              'matplotlib(>= 1.1.0)',
+              'cvxopt(>=1.1.4)',
+              'cython(>=0.16)'],
+    cmdclass={'test': test,
+              'build_ext': build_ext},
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Environment :: Console',
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
+        'Intended Audience :: Developers',
+        ('License :: OSI Approved :: '
+         'GNU General Public License v3 or later (GPLv3+)'),
+        'Natural Language :: English',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Cython',
+        'Topic :: Education',
+        ('Topic :: Scientific/Engineering :: '
+         'Electronic Design Automation (EDA)')
+        ]
+)
