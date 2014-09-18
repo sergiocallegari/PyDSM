@@ -30,14 +30,15 @@ except:
     pass
 from ._simulateDSM_scipy_blas import simulateDSM as simulateDSM_scipy_blas
 
-__all__=["use_fast_simulator", "simulateDSM"]
+__all__ = ["use_fast_simulator", "simulateDSM"]
 
 try:
-    simulateDSM_fast=simulateDSM_cblas
+    simulateDSM_fast = simulateDSM_cblas
 except:
-    simulateDSM_fast=simulateDSM_scipy_blas
+    simulateDSM_fast = simulateDSM_scipy_blas
 
 use_fast_simulator = True
+
 
 def simulateDSM(u, arg2, nlev=2, x0=0,
                 store_xn=False, store_xmax=False, store_y=False):
@@ -127,8 +128,8 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     """
 
     if use_fast_simulator:
-        return simulateDSM_fast(u, arg2, nlev, x0, \
-            store_xn, store_xmax, store_y)
+        return simulateDSM_fast(u, arg2, nlev, x0,
+                                store_xn, store_xmax, store_y)
     else:
-        return simulateDSM_slow(u, arg2, nlev, x0, \
-            store_xn, store_xmax, store_y)
+        return simulateDSM_slow(u, arg2, nlev, x0,
+                                store_xn, store_xmax, store_y)

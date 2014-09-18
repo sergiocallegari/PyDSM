@@ -1,4 +1,4 @@
-## -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # Copyright (c) 2012, Sergio Callegari
 # All rights reserved.
@@ -57,7 +57,8 @@ import matplotlib.pyplot as plt
 from ..utilities import cplxpair
 from scipy.signal import tf2zpk
 
-__all__=["plotPZ"]
+__all__ = ["plotPZ"]
+
 
 def plotPZ(H, color='b', markersize=5, showlist=False):
     """
@@ -124,25 +125,25 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
         y = 0.05*(len(pp)+1)
         str_p = 'Poles:'
         plt.text(-0.9, y, str_p,
-                 horizontalalignment = 'left',
-                 verticalalignment = 'center')
+                 horizontalalignment='left',
+                 verticalalignment='center')
         y = y - 0.1
         for i in xrange(len(pp)):
             if pp[i].imag == 0:
                 str_p = '%+.4f' % pp[i].real
             else:
-                str_p = '%+.4f+/-j%.4f' %  (pp[i].real, pp[i].imag)
+                str_p = '%+.4f+/-j%.4f' % (pp[i].real, pp[i].imag)
             plt.text(-0.9, y, str_p,
-                     horizontalalignment = 'left',
-                     verticalalignment = 'center')
+                     horizontalalignment='left',
+                     verticalalignment='center')
             y = y - 0.1
         if len(z) > 0:
             zz = z[z.imag >= 0]
             y = 0.05*(len(zz)+1)
             str_z = 'Zeros:'
             plt.text(0, y, str_z,
-                     horizontalalignment = 'left',
-                     verticalalignment = 'center')
+                     horizontalalignment='left',
+                     verticalalignment='center')
             y = y - 0.1
             for i in xrange(len(zz)):
                 if zz[i].imag == 0:
@@ -150,8 +151,8 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
                 else:
                     str_z = '%+.4f+/-j%.4f' % (zz[i].real, zz[i].imag)
                 plt.text(0, y, str_z,
-                         horizontalalignment = 'left',
-                         verticalalignment = 'center')
+                         horizontalalignment='left',
+                         verticalalignment='center')
                 y = y - 0.1
 
     if not hold_status:

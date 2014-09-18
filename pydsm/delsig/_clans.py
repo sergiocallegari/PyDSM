@@ -65,7 +65,8 @@ from ._tf import evalTF
 from ..ir import impulse_response
 from ._dsclansNTF import dsclansNTF
 
-__all__=["clans"]
+__all__ = ["clans"]
+
 
 def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, options={}):
     u"""
@@ -162,47 +163,49 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, options={}):
     if odd:
         # Treat first pole (that is necessarily real)
         z = poles[0].real/rmax
-        if np.abs(z)>1:
+        if np.abs(z) > 1:
             # Project poles outside rmax onto the circle with radius rmax
             # NB. Test has been fixed wrt DELSIG, where it always fails.
             z = z/np.abs(z)
         # Bilinear transform (modulus a mult. coeff)
         s = (z-1)/(z+1)
-        x[0]=np.sqrt(-s)
+        x[0] = np.sqrt(-s)
     # All other poles are assumed to be complex.
     # N.B. This may be a wrong assumption, though. There may be more real
     # poles.
-    for i in xrange(odd,order,2):
+    for i in xrange(odd, order, 2):
         z = poles[i:i+2]/rmax
-        if np.any(np.abs(z)>1):
+        if np.any(np.abs(z) > 1):
             # Project poles outside rmax onto the circle with radius rmax
             z = z/np.abs(z)
         # Bilinear transform (modulus a mult. coeff)
-        s=(z-1)/(z+1)
-        coeffs=np.poly(s).real
+        s = (z-1)/(z+1)
+        coeffs = np.poly(s).real
         wn = np.sqrt(coeffs[2])
         zeta = coeffs[1]/(2*wn)
         x[i] = np.sqrt(zeta)
         x[i+1] = np.sqrt(wn)
 
     # Run the optimizer
-    x = fmin_slsqp(_dsclansObj6a,x,ieqcons=(_dsclansObj6b,),
+    x = fmin_slsqp(_dsclansObj6a, x, ieqcons=(_dsclansObj6b,),
                    args=(order, osr, nq, rmax, Hz), disp=-1,
                    **options)
     return dsclansNTF(x, order, rmax, Hz)
+
 
 def _dsclansObj6a(x, order, osr, nq, rmax, Hz):
     # This is the objective function for clans
     # it returns the magnitude of H at the band edge.
     H = dsclansNTF(x, order, rmax, Hz)
-    f = np.abs(evalTF(H,np.exp(1j*np.pi/osr)))
+    f = np.abs(evalTF(H, np.exp(1j*np.pi/osr)))
     return f
+
 
 def _dsclansObj6b(x, order, osr, nq, rmax, Hz):
     # This is the constraint function for clans
     # it returns ||h||_1 - nq
     H = dsclansNTF(x, order, rmax, Hz)
     # NB. In the following use dB=60 rather than m=100, maybe
-    g = np.sum(np.abs(impulse_response(H,m=100))) - 1 - nq
+    g = np.sum(np.abs(impulse_response(H, m=100)))-1-nq
     # With our optimizer, this needs to be inverted
     return -g

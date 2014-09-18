@@ -56,7 +56,8 @@ Transfer function management a la DELSIG.
 
 import numpy as np
 
-__all__=["evalTF", "evalRPoly", "rmsGain"]
+__all__ = ["evalTF", "evalRPoly", "rmsGain"]
+
 
 def evalTF(tf, x):
     """
@@ -93,10 +94,11 @@ def evalTF(tf, x):
     if len(tf) == 3:
         retval = np.asarray(evalRPoly(tf[0], x, tf[2]))/evalRPoly(tf[1], x, 1)
     elif len(tf) == 2:
-        retval = np.asarray(np.polyval(tf[0], x))/np.polyval(tf[1],x)
+        retval = np.asarray(np.polyval(tf[0], x))/np.polyval(tf[1], x)
     if retval.size == 1:
         return retval.item()
     return retval
+
 
 def evalRPoly(roots, x, k=1):
     """
@@ -125,6 +127,7 @@ def evalRPoly(roots, x, k=1):
     for i in xrange(roots.size):
         y = y*(x-roots[i])
     return y
+
 
 def rmsGain(H, f1, f2, N=100):
     """

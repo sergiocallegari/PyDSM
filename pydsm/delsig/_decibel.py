@@ -54,7 +54,8 @@ Collection of DELSIG style decibel routines
 
 import numpy as np
 
-__all__=["dbv", "dbp", "dbm", "undbv", "undbp", "undbm"]
+__all__ = ["dbv", "dbp", "dbm", "undbv", "undbp", "undbm"]
+
 
 def dbv(x):
     """
@@ -72,6 +73,7 @@ def dbv(x):
     """
     return 20*np.log10(x)
 
+
 def dbp(x):
     """
     Converts a power ratio to dB.
@@ -87,6 +89,7 @@ def dbp(x):
         10*log10(x)
     """
     return 10*np.log10(x)
+
 
 def dbm(v, R=50.):
     """
@@ -107,6 +110,7 @@ def dbm(v, R=50.):
     """
     return 10*np.log10(np.abs(v**2)/R)+30
 
+
 def undbv(x):
     """
     Converts argument from db to a voltage ratio.
@@ -125,6 +129,7 @@ def undbv(x):
     """
     return 10**(np.asarray(x)/20.)
 
+
 def undbp(x):
     """
     Converts argument from db to a power ratio.
@@ -142,6 +147,7 @@ def undbp(x):
         10^(x/10)
     """
     return 10**(np.asarray(x)/10.)
+
 
 def undbm(x, R=50.):
     """

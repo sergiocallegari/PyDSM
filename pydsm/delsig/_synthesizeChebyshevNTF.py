@@ -57,7 +57,7 @@ from scipy.signal import cheby2
 from ._ds import ds_f1f2
 from ..utilities import cplxpair
 
-__all__=["synthesizeChebyshevNTF"]
+__all__ = ["synthesizeChebyshevNTF"]
 
 
 def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
@@ -105,7 +105,7 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     if f0 != 0 and order % 2 != 0:
         raise ValueError('Order must be even for a bandpass modulator.')
     else:
-        f1, f2 = ds_f1f2(osr,f0)
+        f1, f2 = ds_f1f2(osr, f0)
         f1f2 = (f1, f2)
 
     # Iteratively solve for the attenuation spec (x) which yields the
@@ -117,7 +117,7 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     xtol = 1e-6
     # Initial guess for x
     x = 60.
-    itn_limit=10
+    itn_limit = 10
     converged = False
     f_p = 0.
 
@@ -141,16 +141,16 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
             z, p, k = cheby2(order, x, 1./osr, 'high', output='zpk')
         else:
             z, p, k = cheby2(order/2, x, 2*f1f2, 'stop',
-                                       output='zpk')
+                             output='zpk')
         f = 1./k - H_inf
         # print (x, f)
-        if f>0:
+        if f > 0:
             # x is too big
             x_max = x
         else:
             # x is too small
             x_min = x
-        if itn==0:
+        if itn == 0:
             # First iteration
             dx = -dx_max * np.sign(f)
         else:
@@ -159,7 +159,7 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
             if np.abs(df) < ftol:
                 converged = True
                 break
-            dx = -f * dx/df;
+            dx = -f * dx/df
         if converged:
             break
         x_p = x
@@ -169,6 +169,6 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
         if np.abs(dx) < xtol:
             break
 
-    z=cplxpair(z)
-    p=cplxpair(p)
+    z = cplxpair(z)
+    p = cplxpair(p)
     return (z, p, 1)

@@ -53,17 +53,18 @@ Entry point for DELSIG-like Delta-Sigma NTF synthesis function
 """
 
 import numpy as np
-from warnings import warn, filterwarnings
+from warnings import warn
 from ..errors import PyDsmWarning
 from ._synthesizeNTF0 import synthesizeNTF0
 from ._synthesizeNTF1 import synthesizeNTF1
 
-__all__=["optimize_NTF", "synthesizeNTF"]
+__all__ = ["optimize_NTF", "synthesizeNTF"]
 
 optimize_NTF = True
 
-#filterwarnings("always", ".*", Warning,
-#               "pydsm.synthesis._synthesizeNTF[01]?")
+# filterwarnings("always", ".*", Warning,
+#                "pydsm.synthesis._synthesizeNTF[01]?")
+
 
 def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     """
@@ -143,7 +144,7 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     if opt.ndim > 1 or (opt.ndim == 1 and opt.size != order):
         raise ValueError('The opt vector must be of length %d.' % order)
 
-    if optimize_NTF == False:
+    if not optimize_NTF:
         ntf = synthesizeNTF0(order, osr, opt, H_inf, f0)
     else:
         ntf = synthesizeNTF1(order, osr, opt, H_inf, f0)

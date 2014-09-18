@@ -53,12 +53,13 @@ Slow simulator for a generic delta sigma modulator
 """
 
 import numpy as np
-import scipy as sp
-__import__('scipy.signal')
+from scipy.signal import zpk2ss
+from scipy import linalg
 from warnings import warn
 from ..errors import PyDsmWarning, PyDsmError
 
-__all__=["ds_quantize"]
+__all__ = ["ds_quantize"]
+
 
 def simulateDSM(u, arg2, nlev=2, x0=0,
                 store_xn=False, store_xmax=False, store_y=False):
@@ -66,7 +67,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     warn('Running the slow version of simulateDSM.', PyDsmWarning)
 
     # Make sure that nlev is an array
-    nlev=np.asarray(nlev).reshape(1)
+    nlev = np.asarray(nlev).reshape(1)
 
     # Make sure that input is a matrix
     u = np.asarray(u)
@@ -76,7 +77,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     nu = u.shape[0]
     nq = np.size(nlev)
 
-    if type(arg2)==tuple and len(arg2)==3:
+    if type(arg2) == tuple and len(arg2) == 3:
         # Assume ntf in zpk form
         (ntf_z, ntf_p, ntf_k) = arg2
         form = 2
@@ -104,18 +105,18 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
         D1 = ABCD[order:order+nq, order:order+nu]
     else:
         # Seek a realization of -1/H
-        A, B2, C, D2 = sp.signal.zpk2ss(ntf_p, ntf_z, -1)
+        A, B2, C, D2 = zpk2ss(ntf_p, ntf_z, -1)
         # Transform the realization so that C = [1 0 0 ...]
-        Sinv = sp.linalg.orth(np.hstack((np.transpose(C), np.eye(order))))/ \
-            np.linalg.norm(C)
-        S = sp.linalg.inv(Sinv)
+        Sinv = (linalg.orth(np.hstack((np.transpose(C), np.eye(order)))) /
+                np.linalg.norm(C))
+        S = linalg.inv(Sinv)
         C = np.dot(C, Sinv)
         if C[0, 0] < 0:
             S = -S
             Sinv = -Sinv
         A = np.dot(np.dot(S, A), Sinv)
         B2 = np.dot(S, B2)
-        C = np.hstack(([[1]], np.zeros((1,order-1))))
+        C = np.hstack(([[1]], np.zeros((1, order-1))))
         # C=C*Sinv;
         # D2 = 0;
         # !!!! Assume stf=1
@@ -129,7 +130,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
         # Need to store the quantizer input
         y = np.empty((nq, N))
     else:
-        y = np.empty((0,0))
+        y = np.empty((0, 0))
     if store_xn:
         # Need to store the state information
         xn = np.empty((order, N))
@@ -155,6 +156,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     if not store_xn:
         xn = x0
     return v.squeeze(), xn.squeeze(), xmax, y.squeeze()
+
 
 def ds_quantize(y, n):
     """Quantize a signal according to a given number of levels.
@@ -185,12 +187,12 @@ def ds_quantize(y, n):
     This definition gives the same step height for both mid-riser and
     mid-tread quantizers.
     """
-    v=np.empty_like(y)
+    v = np.empty_like(y)
     for qi in xrange(np.size(n)):
         if np.remainder(n[qi], 2) == 0:
             v[qi] = 2*np.floor(0.5*y[qi])+1
         else:
             v[qi] = 2*np.floor(0.5*(y[qi]+1))
         L = n[qi]-1
-        v[qi, 0]=np.max((np.min((v[qi, 0], L)), -L))
+        v[qi, 0] = np.max((np.min((v[qi, 0], L)), -L))
     return v
