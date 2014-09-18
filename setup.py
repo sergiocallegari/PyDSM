@@ -20,6 +20,7 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+import os
 from distutils.core import setup, Command
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
@@ -30,6 +31,11 @@ import numpy as np
 # Find version
 __version__ = ''
 execfile('pydsm/_version.py')
+
+
+def read_from_here(fname):
+    with open(os.path.join(os.path.dirname(__file__), fname)) as fp:
+        return fp.read()
 
 
 class test (Command):
@@ -74,15 +80,11 @@ ext_modules = [
               ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'])]
 
 description = 'Python Based Delta-Sigma modulator design tools'
-long_description = """Python Based Delta-Sigma modulator design tools.
-
-Based on the algorithms in Callegari, Bizzarri 'Output Filter Aware
-Optimization of the Noise Shaping Properties of Delta-Sigma Modulators via
-Semi-Definite Programming', IEEE Transactions on Circuits and Systems I,
-2013 and others.
-
-Portion of code ported to python from the DELSIG toolbox by R. Schreier.
-"""
+# Long description can contain restructured text and goes on display
+# on Pypi
+long_description = (read_from_here('README') +
+                    '\n\n' +
+                    read_from_here('CHANGELOG'))
 
 # Special requirements for the windows platform
 if platform.system() == 'Windows':
