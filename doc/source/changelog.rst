@@ -3,7 +3,7 @@ Changelog
 
 0.10.0
    - Ready setup script for distribution
-   - Implement partitionABCD in delsig module
+   - Implement ``partitionABCD`` in delsig module
    - Make delsig module PEP8 compliant
    - Some minor improvements to utility functions
 

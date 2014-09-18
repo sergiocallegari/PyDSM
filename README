@@ -1,8 +1,6 @@
 PyDSM
 =====
 
-*Python based ΔΣ modulator design tools*
-
 This is a Python/Scipy toolbox for the design and simulation of
 ΔΣ Modulators, with emphasis on digital modulators.
 
