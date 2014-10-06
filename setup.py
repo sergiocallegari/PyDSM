@@ -21,8 +21,7 @@
 
 import sys
 import os
-from distutils.core import setup, Command
-from distutils.extension import Extension
+from setuptools import setup, Command, Extension
 from Cython.Distutils import build_ext
 import platform
 import numpy as np
