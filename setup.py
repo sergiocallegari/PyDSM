@@ -26,10 +26,8 @@ from Cython.Distutils import build_ext
 import platform
 import numpy as np
 
-
-# Find version
 __version__ = ''
-execfile('pydsm/_version.py')
+exec(open('pydsm/_version.py').read())
 
 
 def read_from_here(fname):
