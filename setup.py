@@ -24,7 +24,7 @@ import sys
 if sys.version_info[:2] < (2, 6) or (2, 7) < sys.version_info[:2]:
     raise RuntimeError("Python version 2.6 or 2.7 required.")
 
-from setuptools import setup, Command, Extension, find_packages
+from setuptools import setup, Extension, find_packages
 import os
 from Cython.Distutils import build_ext
 import platform
@@ -38,39 +38,6 @@ def read_from_here(fname):
     with open(os.path.join(os.path.dirname(__file__), fname)) as fp:
         return fp.read()
 
-
-class test (Command):
-    description = "Test the pydsm distribution prior to install"
-
-    user_options = [
-        ('test-file=', None,
-         'Testfile to run in the test directory'),
-        ]
-
-    def initialize_options(self):
-        self.build_base = 'build'
-        self.test_dir = 'test'
-        self.test_file = 'test_all'
-
-    def finalize_options(self):
-        build = self.get_finalized_command('build')
-        self.build_purelib = build.build_purelib
-        self.build_platlib = build.build_platlib
-
-    def run(self):
-        # Invoke the 'build' command
-        self.run_command('build')
-        # remember old sys.path to restore it afterwards
-        old_path = sys.path[:]
-        # extend sys.path
-        sys.path.insert(0, self.build_purelib)
-        sys.path.insert(0, self.build_platlib)
-        sys.path.insert(0, self.test_dir)
-        # build include path for test
-        TEST = __import__(self.test_file)
-        suite = TEST.unittest.TestLoader().loadTestsFromModule(TEST)
-        TEST.unittest.TextTestRunner(verbosity=2).run(suite)
-        sys.path = old_path[:]
 
 # Prepare the extension modules
 ext_modules = [
@@ -109,13 +76,13 @@ setup(
     platforms=['Linux', 'Windows', 'Mac'],
     packages=find_packages(),
     ext_modules=ext_modules,
+    test_suite="test",
     requires=['scipy (>=0.10.1)',
               'numpy (>=1.6.1)',
               'matplotlib (>= 1.1.0)',
               'cvxopt (>=1.1.4)',
               'cython (>=0.16)'],
-    cmdclass={'test': test,
-              'build_ext': build_ext},
+    cmdclass={'build_ext': build_ext},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
