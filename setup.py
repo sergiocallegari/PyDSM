@@ -21,7 +21,7 @@
 
 import sys
 import os
-from setuptools import setup, Command, Extension
+from setuptools import setup, Command, Extension, find_packages
 from Cython.Distutils import build_ext
 import platform
 import numpy as np
@@ -103,11 +103,7 @@ setup(
     url='http://pydsm.googlecode.com',
     license='GNU General Public License v3 or later (GPLv3+)',
     platforms=['Linux', 'Windows', 'Mac'],
-    packages=['pydsm', 'pydsm.simulation', 'pydsm.NTFdesign',
-              'pydsm.NTFdesign.filter_based', 'pydsm.delsig',
-              'pydsm.NTFdesign.weighting', 'cvxpy_tinoco',
-              'cvxpy_tinoco.functions', 'cvxpy_tinoco.procedures',
-              'cvxpy_tinoco.sets'],
+    packages=find_packages(),
     ext_modules=ext_modules,
     requires=['scipy(>=0.10.1)',
               'numpy(>=1.6.1)',
