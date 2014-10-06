@@ -20,8 +20,12 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-import os
+
+if sys.version_info[:2] < (2, 6) or (2, 7) < sys.version_info[:2]:
+    raise RuntimeError("Python version 2.6 or 2.7 required.")
+
 from setuptools import setup, Command, Extension, find_packages
+import os
 from Cython.Distutils import build_ext
 import platform
 import numpy as np
