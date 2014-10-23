@@ -86,6 +86,8 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, options={}):
     osr : float, optional
         the oversamping ratio (based on the actual signal bandwidth).
         Defaults to 64
+    nq : int, optional
+        the number of quantization levels, defaults to 5
     rmax : real, optional
         the maximum radius of the NTF poles
     opt : int, optional
