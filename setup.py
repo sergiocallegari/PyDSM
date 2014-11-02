@@ -75,9 +75,11 @@ class test (Command):
 ext_modules = [
     Extension('pydsm.delsig._simulateDSM_cblas',
               ['pydsm/delsig/_simulateDSM_cblas.pyx'],
+              include_dirs=[np.get_include()],
               libraries=['cblas']),
     Extension('pydsm.delsig._simulateDSM_scipy_blas',
-              ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'])]
+              ['pydsm/delsig/_simulateDSM_scipy_blas.pyx'],
+              include_dirs=[np.get_include()])]
 
 description = 'Python Based Delta-Sigma modulator design tools'
 # Long description can contain restructured text and goes on display
