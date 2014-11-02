@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+0.10.1
+   - Fix setup script for compatibility with MacOs
+   - Provide getting started guide for MacOs
+   - Minor fixes in documentation
+
 0.10.0
    - Ready setup script for distribution
    - Implement ``partitionABCD`` in delsig module
