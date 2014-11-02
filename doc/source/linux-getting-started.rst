@@ -2,7 +2,9 @@ Getting started guide for Linux systems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The installation of PyDSM involves two main steps. The installation of
-its prerequisites and the installation of PyDSM itself.
+its :doc:`pre-requisites <getting-started>` and the installation of
+PyDSM itself.
+
 
 Installation of the prerequisites
 '''''''''''''''''''''''''''''''''
@@ -10,22 +12,23 @@ Installation of the prerequisites
 Installing the prerequisites with Linux is quite easy if your system
 is based on a modern Linux distribution like Ubuntu, Fedora, etc.
 
+
 Steps that can be practiced using the distribution package manager
 ``````````````````````````````````````````````````````````````````
 
 First of all, there are some steps that can usually be practiced using
 the distribution package manager.
 
-#. Make sure that a *Python 2.7* environment is installed on your
-   system using the distribution package manager. For instance, in
-   Ubuntu or Debian, you can use a (graphical) package manager to look
-   for the packages ``python2.7`` and ``python2.7-dev``.
+#. Make sure that a *Python 2.7* environment is installed. For
+   instance, in Ubuntu or Debian, you can use a (graphical) package
+   manager to look for the packages ``python2.7`` and
+   ``python2.7-dev``.
 
 #. Similarly, assure that *Numpy*, *Scipy* and *Matplotlib* are
    installed on your system. Since many distribution offer Numpy,
-   Scipy and Matplotlib both for Python 2 and for Python 3, assure
-   that the version that you have installed matches your Python 2.7
-   environment.
+   Scipy and Matplotlib both for Python 2 and for Python 3, assure on
+   the package manager that the version that you have installed
+   matches your Python 2.7 environment.
 
 #. Use your package manager also to install (or verify the
    installation) of *Cython*.
@@ -50,29 +53,29 @@ the distribution package manager.
 
 All the above is expected to take you just a few minutes.
 
+
 What to do if your distribution does not provide all of the above
 .................................................................
 
-It may be the case that your Linux distribution does not hold all the
-software above in a packaged version, or that it provides packages
-with not sufficiently up to date versions. In this situation, you may
-need to install some of the packages above in a less automated
-fashion. Most likely, requisites about Python itself, the C compiler
-and Atlas will be satisfied, and you may need to take care of
-installing (newer) versions of Numpy, Scipy, Matplotlib, Cython and
-CVXOPT. To this aim, you can either:
+It may be the case that your Linux distribution does not include all
+the software above in a packaged version, or that it provides packages
+with not sufficiently up to date versions.
 
-* Download the source packages  from the PyPi_ repository, unpack them
-  and launch  the ``setup.py`` script with command  ``install``. It is
-  advisable to use  the ``--user`` option with the  install command to
-  make  a  personal  installation  that does  not  require  super-user
-  permissions  and  does not  interfere  with  the Linux  distribution
-  packaging system.
+This is no problem. The ``pip`` based method of installing PyDSM (see
+below) automatically takes care of all the pre-requisites.
 
-* Use ``pip`` to automatize the steps above. These are scripts that
-  automatically download packages from Pypi and install them. Again,
-  remember to install with the ``--user`` option if you want to avoid
-  any kind of interference with the distribution package manager.
+As a (non recommended alternative), you may want to manually download
+all the source packages from the PyPi_ repository, unpack them and
+from within the source tree launch the ``setup.py`` script with
+command ``install`` as in::
+
+      python setup.py install
+
+It is advisable to use the ``--user`` option with the above command to
+make a personal installation that does not require administrator
+permissions and does not interfere with the Linux distribution
+packaging system.
+
 
 Some notes on ATLAS
 ...................
@@ -84,25 +87,38 @@ distribution will certainly provide instructions for this. For
 instance, Debian and Ubuntu tell you how to optimize the Atlas library
 in the file ``/usr/share/doc/libatlas3-base/README.Debian``.
 
+
 Installation of PyDSM itself
 ''''''''''''''''''''''''''''
 
-After all the pre-requisites are satisfied, you may eventually proceed
-to installing PyDSM itself. Download its source from the `PyDSM
-download site`_, then unzip it and enter the source directory. Then
-launch the ``setup.py`` file as::
+As of today, PyDSM is available from the Pypi_ repository, so that it
+is sufficient to issue the following command::
 
-   python setup.py install --user
+   pip install pydsm
 
-(on some systems you may need to use something like ``python2.7``
-instead of ``python``).
+This downloads, unpacks and installs the package in a single step. In
+case there are pre-requisites that need to be satisfied, ``pip`` also
+tries to download and install them.  The ``--user`` option can be
+conveniently added to the command above to ensure a personal
+installation that does not require administrator permissions and does
+not interfere with the Linux distribution packaging system.
 
-Alternatively, you may run some tests on the code before installing it
-::
+As an alternative, you can manually download the package either from
+PyPi_ (recommended) of from the `PyDSM download site`_. After the
+download, you need to expand the archive and launch the
+``setup.py`` file as::
+
+   python setup.py install
+
+As before, you may want to provide the ``--user`` option to make a
+personal installation. The single advantage of manually downloading
+the package instead of installing with ``pip`` is the possibility of
+running some self test. This can be done by issuing the command::
 
    python setup.py test
 
 However, note that the tests are currently rather incomplete.
+
 
 Using the code
 ''''''''''''''
