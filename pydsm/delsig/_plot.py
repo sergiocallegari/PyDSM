@@ -98,7 +98,7 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
         zero_fmt['color'] = color
 
     if len(H) == 2:
-        H = tf2zpk(**H)
+        H = tf2zpk(*H)
     z = cplxpair(H[0])
     p = cplxpair(H[1])
 
