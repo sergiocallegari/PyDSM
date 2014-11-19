@@ -38,7 +38,6 @@ def read_from_here(fname):
     with open(os.path.join(os.path.dirname(__file__), fname)) as fp:
         return fp.read()
 
-
 # Prepare the extension modules
 ext_modules = [
     Extension('pydsm.delsig._simulateDSM_cblas',
@@ -74,7 +73,7 @@ setup(
     url='http://pydsm.googlecode.com',
     license='GNU General Public License v3 or later (GPLv3+)',
     platforms=['Linux', 'Windows', 'Mac'],
-    packages=find_packages(),
+    packages=find_packages(exclude=["test"]),
     ext_modules=ext_modules,
     test_suite="test",
     requires=['scipy (>=0.10.1)',
