@@ -30,6 +30,7 @@ from Cython.Distutils import build_ext
 import os
 import platform
 import numpy as np
+from docdist import docdist
 
 __version__ = get_git_version(store="pydsm/RELEASE-VERSION")
 
@@ -82,7 +83,8 @@ setup(
               'matplotlib (>= 1.1.0)',
               'cvxopt (>=1.1.4)',
               'cython (>=0.16)'],
-    cmdclass={'build_ext': build_ext},
+    cmdclass={'build_ext': build_ext,
+              'docdist': docdist},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
