@@ -31,7 +31,7 @@ import os
 import platform
 import numpy as np
 
-__version__ = get_git_version()
+__version__ = get_git_version(store="pydsm/RELEASE-VERSION")
 
 
 def read_from_here(fname):
