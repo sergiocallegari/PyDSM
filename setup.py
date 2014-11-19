@@ -25,13 +25,13 @@ if sys.version_info[:2] < (2, 6) or (2, 7) < sys.version_info[:2]:
     raise RuntimeError("Python version 2.6 or 2.7 required.")
 
 from setuptools import setup, Extension, find_packages
-import os
+from version import get_git_version
 from Cython.Distutils import build_ext
+import os
 import platform
 import numpy as np
 
-__version__ = ''
-exec(open('pydsm/_version.py').read())
+__version__ = get_git_version()
 
 
 def read_from_here(fname):
