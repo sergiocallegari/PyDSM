@@ -78,8 +78,8 @@ def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     The strategy aims at minimizing the peak value of the NTF in the signal
     band, while respecting the Lee criterion.
 
-    Params
-    ------
+    Parameters
+    ----------
     order : int, optional
         Order of the delta-sigma modulator. Defaults to 32.
     osr : real, optional
