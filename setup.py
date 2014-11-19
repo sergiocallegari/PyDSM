@@ -74,6 +74,7 @@ setup(
     license='GNU General Public License v3 or later (GPLv3+)',
     platforms=['Linux', 'Windows', 'Mac'],
     packages=find_packages(exclude=["test"]),
+    package_data={'pydsm': ['RELEASE-VERSION']},
     ext_modules=ext_modules,
     test_suite="test",
     requires=['scipy (>=0.10.1)',
