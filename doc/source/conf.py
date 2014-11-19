@@ -11,17 +11,11 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import sys
 from distutils.util import get_platform
 
-# Find build dir
-pv=sys.version_info
-distutil_bd='../../build/lib.'+get_platform()+'-'+\
-  str(pv.major)+'.'+str(pv.minor)
-distutil_bd=os.path.abspath(distutil_bd)
-
 # extend sys.path
-sys.path.insert(0, distutil_bd)
+sys.path.insert(0, '../..')
 
 from pydsm._version import __version__
 
