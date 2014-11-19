@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Author: Douglas Creager <dcreager@dcreager.net>
+# with changes by Sergio Callegari.
 # This file is placed into the public domain.
 
 # Calculates the current version number.  If possible, this is the
@@ -35,6 +36,8 @@ __all__ = ("get_git_version")
 
 from subprocess import Popen, PIPE
 
+default_store = "RELEASE-VERSION"
+
 
 def call_git_describe(abbrev=4):
     try:
@@ -48,9 +51,9 @@ def call_git_describe(abbrev=4):
         return None
 
 
-def read_release_version():
+def read_release_version(store=default_store):
     try:
-        f = open("RELEASE-VERSION", "r")
+        f = open(store, "r")
 
         try:
             version = f.readlines()[0]
@@ -63,16 +66,16 @@ def read_release_version():
         return None
 
 
-def write_release_version(version):
-    f = open("RELEASE-VERSION", "w")
+def write_release_version(version, store=default_store):
+    f = open(store, "w")
     f.write("%s\n" % version)
     f.close()
 
 
-def get_git_version(abbrev=4):
+def get_git_version(abbrev=4, store=default_store):
     # Read in the version that's currently in RELEASE-VERSION.
 
-    release_version = read_release_version()
+    release_version = read_release_version(store)
 
     # First try to get the current version using “git describe”.
 
@@ -93,7 +96,7 @@ def get_git_version(abbrev=4):
     # RELEASE-VERSION file, update the file to be current.
 
     if version != release_version:
-        write_release_version(version)
+        write_release_version(version, store)
 
     # Finally, return the current version.
 
