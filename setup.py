@@ -86,7 +86,8 @@ setup(
               'numpy (>=1.6.1)',
               'matplotlib (>= 1.1.0)',
               'cvxopt (>=1.1.4)',
-              'cython (>=0.16)'],
+              'cython (>=0.16)',
+              'setuptools (>=3.3)'],
     cmdclass={'build_ext': build_ext,
               'docdist': docdist},
     classifiers=[
