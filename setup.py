@@ -23,6 +23,9 @@
 # Note: before launching setup with build_sphinx or docdist targets
 # it is necessary to build the package
 
+# Note zip_safe set to false even if package is zip safe since
+# spyder does not seem to be able to reload zipped eggs
+
 import sys
 
 if sys.version_info[:2] < (2, 6) or (2, 7) < sys.version_info[:2]:
@@ -82,6 +85,7 @@ setup(
     package_data={'pydsm': ['RELEASE-VERSION']},
     ext_modules=ext_modules,
     test_suite="test",
+    zip_safe=False,
     requires=['scipy (>=0.10.1)',
               'numpy (>=1.6.1)',
               'matplotlib (>= 1.1.0)',
