@@ -21,6 +21,7 @@
 import unittest
 import numpy as np
 import csv
+from pkg_resources import resource_stream
 from pydsm.delsig import simulateDSM
 
 __all__=["TestSimulateDSM"]
@@ -31,7 +32,7 @@ class TestSimulateDSM(unittest.TestCase):
         pass
 
     def test_default(self):
-        f = open('pydsm/tests/Data/test_simulateDSM_0.csv','r')
+        f = resource_stream('pydsm.tests', 'Data/test_simulateDSM_0.csv')
         csv_lines = csv.reader(f)
         d=np.array(csv_lines.next(),int)
         f.close()
