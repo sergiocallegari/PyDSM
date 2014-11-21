@@ -31,7 +31,7 @@ class TestSimulateDSM(unittest.TestCase):
         pass
 
     def test_default(self):
-        f = open('test/Data/test_simulateDSM_0.csv','r')
+        f = open('pydsm/tests/Data/test_simulateDSM_0.csv','r')
         csv_lines = csv.reader(f)
         d=np.array(csv_lines.next(),int)
         f.close()
