@@ -35,3 +35,7 @@ from . import NTFdesign
 from . import simulation
 from . import audio_weightings
 from . import iso226
+
+def test(level=1, verbosity=1):
+    from numpy.testing import Tester
+    return Tester().test(level, verbosity)
