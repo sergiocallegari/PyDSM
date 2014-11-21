@@ -32,7 +32,7 @@ class TestSimulateDSM(unittest.TestCase):
         pass
 
     def test_default(self):
-        f = resource_stream('pydsm.tests', 'Data/test_simulateDSM_0.csv')
+        f = resource_stream('pydsm', 'tests/Data/test_simulateDSM_0.csv')
         csv_lines = csv.reader(f)
         d=np.array(csv_lines.next(),int)
         f.close()
