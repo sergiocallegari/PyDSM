@@ -69,4 +69,4 @@ from ._partitionABCD import *
 
 from numpy.testing import Tester
 test = Tester().test
-# bench = Tester().bench
+bench = Tester().bench
