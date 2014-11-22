@@ -12,7 +12,6 @@
 - [sdtoolbox] implement calcSNR
 - [sdtoolbox] sinusx
 - [documentation] add tutorial
-- [tests] let tests be run individually
 - [cython] in the cython simulator use np.double and np.intc for casting
 - maybe move zpk and ba representations to named tuple model or to LTI
     representations
