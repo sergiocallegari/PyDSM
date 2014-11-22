@@ -65,7 +65,7 @@ CBlas
     code. For its building, PyDSM requires a *development version* of
     CBlas, namely a version including header files. For running PyDSM
     on Linux, a mere CBlas *runtime* library is needed.  CBlas may be
-    available from many sources including Netlib_, Altas_, Openblas_,
+    available from many sources including Netlib_, Atlas_, Openblas_,
     etc. On Linux use your distribution package manager to select one.
     The use of a CBLAS edition fully optimized for your CPU and system
     architecture is highly recommended.
