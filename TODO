@@ -2,27 +2,52 @@
 - [delsig] implement findPattern
 - [delsig] implement calculateSNR
 - [delsig] implement simulateSNR
-- reuse common code between _simulateDSM_scipy_blas and
-  _simulateDSM_cblas
+- [simulator] reuse common code between _simulateDSM_scipy_blas and
+    _simulateDSM_cblas
+- [simulator] verify speed difference between scipy_blas and cblas simulator
+    possibly including an fblas simulator in the picture and trying
+    different matrix representations (C, fortran)
 - implement quadratic form
 - implement scanner with quadratic form
 - [sdtoolbox] implement calcSNR
 - [sdtoolbox] sinusx
-- [os support] port to macos
 - [documentation] add tutorial
 - [tests] let tests be run individually
 - [cython] in the cython simulator use np.double and np.intc for casting
-- move zpk and ba representations to named tuple model
+- maybe move zpk and ba representations to named tuple model or to LTI
+    representations
 - avoid __import__ statements and follow
-  http://docs.scipy.org/doc/scipy/reference/api.html
-- [distutils] fix sdist
-- [distutils] add metadata
+    http://docs.scipy.org/doc/scipy/reference/api.html
 - [api] rename quantization_noise_gain as quantization_filtered_noise_gain
+- [api] provide a general mechanism for fine options to all functions that
+    may require options for underlying code (e.g. functions calling
+    optimizers or functions calling integrators). Have a mechanism for
+    defaults (e.g. a function attribute) and a single options dictionary.
+    Provide namespaces for the options if necessary. For instance
+    quad_epsrel for the relative accuracy of the integrator
+    cvxpy_reltol for the relative accuracy of the convex optimizer
+- [api] thoroughly clean up the synthesizeNTF_from_filter interface
+    argument should be a zpk or a ba tuple only
+    impulse response case goes in the ba with a=[1] and b=response
+    magnitude function response goes in synthesizeNTF_from_weighting
+- [api] provide a legacy module for methods that are now superceeded by
+    better strategies but that may be needed for reproducing results from
+    papers
+- [api] rename synthesizeNTF_from_noise_weighting into
+    synthesizeNTF_from_weighting
+- [docstring] possibly move some documentation in the module level docstrings,
+    so that it is available in IDEs
 - [cython] user numpy.require to assure that arrays have the right properties
-- manage optimizer/integrator options better in ntf design functions based
-  on cvxopt
 - [optimization] move to the newer cvxpy
+- [optimization] check picos too for the optimization backend
+- [clans] double check for mistakes in the clans implementation
+    * cleanup comments
+    * recheck mirroring of poles that are outside unit circle
 - [python] make python3 compatible
 - [python] make pep8 clean
 - [examples] provide notebook version of the examples
-- [setup] add to setup some command to build documentation (docbuild, docdist)
+- [setuptools] assure that setuptools build the package before calling
+    build_sphinx
+- [setuptools] make docdist pass options to build_sphinx
+- [documentation] Maybe use the versionadded/versionchanged/deprecated sphinx
+    features to document api changes
