@@ -8,3 +8,5 @@
 /doc/build/
 /Documentation/
 RELEASE-VERSION
+pydsm.egg-info
+pydsm/**/*.so
