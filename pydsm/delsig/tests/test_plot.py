@@ -19,6 +19,7 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 from numpy.testing import TestCase, run_module_suite
+from matplotlib import pyplot as plt
 from pydsm.delsig import synthesizeNTF
 from pydsm.delsig import plotPZ
 
@@ -28,11 +29,15 @@ __all__ = ["TestPlotPZ"]
 class TestPlotPZ(TestCase):
 
     def setUp(self):
-        pass
+        self.saved_backend = plt.get_backend()
+        plt.switch_backend('Agg')
 
-    # def test_default(self):
-    #    ntf = synthesizeNTF()
-    #    plotPZ(ntf)
+    def tearDown(self):
+        plt.switch_backend(self.saved_backend)
+
+    def test_default(self):
+        ntf = synthesizeNTF()
+        plotPZ(ntf)
 
 if __name__ == '__main__':
     run_module_suite()
