@@ -18,15 +18,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
+from numpy.testing import TestCase, run_module_suite
 from pydsm.delsig import synthesizeNTF
 from pydsm.delsig import plotPZ
 
 __all__ = ["TestPlotPZ"]
 
 
-class TestPlotPZ(unittest.TestCase):
+class TestPlotPZ(TestCase):
 
     def setUp(self):
         pass
@@ -36,4 +35,4 @@ class TestPlotPZ(unittest.TestCase):
     #    plotPZ(ntf)
 
 if __name__ == '__main__':
-    unittest.main()
+    run_module_suite()

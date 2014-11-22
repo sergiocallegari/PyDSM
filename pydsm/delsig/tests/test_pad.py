@@ -18,15 +18,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
 import numpy as np
-
+from numpy.testing import TestCase, run_module_suite
 from pydsm.delsig import padl, padr, padt, padb
 
 __all__ = ["TestSynthesizePAD"]
 
 
-class TestSynthesizePAD(unittest.TestCase):
+class TestSynthesizePAD(TestCase):
 
     def setUp(self):
         pass
@@ -62,4 +61,4 @@ class TestSynthesizePAD(unittest.TestCase):
         np.testing.assert_equal(padb(v, 4), ve)
 
 if __name__ == '__main__':
-    unittest.main()
+    run_module_suite()

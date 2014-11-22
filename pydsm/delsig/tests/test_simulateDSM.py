@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
+from numpy.testing import TestCase, run_module_suite
 import numpy as np
 import csv
 from pkg_resources import resource_stream
@@ -27,7 +27,7 @@ from pydsm.delsig import simulateDSM
 __all__ = ["TestSimulateDSM"]
 
 
-class TestSimulateDSM(unittest.TestCase):
+class TestSimulateDSM(TestCase):
 
     def setUp(self):
         pass
@@ -53,4 +53,4 @@ class TestSimulateDSM(unittest.TestCase):
         np.testing.assert_equal(v, d)
 
 if __name__ == '__main__':
-    unittest.main()
+    run_module_suite()
