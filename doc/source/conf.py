@@ -14,9 +14,6 @@
 import sys, os
 from distutils.util import get_platform
 
-# Find version
-execfile('../../pydsm/_version.py')
-
 # Find build dir
 pv=sys.version_info
 distutil_bd='../../build/lib.'+get_platform()+'-'+\
@@ -25,6 +22,8 @@ distutil_bd=os.path.abspath(distutil_bd)
 
 # extend sys.path
 sys.path.insert(0, distutil_bd)
+
+from pydsm._version import __version__
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

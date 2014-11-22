@@ -1,11 +1,3 @@
-Build the project with
-
-  python setup.py build
-
-before attempting to regenerate the documentation.
-
---------
-
 Regeneration of the documentation requires
 
 sphinx

@@ -19,57 +19,29 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
+
+# Note: before launching setup with build_sphinx or docdist targets
+# it is necessary to build the package
+
 import sys
-import os
-from distutils.core import setup, Command
-from distutils.extension import Extension
+
+if sys.version_info[:2] < (2, 6) or (2, 7) < sys.version_info[:2]:
+    raise RuntimeError("Python version 2.6 or 2.7 required.")
+
+from setuptools import setup, Extension, find_packages
+from version import get_git_version
 from Cython.Distutils import build_ext
+import os
 import platform
 import numpy as np
+from docdist import docdist
 
-
-# Find version
-__version__ = ''
-execfile('pydsm/_version.py')
+__version__ = get_git_version(store="pydsm/RELEASE-VERSION")
 
 
 def read_from_here(fname):
     with open(os.path.join(os.path.dirname(__file__), fname)) as fp:
         return fp.read()
-
-
-class test (Command):
-    description = "Test the pydsm distribution prior to install"
-
-    user_options = [
-        ('test-file=', None,
-         'Testfile to run in the test directory'),
-        ]
-
-    def initialize_options(self):
-        self.build_base = 'build'
-        self.test_dir = 'test'
-        self.test_file = 'test_all'
-
-    def finalize_options(self):
-        build = self.get_finalized_command('build')
-        self.build_purelib = build.build_purelib
-        self.build_platlib = build.build_platlib
-
-    def run(self):
-        # Invoke the 'build' command
-        self.run_command('build')
-        # remember old sys.path to restore it afterwards
-        old_path = sys.path[:]
-        # extend sys.path
-        sys.path.insert(0, self.build_purelib)
-        sys.path.insert(0, self.build_platlib)
-        sys.path.insert(0, self.test_dir)
-        # build include path for test
-        TEST = __import__(self.test_file)
-        suite = TEST.unittest.TestLoader().loadTestsFromModule(TEST)
-        TEST.unittest.TextTestRunner(verbosity=2).run(suite)
-        sys.path = old_path[:]
 
 # Prepare the extension modules
 ext_modules = [
@@ -106,19 +78,18 @@ setup(
     url='http://pydsm.googlecode.com',
     license='GNU General Public License v3 or later (GPLv3+)',
     platforms=['Linux', 'Windows', 'Mac'],
-    packages=['pydsm', 'pydsm.simulation', 'pydsm.NTFdesign',
-              'pydsm.NTFdesign.filter_based', 'pydsm.delsig',
-              'pydsm.NTFdesign.weighting', 'cvxpy_tinoco',
-              'cvxpy_tinoco.functions', 'cvxpy_tinoco.procedures',
-              'cvxpy_tinoco.sets'],
+    packages=find_packages(exclude=["test"]),
+    package_data={'pydsm': ['RELEASE-VERSION']},
     ext_modules=ext_modules,
-    requires=['scipy(>=0.10.1)',
-              'numpy(>=1.6.1)',
-              'matplotlib(>= 1.1.0)',
-              'cvxopt(>=1.1.4)',
-              'cython(>=0.16)'],
-    cmdclass={'test': test,
-              'build_ext': build_ext},
+    test_suite="test",
+    requires=['scipy (>=0.10.1)',
+              'numpy (>=1.6.1)',
+              'matplotlib (>= 1.1.0)',
+              'cvxopt (>=1.1.4)',
+              'cython (>=0.16)',
+              'setuptools (>=3.3)'],
+    cmdclass={'build_ext': build_ext,
+              'docdist': docdist},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
