@@ -23,7 +23,8 @@ import unittest
 from pydsm.delsig import synthesizeNTF
 from pydsm.delsig import plotPZ
 
-__all__=["TestPlotPZ"]
+__all__ = ["TestPlotPZ"]
+
 
 class TestPlotPZ(unittest.TestCase):
 
