@@ -18,21 +18,22 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
+from numpy.testing import TestCase, run_module_suite
 import numpy as np
 
 from pydsm.NTFdesign.minmax import synthesize_ntf_minmax
 from pydsm.utilities import cplxpair
 
-__all__=["TestSynthesizeNTFminmax"]
+__all__ = ["TestSynthesizeNTFminmax"]
 
-class TestSynthesizeNTFminmax(unittest.TestCase):
+
+class TestSynthesizeNTFminmax(TestCase):
     def setUp(self):
         pass
 
     def test_LP8(self):
         z, p, k = synthesize_ntf_minmax(order=8,
-                                        options = {'show_progress':False})
+                                        options={'show_progress': False})
         e_k = 1
         e_z = [990.349427225477e-003 + 69.0500612157020e-003j,
                990.349427225477e-003 - 69.0500612157020e-003j,
@@ -42,10 +43,10 @@ class TestSynthesizeNTFminmax(unittest.TestCase):
                -259.915617496087e-003 - 503.342225950477e-003j,
                -512.031157651993e-003 + 194.699627385223e-003j,
                -512.031157651993e-003 - 194.699627385223e-003j]
-        e_z=cplxpair(e_z)
-        z=cplxpair(z)
+        e_z = cplxpair(e_z)
+        z = cplxpair(z)
         np.testing.assert_almost_equal(k, e_k, 6)
         np.testing.assert_almost_equal(z, e_z, 4)
 
 if __name__ == '__main__':
-    unittest.main()
+    run_module_suite()
