@@ -22,7 +22,6 @@ from __future__ import division, print_function
 
 from numpy.testing import TestCase, run_module_suite
 import numpy as np
-import csv
 from pkg_resources import resource_stream
 from pydsm.delsig import simulateDSM
 
@@ -36,9 +35,8 @@ class TestSimulateDSM(TestCase):
 
     def test_default(self):
         f = resource_stream('pydsm.delsig',
-                            'tests/Data/test_simulateDSM_0.csv')
-        csv_lines = csv.reader(f)
-        d = np.array(csv_lines.next(), int)
+                            'tests/Data/test_simulateDSM_0.npz')
+        d = np.load(f)['arr_0']
         f.close()
         # Take H as in H = synthesizeNTF(5, 32, 1)
         H = (np.array([0.99604531+0.08884669j,  0.99604531-0.08884669j,
