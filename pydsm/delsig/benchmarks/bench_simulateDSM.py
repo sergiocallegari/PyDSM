@@ -23,6 +23,7 @@ from __future__ import division, print_function
 import numpy as np
 import time
 import sys
+import warnings
 from pkg_resources import resource_stream
 from numpy.testing import dec
 from pydsm.delsig._simulateDSM_scipy import simulateDSM as \
@@ -90,9 +91,11 @@ class Bench_simulateDSM():
     @dec.slow
     def bench_simulateDSM_scipy(self):
         """Benchmark function for the scipy version of simulateDSM"""
-        tic = time.clock()
-        output, da1, da2, da3 = simulateDSM_scipy(self.u, self.H)
-        timing = time.clock()-tic
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            tic = time.clock()
+            output, da1, da2, da3 = simulateDSM_scipy(self.u, self.H)
+            timing = time.clock()-tic
         np.testing.assert_equal(output, self.result)
         print()
         print("Scipy DSM simulator timing: %6.2f" % timing)
