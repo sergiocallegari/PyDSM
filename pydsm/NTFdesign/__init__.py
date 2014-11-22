@@ -31,6 +31,8 @@ from . import delsig
 from . import psychoacoustic
 from . import minmax
 
+from . import tests as test_suite
+
 from numpy.testing import Tester
 test = Tester().test
 bench = Tester().bench

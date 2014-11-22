@@ -67,6 +67,8 @@ from ._simulateDSM import *
 from ._simulateDSM_scipy import *
 from ._partitionABCD import *
 
+from . import tests as test_suite
+
 from numpy.testing import Tester
 test = Tester().test
 bench = Tester().bench
