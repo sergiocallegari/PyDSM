@@ -26,7 +26,7 @@ try:
 except:
     skip_test = True
 from pydsm.delsig._simulateDSM_scipy_blas import simulateDSM as simulateDSM2
-import time
+# import time
 
 __all__ = ["TestSimulateDSM2"]
 
@@ -51,13 +51,13 @@ class TestSimulateDSM2(unittest.TestCase):
         N = 819200
         f = 85
         u = 0.5*np.sin(2.*np.pi*f/N*np.arange(N))
-        tic = time.clock()
+        # tic = time.clock()
         va, da1, da2, da3 = simulateDSM2(u, H)
-        tac = time.clock()
+        # tac = time.clock()
         vb, db1, db2, db3 = simulateDSM(u, H)
-        toc = time.clock()
+        # toc = time.clock()
         np.testing.assert_equal(va, vb)
-        print "[scipy blas: ", tac-tic, "cblas: ", toc-tac, "]"
+        # print "[scipy blas: ", tac-tic, "cblas: ", toc-tac, "]"
 
 if __name__ == '__main__':
     unittest.main()
