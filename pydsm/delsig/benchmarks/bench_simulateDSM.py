@@ -24,6 +24,7 @@ import numpy as np
 import time
 import sys
 from pkg_resources import resource_stream
+from numpy.testing import dec
 from pydsm.delsig._simulateDSM_scipy import simulateDSM as \
     simulateDSM_scipy
 from pydsm.delsig._simulateDSM_scipy_blas import simulateDSM as \
@@ -65,33 +66,34 @@ class Bench_simulateDSM():
     def teardown_class(cls):
         pass
 
-    def bench_simulateDSM(self):
-        """Benchmark function for different versions of simulateDSM"""
-        # Define simulators to use
-        simulators = []
-        simulators.append(('Scipy', simulateDSM_scipy))
-        simulators.append(('Scipy Blas', simulateDSM_scipyblas))
-        if HAS_CBLAS:
-            simulators.append(('Cblas', simulateDSM_cblas))
-            # Prepare space for the results
-            results = [None]*len(simulators)
-            timings = [0.]*len(simulators)
-            # Run the simulations
-            for idx, simulator in enumerate(simulators):
-                tic = time.clock()
-                results[idx], da1, da2, da3 = simulator[1](self.u, self.H)
-                toc = time.clock()
-                timings[idx] = toc-tic
-            # Validate the results
-            for idx in range(len(simulators)):
-                np.testing.assert_equal(results[idx], self.result)
-            # Print the timings
-            print()
-            print('    DSM simulator timings')
-            print('==============================')
-            print('    Simulator     |   time   ')
-            print('      type        | (seconds)')
-            fmt = ' %16s | %6.2f '
-            for idx, simulator in enumerate(simulators):
-                print(fmt % (simulator[0], timings[idx]))
-            sys.stdout.flush()
+    def bench_simulateDSM_scipy_blas(self):
+        """Benchmark function for the scipy blas version of simulateDSM"""
+        tic = time.clock()
+        output, da1, da2, da3 = simulateDSM_scipyblas(self.u, self.H)
+        timing = time.clock()-tic
+        np.testing.assert_equal(output, self.result)
+        print()
+        print("Scipy Blas DSM simulator timing: %6.2f" % timing)
+        sys.stdout.flush()
+
+    @dec.skipif(not HAS_CBLAS)
+    def bench_simulateDSM_cblas_blas(self):
+        """Benchmark function for the cblas version of simulateDSM"""
+        tic = time.clock()
+        output, da1, da2, da3 = simulateDSM_cblas(self.u, self.H)
+        timing = time.clock()-tic
+        np.testing.assert_equal(output, self.result)
+        print()
+        print("CBlas DSM simulator timing: %6.2f" % timing)
+        sys.stdout.flush()
+
+    @dec.slow
+    def bench_simulateDSM_scipy(self):
+        """Benchmark function for the scipy version of simulateDSM"""
+        tic = time.clock()
+        output, da1, da2, da3 = simulateDSM_scipy(self.u, self.H)
+        timing = time.clock()-tic
+        np.testing.assert_equal(output, self.result)
+        print()
+        print("Scipy DSM simulator timing: %6.2f" % timing)
+        sys.stdout.flush()
