@@ -18,16 +18,19 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import division, print_function
+
 import numpy as np
 from scipy import signal
 
-__all__= ['find_tone']
+__all__ = ['find_tone']
+
 
 def find_tone(x_in, f, fs=1, start=0, N=None, adjust_N=False, window='hanning',
               output='complex'):
     """Extracts a tone out of a signal where it might be embedded in noise.
 
-    This is a sophisticated function to extract information (amplitude and
+    This is a complicate function to extract information (amplitude and
     phase) about a tone embedded in noise. In spite of its sophistication
     this function may not always work correctly.
 
@@ -69,32 +72,32 @@ def find_tone(x_in, f, fs=1, start=0, N=None, adjust_N=False, window='hanning',
         input tone as a complex exponential. If format is 'xy' then real and
         'imaginary part' are provided separately.
     """
-    M=len(x_in)
-    fn=float(f)/fs
-    samples_per_period=1/fn
-    Nmax=M-start
-    if N==None:
-        N=Nmax
-    Pmax=int(np.floor(Nmax/samples_per_period))
-    P=np.min((Pmax,int(np.round(N/samples_per_period))))
+    M = len(x_in)
+    fn = float(f)/fs
+    samples_per_period = 1/fn
+    Nmax = M-start
+    if N is None:
+        N = Nmax
+    Pmax = int(np.floor(Nmax/samples_per_period))
+    P = np.min((Pmax, int(np.round(N/samples_per_period))))
     if adjust_N:
-        N2=int(np.round(P*samples_per_period))
+        N2 = int(np.round(P*samples_per_period))
     else:
-        N2=int(np.min((Nmax,N)))
-    if window=='boxcar' or window==None:
-        data=x_in[start:N2+start]
+        N2 = int(np.min((Nmax, N)))
+    if window == 'boxcar' or window is None:
+        data = x_in[start:N2+start]
     else:
-        win=signal.get_window(window,N2)
-        adj=np.sum(win)/N2
-        win=win/adj
-        data=x_in[start:N2+start]*win
-    x_cos=np.cos(2*np.pi*fn*np.arange(start,N2+start))
-    x_sin=np.sin(2*np.pi*fn*np.arange(start,N2+start))
-    b=2*np.dot(x_cos,data)/N2
-    a=2*np.dot(x_sin,data)/N2
-    if output=='complex':
+        win = signal.get_window(window, N2)
+        adj = np.sum(win)/N2
+        win = win/adj
+        data = x_in[start:N2+start]*win
+    x_cos = np.cos(2*np.pi*fn*np.arange(start, N2+start))
+    x_sin = np.sin(2*np.pi*fn*np.arange(start, N2+start))
+    b = 2*np.dot(x_cos, data)/N2
+    a = 2*np.dot(x_sin, data)/N2
+    if output == 'complex':
         return b+1j*a
-    elif output=='xy':
-        return (b,a)
+    elif output == 'xy':
+        return (b, a)
     else:
-        return (np.sqrt(a**2+b**2), np.arctan2(a,b))
+        return (np.sqrt(a**2+b**2), np.arctan2(a, b))
