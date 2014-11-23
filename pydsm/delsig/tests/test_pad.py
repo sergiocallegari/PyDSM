@@ -18,14 +18,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
 import numpy as np
-
+from numpy.testing import TestCase, run_module_suite
 from pydsm.delsig import padl, padr, padt, padb
 
-__all__=["TestSynthesizePAD"]
+__all__ = ["TestSynthesizePAD"]
 
-class TestSynthesizePAD(unittest.TestCase):
+
+class TestSynthesizePAD(TestCase):
 
     def setUp(self):
         pass
@@ -42,12 +42,12 @@ class TestSynthesizePAD(unittest.TestCase):
 
     def test_padl_array2d(self):
         v = np.asarray([[1, 2, 3], [4, 5, 6]])
-        ve = np.asarray([[4, 4, 1, 2, 3],[4, 4, 4, 5, 6]])
+        ve = np.asarray([[4, 4, 1, 2, 3], [4, 4, 4, 5, 6]])
         np.testing.assert_equal(padl(v, 5, 4), ve)
 
     def test_padr_array2d(self):
         v = np.asarray([[1, 2, 3], [4, 5, 6]])
-        ve = np.asarray([[1, 2, 3, 0, 0],[4, 5, 6, 0, 0]])
+        ve = np.asarray([[1, 2, 3, 0, 0], [4, 5, 6, 0, 0]])
         np.testing.assert_equal(padr(v, 5), ve)
 
     def test_padt_array2d(self):
@@ -61,4 +61,4 @@ class TestSynthesizePAD(unittest.TestCase):
         np.testing.assert_equal(padb(v, 4), ve)
 
 if __name__ == '__main__':
-    unittest.main()
+    run_module_suite()

@@ -18,21 +18,26 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
+from numpy.testing import TestCase, run_module_suite
+from matplotlib import pyplot as plt
 from pydsm.delsig import synthesizeNTF
 from pydsm.delsig import plotPZ
 
-__all__=["TestPlotPZ"]
+__all__ = ["TestPlotPZ"]
 
-class TestPlotPZ(unittest.TestCase):
+
+class TestPlotPZ(TestCase):
 
     def setUp(self):
-        pass
+        self.saved_backend = plt.get_backend()
+        plt.switch_backend('Agg')
+
+    def tearDown(self):
+        plt.switch_backend(self.saved_backend)
 
     def test_default(self):
         ntf = synthesizeNTF()
         plotPZ(ntf)
 
 if __name__ == '__main__':
-    unittest.main()
+    run_module_suite()

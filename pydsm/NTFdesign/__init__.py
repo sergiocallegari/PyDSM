@@ -30,3 +30,7 @@ from . import weighting
 from . import delsig
 from . import psychoacoustic
 from . import minmax
+
+from numpy.testing import Tester
+test = Tester().test
+bench = Tester().bench

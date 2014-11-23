@@ -18,17 +18,18 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
+from numpy.testing import TestCase, run_module_suite
 import numpy as np
 
 from pydsm.NTFdesign.delsig import (synthesizeNTF, synthesizeChebyshevNTF,
                                     clans)
 from pydsm.utilities import cplxpair
 
-__all__=["TestSynthesizeNTF", "TestSynthesizeChebyshevNTF",
-         "TestClans"]
+__all__ = ["TestSynthesizeNTF", "TestSynthesizeChebyshevNTF",
+           "TestClans"]
 
-class TestSynthesizeNTF(unittest.TestCase):
+
+class TestSynthesizeNTF(TestCase):
     def setUp(self):
         pass
 
@@ -46,7 +47,7 @@ class TestSynthesizeNTF(unittest.TestCase):
         z, p, k = synthesizeNTF(order=6, f0=0.3)
         e_k = 1
         e_z = np.concatenate(((-0.3090 + 0.9511j)*np.ones(3),
-                            (-0.3090 - 0.9511j)*np.ones(3)))
+                              (-0.3090 - 0.9511j)*np.ones(3)))
         e_z = cplxpair(e_z)
         e_p = [-0.4238 - 0.7906j, -0.4238 + 0.7906j, -0.2480 - 0.7802j,
                -0.2480 + 0.7802j, -0.1290 - 0.8985j, -0.1290 + 0.8985j]
@@ -89,7 +90,8 @@ class TestSynthesizeNTF(unittest.TestCase):
         np.testing.assert_almost_equal(z, e_z, 4)
         np.testing.assert_almost_equal(p, e_p, 4)
 
-class TestSynthesizeChebyshevNTF(unittest.TestCase):
+
+class TestSynthesizeChebyshevNTF(TestCase):
 
     def setUp(self):
         pass
@@ -123,12 +125,12 @@ class TestSynthesizeChebyshevNTF(unittest.TestCase):
         np.testing.assert_almost_equal(p, e_p, 4)
 
 
-class TestClans(unittest.TestCase):
+class TestClans(TestCase):
     def setUp(self):
         pass
 
     def test_5_32_5_095_1(self):
-        z, p, k = clans(5,32,5,0.95,1)
+        z, p, k = clans(5, 32, 5, 0.95, 1)
         e_k = 1
         e_z = [1.00000000000000e+000,
                998.603018798634e-003 + 52.8394818885978e-003j,
@@ -149,4 +151,4 @@ class TestClans(unittest.TestCase):
         np.testing.assert_almost_equal(p, e_p, 4)
 
 if __name__ == '__main__':
-    unittest.main()
+    run_module_suite()
