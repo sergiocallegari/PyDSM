@@ -25,6 +25,18 @@ Copyright (c) Sergio Callegari, Federico Bizzarri 2012
 All rights reserved.
 """
 
+# Note. This code returns numeric results that are not fully consistent with
+# those in the ICECS 2012 paper. Specifically, the SNR values
+# evaluated via the NTF on the paper are better than those obtained by
+# this code by a factor 2. In previous versions of the code, the results
+# where identical due to a missing factor 2 in the quantization noise gain
+# evaluation. Probably, this error slipped in because it makes the NTF-based
+# results and the 'real' time-domain-simulation results more similar. In fact,
+# the 'real' modulator behavior is better than predicted by the NTF model
+# because in the specific example the quantization noise is not exactly white,
+# but slightly blue (for some reason it gets more power at higher frequencies).
+
+
 from __future__ import division, print_function
 
 import numpy as np
