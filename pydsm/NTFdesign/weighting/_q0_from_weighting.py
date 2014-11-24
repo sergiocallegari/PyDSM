@@ -28,15 +28,16 @@ The matrix is symmetric Toeplitz, thus actually described by its first
 row only, which is what the routines here return.
 """
 
+from __future__ import division, print_function
+
 from ...ft import idtft_hermitian
 import numpy as np
 
-__all__=["q0_from_noise_weighting"]
+__all__ = ["q0_from_noise_weighting"]
 
-def q0_from_noise_weighting(P, noise_weighting, \
-    integrator_params={'epsabs':1E-14, 'epsrel':1E-9}):
-    """
-    Computes Q matrix from a noise weighting function
+
+def q0_from_noise_weighting(P, noise_weighting, **options):
+    """Compute Q matrix from a noise weighting function
 
     Parameters
     ----------
@@ -53,13 +54,34 @@ def q0_from_noise_weighting(P, noise_weighting, \
 
     Other parameters
     ----------------
-    integrator_params : dict, optional
-        the controlling parameters for the numerical integrator
-        (see `scipy.integrate.quad`)
+    quad_xxx : various type
+        Parameters prefixed by ``quad_`` are passed to the ``quad``
+        function that is used internally as an integrator. Allowed options
+        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
+        Do not use other options since they could break the integrator in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
 
     Notes
     -----
     The Q matrix being synthesized has (P+1) times (P+1) entries.
+
+    Since this function internally uses ``idtft_hermitian``, the latter
+    default parameters may also affect its behavior.
+
+    See Also
+    --------
+    scipy.integrate.quad : integrator used internally.
+        For the meaning of the integrator parameters.
     """
-    ac=lambda t:idtft_hermitian(noise_weighting, t, integrator_params)
-    return np.asarray(map(ac,np.arange(P+1)))
+    # Manage optional parameters
+    opts = q0_from_noise_weighting.default_options.copy()
+    opts.update(options)
+    quad_opts = {k[5:]: v for k, v in opts.iteritems()
+                 if k.startswith('quad_')}
+    # Do the computation
+    ac = lambda t: idtft_hermitian(noise_weighting, t, **quad_opts)
+    return np.asarray(map(ac, np.arange(P+1)))
+
+q0_from_noise_weighting.default_options = {'quad_epsabs': 1E-14,
+                                           'quad_epsrel': 1E-9}
