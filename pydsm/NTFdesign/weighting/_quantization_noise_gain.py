@@ -23,15 +23,18 @@ Computation of the noise power gain through the NTF and the output filter
 =========================================================================
 """
 
+from __future__ import division, print_function
+
 import numpy as np
 from scipy.integrate import quad
 from ...delsig import evalTF
 
 __all__ = ["quantization_weighted_noise_gain"]
 
-def quantization_weighted_noise_gain(NTF, w, bounds=(0, 0.5)):
-    r"""
-    Computes the quantization noise power gain
+
+def quantization_weighted_noise_gain(NTF, w=None, bounds=(0, 0.5),
+                                     **options):
+    r"""Computes the quantization noise power gain
 
     Parameters
     ----------
@@ -48,6 +51,16 @@ def quantization_weighted_noise_gain(NTF, w, bounds=(0, 0.5)):
     a : real
         noise power gain
 
+    Other parameters
+    ----------------
+    quad_xxx : various type
+        Parameters prefixed by ``quad_`` are passed to the ``quad``
+        function that is used internally as an integrator. Allowed options
+        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
+        Do not use other options since they could break the integrator in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
     Notes
     -----
     The computation is practiced as
@@ -56,10 +69,27 @@ def quantization_weighted_noise_gain(NTF, w, bounds=(0, 0.5)):
         2\int_{f=0}^{\frac{1}{2}}
         \left|\mathit{NTF}
         \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) df
+
+    Use an on-off weighting function :math:`w(f)` for multiband evaluation.
+
+    In case the weighting function has discontinuities, report them to the
+    integrator via the ``quad_points`` parameter.
+
+    See Also
+    --------
+    scipy.integrate.quad : integrator used internally.
+        For the meaning of the integrator parameters.
     """
-    if w != None:
-        return 2*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2 *
-                      w(f), bounds[0], bounds[1])[0]
-    else:
-        return 2*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2,
-                      bounds[0], bounds[1])[0]
+    # Manage parameters
+    if w is None:
+        w = lambda x: 1.
+    # Manage optional parameters
+    opts = quantization_weighted_noise_gain.default_options.copy()
+    opts.update(options)
+    quad_opts = {k[5:]: v for k, v in opts.iteritems()
+                 if k.startswith('quad_')}
+    # Compute
+    return 2*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
+                  bounds[0], bounds[1], **quad_opts)[0]
+
+quantization_weighted_noise_gain.default_options = {}

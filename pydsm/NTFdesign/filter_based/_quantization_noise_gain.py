@@ -23,6 +23,8 @@ Computation of the noise power gain through the NTF and the output filter
 =========================================================================
 """
 
+from __future__ import division, print_function
+
 import numpy as np
 import scipy as sp
 __import__("scipy.signal")
@@ -33,9 +35,9 @@ from ...errors import PyDsmError
 
 __all__ = ["quantization_noise_gain", "quantization_noise_gain_by_conv"]
 
-def quantization_noise_gain(NTF, H, H_type='zpk'):
-    r"""
-    Computes the quantization noise power gain
+
+def quantization_noise_gain(NTF, H, H_type='zpk', **options):
+    r"""Compute the quantization noise power gain after a filter
 
     Parameters
     ----------
@@ -57,6 +59,16 @@ def quantization_noise_gain(NTF, H, H_type='zpk'):
     a : real
         noise power gain
 
+    Other parameters
+    ----------------
+    quad_xxx : various type
+        Parameters prefixed by ``quad_`` are passed to the ``quad``
+        function that is used internally as an integrator. Allowed options
+        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
+        Do not use other options since they could break the integrator in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
     Notes
     -----
     In the default case the computation is practiced as
@@ -66,16 +78,31 @@ def quantization_noise_gain(NTF, H, H_type='zpk'):
         \left|H\left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2
         \left|\mathit{NTF}
         \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 df
+
+     Since this function internally uses ``quantization_weighted_noise_gain``
+     the latter default parameters may also affect its behavior.
+
+    See Also
+    --------
+    scipy.integrate.quad : integrator used internally.
+        For the meaning of the integrator parameters.
     """
-    if H_type=='zpk' or H_type=='ba':
-        w = lambda f: np.abs(evalTF(H,np.exp(2j*np.pi*f)))**2
-    elif H_type=='imp':
-        w = lambda f: np.abs(evalTF((H,1),np.exp(2j*np.pi*f)))**2
-    elif H_type=='mag':
+    # Manage optional parameters
+    opts = quantization_noise_gain.default_options.copy()
+    opts.update(options)
+    quad_opts = {k[5:]: v for k, v in opts.iteritems()
+                 if k.startswith('quad_')}
+    if H_type == 'zpk' or H_type == 'ba':
+        w = lambda f: np.abs(evalTF(H, np.exp(2j*np.pi*f)))**2
+    elif H_type == 'imp':
+        w = lambda f: np.abs(evalTF((H, [1]), np.exp(2j*np.pi*f)))**2
+    elif H_type == 'mag':
         w = lambda f: H(f)**2
     else:
         raise PyDsmError("Incorrect filter type specification")
-    return quantization_weighted_noise_gain(NTF, w)
+    return quantization_weighted_noise_gain(NTF, w, **quad_opts)
+
+quantization_noise_gain.default_options = {}
 
 
 def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
