@@ -50,3 +50,15 @@
 - [setuptools] make docdist pass options to build_sphinx
 - [documentation] Maybe use the versionadded/versionchanged/deprecated sphinx
     features to document api changes
+- [*examples*] The numeric results in the ICECS 2012 paper are not consistent
+    with what the sample script returns. Specifically, the SNR values
+    evaluated via the NTF on the paper are better than those obtained by
+    the code by a factor 2. In the original version of the code, the results
+    where identical due to a missing factor 2 in the quantization noise gain
+    evaluation. Probably, this error slipped in because it makes the NTF-based
+    results and the time-domain-simulation results more similar. In fact, the
+    'real' modulator behavior is better than predicted by the NTF model
+    because in the specific example the quantization noise is not white,
+    but for some reason slightly blue (more power at higher frequencies).
+    A note should probably be added to the code and to the ArXiv version of
+    the ICECS paper.
