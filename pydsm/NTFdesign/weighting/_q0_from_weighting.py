@@ -77,10 +77,8 @@ def q0_from_noise_weighting(P, noise_weighting, **options):
     # Manage optional parameters
     opts = q0_from_noise_weighting.default_options.copy()
     opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
     # Do the computation
-    ac = lambda t: idtft_hermitian(noise_weighting, t, **quad_opts)
+    ac = lambda t: idtft_hermitian(noise_weighting, t, **opts)
     return np.asarray(map(ac, np.arange(P+1)))
 
 q0_from_noise_weighting.default_options = {'quad_epsabs': 1E-14,

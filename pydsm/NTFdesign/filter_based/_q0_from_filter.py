@@ -84,10 +84,8 @@ def q0_from_filter_imp_response(P, h_ir, **options):
     # Manage optional parameters
     opts = q0_from_filter_imp_response.default_options.copy()
     opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
     # Do the computation
-    return q0_from_filter(P, h_ir, F_type='imp', **quad_opts)
+    return q0_from_filter(P, h_ir, F_type='imp', **opts)
 
 q0_from_filter_imp_response.default_options = {'quad_epsabs': 1E-14,
                                                'quad_epsrel': 1E-9}
@@ -137,10 +135,8 @@ def q0_from_filter_mag_response(P, h_mag, **options):
     # Manage optional parameters
     opts = q0_from_filter_mag_response.default_options.copy()
     opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
     # Do the computation
-    return q0_from_filter(P, h_mag, F_type='mag', **quad_opts)
+    return q0_from_filter(P, h_mag, F_type='mag', **opts)
 
 q0_from_filter_mag_response.default_options = {'quad_epsabs': 1E-14,
                                                'quad_epsrel': 1E-9}
@@ -193,17 +189,15 @@ def q0_from_filter(P, F, F_type='zpk', **options):
     # Manage optional parameters
     opts = q0_from_filter.default_options.copy()
     opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
     # Do the computation
     if F_type == 'zpk' or F_type == 'ba':
         w = lambda f: np.abs(evalTF(F, np.exp(2j*np.pi*f)))**2
-        q0 = q0_from_noise_weighting(P, w, **quad_opts)
+        q0 = q0_from_noise_weighting(P, w, **opts)
     elif F_type == 'imp':
         q0 = raw_acorr(F, P)
     elif F_type == 'mag':
         w = lambda f: F(f)**2
-        q0 = q0_from_noise_weighting(P, w, **quad_opts)
+        q0 = q0_from_noise_weighting(P, w, **opts)
     else:
         raise PyDsmError("Incorrect filter type specification")
     return q0

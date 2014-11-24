@@ -90,8 +90,6 @@ def quantization_noise_gain(NTF, H, H_type='zpk', **options):
     # Manage optional parameters
     opts = quantization_noise_gain.default_options.copy()
     opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
     if H_type == 'zpk' or H_type == 'ba':
         w = lambda f: np.abs(evalTF(H, np.exp(2j*np.pi*f)))**2
     elif H_type == 'imp':
@@ -100,7 +98,7 @@ def quantization_noise_gain(NTF, H, H_type='zpk', **options):
         w = lambda f: H(f)**2
     else:
         raise PyDsmError("Incorrect filter type specification")
-    return quantization_weighted_noise_gain(NTF, w, **quad_opts)
+    return quantization_weighted_noise_gain(NTF, w, **opts)
 
 quantization_noise_gain.default_options = {}
 
