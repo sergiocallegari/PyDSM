@@ -61,9 +61,9 @@ class TestNTF_Filter(TestCase):
             return np.abs(evalTF(hz, np.exp(2j*np.pi*f)))
 
         ntf1 = synthesize_ntf_from_filter(order, mr, 'mag',
-                                          options={'show_progress': False})
+                                          show_progress=False)
         ntf2 = synthesize_ntf_from_filter(order, ir, 'imp',
-                                          options={'show_progress': False})
+                                          show_progress=False)
         mf1 = quantization_noise_gain(ntf1, hz)
         mf2 = quantization_noise_gain(ntf2, hz)
         np.testing.assert_almost_equal(mf1, mf2, decimal=12)
