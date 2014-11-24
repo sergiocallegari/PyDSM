@@ -35,7 +35,7 @@ class TestSynthesizeNTFminmax(TestCase):
 
     def test_LP8(self):
         z, p, k = synthesize_ntf_minmax(order=8,
-                                        options={'show_progress': False})
+                                        show_progress=False)
         e_k = 1
         e_z = [990.349427225477e-003 + 69.0500612157020e-003j,
                990.349427225477e-003 - 69.0500612157020e-003j,

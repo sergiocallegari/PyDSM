@@ -23,6 +23,8 @@ Design of psychoacoustically optimal modulators
 ===============================================
 """
 
+from __future__ import division, print_function
+
 import numpy as np
 from .delsig import synthesizeNTF as _synthesizeNTF
 from ..delsig import undbp as _undbp
@@ -30,8 +32,9 @@ from .. import audio_weightings
 from .weighting import synthesize_ntf_from_noise_weighting as \
     _synthesize_ntf_from_noise_weighting
 
-__all__=["dunn_optzeros", "dunn_optzeros_cplx", "synthesize_ntf_dunn",
-         "synthesize_ntf_from_audio_weighting"]
+__all__ = ["dunn_optzeros", "dunn_optzeros_cplx", "synthesize_ntf_dunn",
+           "synthesize_ntf_from_audio_weighting"]
+
 
 def dunn_optzeros(n):
     """
@@ -85,6 +88,7 @@ def dunn_optzeros(n):
         raise ValueError('Optimized zeros for n>14 are not available.')
     return np.asarray(zero_freqs_unnorm[n-1])/22.05
 
+
 def dunn_optzeros_cplx(order, osr):
     """
     Helper function for synthesising psychoacoustically optimal modulators.
@@ -111,6 +115,7 @@ def dunn_optzeros_cplx(order, osr):
     """
     w2=dunn_optzeros(order)/osr*np.pi
     return np.exp(1j*w2)
+
 
 def synthesize_ntf_dunn(order=3, OSR=64, H_inf=1.5):
     """Synthesizes an NTF for a DS audio modulator by Dunn's approach.
@@ -161,15 +166,15 @@ def synthesize_ntf_dunn(order=3, OSR=64, H_inf=1.5):
     """
     return _synthesizeNTF(order, OSR, dunn_optzeros_cplx(order, OSR), H_inf, 0)
 
-def synthesize_ntf_from_audio_weighting(order, osr,
-                                        audio_weighting=
-                                            audio_weightings.f_weighting,
-                                        audio_band=22.05E3,
-                                        max_attn=120,
-                                        H_inf=1.5,
-                                        normalize="auto", options={}):
-    u"""
-    Synthesize a FIR NTF based on an audio weighting function.
+
+def synthesize_ntf_from_audio_weighting(
+        order, osr,
+        audio_weighting=audio_weightings.f_weighting,
+        audio_band=22.05E3,
+        max_attn=120,
+        H_inf=1.5,
+        normalize="auto", **options):
+    u"""Synthesize a FIR NTF based on an audio weighting function.
 
     The ΔΣ modulator NTF is designed after an audio weigthing function stating
     how loudly noise is perceived at the various frequencies.
@@ -219,26 +224,62 @@ def synthesize_ntf_from_audio_weighting(order, osr,
     ntf : ndarray
         FIR NTF in zpk form
 
-    Notes
-    -----
-    The computation of the NTF from the noise weighting involves computing
-    an integral on the noise weighting function. To control the integration
-    parameters, do not use this function. Rather, first compute a vector
-    q0 with `q0_from_noise_weighting` (which lets the integrator params be
-    specified), then use `weighting.synthesize_ntf_from_q0`.
+    Other parameters
+    ----------------
+    show_progress : bool, optional
+        provide extended output, default is True
+    cvxpy_xxx : various type, optional
+        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
+        optimizer. Allowed options are:
 
-    See also
+        ``cvxpy_maxiters``
+            Maximum number of iterations (defaults to 100)
+        ``cvxpy_abstol``
+            Absolute accuracy (defaults to 1e-7)
+        ``cvxpy_reltol``
+            Relative accuracy (defaults to 1e-6)
+        ``cvxpy_feastol``
+            Tolerance for feasibility conditions (defaults to 1e-6)
+
+        Do not use other options since they could break ``cvxpy`` in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+    quad_xxx : various type
+        Parameters prefixed by ``quad_`` are passed to the ``quad``
+        function that is used internally as an integrator. Allowed options
+        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
+        Do not use other options since they could break the integrator in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
+    See Also
     --------
+    scipy.integrate.quad : integrator used internally.
+        For the meaning of the integrator parameters.
     weighting.synthesize_ntf_from_noise_weighting :
         synthesize an NTF from a noise weighting
-    weighting.synthesize_ntf_from_q0 :
-        synthesize an NTF from a quadratic form defining the quantization noise
-        gain
+
+    Check also the documentation of ``cvxopt`` for further information.
+
+    Notes
+    -----
+    Since this function internally uses
+    ``synthesize_ntf_from_noise_weighting``, the latter default parameters may
+    also affect its behavior.
     """
+    # Manage optional parameters
+    opts = synthesize_ntf_from_audio_weighting.default_options.copy()
+    opts.update(options)
+    # Do the computation
+
     def w(f):
-        ma=_undbp(-max_attn)
+        ma = _undbp(-max_attn)
         fx = f*audio_band*2*osr
         w = audio_weighting(fx) if fx <= audio_band else 0
         return max(w, ma)
+
     return _synthesize_ntf_from_noise_weighting(order, w, H_inf,
-                                                normalize, options)
+                                                normalize, **opts)
+
+synthesize_ntf_from_audio_weighting.default_options = {'quad_epsabs': 1E-14,
+                                                       'quad_epsrel': 1E-9}

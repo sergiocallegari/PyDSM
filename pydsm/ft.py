@@ -25,13 +25,16 @@ Fourier transform related routines
 Functions to compute the fft and the dtft.
 """
 
-__all__ = ["fft_centered", "dtft", "dtft_hermitian", "idtft",\
-     "idtft_hermitian"]
+from __future__ import division, print_function
 
 import numpy as np
 import scipy as sp
 __import__("scipy.fftpack")
 __import__("scipy.integrate")
+
+__all__ = ["fft_centered", "dtft", "dtft_hermitian", "idtft",
+           "idtft_hermitian"]
+
 
 def fft_centered(x, fs=1):
     """
@@ -68,6 +71,7 @@ def fft_centered(x, fs=1):
     X=sp.fftpack.fftshift(X)
     return(ff, X)
 
+
 def dtft(x, fs=1, t0=0):
     """
     Computes the discrete time Fourier transform (DTFT).
@@ -93,6 +97,7 @@ def dtft(x, fs=1, t0=0):
         in sample intervals.
     """
     return lambda f: np.sum(x*np.exp(-2j*np.pi*f/fs*(np.arange(len(x))-t0)))
+
 
 def dtft_hermitian(x, fs=1):
     """
@@ -122,16 +127,17 @@ def dtft_hermitian(x, fs=1):
     return lambda f: \
         x[0]+np.sum(x[1:]*2*np.cos(2*np.pi*f/fs*np.arange(1,len(x))))
 
-def _idtft(Ff, t, ip={}, fs=1):
-    rr=sp.integrate.quad(lambda f: np.real(Ff(f*fs)*np.exp(2j*np.pi*f*t)),\
-        -0.5, 0.5, **ip)[0]
-    ri=sp.integrate.quad(lambda f: np.imag(Ff(f*fs)*np.exp(2j*np.pi*f*t)),\
-        -0.5, 0.5, **ip)[0]
+
+def _idtft(Ff, t, fs=1, **quad_opts):
+    rr = sp.integrate.quad(lambda f: np.real(Ff(f*fs)*np.exp(2j*np.pi*f*t)),
+                           -0.5, 0.5, **quad_opts)[0]
+    ri = sp.integrate.quad(lambda f: np.imag(Ff(f*fs)*np.exp(2j*np.pi*f*t)),
+                           -0.5, 0.5, **quad_opts)[0]
     return rr+ri
 
-def idtft(Ff, tt, ip={}, fs=1):
-    """
-    Computes the inverse discrete time Fourier transform (IDTFT)
+
+def idtft(Ff, tt, fs=1, **options):
+    """Compute the inverse discrete time Fourier transform (IDTFT)
 
     Parameters
     ----------
@@ -147,24 +153,42 @@ def idtft(Ff, tt, ip={}, fs=1):
 
     Other Parameters
     ----------------
-    ip : dict, optional
-        the controlling parameters for the numerical integrator
-        (see scipy.integrate.quad)
     fs : real, optional
         the sample frequency for the output sequence (defaults to 1)
+    quad_xxx : various type
+        Parameters prefixed by ``quad_`` are passed to the ``quad``
+        function that is used internally as an integrator. Allowed options
+        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
+        Do not use other options since they could break the integrator in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
+    See Also
+    --------
+    scipy.integrate.quad : integrator used internally.
+        For the meaning of the integrator parameters.
     """
+    # Manage optional parameters
+    opts = idtft.default_options.copy()
+    opts.update(options)
+    quad_opts = {k[5:]: v for k, v in opts.iteritems()
+                 if k.startswith('quad_')}
+    # Do the computation
     if np.isscalar(tt):
-        return _idtft(Ff, tt, ip, fs)
+        return _idtft(Ff, tt, fs, **quad_opts)
     else:
-        return np.asarray([_idtft(Ff, t, ip, fs) for t in tt])
+        return np.asarray([_idtft(Ff, t, fs, **quad_opts) for t in tt])
 
-def _idtft_hermitian(Ff, t, ip={}, fs=1):
-    return 2*sp.integrate.quad(lambda f: \
-        np.real(Ff(f*fs))*np.cos(2*np.pi*f*t), 0, 0.5, **ip)[0]
+idtft.default_options = {}
 
-def idtft_hermitian(Ff, tt, ip={}, fs=1):
-    """
-    Computes the inverse discrete time Fourier transform (IDTFT) for a
+
+def _idtft_hermitian(Ff, t, fs=1, **quad_opts):
+    return 2*sp.integrate.quad(lambda f: np.real(Ff(f*fs))*np.cos(2*np.pi*f*t),
+                               0, 0.5, **quad_opts)[0]
+
+
+def idtft_hermitian(Ff, tt, fs=1, **options):
+    """Compute the inverse discrete time Fourier transform (IDTFT) for a
     hermitian function of frequency.
 
     Since the input function is hermitian, i.e. F(-f)=conjugate(F(f)), it
@@ -186,13 +210,31 @@ def idtft_hermitian(Ff, tt, ip={}, fs=1):
 
     Other Parameters
     ----------------
-    ip : dict, optional
-        the controlling parameters for the numerical integrator
-        (see scipy.integrate.quad)
     fs : real, optional
         the sample frequency for the output sequence (defaults to 1)
+    quad_xxx : various type
+        Parameters prefixed by ``quad_`` are passed to the ``quad``
+        function that is used internally as an integrator. Allowed options
+        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
+        Do not use other options since they could break the integrator in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
+    See Also
+    --------
+    scipy.integrate.quad : integrator used internally.
+        For the meaning of the integrator parameters.
     """
+    # Manage optional parameters
+    opts = idtft_hermitian.default_options.copy()
+    opts.update(options)
+    quad_opts = {k[5:]: v for k, v in opts.iteritems()
+                 if k.startswith('quad_')}
+    # Do the computation
     if np.isscalar(tt):
-        return _idtft_hermitian(Ff, tt, ip, fs)
+        return _idtft_hermitian(Ff, tt, fs, **quad_opts)
     else:
-        return np.asarray([_idtft_hermitian(Ff, t, ip, fs) for t in tt])
+        return np.asarray([_idtft_hermitian(Ff, t, fs, **quad_opts)
+                           for t in tt])
+
+idtft_hermitian.default_options = {}
