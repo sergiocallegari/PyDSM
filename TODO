@@ -18,13 +18,6 @@
 - avoid __import__ statements and follow
     http://docs.scipy.org/doc/scipy/reference/api.html
 - [api] rename quantization_noise_gain as quantization_filtered_noise_gain
-- [api] provide a general mechanism for fine options to all functions that
-    may require options for underlying code (e.g. functions calling
-    optimizers or functions calling integrators). Have a mechanism for
-    defaults (e.g. a function attribute) and a single options dictionary.
-    Provide namespaces for the options if necessary. For instance
-    quad_epsrel for the relative accuracy of the integrator
-    cvxpy_reltol for the relative accuracy of the convex optimizer
 - [api] thoroughly clean up the synthesizeNTF_from_filter interface
     argument should be a zpk or a ba tuple only
     impulse response case goes in the ba with a=[1] and b=response
@@ -39,9 +32,6 @@
 - [cython] user numpy.require to assure that arrays have the right properties
 - [optimization] move to the newer cvxpy
 - [optimization] check picos too for the optimization backend
-- [clans] double check for mistakes in the clans implementation
-    * cleanup comments
-    * recheck mirroring of poles that are outside unit circle
 - [python] make python3 compatible
 - [python] make pep8 clean
 - [examples] provide notebook version of the examples
