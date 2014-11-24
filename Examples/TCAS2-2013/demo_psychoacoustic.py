@@ -139,7 +139,7 @@ plt.tight_layout(rect=[0, 0, 1, 0.98])
 
 ww = np.zeros_like(psd1)
 for i in xrange(len(freqs)):
-    ww[i] = f_weighting(freqs[i])
+    ww[i] = max(f_weighting(freqs[i]), 1E-200)
 
 
 plt.figure()
