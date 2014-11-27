@@ -32,7 +32,6 @@ from ...correlations import raw_acorr
 from ..weighting import q0_from_noise_weighting
 from ...delsig import evalTF
 import numpy as np
-from ...errors import PyDsmError
 
 __all__ = ["q0_from_filter"]
 
@@ -69,6 +68,12 @@ def q0_from_filter(P, F, F_type='zpk', **options):
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
 
+    Raises
+    ------
+    ValueError
+        'Incorrect filter type specification' if the filter is not specified
+        correctly.
+
     Notes
     -----
     The Q matrix being synthesized has (P+1) times (P+1) entries.
@@ -94,7 +99,7 @@ def q0_from_filter(P, F, F_type='zpk', **options):
         w = lambda f: F(f)**2
         q0 = q0_from_noise_weighting(P, w, **opts)
     else:
-        raise PyDsmError("Incorrect filter type specification")
+        raise ValueError("Incorrect filter type specification")
     return q0
 
 q0_from_filter.default_options = {'quad_epsabs': 1E-14,

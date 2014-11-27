@@ -97,14 +97,23 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
 
     Raises
     ------
-    PyDsmError
+    ValueError
         'Incorrect modulator specification', if the modulator specification
         is inconsistent.
 
+        'Invalid argument: nlev must be convertible into a 1D int array',
+        if the quantizer specification is incorrect.
+
+        'Invalid argument: u must be convertible into a 2D float array',
+        if the input specification is incorrect.
+
+        'Incorrect initial condition specification' if the initial condition
+        specification for the modulator filters is incorrect.
+
     Warns
     -----
-    PyDsmWarning
-        'Running the slow version of simulateDSM.', if the simulator being
+    PyDsmSlowPathWarning
+        'Running the slow version of simulateDSM', if the simulator being
         used is the slow one, coded in pure Python.
 
     Notes

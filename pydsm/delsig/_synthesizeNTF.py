@@ -54,7 +54,7 @@ Entry point for DELSIG-like Delta-Sigma NTF synthesis function
 
 import numpy as np
 from warnings import warn
-from ..errors import PyDsmWarning
+from ..exceptions import PyDsmApproximationWarning
 from ._synthesizeNTF0 import synthesizeNTF0
 from ._synthesizeNTF1 import synthesizeNTF1
 
@@ -102,24 +102,28 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     Raises
     ------
     ValueError
-        'Error. f0 must be less than 0.5' if f0 is out of range
+        'Frequency f0 must be less than 0.5' if f0 is out of range
 
-        'Order must be even for a bandpass modulator.' if the order is
+        'Order must be even for a bandpass modulator' if the order is
         incompatible with the modulator type.
 
         'The opt vector must be of length xxx' if opt is used to explicitly
         pass the NTF zeros and these are in the wrong number.
 
+    RuntimeError
+        'Cannot synthesize NTF zeros' if the synthesis fails for some
+        unspecified reason.
+
     Warns
     -----
-    PyDsmWarning
+    PyDsmApproximationWarning
         'Creating a lowpass ntf.' if the center frequency is different
         from zero, but so low that a low pass modulator must be designed.
 
         'Unable to achieve specified H_inf ...' if the desired H_inf
         cannot be achieved.
 
-        'Danger! Iteration limit exceeded' if the routine converges too
+        'Iteration limit exceeded' if the routine converges too
         slowly.
 
     Notes
@@ -134,15 +138,15 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     synthesizeChebyshevNTF instead.
     """
     if f0 > 0.5:
-        raise ValueError('Error. f0 must be less than 0.5.')
+        raise ValueError('Frequency f0 must be less than 0.5')
     if f0 != 0 and f0 < 0.25/osr:
-        warn('Creating a lowpass ntf.', PyDsmWarning)
+        warn('Creating a lowpass ntf.', PyDsmApproximationWarning)
         f0 = 0
     if f0 != 0 and order % 2 != 0:
-        raise ValueError('Order must be even for a bandpass modulator.')
+        raise ValueError('Order must be even for a bandpass modulator')
     opt = np.asarray(opt)
     if opt.ndim > 1 or (opt.ndim == 1 and opt.size != order):
-        raise ValueError('The opt vector must be of length %d.' % order)
+        raise ValueError('The opt vector must be of length %d' % order)
 
     if not optimize_NTF:
         ntf = synthesizeNTF0(order, osr, opt, H_inf, f0)

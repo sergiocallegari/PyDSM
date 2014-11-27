@@ -31,7 +31,6 @@ __import__("scipy.signal")
 from ...ir import impulse_response
 from ...delsig import evalTF
 from ..weighting import quantization_weighted_noise_gain
-from ...errors import PyDsmError
 
 __all__ = ["quantization_noise_gain", "quantization_noise_gain_by_conv"]
 
@@ -69,6 +68,12 @@ def quantization_noise_gain(NTF, H, H_type='zpk', **options):
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
 
+    Raises
+    ------
+    ValueError
+        'Incorrect filter type specification' if the filter is not specified
+        correctly.
+
     Notes
     -----
     In the default case the computation is practiced as
@@ -97,7 +102,7 @@ def quantization_noise_gain(NTF, H, H_type='zpk', **options):
     elif H_type == 'mag':
         w = lambda f: H(f)**2
     else:
-        raise PyDsmError("Incorrect filter type specification")
+        raise ValueError("Incorrect filter type specification")
     return quantization_weighted_noise_gain(NTF, w, **opts)
 
 quantization_noise_gain.default_options = {}
@@ -138,6 +143,6 @@ def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
     elif H_type=='imp':
         h2_ir = H
     else:
-        raise PyDsmError("Incorrect filter type specification")
+        raise ValueError("Incorrect filter type specification")
     conv = sp.signal.convolve(h1_ir, h2_ir)
     return np.sum(conv**2)

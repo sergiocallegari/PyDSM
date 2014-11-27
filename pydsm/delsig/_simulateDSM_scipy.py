@@ -56,7 +56,7 @@ import numpy as np
 from scipy.signal import zpk2ss
 from scipy import linalg
 from warnings import warn
-from ..errors import PyDsmWarning, PyDsmError
+from ..exceptions import PyDsmSlowPathWarning
 
 __all__ = ["ds_quantize"]
 
@@ -64,7 +64,8 @@ __all__ = ["ds_quantize"]
 def simulateDSM(u, arg2, nlev=2, x0=0,
                 store_xn=False, store_xmax=False, store_y=False):
 
-    warn('Running the slow version of simulateDSM.', PyDsmWarning)
+    warn('Running the slow version of simulateDSM.',
+         PyDsmSlowPathWarning)
 
     # Make sure that nlev is an array
     nlev = np.asarray(nlev).reshape(1)
@@ -90,7 +91,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
             form = 1
             order = ABCD.shape[0]-nq
         else:
-            raise PyDsmError('Incorrect modulator specification')
+            raise ValueError('Incorrect modulator specification')
 
     # Assure that the state is a column vector
     if np.isscalar(x0) and x0 == 0:
