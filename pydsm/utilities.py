@@ -23,9 +23,11 @@ Utility functions for PyDSM
 ===========================
 """
 
-__all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS"]
+from __future__ import division, print_function
 
 import numpy as np
+
+__all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS"]
 
 
 EPS = np.finfo(float).eps

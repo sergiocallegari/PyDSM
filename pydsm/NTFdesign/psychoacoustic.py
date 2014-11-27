@@ -74,17 +74,17 @@ def dunn_optzeros(n):
     """
     # These are the optimal zero placements in kHz for a 22.05 kHz bandwidth
     # as found in the paper by Dunn and Sandler
-    zero_freqs_unnorm=[[0.0],
-                       [4.014, -4.014],
-                       [0.0, 6.443, -6.443],
-                       [3.590, -3.590, 11.954, -11.954],
-                       [0.0, 4.308, -4.308, 12.959, -12.959],
-                       [3.325, -3.325, 7.078, -7.078, 13.389, -13.389],
-                       [0,0, 4.017, -4.017, 10.471, -10.471, 13.842,
-                        -13.842],
-                       [2.933, -2.933, 5.167, -5.167, 12.012, -12.012,
-                        14.381, -14.381]]
-    if n>8:
+    zero_freqs_unnorm = [[0.0],
+                         [4.014, -4.014],
+                         [0.0, 6.443, -6.443],
+                         [3.590, -3.590, 11.954, -11.954],
+                         [0.0, 4.308, -4.308, 12.959, -12.959],
+                         [3.325, -3.325, 7.078, -7.078, 13.389, -13.389],
+                         [0.0, 0.0, 4.017, -4.017, 10.471, -10.471, 13.842,
+                          -13.842],
+                         [2.933, -2.933, 5.167, -5.167, 12.012, -12.012,
+                          14.381, -14.381]]
+    if n > 8:
         raise ValueError('Optimized zeros for n>14 are not available.')
     return np.asarray(zero_freqs_unnorm[n-1])/22.05
 
@@ -113,7 +113,7 @@ def dunn_optzeros_cplx(order, osr):
     --------
     dunn_optzeros : Dunn's optimal zeros
     """
-    w2=dunn_optzeros(order)/osr*np.pi
+    w2 = dunn_optzeros(order)/osr*np.pi
     return np.exp(1j*w2)
 
 

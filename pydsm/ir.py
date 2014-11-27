@@ -26,11 +26,14 @@ Function to compute (approximating it by truncation) the impulse response
 of a discrete time filter.
 """
 
-__all__ = ["impulse_response", "guess_ir_length"]
+from __future__ import division, print_function
 
 import numpy as np
 import scipy as sp
 __import__("scipy.signal")
+
+__all__ = ["impulse_response", "guess_ir_length"]
+
 
 def impulse_response(h, m=None, db=80):
     """
@@ -62,15 +65,16 @@ def impulse_response(h, m=None, db=80):
     """
     if len(h) == 3:
         (b, a) = sp.signal.zpk2tf(*h)
-        b=b.real
-        a=a.real
+        b = b.real
+        a = a.real
     else:
         (b, a) = h
-    if m == None:
+    if m is None:
         m = guess_ir_length(h, db)
-    ins=np.zeros(m)
-    ins[0]=1
-    return sp.signal.lfilter(b,a,ins)
+    ins = np.zeros(m)
+    ins[0] = 1
+    return sp.signal.lfilter(b, a, ins)
+
 
 def guess_ir_length(h, db=80):
     """
@@ -102,10 +106,10 @@ def guess_ir_length(h, db=80):
     # Put h in zpk form if it is in tf form
     if len(h) == 2:
         h = sp.signal.tf2zpk(*h)
-    pp=h[1]
-    t_z=len(h[0])+1
+    pp = h[1]
+    t_z = len(h[0])+1
     if len(pp) == 0:
-        t_p=0
+        t_p = 0
     else:
         # Try to estimate length of decay of the filter h.
         # The estimation is extremely rough, based on the decay
@@ -114,11 +118,11 @@ def guess_ir_length(h, db=80):
         # one to the other or overlapping.
         # Furthermore, this code should not be called if there is
         # a pole in z=1.
-        os=np.seterr(divide='ignore')
-        sr=np.log(np.abs(pp))
+        os = np.seterr(divide='ignore')
+        sr = np.log(np.abs(pp))
         np.seterr(**os)
         # Take slowlest pole
-        wmin=np.min(np.abs(sr))
+        wmin = np.min(np.abs(sr))
         # 1/omega min is time constant in sample periods.
         # Let's multiply the time constant in order to have
         # the transient attenuated by db decibels

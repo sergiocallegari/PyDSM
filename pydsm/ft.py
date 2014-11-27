@@ -60,15 +60,15 @@ def fft_centered(x, fs=1):
     fs : real, optional
         sample frequency for the input vector (defaults to 1)
     """
-    N=len(x)
-    fs=float(fs)
-    if np.mod(N,2)==0:
-        k=np.arange(-N/2,N/2) # N even
+    N = len(x)
+    fs = float(fs)
+    if np.mod(N, 2) == 0:
+        k = np.arange(-N/2, N/2)  # N even
     else:
-        k=np.arange(-(N-1)/2,(N-1)/2+1); # N odd
-    ff=k/(N/fs)
-    X=sp.fftpack.fft(x)
-    X=sp.fftpack.fftshift(X)
+        k = np.arange(-(N-1)/2, (N-1)/2+1)  # N odd
+    ff = k/(N/fs)
+    X = sp.fftpack.fft(x)
+    X = sp.fftpack.fftshift(X)
     return(ff, X)
 
 
@@ -123,9 +123,9 @@ def dtft_hermitian(x, fs=1):
     fs : real, optional
         sample frequency for the input vector (defaults to 1)
     """
-    x=x.real
+    x = x.real
     return lambda f: \
-        x[0]+np.sum(x[1:]*2*np.cos(2*np.pi*f/fs*np.arange(1,len(x))))
+        x[0]+np.sum(x[1:]*2*np.cos(2*np.pi*f/fs*np.arange(1, len(x))))
 
 
 def _idtft(Ff, t, fs=1, **quad_opts):

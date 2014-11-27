@@ -137,10 +137,10 @@ def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
     The computation is practiced as the sum of the squared entries
     in the impulse response of the cascaded filter NTF*H
     """
-    h1_ir=impulse_response(NTF, db=db)
-    if H_type=='zpk' or H_type=='ba':
-        h2_ir=impulse_response(H, db=db)
-    elif H_type=='imp':
+    h1_ir = impulse_response(NTF, db=db)
+    if H_type == 'zpk' or H_type == 'ba':
+        h2_ir = impulse_response(H, db=db)
+    elif H_type == 'imp':
         h2_ir = H
     else:
         raise ValueError("Incorrect filter type specification")

@@ -27,9 +27,12 @@ Functions to compute the auto- and cross- correlation between two vectors.
 So far only unnormalized (raw) correlations are supported.
 """
 
-__all__ = ["raw_acorr", "raw_xcorr"]
+from __future__ import division, print_function
 
 import numpy as np
+
+__all__ = ["raw_acorr", "raw_xcorr"]
+
 
 def raw_acorr(x, N):
     """
@@ -55,10 +58,8 @@ def raw_acorr(x, N):
     is responsibility of the user to assure that len(x)>=N. In some cases
     (but only in some cases), zero padding is practiced.
     """
-    m=len(x)
-    q=np.asarray([
-        np.dot(x[k:m], x[0:m-k])
-    for k in xrange(N+1)])
+    m = len(x)
+    q = np.asarray([np.dot(x[k:m], x[0:m-k]) for k in xrange(N+1)])
     return q
 
 
@@ -88,9 +89,8 @@ def raw_xcorr(x, y, N):
     is responsibility of the user to assure that N<=len(y). In some cases
     (but only in some cases), zero padding is assumed.
     """
-    mx=len(x)
-    my=len(y)
-    q=np.asarray([
-        np.dot(y[k:min(my,mx+k)], x[0:min(my-k,mx)])
-    for k in xrange(N+1)])
+    mx = len(x)
+    my = len(y)
+    q = np.asarray([np.dot(y[k:min(my, mx+k)],
+                           x[0:min(my-k, mx)]) for k in xrange(N+1)])
     return q
