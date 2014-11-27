@@ -19,85 +19,17 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Utility functions for PyDSM
-===========================
+Compatibility functions for PyDSM
+=================================
+
+This module re-implements some matlab interfaces that are useful
+for PyDSM.
 """
 
 from __future__ import division, print_function
 
 import numpy as np
-from warnings import warn
-from .exceptions import PyDsmPendingDeprecationWarning
-
-__all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS"]
-
-
-EPS = np.finfo(float).eps
-
-
-def is_negligible(x, tol=100*EPS):
-    """
-    Checks if a number is close to zero.
-
-    Parameters
-    ----------
-    x : float, complex or array_like
-        number to be checked
-    tol : float, optional
-        absolute tolerance. Defaults to 100 times the system epsilon.
-
-    Returns
-    -------
-    y : bool or array_like of bools
-        whether the input number is really close to zero or not.
-    """
-    return abs(np.asarray(x)) < tol
-
-
-def chop(x, tol=100*EPS):
-    """
-    Chop to zero input numbers that are close to zero.
-
-    Parameters
-    ----------
-    x : float, complex or array_like
-        number to process
-    tol : float, optional
-        absolute tolerance. Defaults to 100 times the system epsilon.
-
-    Returns
-    -------
-    y : float
-        y is zero if x is close to zero according to the tolerance.
-        Alternatively, y is x.
-
-    Notes
-    -----
-    If the input is an array, it is always copied.
-    See also `is_negligible`.
-    """
-    x = np.asarray(x)
-    if np.iscomplexobj(x):
-        return chop(x.real, tol) + 1j*chop(x.imag, tol)
-    y = np.copy(x)
-    y[is_negligible(y, tol)] = 0.
-    return y
-
-
-def mdot(*args):
-    """
-    Dot product taking multiple arguments
-
-    Parameters
-    ----------
-    x1, ..., xn : array_like
-
-    Returns
-    -------
-    y : ndarray
-        y=np.dot(np.dot(np.dot(...np.dot(x1,x2),xn_2)xn_1)xn)
-    """
-    return reduce(np.dot, args)
+from .utilities import chop
 
 
 def db(x, signal_type='voltage', R=1):
@@ -127,14 +59,13 @@ def db(x, signal_type='voltage', R=1):
     The default R value assures that when signal_type is 'voltage' dB defaults
     to the classical 20*log10(x) computation.
     """
-    warn('Function db moved to relab module', PyDsmPendingDeprecationWarning)
     if signal_type == 'power':
         return 10*np.log10(x)
     else:
         return 10*np.log10(np.abs(x)**2./R)
 
 
-def cplxpair(x, tol=100*EPS):
+def cplxpair(x, tol=100*np.finfo(float).eps):
     """
     Sorts values in input list by complex pairs.
 
@@ -168,8 +99,6 @@ def cplxpair(x, tol=100*EPS):
     This function is similar to Matlab cplxpair, but not quite.
 
     """
-    warn('Function cplxpair moved to relab module',
-         PyDsmPendingDeprecationWarning)
     x = np.sort_complex(chop(x, tol))
     real_mask = np.isreal(x)
     x_real = x[real_mask]
