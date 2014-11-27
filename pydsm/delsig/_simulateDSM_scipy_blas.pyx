@@ -30,7 +30,6 @@ np.import_array()
 import scipy as sp
 __import__('scipy.signal')
 __import__('scipy.linalg')
-from ..errors import PyDsmError
 from libc.math cimport floor, fabs
 
 ctypedef void (*dgemv_ptr) (char *trans, int *m, int *n,\
@@ -56,8 +55,8 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
             raise TypeError()
         c_nlev=c_nlev.reshape(1)
     except (ValueError, TypeError):
-         raise PyDsmError(\
-            "invalid argument: nlev must be convertible into a 1D int array")
+         raise ValueError(\
+            "Invalid argument: nlev must be convertible into a 1D int array")
 
     # Make sure that input is a matrix
     cdef np.ndarray c_u
@@ -68,8 +67,8 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
         if c_u.ndim == 1:
             c_u = c_u.reshape(1, -1)
     except (ValueError, TypeError):
-        raise PyDsmError(\
-            "invalid argument: u must be convertible into a 2D float array")
+        raise ValueError(\
+            "Invalid argument: u must be convertible into a 2D float array")
 
     cdef int nu = c_u.shape[0]
     cdef int nq = c_nlev.shape[0]
@@ -96,7 +95,7 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
             form = 1
             order = ABCD.shape[0]-nq
     except (ValueError, TypeError):
-        raise PyDsmError('incorrect modulator specification')
+        raise ValueError('Incorrect modulator specification')
 
     cdef np.ndarray c_x0, c_x0_temp
     # Assure that the state is a column vector
@@ -111,7 +110,7 @@ def simulateDSM(np.ndarray u, arg2, nlev=2, x0=0,
             if c_x0.shape[0]!=order:
                 raise TypeError()
     except (ValueError, TypeError):
-        raise PyDsmError('incorrect initial condition specification')
+        raise ValueError('Incorrect initial condition specification')
     c_x0_temp = np.empty_like(c_x0)
 
     cdef np.ndarray A, B1, B2, C, D1

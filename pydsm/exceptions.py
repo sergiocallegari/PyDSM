@@ -19,12 +19,30 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Definition of some common errors and exceptions
-===============================================
+Definition of some exceptions and warnings
+==========================================
 """
 
+
 class PyDsmWarning(UserWarning):
+    """Base class of warnings in PyDsm
+    """
     pass
 
-class PyDsmError(Exception):
+
+class PyDsmApproximationWarning(PyDsmWarning):
+    """Class to warn about approximation in computation
+    """
+    pass
+
+
+class PyDsmSlowPathWarning(PyDsmWarning):
+    """Class to warn about slow code paths
+    """
+    pass
+
+
+class PyDsmPendingDeprecationWarning(PyDsmWarning, PendingDeprecationWarning):
+    """Class to warn about features pending deprecation
+    """
     pass
