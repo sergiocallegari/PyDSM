@@ -27,7 +27,7 @@ from __future__ import division, print_function
 
 import numpy as np
 from warnings import warn
-from .exceptions import PyDsmPendingDeprecationWarning
+from .exceptions import PyDsmDeprecationWarning
 
 __all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS"]
 
@@ -106,6 +106,9 @@ def db(x, signal_type='voltage', R=1):
 
     This function tries to replicate the ``dB`` interface of Matlab.
 
+    .. deprecated:: 0.11.0
+        Function ``db`` moved to ``relab`` module
+
     Parameters
     ----------
     x : real
@@ -127,7 +130,7 @@ def db(x, signal_type='voltage', R=1):
     The default R value assures that when signal_type is 'voltage' dB defaults
     to the classical 20*log10(x) computation.
     """
-    warn('Function db moved to relab module', PyDsmPendingDeprecationWarning)
+    warn('Function db moved to relab module', PyDsmDeprecationWarning)
     if signal_type == 'power':
         return 10*np.log10(x)
     else:
@@ -140,6 +143,9 @@ def cplxpair(x, tol=100*EPS):
 
     This function tries to replicate the ``cplxpair`` of Matlab, but
     currently does a very poor job.
+
+    .. deprecated:: 0.11.0
+        Function ``cplxpair`` moved to ``relab`` module
 
     Parameters
     ----------
@@ -169,7 +175,7 @@ def cplxpair(x, tol=100*EPS):
 
     """
     warn('Function cplxpair moved to relab module',
-         PyDsmPendingDeprecationWarning)
+         PyDsmDeprecationWarning)
     x = np.sort_complex(chop(x, tol))
     real_mask = np.isreal(x)
     x_real = x[real_mask]
