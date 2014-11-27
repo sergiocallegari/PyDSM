@@ -33,7 +33,6 @@
 - [optimization] move to the newer cvxpy
 - [optimization] check picos too for the optimization backend
 - [python] make python3 compatible
-- [python] make pep8 clean
 - [examples] provide notebook version of the examples
 - [setuptools] assure that setuptools build the package before calling
     build_sphinx
