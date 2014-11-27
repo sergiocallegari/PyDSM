@@ -209,7 +209,7 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
     return dsclansNTF(x, order, rmax, Hz)
 
 clans.default_options = {'show_progress': False,
-                         'slsqp_maxiters': 100,
+                         'slsqp_maxiter': 100,
                          'slsqp_ftol': 1e-06,
                          'slsqp_eps': 1.4901161193847656e-08}
 
