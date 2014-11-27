@@ -23,25 +23,19 @@ Entry point for DELSIG-like Delta-Sigma modulator simulator
 ===========================================================
 """
 
-from ._simulateDSM_scipy import simulateDSM as simulateDSM_slow
+from ._simulateDSM_scipy import simulateDSM as _simulateDSM_scipy
 try:
-    from ._simulateDSM_cblas import simulateDSM as simulateDSM_cblas
+    from ._simulateDSM_cblas import simulateDSM as _simulateDSM_cblas
+    HAS_CBLAS = True
 except:
-    pass
-from ._simulateDSM_scipy_blas import simulateDSM as simulateDSM_scipy_blas
+    HAS_CBLAS = False
+from ._simulateDSM_scipy_blas import simulateDSM as _simulateDSM_scipy_blas
 
-__all__ = ["use_fast_simulator", "simulateDSM"]
-
-try:
-    simulateDSM_fast = simulateDSM_cblas
-except:
-    simulateDSM_fast = simulateDSM_scipy_blas
-
-use_fast_simulator = True
-
+__all__ = ["simulateDSM"]
 
 def simulateDSM(u, arg2, nlev=2, x0=0,
-                store_xn=False, store_xmax=False, store_y=False):
+                store_xn=False, store_xmax=False, store_y=False,
+                **options):
     """
     Computes the output of a general delta-sigma modulator.
 
@@ -95,6 +89,14 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
         with as many columns as the number of samples and as many rows as
         the number of quantizers. If store_y is False, then y is null.
 
+    Other Parameters
+    ----------------
+    backend : string
+        Use: 'auto' for automatic selection; 'scipy' for pure python
+        simulator; 'cblas' for simulator using platform cblas library;
+        'scipy_blas' for simulator using scipy provided blas. Defaults can
+        be set by changing the function ``default_options`` attribute.
+
     Raises
     ------
     ValueError
@@ -109,6 +111,10 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
 
         'Incorrect initial condition specification' if the initial condition
         specification for the modulator filters is incorrect.
+
+    RuntimeError
+        'Unsupported simulator backend xxx' if an unsupported backend is
+        required
 
     Warns
     -----
@@ -135,10 +141,22 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     functions. The codebase to be used is controlled by the module switch
     `use_fast_simulator`.
     """
-
-    if use_fast_simulator:
-        return simulateDSM_fast(u, arg2, nlev, x0,
-                                store_xn, store_xmax, store_y)
+    # Manage options
+    opts = simulateDSM.default_options.copy()
+    opts.update(options)
+    backend = 'auto'
+    if 'backend' in opts:
+        backend = opts['backend']
+    if backend == 'auto':
+        simulator = _simulateDSM_scipy_blas
+    elif backend == 'scipy':
+        simulator = _simulateDSM_scipy
+    elif backend == 'scipy_blas':
+        simulator = _simulateDSM_scipy_blas
+    elif backend == 'cblas' and HAS_CBLAS:
+        simulator = _simulateDSM_cblas
     else:
-        return simulateDSM_slow(u, arg2, nlev, x0,
-                                store_xn, store_xmax, store_y)
+        raise RuntimeError('Unsupported simulator backend %s' % backend)
+    return simulator(u, arg2, nlev, x0, store_xn, store_xmax, store_y)
+
+simulateDSM.default_options = {'backend': 'auto'}
