@@ -111,7 +111,8 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
             (defaults to 1.4901161193847656e-08)
 
         Do not use other options since they could break the minimizer in
-        unexpected ways.
+        unexpected ways. Defaults can
+        be set by changing the function ``default_options`` attribute.
 
     Returns
     -------
