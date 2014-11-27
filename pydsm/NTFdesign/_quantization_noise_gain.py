@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 # Copyright (c) 2012, Sergio Callegari
 # All rights reserved.
 
@@ -19,36 +20,31 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Computation of the noise power gain through the NTF and the output filter
-=========================================================================
+Computation of the noise power gain through the NTF
+===================================================
 """
 
 from __future__ import division, print_function
 
 import numpy as np
-from scipy.integrate import quad
-from ...delsig import evalTF
+from scipy.integrate import quad as _quad
+from ..delsig import evalTF as _evalTF
 
-from warnings import warn
-from ...exceptions import PyDsmDeprecationWarning
-
-__all__ = ["quantization_weighted_noise_gain"]
+__all__ = ["quantization_noise_gain"]
 
 
-def quantization_weighted_noise_gain(NTF, w=None, bounds=(0, 0.5),
-                                     **options):
-    r"""Compute the quantization noise power gain
-
-    .. deprecated:: 0.11.0
-        Function ``quantization_weighted_noise_gain`` superseded by
-        ``quantization_noise_gain`` in ``NTFdesign`` module.
+def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
+    r"""Computes the NTF quantization noise power gain
 
     Parameters
     ----------
     NTF : tuple
         NTF definition in zpk or nd form
-    w : callable with argument f in [0,1/2] or None
-        noise weighting function. If set to None, no weighting is applied
+    w : callable with argument f in [0,1/2] or None or tuple
+            * if function: noise weighting function
+            * if None: no weighting is applied
+            * if filter definition as zpk or ba tuple: weighting is implicitly
+              provided by the filter
     bounds : 2 elements tuple, optional
         the frequency range where the noise gain is computed. Defaults to
         (0, 0.5)
@@ -87,21 +83,21 @@ def quantization_weighted_noise_gain(NTF, w=None, bounds=(0, 0.5),
     scipy.integrate.quad : integrator used internally.
         For the meaning of the integrator parameters.
     """
-    warn("Function superseded by quantization_noise_gain in "
-         "NTFdesign module", PyDsmDeprecationWarning)
     # Manage parameters
     if w is None:
-        w = lambda x: 1.
+        w = lambda f: 1.
+    elif type(w) is tuple and 2 <= len(w) <= 3:
+        w = lambda f: _evalTF(w, np.exp(2j*np.pi*f))**2
     # Manage optional parameters
-    opts = quantization_weighted_noise_gain.default_options.copy()
+    opts = quantization_noise_gain.default_options.copy()
     opts.update(options)
     quad_opts = {k[5:]: v for k, v in opts.iteritems()
                  if k.startswith('quad_')}
     # Compute
-    return 2*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
-                  bounds[0], bounds[1], **quad_opts)[0]
+    return 2*_quad(lambda f: np.abs(_evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
+                   bounds[0], bounds[1], **quad_opts)[0]
 
-quantization_weighted_noise_gain.default_options = {'quad_epsabs': 1.49e-08,
-                                                    'quad_epsrel': 1.49e-08,
-                                                    'quad_limit': 50,
-                                                    'quad_points': None}
+quantization_noise_gain.default_options = {'quad_epsabs': 1.49e-08,
+                                           'quad_epsrel': 1.49e-08,
+                                           'quad_limit': 50,
+                                           'quad_points': None}
