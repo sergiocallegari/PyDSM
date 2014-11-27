@@ -179,7 +179,10 @@ def idtft(Ff, tt, fs=1, **options):
     else:
         return np.asarray([_idtft(Ff, t, fs, **quad_opts) for t in tt])
 
-idtft.default_options = {}
+idtft.default_options = {'quad_epsabs': 1.49e-08,
+                         'quad_epsrel': 1.49e-08,
+                         'quad_limit': 50,
+                         'quad_points': None}
 
 
 def _idtft_hermitian(Ff, t, fs=1, **quad_opts):
@@ -237,4 +240,4 @@ def idtft_hermitian(Ff, tt, fs=1, **options):
         return np.asarray([_idtft_hermitian(Ff, t, fs, **quad_opts)
                            for t in tt])
 
-idtft_hermitian.default_options = {}
+idtft_hermitian.default_options = idtft.default_options.copy()

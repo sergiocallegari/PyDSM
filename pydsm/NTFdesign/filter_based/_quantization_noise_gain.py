@@ -84,9 +84,6 @@ def quantization_noise_gain(NTF, H, H_type='zpk', **options):
         \left|\mathit{NTF}
         \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 df
 
-     Since this function internally uses ``quantization_weighted_noise_gain``
-     the latter default parameters may also affect its behavior.
-
     See Also
     --------
     scipy.integrate.quad : integrator used internally.
@@ -105,7 +102,8 @@ def quantization_noise_gain(NTF, H, H_type='zpk', **options):
         raise ValueError("Incorrect filter type specification")
     return quantization_weighted_noise_gain(NTF, w, **opts)
 
-quantization_noise_gain.default_options = {}
+quantization_noise_gain.default_options = \
+    quantization_weighted_noise_gain.default_options.copy()
 
 
 def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):

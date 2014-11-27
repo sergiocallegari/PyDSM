@@ -92,4 +92,7 @@ def quantization_weighted_noise_gain(NTF, w=None, bounds=(0, 0.5),
     return 2*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
                   bounds[0], bounds[1], **quad_opts)[0]
 
-quantization_weighted_noise_gain.default_options = {}
+quantization_weighted_noise_gain.default_options = {'quad_epsabs': 1.49e-08,
+                                                    'quad_epsrel': 1.49e-08,
+                                                    'quad_limit': 50,
+                                                    'quad_points': None}

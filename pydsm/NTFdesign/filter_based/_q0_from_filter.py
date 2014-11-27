@@ -78,9 +78,6 @@ def q0_from_filter(P, F, F_type='zpk', **options):
     -----
     The Q matrix being synthesized has (P+1) times (P+1) entries.
 
-    Since this function internally uses ``q0_from_noise_weighting``, the latter
-    default parameters may also affect its behavior.
-
     See Also
     --------
     scipy.integrate.quad : integrator used internally.
@@ -102,5 +99,5 @@ def q0_from_filter(P, F, F_type='zpk', **options):
         raise ValueError("Incorrect filter type specification")
     return q0
 
-q0_from_filter.default_options = {'quad_epsabs': 1E-14,
-                                  'quad_epsrel': 1E-9}
+q0_from_filter.default_options = \
+    q0_from_noise_weighting.default_options.copy()

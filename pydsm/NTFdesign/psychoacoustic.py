@@ -260,12 +260,6 @@ def synthesize_ntf_from_audio_weighting(
         synthesize an NTF from a noise weighting
 
     Check also the documentation of ``cvxopt`` for further information.
-
-    Notes
-    -----
-    Since this function internally uses
-    ``synthesize_ntf_from_noise_weighting``, the latter default parameters may
-    also affect its behavior.
     """
     # Manage optional parameters
     opts = synthesize_ntf_from_audio_weighting.default_options.copy()
@@ -281,5 +275,5 @@ def synthesize_ntf_from_audio_weighting(
     return _synthesize_ntf_from_noise_weighting(order, w, H_inf,
                                                 normalize, **opts)
 
-synthesize_ntf_from_audio_weighting.default_options = {'quad_epsabs': 1E-14,
-                                                       'quad_epsrel': 1E-9}
+synthesize_ntf_from_audio_weighting.default_options = \
+    _synthesize_ntf_from_noise_weighting.default_options.copy()

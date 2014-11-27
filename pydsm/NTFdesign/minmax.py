@@ -193,4 +193,8 @@ def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     ntf = ss2zpk(A, B, np.asarray(c.value), D)
     return ntf
 
-synthesize_ntf_minmax.default_options = {}
+synthesize_ntf_minmax.default_options = {'cvxpy_maxiters': 100,
+                                         'cvxpy_abstol': 1e-7,
+                                         'cvxpy_reltol': 1e-6,
+                                         'cvxpy_feastol': 1e-6,
+                                         'show_progress': True}

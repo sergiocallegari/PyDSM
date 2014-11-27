@@ -35,85 +35,6 @@ __all__ = ["synthesize_ntf_from_noise_weighting",
            "synthesize_ntf_from_q0"]
 
 
-def synthesize_ntf_from_noise_weighting(order, noise_weighting, H_inf=1.5,
-                                        normalize="auto", **options):
-    u"""Synthesize a FIR NTF based on a noise weighting function.
-
-    The ΔΣ modulator NTF is designed after a noise weigthing function stating
-    how expensive noise is at the various frequencies.
-
-    Parameters
-    ----------
-    order : int
-        Delta sigma modulator order
-    noise_weighting : callable
-        noise weighting function (argument normalized in [0, 0.5])
-    H_inf : real, optional
-        Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
-    normalize : string or real, optional
-        Normalization to apply to the quadratic form used in the NTF
-        selection. Defaults to 'auto' which means setting the top left entry
-        in the matrix Q defining the quadratic form to 1.
-
-    Returns
-    -------
-    ntf : ndarray
-        FIR NTF in zpk form
-
-    Other parameters
-    ----------------
-    show_progress : bool, optional
-        provide extended output, default is True
-    cvxpy_xxx : various type, optional
-        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
-        optimizer. Allowed options are:
-
-        ``cvxpy_maxiters``
-            Maximum number of iterations (defaults to 100)
-        ``cvxpy_abstol``
-            Absolute accuracy (defaults to 1e-7)
-        ``cvxpy_reltol``
-            Relative accuracy (defaults to 1e-6)
-        ``cvxpy_feastol``
-            Tolerance for feasibility conditions (defaults to 1e-6)
-
-        Do not use other options since they could break ``cvxpy`` in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
-
-    See Also
-    --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
-
-    Check also the documentation of ``cvxopt`` for further information.
-
-    Notes
-    -----
-    Since this function internally uses ``q0_from_noise_weighting``, the latter
-    default parameters may also affect its behavior.
-
-    Since this function internally uses ``synthesize_ntf_from_q0``, the latter
-    default parameters may also affect its behavior.
-    """
-    # Manage optional parameters
-    opts = synthesize_ntf_from_noise_weighting.default_options.copy()
-    opts.update(options)
-    # Do the computation
-    q0 = q0_from_noise_weighting(order, noise_weighting, **opts)
-    return synthesize_ntf_from_q0(q0, H_inf, normalize, **opts)
-
-synthesize_ntf_from_noise_weighting.default_options = {'quad_epsabs': 1E-14,
-                                                       'quad_epsrel': 1E-9}
-
-
 def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     """Synthesize FIR NTF from quadratic form defining quantization noise gain.
 
@@ -199,4 +120,81 @@ def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     ntf_ir = np.hstack((1, np.asarray(ar.value.T)[0]))
     return (np.roots(ntf_ir), np.zeros(order), 1.)
 
-synthesize_ntf_from_q0.default_options = {}
+synthesize_ntf_from_q0.default_options = {'cvxpy_maxiters': 100,
+                                          'cvxpy_abstol': 1e-7,
+                                          'cvxpy_reltol': 1e-6,
+                                          'cvxpy_feastol': 1e-6,
+                                          'show_progress': True}
+
+
+def synthesize_ntf_from_noise_weighting(order, noise_weighting, H_inf=1.5,
+                                        normalize="auto", **options):
+    u"""Synthesize a FIR NTF based on a noise weighting function.
+
+    The ΔΣ modulator NTF is designed after a noise weigthing function stating
+    how expensive noise is at the various frequencies.
+
+    Parameters
+    ----------
+    order : int
+        Delta sigma modulator order
+    noise_weighting : callable
+        noise weighting function (argument normalized in [0, 0.5])
+    H_inf : real, optional
+        Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
+    normalize : string or real, optional
+        Normalization to apply to the quadratic form used in the NTF
+        selection. Defaults to 'auto' which means setting the top left entry
+        in the matrix Q defining the quadratic form to 1.
+
+    Returns
+    -------
+    ntf : ndarray
+        FIR NTF in zpk form
+
+    Other parameters
+    ----------------
+    show_progress : bool, optional
+        provide extended output, default is True
+    cvxpy_xxx : various type, optional
+        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
+        optimizer. Allowed options are:
+
+        ``cvxpy_maxiters``
+            Maximum number of iterations (defaults to 100)
+        ``cvxpy_abstol``
+            Absolute accuracy (defaults to 1e-7)
+        ``cvxpy_reltol``
+            Relative accuracy (defaults to 1e-6)
+        ``cvxpy_feastol``
+            Tolerance for feasibility conditions (defaults to 1e-6)
+
+        Do not use other options since they could break ``cvxpy`` in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+    quad_xxx : various type
+        Parameters prefixed by ``quad_`` are passed to the ``quad``
+        function that is used internally as an integrator. Allowed options
+        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
+        Do not use other options since they could break the integrator in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
+    See Also
+    --------
+    scipy.integrate.quad : integrator used internally.
+        For the meaning of the integrator parameters.
+
+    Check also the documentation of ``cvxopt`` for further information.
+    """
+    # Manage optional parameters
+    opts = synthesize_ntf_from_noise_weighting.default_options.copy()
+    opts.update(options)
+    # Do the computation
+    q0 = q0_from_noise_weighting(order, noise_weighting, **opts)
+    return synthesize_ntf_from_q0(q0, H_inf, normalize, **opts)
+
+synthesize_ntf_from_noise_weighting.default_options =\
+    q0_from_noise_weighting.default_options.copy()
+synthesize_ntf_from_noise_weighting.default_options.update(
+    synthesize_ntf_from_q0.default_options)

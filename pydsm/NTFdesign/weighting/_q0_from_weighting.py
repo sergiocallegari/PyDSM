@@ -66,9 +66,6 @@ def q0_from_noise_weighting(P, noise_weighting, **options):
     -----
     The Q matrix being synthesized has (P+1) times (P+1) entries.
 
-    Since this function internally uses ``idtft_hermitian``, the latter
-    default parameters may also affect its behavior.
-
     See Also
     --------
     scipy.integrate.quad : integrator used internally.
@@ -82,4 +79,6 @@ def q0_from_noise_weighting(P, noise_weighting, **options):
     return np.asarray(map(ac, np.arange(P+1)))
 
 q0_from_noise_weighting.default_options = {'quad_epsabs': 1E-14,
-                                           'quad_epsrel': 1E-9}
+                                           'quad_epsrel': 1E-9,
+                                           'quad_limit': 100,
+                                           'quad_points': None}

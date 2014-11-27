@@ -96,14 +96,6 @@ def synthesize_ntf_from_filter(order, F, F_type='zpk', H_inf=1.5,
         For the meaning of the integrator parameters.
 
     Check also the documentation of ``cvxopt`` for further information.
-
-    Notes
-    -----
-    Since this function internally uses ``q0_from_filter``, the latter
-    default parameters may also affect its behavior.
-
-    Since this function internally uses ``synthesize_ntf_from_q0``, the latter
-    default parameters may also affect its behavior.
     """
     # Manage optional parameters
     opts = synthesize_ntf_from_filter.default_options.copy()
@@ -112,5 +104,7 @@ def synthesize_ntf_from_filter(order, F, F_type='zpk', H_inf=1.5,
     q0 = q0_from_filter(order, F, F_type, **opts)
     return synthesize_ntf_from_q0(q0, H_inf, normalize, **opts)
 
-synthesize_ntf_from_filter.default_options = {'quad_epsabs': 1E-14,
-                                              'quad_epsrel': 1E-9}
+synthesize_ntf_from_filter.default_options = \
+    q0_from_filter.default_options.copy()
+synthesize_ntf_from_filter.default_options.update(
+    synthesize_ntf_from_q0.default_options)
