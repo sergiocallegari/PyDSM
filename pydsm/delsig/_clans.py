@@ -68,7 +68,7 @@ from ._dsclansNTF import dsclansNTF
 __all__ = ["clans"]
 
 
-def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, options={}):
+def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
     u"""Synthesize the NTF for a ΔΣM w/ multibit quantizer by the CLANS method.
 
     This function is based on the CLANS method (Closed-Loop Analysis of Noise
@@ -96,7 +96,7 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, options={}):
     Other Parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True
+        provide extended output, default is False
     slsqp_xxx : various type, optional
         Parameters prefixed by ``slsqp_`` are passed to the ``fmin_slsqp``
         optimizer. Allowed options are:
@@ -145,10 +145,12 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, options={}):
     exceptions as ``synthesizeNTF``.
     """
     # Manage optional parameters
-    slsqp_opts = {k[6:]: v for k, v in options.iteritems()
+    opts = clans.default_options.copy()
+    opts.update(options)
+    slsqp_opts = {k[6:]: v for k, v in opts.iteritems()
                   if k.startswith('slsqp_')}
-    if 'show_progress' in options:
-        slsqp_opts['disp'] = options['show_progress']
+    if 'show_progress' in opts:
+        slsqp_opts['disp'] = opts['show_progress']
     # Create the initial guess
     NTF = synthesizeNTF(order, osr, opt, 1+nq, 0)
     Hz = NTF[0]
@@ -204,6 +206,11 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, options={}):
                               'args': (order, osr, nq, rmax, Hz)},
                  options=slsqp_opts)['x']
     return dsclansNTF(x, order, rmax, Hz)
+
+clans.default_options = {'show_progress': False,
+                         'slsqp_maxiters': 100,
+                         'slsqp_ftol': 1e-06,
+                         'slsqp_eps': 1.4901161193847656e-08}
 
 
 def _dsclansObj6a(x, order, osr, nq, rmax, Hz):
