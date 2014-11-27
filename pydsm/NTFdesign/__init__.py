@@ -32,6 +32,7 @@ from . import psychoacoustic
 from . import minmax
 
 from ._quantization_noise_gain import *
+from ._minmax import *
 
 from . import tests as test_suite
 
