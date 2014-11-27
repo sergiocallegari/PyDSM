@@ -24,7 +24,7 @@ from numpy.testing import TestCase, run_module_suite
 import numpy as np
 
 from pydsm.NTFdesign.minmax import synthesize_ntf_minmax
-from pydsm.utilities import cplxpair
+from pydsm.relab import cplxpair
 
 __all__ = ["TestSynthesizeNTFminmax"]
 

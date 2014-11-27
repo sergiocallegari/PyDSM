@@ -23,7 +23,7 @@ from __future__ import division, print_function
 import numpy as np
 from numpy.testing import TestCase, run_module_suite
 from pydsm.delsig import clans
-from pydsm.utilities import cplxpair
+from pydsm.relab import cplxpair
 
 __all__ = ["TestClans"]
 

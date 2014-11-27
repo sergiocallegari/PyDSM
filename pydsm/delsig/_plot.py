@@ -54,7 +54,7 @@ Collection of DELSIG style plotting routines
 
 import numpy as np
 import matplotlib.pyplot as plt
-from ..utilities import cplxpair
+from ..relab import cplxpair
 from scipy.signal import tf2zpk
 
 __all__ = ["plotPZ"]

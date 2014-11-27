@@ -25,7 +25,7 @@ import numpy as np
 
 from pydsm.NTFdesign.delsig import (synthesizeNTF, synthesizeChebyshevNTF,
                                     clans)
-from pydsm.utilities import cplxpair
+from pydsm.relab import cplxpair
 
 __all__ = ["TestSynthesizeNTF", "TestSynthesizeChebyshevNTF",
            "TestClans"]

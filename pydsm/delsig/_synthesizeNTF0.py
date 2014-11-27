@@ -51,7 +51,7 @@ import numpy as np
 from warnings import warn
 from ..exceptions import PyDsmApproximationWarning
 from ._tf import evalTF
-from ..utilities import cplxpair
+from ..relab import cplxpair
 from ._ds import ds_optzeros
 
 

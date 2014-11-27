@@ -60,7 +60,7 @@ Analog Integrated Circuits and Signal Processing Vol. 3 pp 259-272 (1993)
 import numpy as np
 from scipy.optimize import minimize
 from ._synthesizeNTF import synthesizeNTF
-from ..utilities import cplxpair
+from ..relab import cplxpair
 from ._tf import evalTF
 from ..ir import impulse_response
 from ._dsclansNTF import dsclansNTF

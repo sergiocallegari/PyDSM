@@ -26,7 +26,7 @@ import scipy as sp
 __import__("scipy.signal")
 from pydsm.ir import impulse_response
 from pydsm.delsig import evalTF
-from pydsm.utilities import db
+from pydsm.relab import db
 
 __all__ = ["TestIR"]
 

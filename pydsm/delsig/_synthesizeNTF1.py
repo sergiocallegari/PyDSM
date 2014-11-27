@@ -52,7 +52,8 @@ from scipy.optimize import fmin_l_bfgs_b
 from warnings import warn
 from ..exceptions import PyDsmApproximationWarning
 from ._tf import evalTF
-from ..utilities import cplxpair, is_negligible
+from ..utilities import is_negligible
+from ..relab import cplxpair
 from ._ds import ds_optzeros, ds_synNTFobj1
 from ._padding import padl
 
