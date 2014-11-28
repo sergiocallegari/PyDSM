@@ -26,7 +26,7 @@ Design of psychoacoustically optimal modulators
 from __future__ import division, print_function
 
 import numpy as np
-from .delsig import synthesizeNTF as synthesizeNTF
+from .delsig import synthesizeNTF
 from ..delsig import undbp as undbp
 from .. import audio_weightings
 from .weighting import synthesize_ntf_from_noise_weighting
