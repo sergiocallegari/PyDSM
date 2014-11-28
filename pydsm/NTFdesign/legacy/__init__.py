@@ -19,20 +19,13 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 u"""
-Output filter based NTF synthesis
-=================================
+Legacy NTF synthesis methods
+============================
 
 This modules provides code for the synthesis of the modulator NTF, based
-on the filter placed after the modulator for the removal of the quantization
-noise.
-
-The algorithms used in these routines are extensively described in
-
-Sergio Callegari, Federico Bizzarri "Output Filter Aware Optimization of the
-Noise Shaping Properties of ΔΣ Modulators via Semi-Definite Programming",
-IEEE Transactions on Circuits and Systems I: Regular Papers.
+on methods that are now superseded but that are worth keeping around for
+reproducing published results.
 """
 
-from ._q0_from_filter import *
 from ._quantization_noise_gain import *
-from ._ntf_from_filter import *
+from ._q0_from_ir import *

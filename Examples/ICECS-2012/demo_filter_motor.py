@@ -45,8 +45,9 @@ __import__("scipy.signal")
 import matplotlib.pyplot as plt
 from pydsm.delsig import dbv, dbp, evalTF, synthesizeNTF, simulateDSM
 from pydsm.ir import impulse_response
-from pydsm.NTFdesign.filter_based import (synthesize_ntf_from_filter,
-                                          quantization_noise_gain)
+from pydsm.NTFdesign import quantization_noise_gain
+from pydsm.NTFdesign.legacy import q0_from_filter_ir
+from pydsm.NTFdesign.weighting import ntf_fir_from_q0
 
 
 # Linearized motor model and default parameters
@@ -144,9 +145,12 @@ plt.ioff()
 hz0043_ir = impulse_response(hz0043)
 hz02_ir = impulse_response(hz02)
 hz06_ir = impulse_response(hz06)
-ntf0043 = synthesize_ntf_from_filter(P, hz0043_ir, 'imp')
-ntf02 = synthesize_ntf_from_filter(P, hz02_ir, 'imp')
-ntf06 = synthesize_ntf_from_filter(P, hz06_ir, 'imp')
+q0_0043 = q0_from_filter_ir(P, hz0043_ir)
+ntf0043 = ntf_fir_from_q0(q0_0043)
+q0_02 = q0_from_filter_ir(P, hz02_ir)
+ntf02 = ntf_fir_from_q0(q0_02)
+q0_06 = q0_from_filter_ir(P, hz06_ir)
+ntf06 = ntf_fir_from_q0(q0_06)
 delsig_ntf = synthesizeNTF(DELSIG_P, OSR, 3, 1.5, 0)
 
 # Plot the NTFs

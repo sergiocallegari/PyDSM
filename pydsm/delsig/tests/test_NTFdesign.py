@@ -23,8 +23,7 @@ from __future__ import division, print_function
 from numpy.testing import TestCase, run_module_suite
 import numpy as np
 
-from pydsm.NTFdesign.delsig import (synthesizeNTF, synthesizeChebyshevNTF,
-                                    clans)
+from pydsm.delsig import synthesizeNTF, synthesizeChebyshevNTF, clans
 from pydsm.relab import cplxpair
 
 __all__ = ["TestSynthesizeNTF", "TestSynthesizeChebyshevNTF",

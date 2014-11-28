@@ -63,12 +63,14 @@ from __future__ import division, print_function
 import numpy as np
 from scipy.signal import ss2zpk
 import cvxpy_tinoco as cvxpy
+from warnings import warn
+from ..exceptions import PyDsmDeprecationWarning
 
-__all__ = ['synthesize_ntf_minmax']
+__all__ = ['ntf_fir_minmax', 'synthesize_ntf_minmax']
 
 
-def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
-                          **options):
+def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
+                   **options):
     u"""Synthesize FIR NTF for LP or BP ΔΣ modulator by min-max optimization.
 
     The design strategy implemented in this module is described in the paper
@@ -135,7 +137,7 @@ def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     Bandpass modulator design is not yet supported.
     """
     # Manage optional parameters
-    opts = synthesize_ntf_minmax.default_options.copy()
+    opts = ntf_fir_minmax.default_options.copy()
     opts.update(options)
     cvxpy_opts = {k[6:]: v for k, v in opts.iteritems()
                   if k.startswith('cvxpy_')}
@@ -193,8 +195,27 @@ def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     ntf = ss2zpk(A, B, np.asarray(c.value), D)
     return ntf
 
-synthesize_ntf_minmax.default_options = {'cvxpy_maxiters': 100,
-                                         'cvxpy_abstol': 1e-7,
-                                         'cvxpy_reltol': 1e-6,
-                                         'cvxpy_feastol': 1e-6,
-                                         'show_progress': True}
+ntf_fir_minmax.default_options = {'cvxpy_maxiters': 100,
+                                  'cvxpy_abstol': 1e-7,
+                                  'cvxpy_reltol': 1e-6,
+                                  'cvxpy_feastol': 1e-6,
+                                  'show_progress': True}
+
+
+# Following part is deprecated
+
+
+def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
+                          **options):
+    warn("Function superseded by ntf_fir_minmax in "
+         "NTFdesign module", PyDsmDeprecationWarning)
+    return ntf_fir_minmax(order, osr, H_inf, f0, zf, **options)
+
+synthesize_ntf_minmax.__doc__ = ntf_fir_minmax.__doc__ + """
+    .. deprecated:: 0.11.0
+    Function has been moved to the ``NTFdesign`` module with name
+    ``ntf_fir_minmax``.
+    """
+
+synthesize_ntf_minmax.default_options = \
+    ntf_fir_minmax.default_options

@@ -23,7 +23,7 @@ from __future__ import division, print_function
 from numpy.testing import TestCase, run_module_suite
 import numpy as np
 
-from pydsm.NTFdesign.minmax import synthesize_ntf_minmax
+from pydsm.NTFdesign import ntf_fir_minmax
 from pydsm.relab import cplxpair
 
 __all__ = ["TestSynthesizeNTFminmax"]
@@ -34,8 +34,7 @@ class TestSynthesizeNTFminmax(TestCase):
         pass
 
     def test_LP8(self):
-        z, p, k = synthesize_ntf_minmax(order=8,
-                                        show_progress=False)
+        z, p, k = ntf_fir_minmax(order=8, show_progress=False)
         e_k = 1
         e_z = [990.349427225477e-003 + 69.0500612157020e-003j,
                990.349427225477e-003 - 69.0500612157020e-003j,

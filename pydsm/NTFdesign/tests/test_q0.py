@@ -22,11 +22,10 @@ from __future__ import division, print_function
 
 from numpy.testing import TestCase, run_module_suite
 import numpy as np
-import scipy as sp
-__import__("scipy.signal")
+from scipy import signal
 from pydsm.ir import impulse_response
-from pydsm.delsig import evalTF
-from pydsm.NTFdesign.filter_based import q0_from_filter
+from pydsm.NTFdesign.legacy import q0_from_filter_ir
+from pydsm.NTFdesign.weighting import q0_weighting
 
 __all__ = ["TestQ0"]
 
@@ -49,17 +48,14 @@ class TestQ0(TestCase):
         B0 = 2*B/fphi
         w1 = (np.sqrt(B0**2+4*w0**2)-B0)/2
         w2 = (np.sqrt(B0**2+4*w0**2)+B0)/2
-        hz = sp.signal.butter(4, [w1, w2], 'bandpass', output='zpk')
+        hz = signal.butter(4, [w1, w2], 'bandpass', output='zpk')
         # Order
         P = 20
         # Compute q0 in two ways
         ir = impulse_response(hz, db=80)
 
-        def mr(f):
-            return np.abs(evalTF(hz, np.exp(2j*np.pi*f)))
-
-        q0_ir = q0_from_filter(P, ir, 'imp')
-        q0_mr = q0_from_filter(P, mr, 'mag')
+        q0_ir = q0_from_filter_ir(P, ir)
+        q0_mr = q0_weighting(P, hz)
         np.testing.assert_allclose(q0_ir, q0_mr, atol=1E-7, rtol=1E-5)
 
     def test_q0_butt_lp3(self):
@@ -71,17 +67,14 @@ class TestQ0(TestCase):
         OSR = 256
         fphi = B*OSR*2
         w0 = 2*B/fphi
-        hz = sp.signal.butter(3, w0, 'lowpass', output='zpk')
+        hz = signal.butter(3, w0, 'lowpass', output='zpk')
         # Order
         P = 12
         # Compute q0 in two ways
         ir = impulse_response(hz, db=80)
 
-        def mr(f):
-            return np.abs(evalTF(hz, np.exp(2j*np.pi*f)))
-
-        q0_ir = q0_from_filter(P, ir, 'imp')
-        q0_mr = q0_from_filter(P, mr, 'mag')
+        q0_ir = q0_from_filter_ir(P, ir)
+        q0_mr = q0_weighting(P, hz)
         np.testing.assert_allclose(q0_ir, q0_mr, atol=1E-7, rtol=1E-5)
 
 if __name__ == '__main__':

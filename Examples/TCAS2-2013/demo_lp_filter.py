@@ -30,9 +30,9 @@ import numpy as np
 from scipy.signal import butter
 from pydsm.delsig import evalTF, synthesizeNTF
 from pydsm.delsig import dbv, dbp
-from pydsm.NTFdesign.filter_based import quantization_noise_gain
+from pydsm.NTFdesign import quantization_noise_gain
 import matplotlib.pyplot as plt
-from pydsm.NTFdesign.filter_based import synthesize_ntf_from_filter
+from pydsm.NTFdesign import ntf_fir_weighting
 
 # Signal specification
 B = 1000.
@@ -68,7 +68,7 @@ plt.suptitle('Output filter magnitude response')
 plt.tight_layout(rect=[0, 0, 1, 0.98])
 
 print("... computing optimal NTF")
-ntf_opti = synthesize_ntf_from_filter(order, hz, H_inf=H_inf)
+ntf_opti = ntf_fir_weighting(order, hz, H_inf=H_inf)
 ntf_opti_mag = lambda f: np.abs(evalTF(ntf_opti, np.exp(-2j*np.pi*f)))
 
 print("... computing reference NTF")

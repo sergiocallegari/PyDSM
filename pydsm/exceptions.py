@@ -46,3 +46,9 @@ class PyDsmPendingDeprecationWarning(PyDsmWarning, PendingDeprecationWarning):
     """Class to warn about features pending deprecation
     """
     pass
+
+
+class PyDsmDeprecationWarning(PyDsmWarning, DeprecationWarning):
+    """Class to warn about deprecated features
+    """
+    pass

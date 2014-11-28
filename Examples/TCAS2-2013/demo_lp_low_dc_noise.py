@@ -30,11 +30,8 @@ import numpy as np
 from numpy.random import randn
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
-from pydsm.NTFdesign.weighting import (q0_from_noise_weighting,
-                                       synthesize_ntf_from_q0)
-from pydsm.delsig import evalTF
-from pydsm.delsig import dbv, dbp
-from pydsm.delsig import simulateDSM
+from pydsm.NTFdesign import ntf_fir_weighting
+from pydsm.delsig import evalTF, dbv, dbp, simulateDSM
 
 # Signal specification
 fsig = 500.
@@ -65,14 +62,8 @@ def w2(f):
 
 
 print("... computing optimal NTF...")
-print("... computing q0 from the magnitude frequency response")
-# We pass through q0 in order to be able to select the integrator
-# parameters
-q01 = q0_from_noise_weighting(order, w1, {'points': [B/fphi]})
-q02 = q0_from_noise_weighting(order, w2, {'points': [B/fphi, B/fphi/10]})
-print("... find the NTF from q0")
-ntf1 = synthesize_ntf_from_q0(q01)
-ntf2 = synthesize_ntf_from_q0(q02)
+ntf1 = ntf_fir_weighting(order, w1, quad_points=[B/fphi])
+ntf2 = ntf_fir_weighting(order, w2, quad_points=[B/fphi, B/fphi/10])
 
 # Prepare frequency axis for plotting
 fmin = 10**np.ceil(np.log10(B/OSR/100))

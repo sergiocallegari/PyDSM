@@ -30,7 +30,7 @@ import numpy as np
 from pydsm.delsig import evalTF
 from pydsm.delsig import dbv
 import matplotlib.pyplot as plt
-from pydsm.NTFdesign.weighting import synthesize_ntf_from_noise_weighting
+from pydsm.NTFdesign import ntf_fir_weighting
 from pydsm.delsig import synthesizeNTF
 
 # Signal specification
@@ -67,7 +67,7 @@ plt.suptitle('Weighting function')
 plt.tight_layout(rect=[0, 0, 1, 0.98])
 
 print("... computing optimal NTF")
-ntf_opti = synthesize_ntf_from_noise_weighting(order, w1, H_inf=H_inf)
+ntf_opti = ntf_fir_weighting(order, w1, H_inf=H_inf)
 ntf_opti_mag = lambda f: np.abs(evalTF(ntf_opti, np.exp(-2j*np.pi*f)))
 
 print("... computing delsig NTF")

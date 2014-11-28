@@ -22,8 +22,7 @@ from __future__ import division, print_function
 
 from numpy.testing import TestCase, run_module_suite
 import numpy as np
-import scipy as sp
-__import__("scipy.signal")
+from scipy import signal
 from pydsm.ir import impulse_response
 from pydsm.delsig import evalTF
 from pydsm.relab import db
@@ -49,7 +48,7 @@ class TestIR(TestCase):
         B0 = 2*B/fphi
         w1 = (np.sqrt(B0**2+4*w0**2)-B0)/2
         w2 = (np.sqrt(B0**2+4*w0**2)+B0)/2
-        hz = sp.signal.butter(4, [w1, w2], 'bandpass', output='zpk')
+        hz = signal.butter(4, [w1, w2], 'bandpass', output='zpk')
         ir = impulse_response(hz, db=80)
         ff = np.logspace(np.log10(w0/4), np.log10(w0*4), 100)
         vv1 = evalTF(hz, np.exp(2j*np.pi*ff))

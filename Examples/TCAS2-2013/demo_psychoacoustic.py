@@ -29,8 +29,7 @@ from __future__ import division, print_function
 import numpy as np
 import matplotlib.pyplot as plt
 from pydsm.delsig import dbv, dbp
-from pydsm.NTFdesign.psychoacoustic \
-    import (synthesize_ntf_dunn, synthesize_ntf_from_audio_weighting)
+from pydsm.NTFdesign import ntf_dunn, ntf_fir_audio_weighting
 from pydsm.delsig import simulateDSM, evalTF
 import matplotlib.mlab as mlab
 from pydsm.audio_weightings import f_weighting
@@ -51,22 +50,22 @@ print("... computing optimal NTF")
 # Until reltol is very strict, subobtima are often returned
 # Using a large normalization constant may help getting closer to the real
 # optimum but may also hinder convergence
-ntf_opti = synthesize_ntf_from_audio_weighting(order, osr, f_weighting,
-                                               H_inf=H_inf,
-                                               normalize=1E3,
-                                               cvxpy_reltol=1E-12,
-                                               cvxpy_abstol=1E-10,
-                                               cvxpy_feastol=1E-2)
+opti_ntf = ntf_fir_audio_weighting(order, osr, f_weighting,
+                                   H_inf=H_inf,
+                                   normalize=1E3,
+                                   cvxpy_reltol=1E-12,
+                                   cvxpy_abstol=1E-10,
+                                   cvxpy_feastol=1E-2)
 
-ntf_dunn = synthesize_ntf_dunn(3, osr, H_inf)
+dunn_ntf = ntf_dunn(3, osr, H_inf)
 
 fmin = 10
 fmax = fphi/2
 ff = np.logspace(np.log10(fmin), np.log10(fmax), 1000)
 
 resp_w = f_weighting(ff)
-resp_opti = np.abs(evalTF(ntf_opti, np.exp(1j*2*np.pi*ff/fphi)))
-resp_ref = np.abs(evalTF(ntf_dunn, np.exp(1j*2*np.pi*ff/fphi)))
+resp_opti = np.abs(evalTF(opti_ntf, np.exp(1j*2*np.pi*ff/fphi)))
+resp_ref = np.abs(evalTF(dunn_ntf, np.exp(1j*2*np.pi*ff/fphi)))
 
 # First figure. This provides the weighting function and the NTFs
 fig0 = plt.figure()
@@ -105,8 +104,8 @@ uud = uu+dither
 # Simulating the DS
 # Some of the commented bits are used to obtain the quantizazion noise pdf
 print("Simulating optimal NTF")
-xx_opti = simulateDSM(uud, ntf_opti)[0]
-xx_ref = simulateDSM(uud, ntf_dunn)[0]
+xx_opti = simulateDSM(uud, opti_ntf)[0]
+xx_ref = simulateDSM(uud, dunn_ntf)[0]
 
 NFFT = 4096*32
 # Possibly this can be improved by extracting the tone from the
