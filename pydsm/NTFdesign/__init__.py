@@ -30,6 +30,7 @@ from . import weighting
 from . import delsig
 from . import psychoacoustic
 from . import minmax
+from . import merit_factors
 
 from .merit_factors import quantization_noise_gain
 from .minmax import ntf_fir_minmax
