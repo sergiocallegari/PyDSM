@@ -29,7 +29,40 @@ for PyDSM.
 from __future__ import division, print_function
 
 import numpy as np
-from .utilities import chop
+
+__all__ = ["eps", "db", "cplxpair"]
+
+
+def eps(x):
+    """Provide floating point relative accuracy
+
+    This function tries to replicate the ``eps`` interface of Matlab.
+
+    Parameters
+    ----------
+    x : float or array_like or numeric type
+
+    Returns
+    -------
+    d : float or array_like
+        If x is a float, the positive distance from abs(x) to the next larger
+        in magnitude floating point number of the same precision as x.
+
+        If x is an array, operation is elementwise.
+
+        If x is a numeric type, operation is for 1.0 in that numeric type.
+    """
+
+    def _eps(xi):
+        return np.finfo(xi).eps * np.abs(xi)
+    if isinstance(x, (type, np.dtype)):
+        return np.finfo(x).eps
+    elif np.isscalar(x):
+        return _eps(x)
+    x = np.asarray(x)
+    d = np.empty_like(x)
+    d.flat = [_eps(xi) for xi in x.flat]
+    return d
 
 
 def db(x, signal_type='voltage', R=1):
@@ -65,7 +98,7 @@ def db(x, signal_type='voltage', R=1):
         return 10*np.log10(np.abs(x)**2./R)
 
 
-def cplxpair(x, tol=100*np.finfo(float).eps):
+def cplxpair(x, tol=None):
     """
     Sorts values in input list by complex pairs.
 
@@ -99,8 +132,11 @@ def cplxpair(x, tol=100*np.finfo(float).eps):
     This function is similar to Matlab cplxpair, but not quite.
 
     """
-    x = np.sort_complex(chop(x, tol))
-    real_mask = np.isreal(x)
+    x = np.asarray(x)
+    if tol is None:
+        tol = 100*eps(x.dtype)
+    x = np.sort_complex(x)
+    real_mask = np.abs(x.imag) < tol*np.abs(x)
     x_real = x[real_mask]
     x_cplx = x[np.logical_not(real_mask)]
     pos_mask = x_cplx.imag > 0
