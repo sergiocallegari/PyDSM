@@ -166,7 +166,7 @@ def ntf_dunn(order=3, osr=64, H_inf=1.5):
        Sigma Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp.
        212 - 223 (1997 April)
     """
-    return synthesizeNTF(order, osr, dunn_optzeros_cplx(order, OSR), H_inf, 0)
+    return synthesizeNTF(order, osr, dunn_optzeros_cplx(order, osr), H_inf, 0)
 
 
 def ntf_fir_audio_weighting(
