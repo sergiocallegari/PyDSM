@@ -27,5 +27,4 @@ on a noise weighting function.
 """
 
 from ._fir_weighting import *
-from ._ntf_from_weighting import *
 from ._quantization_noise_gain import *
