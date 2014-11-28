@@ -38,6 +38,10 @@ from ..delsig import (synthesizeNTF as ntf_schreier,
                       synthesizeChebyshevNTF as ntf_chebyshev,
                       clans as ntf_clans)
 
+from .psychoacoustic import (synthesize_ntf_dunn as ntf_dunn,
+                             synthesize_ntf_from_audio_weighting as
+                                 ntf_fir_audio_weighting)
+
 from . import tests as test_suite
 
 from numpy.testing import Tester

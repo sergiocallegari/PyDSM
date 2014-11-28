@@ -26,8 +26,8 @@ Design of psychoacoustically optimal modulators
 from __future__ import division, print_function
 
 import numpy as np
-from .delsig import synthesizeNTF as _synthesizeNTF
-from ..delsig import undbp as _undbp
+from .delsig import synthesizeNTF as synthesizeNTF
+from ..delsig import undbp as undbp
 from .. import audio_weightings
 from .weighting import synthesize_ntf_from_noise_weighting as \
     _synthesize_ntf_from_noise_weighting
@@ -164,7 +164,7 @@ def synthesize_ntf_dunn(order=3, OSR=64, H_inf=1.5):
        Sigma Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp.
        212 - 223 (1997 April)
     """
-    return _synthesizeNTF(order, OSR, dunn_optzeros_cplx(order, OSR), H_inf, 0)
+    return synthesizeNTF(order, OSR, dunn_optzeros_cplx(order, OSR), H_inf, 0)
 
 
 def synthesize_ntf_from_audio_weighting(
@@ -267,7 +267,7 @@ def synthesize_ntf_from_audio_weighting(
     # Do the computation
 
     def w(f):
-        ma = _undbp(-max_attn)
+        ma = undbp(-max_attn)
         fx = f*audio_band*2*osr
         w = audio_weighting(fx) if fx <= audio_band else 0
         return max(w, ma)
