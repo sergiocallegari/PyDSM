@@ -38,12 +38,11 @@ Use ``ntf_fir_weighting`` or functions from ``NTFdesign.weighting`` module.
 
 from __future__ import division, print_function
 
-import numpy as np
 from .merit_factors import quantization_noise_gain as _quantization_noise_gain
 from .legacy import (quantization_noise_gain_by_conv as
-                     _quantization_noise_gain_by_conv)
+                     _quantization_noise_gain_by_conv,
+                     q0_from_filter_ir)
 from .weighting import q0_weighting, ntf_fir_from_q0
-from ..correlations import raw_acorr
 from warnings import warn
 from ..exceptions import PyDsmDeprecationWarning
 
@@ -191,7 +190,7 @@ def q0_from_filter(P, H, H_type='zpk', **options):
         w = H
         q0 = q0_weighting(P, w, **opts)
     elif H_type == 'imp':
-        q0 = raw_acorr(H, P)
+        q0 = q0_from_filter_ir(P, H)
     elif H_type == 'mag':
         w = lambda f: H(f)**2
         q0 = q0_weighting(P, w, **opts)

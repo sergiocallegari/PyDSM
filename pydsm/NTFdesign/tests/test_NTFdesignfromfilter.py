@@ -25,8 +25,9 @@ import numpy as np
 from scipy import signal
 from pydsm.ir import impulse_response
 from pydsm.NTFdesign import ntf_fir_weighting, quantization_noise_gain
-from pydsm.NTFdesign.filter_based import synthesize_ntf_from_filter
-from pydsm.NTFdesign.legacy import quantization_noise_gain_by_conv
+from pydsm.NTFdesign.weighting import ntf_fir_from_q0
+from pydsm.NTFdesign.legacy import (quantization_noise_gain_by_conv,
+                                    q0_from_filter_ir)
 
 __all__ = ["TestNTF_Filter"]
 
@@ -56,8 +57,8 @@ class TestNTF_Filter(TestCase):
         ir = impulse_response(hz, db=80)
 
         ntf1 = ntf_fir_weighting(order, hz, show_progress=False)
-        ntf2 = synthesize_ntf_from_filter(order, ir, 'imp',
-                                          show_progress=False)
+        q0_2 = q0_from_filter_ir(order, ir)
+        ntf2 = ntf_fir_from_q0(q0_2, show_progress=False)
         mf1 = quantization_noise_gain(ntf1, hz)
         mf2 = quantization_noise_gain(ntf2, hz)
         np.testing.assert_almost_equal(mf1, mf2, decimal=12)

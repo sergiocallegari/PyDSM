@@ -24,7 +24,7 @@ from numpy.testing import TestCase, run_module_suite
 import numpy as np
 from scipy import signal
 from pydsm.ir import impulse_response
-from pydsm.NTFdesign.filter_based import q0_from_filter
+from pydsm.NTFdesign.legacy import q0_from_filter_ir
 from pydsm.NTFdesign.weighting import q0_weighting
 
 __all__ = ["TestQ0"]
@@ -54,7 +54,7 @@ class TestQ0(TestCase):
         # Compute q0 in two ways
         ir = impulse_response(hz, db=80)
 
-        q0_ir = q0_from_filter(P, ir, 'imp')
+        q0_ir = q0_from_filter_ir(P, ir)
         q0_mr = q0_weighting(P, hz)
         np.testing.assert_allclose(q0_ir, q0_mr, atol=1E-7, rtol=1E-5)
 
@@ -73,7 +73,7 @@ class TestQ0(TestCase):
         # Compute q0 in two ways
         ir = impulse_response(hz, db=80)
 
-        q0_ir = q0_from_filter(P, ir, 'imp')
+        q0_ir = q0_from_filter_ir(P, ir)
         q0_mr = q0_weighting(P, hz)
         np.testing.assert_allclose(q0_ir, q0_mr, atol=1E-7, rtol=1E-5)
 
