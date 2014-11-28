@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2012, Sergio Callegari
+# Copyright (c) 2014, Sergio Callegari
 # All rights reserved.
 
 # This file is part of PyDSM.
@@ -41,10 +39,10 @@ Use ``ntf_fir_weighting`` or functions from ``NTFdesign.weighting`` module.
 from __future__ import division, print_function
 
 import numpy as np
-import scipy.signal as signal
 from .merit_factors import quantization_noise_gain as _quantization_noise_gain
+from .legacy import (quantization_noise_gain_by_conv as
+                     _quantization_noise_gain_by_conv)
 from .weighting import q0_weighting, ntf_fir_from_q0
-from ..ir import impulse_response
 from ..correlations import raw_acorr
 from warnings import warn
 from ..exceptions import PyDsmDeprecationWarning
@@ -126,44 +124,15 @@ quantization_noise_gain.default_options = \
 
 
 def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
+    warn("Function moved in ``NTFdesign.legacy`` module",
+         PyDsmDeprecationWarning)
+    return _quantization_noise_gain_by_conv(NTF, H, H_type, db)
+
+quantization_noise_gain_by_conv.__doc__ = \
+    _quantization_noise_gain_by_conv.__doc__ + """
+    .. deprecated:: 0.11.0
+    Function has been moved to the ``NTFdesign.legacy`` module.
     """
-    Computes the quantization noise power gain, based on a convolution
-
-    Parameters
-    ----------
-    NTF : tuple
-        NTF definition in zpk or nd form
-    H : tuple or array_like
-        output filter definition in zpk or nd form if H_type='zpk' or 'ba'
-        (in this case, H is a tuple with 3 or 2 entries);
-        output filter impulse response if H_type='imp' (in this case, H is an
-        array)
-    H_type : str
-        type of specification for parameter H. One of: 'zpk', 'ba', or
-        'imp'
-    db : real
-        a precision hint for the computation of impulse responses
-
-    Returns
-    -------
-    a : real
-        noise power gain
-
-    Notes
-    -----
-    The computation is practiced as the sum of the squared entries
-    in the impulse response of the cascaded filter NTF*H
-    """
-    warn("Function meant for removal", PyDsmDeprecationWarning)
-    h1_ir = impulse_response(NTF, db=db)
-    if H_type == 'zpk' or H_type == 'ba':
-        h2_ir = impulse_response(H, db=db)
-    elif H_type == 'imp':
-        h2_ir = H
-    else:
-        raise ValueError("Incorrect filter type specification")
-    conv = signal.convolve(h1_ir, h2_ir)
-    return np.sum(conv**2)
 
 
 def q0_from_filter(P, H, H_type='zpk', **options):
