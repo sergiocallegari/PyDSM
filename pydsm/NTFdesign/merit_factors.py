@@ -87,7 +87,8 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
     if w is None:
         w = lambda f: 1.
     elif type(w) is tuple and 2 <= len(w) <= 3:
-        w = lambda f: evalTF(w, np.exp(2j*np.pi*f))**2
+        h = w
+        w = lambda f: np.abs(evalTF(h, np.exp(2j*np.pi*f)))**2
     # Manage optional parameters
     opts = quantization_noise_gain.default_options.copy()
     opts.update(options)
