@@ -81,7 +81,8 @@ def q0_weighting(P, w, **options):
     """
     # Manage parameters
     if type(w) is tuple and 2 <= len(w) <= 3:
-        w = lambda f: evalTF(w, np.exp(2j*np.pi*f))**2
+        h = w
+        w = lambda f: np.abs(evalTF(h, np.exp(2j*np.pi*f)))**2
     # Manage optional parameters
     opts = q0_weighting.default_options.copy()
     opts.update(options)
