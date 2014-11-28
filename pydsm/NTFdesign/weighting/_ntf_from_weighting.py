@@ -28,7 +28,7 @@ from __future__ import division, print_function
 import numpy as np
 import scipy as sp
 __import__("scipy.linalg")
-from ._q0_from_weighting import q0_from_noise_weighting
+from ._fir_weighting import q0_from_noise_weighting
 import cvxpy_tinoco
 
 __all__ = ["synthesize_ntf_from_noise_weighting",

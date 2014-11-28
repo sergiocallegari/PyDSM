@@ -20,15 +20,15 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Computation of the noise power gain through the NTF
-===================================================
+Computation of NTF related merit factors
+========================================
 """
 
 from __future__ import division, print_function
 
 import numpy as np
-from scipy.integrate import quad as _quad
-from ..delsig import evalTF as _evalTF
+from scipy.integrate import quad
+from ..delsig import evalTF
 
 __all__ = ["quantization_noise_gain"]
 
@@ -87,15 +87,15 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
     if w is None:
         w = lambda f: 1.
     elif type(w) is tuple and 2 <= len(w) <= 3:
-        w = lambda f: _evalTF(w, np.exp(2j*np.pi*f))**2
+        w = lambda f: evalTF(w, np.exp(2j*np.pi*f))**2
     # Manage optional parameters
     opts = quantization_noise_gain.default_options.copy()
     opts.update(options)
     quad_opts = {k[5:]: v for k, v in opts.iteritems()
                  if k.startswith('quad_')}
     # Compute
-    return 2*_quad(lambda f: np.abs(_evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
-                   bounds[0], bounds[1], **quad_opts)[0]
+    return 2*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
+                  bounds[0], bounds[1], **quad_opts)[0]
 
 quantization_noise_gain.default_options = {'quad_epsabs': 1.49e-08,
                                            'quad_epsrel': 1.49e-08,

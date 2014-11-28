@@ -18,17 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-"""
-Computation of the noise power gain through the NTF and the output filter
-=========================================================================
-"""
+
+# Following part is deprecated
 
 from __future__ import division, print_function
 
-import numpy as np
-from scipy.integrate import quad
-from ...delsig import evalTF
-
+from ..merit_factors import quantization_noise_gain
 from warnings import warn
 from ...exceptions import PyDsmDeprecationWarning
 
@@ -37,71 +32,16 @@ __all__ = ["quantization_weighted_noise_gain"]
 
 def quantization_weighted_noise_gain(NTF, w=None, bounds=(0, 0.5),
                                      **options):
-    r"""Compute the quantization noise power gain
-
-    .. deprecated:: 0.11.0
-        Function ``quantization_weighted_noise_gain`` superseded by
-        ``quantization_noise_gain`` in ``NTFdesign`` module.
-
-    Parameters
-    ----------
-    NTF : tuple
-        NTF definition in zpk or nd form
-    w : callable with argument f in [0,1/2] or None
-        noise weighting function. If set to None, no weighting is applied
-    bounds : 2 elements tuple, optional
-        the frequency range where the noise gain is computed. Defaults to
-        (0, 0.5)
-
-    Returns
-    -------
-    a : real
-        noise power gain
-
-    Other parameters
-    ----------------
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
-
-    Notes
-    -----
-    The computation is practiced as
-
-    .. math::
-        2\int_{f=0}^{\frac{1}{2}}
-        \left|\mathit{NTF}
-        \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) df
-
-    Use an on-off weighting function :math:`w(f)` for multiband evaluation.
-
-    In case the weighting function has discontinuities, report them to the
-    integrator via the ``quad_points`` parameter.
-
-    See Also
-    --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
-    """
     warn("Function superseded by quantization_noise_gain in "
          "NTFdesign module", PyDsmDeprecationWarning)
-    # Manage parameters
-    if w is None:
-        w = lambda x: 1.
-    # Manage optional parameters
-    opts = quantization_weighted_noise_gain.default_options.copy()
-    opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
-    # Compute
-    return 2*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
-                  bounds[0], bounds[1], **quad_opts)[0]
+    return quantization_noise_gain(NTF, w, bounds, **options)
 
-quantization_weighted_noise_gain.default_options = {'quad_epsabs': 1.49e-08,
-                                                    'quad_epsrel': 1.49e-08,
-                                                    'quad_limit': 50,
-                                                    'quad_points': None}
+quantization_weighted_noise_gain.__doc__ = \
+    quantization_noise_gain.__doc__ + """
+    .. deprecated:: 0.11.0
+    Function has been moved to the ``NTFdesign`` module with name
+    ``quantization_noise_gain``.
+    """
+
+quantization_weighted_noise_gain.default_options = \
+    quantization_noise_gain.default_options

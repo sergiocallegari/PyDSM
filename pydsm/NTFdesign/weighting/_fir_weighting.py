@@ -30,22 +30,27 @@ row only, which is what the routines here return.
 
 from __future__ import division, print_function
 
-from ...ft import idtft_hermitian
 import numpy as np
+from ...ft import idtft_hermitian
+from ...delsig import evalTF
+from warnings import warn
+from ...exceptions import PyDsmDeprecationWarning
 
-__all__ = ["q0_from_noise_weighting"]
+__all__ = ["q0_from_noise_weighting", "q0_weighting"]
 
 
-def q0_from_noise_weighting(P, noise_weighting, **options):
+def q0_weighting(P, w, **options):
     """Compute Q matrix from a noise weighting function
 
     Parameters
     ----------
     P : int
         order of the FIR to be eventually synthesized
-    noise_weighting : callable
-        function of f acting as a noise weighting.
-        f is normalized between 0 and 0.5
+    w : callable with argument f in [0,1/2] or None or tuple
+            * if function: noise weighting function
+            * if None: no weighting is applied
+            * if filter definition as zpk or ba tuple: weighting is implicitly
+              provided by the filter
 
     Returns
     -------
@@ -71,14 +76,35 @@ def q0_from_noise_weighting(P, noise_weighting, **options):
     scipy.integrate.quad : integrator used internally.
         For the meaning of the integrator parameters.
     """
+    # Manage parameters
+    if w is None:
+        w = lambda f: 1.
+    elif type(w) is tuple and 2 <= len(w) <= 3:
+        w = lambda f: evalTF(w, np.exp(2j*np.pi*f))**2
     # Manage optional parameters
-    opts = q0_from_noise_weighting.default_options.copy()
+    opts = q0_weighting.default_options.copy()
     opts.update(options)
     # Do the computation
-    ac = lambda t: idtft_hermitian(noise_weighting, t, **opts)
+    ac = lambda t: idtft_hermitian(w, t, **opts)
     return np.asarray(map(ac, np.arange(P+1)))
 
-q0_from_noise_weighting.default_options = {'quad_epsabs': 1E-14,
-                                           'quad_epsrel': 1E-9,
-                                           'quad_limit': 100,
-                                           'quad_points': None}
+q0_weighting.default_options = {'quad_epsabs': 1E-14,
+                                'quad_epsrel': 1E-9,
+                                'quad_limit': 100,
+                                'quad_points': None}
+
+
+# Following part is deprecated
+
+def q0_from_noise_weighting(P, w, **options):
+    warn("Function superseded by q0_weighting in "
+         "NTFdesign.weighting module", PyDsmDeprecationWarning)
+    return q0_weighting(P, w, **options)
+
+q0_from_noise_weighting.__doc__ = q0_weighting.__doc__ + """
+    .. deprecated:: 0.11.0
+    Function has been moved to the ``NTFdesign.weighting`` module with name
+    ``q0_weighting``.
+    """
+
+q0_from_noise_weighting.default_options = q0_weighting.default_options
