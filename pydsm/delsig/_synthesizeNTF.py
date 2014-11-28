@@ -58,15 +58,11 @@ from ..exceptions import PyDsmApproximationWarning
 from ._synthesizeNTF0 import synthesizeNTF0
 from ._synthesizeNTF1 import synthesizeNTF1
 
-__all__ = ["optimize_NTF", "synthesizeNTF"]
-
-optimize_NTF = True
-
-# filterwarnings("always", ".*", Warning,
-#                "pydsm.synthesis._synthesizeNTF[01]?")
+__all__ = ["synthesizeNTF"]
 
 
-def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
+def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0,
+                  **options):
     """
     Synthesizes an NTF for a DS modulator by Schreier's approach.
 
@@ -98,6 +94,13 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     -------
     ntf : tuple
         noise transfer function in zpk form.
+
+    Other Parameters
+    ----------------
+    use_optimizer : bool
+        Use: True for for optimizing the zeros with a fast optimization code,
+        False otherwise. Defaults can be set by changing the function
+        ``default_options`` attribute.
 
     Raises
     ------
@@ -137,6 +140,12 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     If osr or H_inf are low, then the NTF is non optimal. Use
     synthesizeChebyshevNTF instead.
     """
+    # Manage options
+    opts = synthesizeNTF.default_options.copy()
+    opts.update(options)
+    use_optimizer = True
+    if 'use_optimizer' in opts:
+        use_optimizer = opts['use_optimizer']
     if f0 > 0.5:
         raise ValueError('Frequency f0 must be less than 0.5')
     if f0 != 0 and f0 < 0.25/osr:
@@ -148,8 +157,10 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     if opt.ndim > 1 or (opt.ndim == 1 and opt.size != order):
         raise ValueError('The opt vector must be of length %d' % order)
 
-    if not optimize_NTF:
+    if not use_optimizer:
         ntf = synthesizeNTF0(order, osr, opt, H_inf, f0)
     else:
         ntf = synthesizeNTF1(order, osr, opt, H_inf, f0)
     return ntf
+
+synthesizeNTF.default_options = {'use_optimizer': True}

@@ -18,13 +18,19 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
+# DEPRECATED MODULE
+
 """
 Delsig based NTF synthesis
 ==========================
 
 This modules provides code for the synthesis of the modulator NTF, based
 on the routines in the DELSIG toolkit by R. Schreier.
+
+.. deprecated:: 0.11.0
+    Functions in ``delsig`` module are promoted to the ``NTFdesign`` module
+    with slightly different names.
 """
 
-from ..delsig import (synthesizeNTF, optimize_NTF, synthesizeChebyshevNTF,
+from ..delsig import (synthesizeNTF, synthesizeChebyshevNTF,
                       clans)

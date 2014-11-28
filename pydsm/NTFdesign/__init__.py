@@ -34,6 +34,10 @@ from . import minmax
 from ._quantization_noise_gain import *
 from ._minmax import *
 
+from ..delsig import (synthesizeNTF as ntf_schreier,
+                      synthesizeChebyshevNTF as ntf_chebyshev,
+                      clans as ntf_clans)
+
 from . import tests as test_suite
 
 from numpy.testing import Tester
