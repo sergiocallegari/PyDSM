@@ -29,11 +29,13 @@ import numpy as np
 from .delsig import synthesizeNTF as synthesizeNTF
 from ..delsig import undbp as undbp
 from .. import audio_weightings
-from .weighting import synthesize_ntf_from_noise_weighting as \
-    _synthesize_ntf_from_noise_weighting
+from .weighting import synthesize_ntf_from_noise_weighting
+from warnings import warn
+from ..exceptions import PyDsmDeprecationWarning
 
 __all__ = ["dunn_optzeros", "dunn_optzeros_cplx", "synthesize_ntf_dunn",
-           "synthesize_ntf_from_audio_weighting"]
+           "synthesize_ntf_from_audio_weighting",
+           "ntf_dunn", "ntf_fir_audio_weighting"]
 
 
 def dunn_optzeros(n):
@@ -117,7 +119,7 @@ def dunn_optzeros_cplx(order, osr):
     return np.exp(1j*w2)
 
 
-def synthesize_ntf_dunn(order=3, OSR=64, H_inf=1.5):
+def ntf_dunn(order=3, osr=64, H_inf=1.5):
     """Synthesizes an NTF for a DS audio modulator by Dunn's approach.
 
     The signal bandwidth is 22.05 kHz.
@@ -164,10 +166,10 @@ def synthesize_ntf_dunn(order=3, OSR=64, H_inf=1.5):
        Sigma Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp.
        212 - 223 (1997 April)
     """
-    return synthesizeNTF(order, OSR, dunn_optzeros_cplx(order, OSR), H_inf, 0)
+    return synthesizeNTF(order, osr, dunn_optzeros_cplx(order, OSR), H_inf, 0)
 
 
-def synthesize_ntf_from_audio_weighting(
+def ntf_fir_audio_weighting(
         order, osr,
         audio_weighting=audio_weightings.f_weighting,
         audio_band=22.05E3,
@@ -262,7 +264,7 @@ def synthesize_ntf_from_audio_weighting(
     Check also the documentation of ``cvxopt`` for further information.
     """
     # Manage optional parameters
-    opts = synthesize_ntf_from_audio_weighting.default_options.copy()
+    opts = ntf_fir_audio_weighting.default_options.copy()
     opts.update(options)
     # Do the computation
 
@@ -272,8 +274,45 @@ def synthesize_ntf_from_audio_weighting(
         w = audio_weighting(fx) if fx <= audio_band else 0
         return max(w, ma)
 
-    return _synthesize_ntf_from_noise_weighting(order, w, H_inf,
-                                                normalize, **opts)
+    return synthesize_ntf_from_noise_weighting(order, w, H_inf,
+                                               normalize, **opts)
+
+ntf_fir_audio_weighting.default_options = \
+    synthesize_ntf_from_noise_weighting.default_options.copy()
+
+
+# Following part is deprecated
+
+def synthesize_ntf_dunn(order=3, osr=64, H_inf=1.5):
+    warn("Function superseded by ntf_dunn in "
+         "NTFdesign module", PyDsmDeprecationWarning)
+    return ntf_dunn(order, osr, H_inf)
+
+synthesize_ntf_dunn.__doc__ = ntf_dunn.__doc__ + """
+    .. deprecated:: 0.11.0
+    Function has been moved to the ``NTFdesign`` module with name
+    ``ntf_dunn``.
+    """
+
+
+def synthesize_ntf_from_audio_weighting(
+        order, osr,
+        audio_weighting=audio_weightings.f_weighting,
+        audio_band=22.05E3,
+        max_attn=120,
+        H_inf=1.5,
+        normalize="auto", **options):
+    warn("Function superseded by ntf_fir_audio_weighting in "
+         "NTFdesign module", PyDsmDeprecationWarning)
+    return ntf_fir_audio_weighting(order, osr, audio_weighting, audio_band,
+                                   max_attn, H_inf, normalize, **options)
 
 synthesize_ntf_from_audio_weighting.default_options = \
-    _synthesize_ntf_from_noise_weighting.default_options.copy()
+    ntf_fir_audio_weighting.default_options
+
+synthesize_ntf_from_audio_weighting.__doc__ = \
+    ntf_fir_audio_weighting.__doc__ + """
+    .. deprecated:: 0.11.0
+    Function has been moved to the ``NTFdesign`` module with name
+    ``ntf_fir_audio_weighting``.
+    """
