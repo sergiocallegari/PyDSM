@@ -33,8 +33,9 @@ import matplotlib.pyplot as plt
 from pydsm.ir import impulse_response
 from pydsm.delsig import synthesizeNTF, simulateDSM, evalTF
 from pydsm.delsig import dbv, dbp
-from pydsm.NTFdesign.filter_based import (quantization_noise_gain,
-                                          synthesize_ntf_from_filter)
+from pydsm.NTFdesign import quantization_noise_gain
+from pydsm.NTFdesign.legacy import q0_from_filter_ir
+from pydsm.NTFdesign.weighting import ntf_fir_from_q0
 
 # Signal specification
 fsig = 1000.
@@ -44,7 +45,7 @@ fphi = B*OSR*2
 # Lee constraint
 H_inf = 1.5
 # FIR Order
-order = 40
+order = 49
 # Signal amplitude
 A = 0.75
 
@@ -64,7 +65,8 @@ hz_ir = impulse_response(hz, db=60)
 
 # Compute the optimal NTF
 print("... computing optimal NTF")
-ntf_opti = synthesize_ntf_from_filter(order, hz_ir, 'imp', H_inf=H_inf)
+q0 = q0_from_filter_ir(order, hz_ir)
+ntf_opti = ntf_fir_from_q0(q0, H_inf=H_inf)
 
 # Compute an NTF with DELSIG, for comparison
 print("... computing delsig NTF")

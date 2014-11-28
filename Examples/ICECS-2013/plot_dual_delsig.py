@@ -36,7 +36,7 @@ from __future__ import division, print_function
 
 import numpy as np
 from scipy import signal
-from pydsm.delsig import (evalTF, dbv, dbp, simulateDSM, synthesizeNTF)
+from pydsm.delsig import evalTF, dbv, dbp, simulateDSM, synthesizeNTF
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 from dualNTF import mirroredNTF

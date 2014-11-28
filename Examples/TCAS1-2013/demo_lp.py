@@ -24,6 +24,17 @@ Copyright (c) Sergio Callegari, Federico Bizzarri 2013
 All rights reserved.
 """
 
+# Note. This code returns numeric results that are not fully consistent with
+# those in the TCAS1 2013 paper. Specifically, the SNR values
+# evaluated via the NTF on the paper are better than those obtained by
+# this code by a factor 2. In previous versions of the code, the results
+# where identical due to a missing factor 2 in the quantization noise gain
+# evaluation. Probably, this error slipped in because it makes the NTF-based
+# results and the 'real' time-domain-simulation results more similar. In fact,
+# the 'real' modulator behavior is better than predicted by the NTF model
+# because in the specific example the quantization noise is not exactly white,
+# but slightly blue (for some reason it gets more power at higher frequencies).
+
 from __future__ import division, print_function
 
 import numpy as np
@@ -31,10 +42,10 @@ import scipy as sp
 __import__("scipy.signal")
 import matplotlib.pyplot as plt
 from pydsm.ir import impulse_response
-from pydsm.delsig import synthesizeNTF, simulateDSM, evalTF
-from pydsm.delsig import dbv, dbp
-from pydsm.NTFdesign.filter_based import (quantization_noise_gain,
-                                          synthesize_ntf_from_filter)
+from pydsm.delsig import synthesizeNTF, simulateDSM, evalTF, dbv, dbp
+from pydsm.NTFdesign import quantization_noise_gain
+from pydsm.NTFdesign.legacy import q0_from_filter_ir
+from pydsm.NTFdesign.weighting import ntf_fir_from_q0
 
 # Signal specification
 fsig = 1000.
@@ -46,7 +57,7 @@ H_inf = 1.5
 # FIR Order for optimal NTF
 order = 12
 # Signal amplitude
-A = 0.5
+A = 0.4
 
 # Generate filter. Transfer function is normalized to be 0dB in pass band
 # As an example, take cutoff freq at twice the top of the signal band to avoid
@@ -62,7 +73,8 @@ hz_ir = impulse_response(hz, db=60)
 
 # Compute the optimal NTF
 print("... computing optimal NTF")
-ntf_opti = synthesize_ntf_from_filter(order, hz_ir, 'imp', H_inf=H_inf)
+q0 = q0_from_filter_ir(order, hz_ir)
+ntf_opti = ntf_fir_from_q0(q0, H_inf=H_inf)
 
 # Compute an NTF with DELSIG, for comparison
 print("... computing delsig NTF")
