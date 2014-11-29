@@ -12,5 +12,4 @@ simulation functions in :doc:`the delsig module of PyDSM
 <delsig-module>`.
 
 .. automodule:: pydsm.simulation
-
-.. autofunction:: pydsm.simulation.simulateDSM
+   :members:
