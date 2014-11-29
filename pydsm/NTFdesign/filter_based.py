@@ -33,7 +33,8 @@ Noise Shaping Properties of ΔΣ Modulators via Semi-Definite Programming",
 IEEE Transactions on Circuits and Systems I: Regular Papers.
 
 .. deprecated:: 0.11.0
-Use ``ntf_fir_weighting`` or functions from ``NTFdesign.weighting`` module.
+    Use ``ntf_fir_weighting`` or functions from ``NTFdesign.weighting``
+    module.
 """
 
 from __future__ import division, print_function
@@ -130,7 +131,7 @@ def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
 quantization_noise_gain_by_conv.__doc__ = \
     _quantization_noise_gain_by_conv.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign.legacy`` module.
+        Function has been moved to the ``NTFdesign.legacy`` module.
     """
 
 

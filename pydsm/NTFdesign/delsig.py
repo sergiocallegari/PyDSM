@@ -51,8 +51,8 @@ synthesizeNTF.default_options = ntf_schreier.default_options
 
 synthesizeNTF.__doc__ = ntf_schreier.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign`` module with name
-    ``ntf_schreier``.
+        Function has been moved to the ``NTFdesign`` module with
+        name ``ntf_schreier``.
     """
 
 
@@ -63,8 +63,8 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
 
 synthesizeChebyshevNTF.__doc__ = ntf_chebyshev.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign`` module with name
-    ``ntf_chebyshev``.
+        Function has been moved to the ``NTFdesign`` module with
+        name ``ntf_chebyshev``.
     """
 
 
@@ -77,6 +77,6 @@ clans.default_options = ntf_clans.default_options
 
 clans.__doc__ = ntf_clans.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign`` module with name
-    ``ntf_clans``.
+        Function has been moved to the ``NTFdesign`` module with
+        name ``ntf_clans``.
     """
