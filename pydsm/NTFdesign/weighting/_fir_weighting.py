@@ -245,9 +245,11 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
 
     See Also
     --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
+        scipy.integrate.quad : integrator used internally.
+            For the meaning of the integrator parametersa.
 
+    Notes
+    -----
     Check also the documentation of ``cvxopt`` for further information.
     """
     # Manage optional parameters

@@ -127,14 +127,11 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
 
-    See Also
-    --------
-
-    Check the documentation of ``cvxopt`` for further information.
-
     Notes
     -----
     Bandpass modulator design is not yet supported.
+
+    Check also the documentation of ``cvxopt`` for further information.
     """
     # Manage optional parameters
     opts = ntf_fir_minmax.default_options.copy()

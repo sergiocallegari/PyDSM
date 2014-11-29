@@ -18,11 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 """
-A collection of routines for the synthesis of Delta Sigma modulators.
-=====================================================================
-
-The delsig_optimize_NTF variable specifies whether to use optimization
-techniques in the delsig_synthesizeNTF function.
+Routines for the synthesis of the NTF of Delta Sigma modulators.
+================================================================
 """
 
 from . import filter_based
