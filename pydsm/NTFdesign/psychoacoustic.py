@@ -261,6 +261,8 @@ def ntf_fir_audio_weighting(
     weighting.synthesize_ntf_from_noise_weighting :
         synthesize an NTF from a noise weighting
 
+    Notes
+    -----
     Check also the documentation of ``cvxopt`` for further information.
     """
     # Manage optional parameters

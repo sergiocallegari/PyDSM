@@ -26,5 +26,9 @@ This modules provides code for the synthesis of the modulator NTF, based
 on a noise weighting function.
 """
 
+import _fir_weighting
+import _quantization_noise_gain
 from ._fir_weighting import *
 from ._quantization_noise_gain import *
+
+__all__ = _fir_weighting.__all__ + _quantization_noise_gain.__all__

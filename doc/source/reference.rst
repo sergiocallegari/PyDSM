@@ -13,7 +13,7 @@ Functions for Digital ΔΣ Modulators and in the simulation of the
 resulting modulators.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    delsig-module
    ntf-design-module

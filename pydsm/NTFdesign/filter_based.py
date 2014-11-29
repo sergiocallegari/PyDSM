@@ -26,12 +26,6 @@ This modules provides code for the synthesis of the modulator NTF, based
 on the filter placed after the modulator for the removal of the quantization
 noise.
 
-The algorithms used in these routines are extensively described in
-
-Sergio Callegari, Federico Bizzarri "Output Filter Aware Optimization of the
-Noise Shaping Properties of ΔΣ Modulators via Semi-Definite Programming",
-IEEE Transactions on Circuits and Systems I: Regular Papers.
-
 .. deprecated:: 0.11.0
     Use ``ntf_fir_weighting`` or functions from ``NTFdesign.weighting``
     module.

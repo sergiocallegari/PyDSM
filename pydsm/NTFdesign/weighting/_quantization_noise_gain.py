@@ -39,8 +39,8 @@ def quantization_weighted_noise_gain(NTF, w=None, bounds=(0, 0.5),
 quantization_weighted_noise_gain.__doc__ = \
     quantization_noise_gain.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign`` module with name
-    ``quantization_noise_gain``.
+        Function has been moved to the ``NTFdesign`` module with name
+        ``quantization_noise_gain``.
     """
 
 quantization_weighted_noise_gain.default_options = \
