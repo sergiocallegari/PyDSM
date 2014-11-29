@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+0.11.0
+   - Switch to setuptools for building
+   - Improve testing framework
+   - Better management of optional parameters in some functions
+   - API cleanups
+     (a best effort has been put in retaining back-compatibility. Some
+     back compatibility functions are deprecated and will be removed)
+   - Code style improvements
+
 0.10.1
    - Fix setup script for compatibility with MacOs
    - Provide getting started guide for MacOs
