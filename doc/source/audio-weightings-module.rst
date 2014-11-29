@@ -5,9 +5,9 @@ Functions in this module are accessed by importing ``pydsm`` and looking in the
 ``pydsm.audio_weightings`` module.
 
 .. automodule:: pydsm.audio_weightings
-.. module:: audio_weightings
 
-**Key functions**
+Key functions
+.............
 
 .. autofunction:: pydsm.audio_weightings.a_weighting
 .. autofunction:: pydsm.audio_weightings.b_weighting
@@ -15,7 +15,8 @@ Functions in this module are accessed by importing ``pydsm`` and looking in the
 .. autofunction:: pydsm.audio_weightings.d_weighting
 .. autofunction:: pydsm.audio_weightings.f_weighting
 
-**Data elements**
+Data elements
+.............
 
 * ``a_zpk`` - filter in zpk form implementing the A-weighting
 * ``b_zpk`` - filter in zpk form implementing the B-weighting
