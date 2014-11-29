@@ -272,8 +272,8 @@ def q0_from_noise_weighting(P, w, **options):
 
 q0_from_noise_weighting.__doc__ = q0_weighting.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign.weighting`` module with name
-    ``q0_weighting``.
+    Function has been moved to the ``NTFdesign.weighting`` module with
+    name ``q0_weighting``.
     """
 
 q0_from_noise_weighting.default_options = q0_weighting.default_options
@@ -286,8 +286,8 @@ def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto", **options):
 
 synthesize_ntf_from_q0.__doc__ = ntf_fir_from_q0.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign.weighting`` module with name
-    ``ntf_fir_from_q0``.
+    Function has been moved to the ``NTFdesign.weighting`` module with
+    name ``ntf_fir_from_q0``.
     """
 
 synthesize_ntf_from_q0.default_options = ntf_fir_from_q0.default_options
@@ -302,8 +302,8 @@ def synthesize_ntf_from_noise_weighting(order, noise_weighting, H_inf=1.5,
 
 synthesize_ntf_from_noise_weighting.__doc__ = ntf_fir_weighting.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign`` module with name
-    ``ntf_fir_weighting``.
+    Function has been moved to the ``NTFdesign`` module with
+    name ``ntf_fir_weighting``.
     """
 
 synthesize_ntf_from_noise_weighting.default_options = \
