@@ -120,5 +120,5 @@ def cplxpair(x, tol=100*EPS):
 
 cplxpair.__doc__ = relab.cplxpair.__doc__ + """
     .. deprecated:: 0.11.0
-    Function ``cplxpair`` moved to ``relab`` module
+        Function ``cplxpair`` moved to ``relab`` module
 """

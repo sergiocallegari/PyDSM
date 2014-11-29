@@ -261,6 +261,8 @@ def ntf_fir_audio_weighting(
     weighting.synthesize_ntf_from_noise_weighting :
         synthesize an NTF from a noise weighting
 
+    Notes
+    -----
     Check also the documentation of ``cvxopt`` for further information.
     """
     # Manage optional parameters
@@ -290,8 +292,8 @@ def synthesize_ntf_dunn(order=3, osr=64, H_inf=1.5):
 
 synthesize_ntf_dunn.__doc__ = ntf_dunn.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign`` module with name
-    ``ntf_dunn``.
+       Function has been moved to the ``NTFdesign`` module with
+       name ``ntf_dunn``.
     """
 
 
@@ -313,6 +315,6 @@ synthesize_ntf_from_audio_weighting.default_options = \
 synthesize_ntf_from_audio_weighting.__doc__ = \
     ntf_fir_audio_weighting.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign`` module with name
-    ``ntf_fir_audio_weighting``.
+        Function has been moved to the ``NTFdesign`` module with
+        name ``ntf_fir_audio_weighting``.
     """

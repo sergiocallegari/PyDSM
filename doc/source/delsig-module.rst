@@ -5,35 +5,41 @@ Functions in this module are accessed by importing ``pydsm`` and
 looking in the ``pydsm.delsig`` module.
 
 .. automodule:: pydsm.delsig
-.. module:: delsig
+
+   Key functions
+   .............
+
+    .. autofunction:: pydsm.delsig.synthesizeNTF
+    .. autofunction:: pydsm.delsig.synthesizeChebyshevNTF
+    .. autofunction:: pydsm.delsig.clans
+
+    .. autofunction:: pydsm.delsig.simulateDSM
 
 
-**Key functions**
+   Functions for evaluating transfer functions
+   ...........................................
 
-.. autofunction:: pydsm.delsig.synthesizeNTF
-.. autofunction:: pydsm.delsig.synthesizeChebyshevNTF
-.. autofunction:: pydsm.delsig.clans
-
-.. autofunction:: pydsm.delsig.simulateDSM
+   .. autofunction:: pydsm.delsig.evalTF
 
 
-**Functions for evaluating transfer functions**
+   General Utility functions
+   .........................
 
-.. autofunction:: pydsm.delsig.evalTF
+   .. autofunction:: pydsm.delsig.dbv
+   .. autofunction:: pydsm.delsig.dbp
+   .. autofunction:: pydsm.delsig.dbm
+   .. autofunction:: pydsm.delsig.undbv
+   .. autofunction:: pydsm.delsig.undbp
+   .. autofunction:: pydsm.delsig.undbm
 
-**General Utility functions**
 
-.. autofunction:: pydsm.delsig.dbv
-.. autofunction:: pydsm.delsig.dbp
-.. autofunction:: pydsm.delsig.dbm
-.. autofunction:: pydsm.delsig.undbv
-.. autofunction:: pydsm.delsig.undbp
-.. autofunction:: pydsm.delsig.undbm
+   Delta Sigma Utility functions
+   .............................
 
-**Delta Sigma Utility functions**
+   .. autofunction:: pydsm.delsig.rmsGain
 
-.. autofunction:: pydsm.delsig.rmsGain
 
-**Graphing functions**
+   Graphing functions
+   ..................
 
-.. autofunction:: pydsm.delsig.plotPZ
+   .. autofunction:: pydsm.delsig.plotPZ

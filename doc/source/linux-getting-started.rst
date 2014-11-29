@@ -111,13 +111,22 @@ download, you need to expand the archive and launch the
    python setup.py install
 
 As before, you may want to provide the ``--user`` option to make a
-personal installation. The single advantage of manually downloading
-the package instead of installing with ``pip`` is the possibility of
-running some self test. This can be done by issuing the command::
+personal installation.
 
-   python setup.py test
 
-However, note that the tests are currently rather incomplete.
+Testing the code
+''''''''''''''''
+
+PyDSM includes a (rather incomplete for the moment) set of self tests.
+These can be run from the source tree as by issuing the command::
+
+  python setup.py test
+
+Alternatively, once the package is installed, the tests can be run by
+opening a python interpreter and by typing::
+
+  import pydsm
+  pydsm.test()
 
 
 Using the code

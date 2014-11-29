@@ -210,8 +210,8 @@ def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
 
 synthesize_ntf_minmax.__doc__ = ntf_fir_minmax.__doc__ + """
     .. deprecated:: 0.11.0
-    Function has been moved to the ``NTFdesign`` module with name
-    ``ntf_fir_minmax``.
+        Function has been moved to the ``NTFdesign`` module with name
+        ``ntf_fir_minmax``.
     """
 
 synthesize_ntf_minmax.default_options = \
