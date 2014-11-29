@@ -17,16 +17,6 @@
     representations
 - avoid __import__ statements and follow
     http://docs.scipy.org/doc/scipy/reference/api.html
-- [api] rename quantization_noise_gain as quantization_filtered_noise_gain
-- [api] thoroughly clean up the synthesizeNTF_from_filter interface
-    argument should be a zpk or a ba tuple only
-    impulse response case goes in the ba with a=[1] and b=response
-    magnitude function response goes in synthesizeNTF_from_weighting
-- [api] provide a legacy module for methods that are now superceeded by
-    better strategies but that may be needed for reproducing results from
-    papers
-- [api] rename synthesizeNTF_from_noise_weighting into
-    synthesizeNTF_from_weighting
 - [docstring] possibly move some documentation in the module level docstrings,
     so that it is available in IDEs
 - [cython] user numpy.require to assure that arrays have the right properties
