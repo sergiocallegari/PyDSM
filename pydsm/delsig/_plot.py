@@ -155,5 +155,8 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
                          verticalalignment='center')
                 y = y - 0.1
 
+    plt.ylabel('Imag')
+    plt.xlabel('Real')
+
     if not hold_status:
         plt.hold(False)
