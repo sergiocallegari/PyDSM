@@ -75,7 +75,7 @@ def dbv(x):
     """
     x = np.asarray(np.abs(x))
     y = np.asarray(-np.inf*np.ones_like(x))
-    nonzero = (x != 0)
+    nonzero = np.asarray(x != 0)
     y[nonzero] = 20*np.log10(x[nonzero])
     return y[()]
 
@@ -96,7 +96,7 @@ def dbp(x):
     """
     x = np.asarray(np.abs(x))
     y = np.asarray(-np.inf*np.ones_like(x))
-    nonzero = (x != 0)
+    nonzero = np.asarray(x != 0)
     y[nonzero] = 10*np.log10(x[nonzero])
     return y[()]
 
@@ -120,7 +120,7 @@ def dbm(v, R=50.):
     """
     v = np.asarray(np.abs(v))
     y = np.asarray(-np.inf*np.ones_like(v))
-    nonzero = (v != 0)
+    nonzero = np.asarray(v != 0)
     y[nonzero] = 10*np.log10(v[nonzero]**2/R)+30
     return y[()]
 
