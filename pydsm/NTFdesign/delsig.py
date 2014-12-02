@@ -39,22 +39,7 @@ from warnings import warn
 from ..exceptions import PyDsmDeprecationWarning
 
 __all__ = ['ntf_schreier', 'ntf_chebyshev', 'ntf_clans',
-           'synthesizeNTF', 'synthesizeChebyshevNTF', 'clans',
-           'poles_schreier']
-
-
-def poles_schreier(order, alpha):
-    x = 1./np.sqrt(alpha)
-    me2 = -0.5*(x**(2./order))
-    w = (2*np.arange(1, order+1)+1)*np.pi/order
-    mb2 = 1+me2*np.exp(1j*w)
-    p = mb2 - np.sqrt(mb2**2-1)
-    # Reflect poles that fall out of the unit circle
-    out = (np.abs(p) > 1)
-    p[out] = 1/p[out]
-    # The following is not exactly what delsig does.
-    # We do not have an identical cplxpair
-    return p
+           'synthesizeNTF', 'synthesizeChebyshevNTF', 'clans']
 
 
 # Following part is deprecated
