@@ -27,7 +27,7 @@ The NTFdesign module
    Non automatically imported submodules
    .....................................
 
-  .. toctree::
+   .. toctree::
       :maxdepth: 1
 
       ntf-design-helpers
