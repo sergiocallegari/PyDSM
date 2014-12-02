@@ -24,6 +24,15 @@ The NTFdesign module
       ntf-design-filter-based
 
 
+   Non automatically imported submodules
+   .....................................
+
+  .. toctree::
+      :maxdepth: 1
+
+      ntf-design-helpers
+
+
    Key functions promoted at module top level
    ..........................................
 
