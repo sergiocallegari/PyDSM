@@ -58,11 +58,13 @@ References
    Shaping," J. Audio Eng. Soc., Vol. 40 No. 7/8 1992 July/August
 """
 
+from __future__ import division, print_function
+
 import numpy as np
 
-__all__=["a_zpk", "a_weighting", "b_zpk", "b_weighting",
-         "c_zpk", "c_weighting", "d_zpk", "d_weighting",
-         "f_zpk", "f_weighting"]
+__all__ = ["a_zpk", "a_weighting", "b_zpk", "b_weighting",
+           "c_zpk", "c_weighting", "d_zpk", "d_weighting",
+           "f_zpk", "f_weighting"]
 
 a_zpk = (2*np.pi*np.asarray([0., 0., 0., 0.]),
          2*np.pi*np.asarray([-20.6, -20.6, -107.7, -739.9, -12200., -12200.]),
@@ -125,6 +127,7 @@ f_zpk = (2*np.pi*np.asarray([0., 0., 0.,
 # individually the numerator, the denominator and the result should not
 # overflow.
 
+
 def a_weighting(f, normal=True, power=True):
     """Returns the A-weighting as a function of frequency.
 
@@ -146,12 +149,14 @@ def a_weighting(f, normal=True, power=True):
     """
     if power:
         return a_weighting(f, normal, power=False)**2
-    w = (12200.0**2*f**4)/((f**2+20.6**2)*
-        np.sqrt((f**2+107.7**2)*(f**2+737.9**2))*(f**2+12200.0**2))
+    w = (12200.0**2*f**4)/((f**2+20.6**2) *
+                           np.sqrt((f**2+107.7**2) *
+                           (f**2+737.9**2))*(f**2+12200.0**2))
     return w if not normal else w*a_weighting_gain
 
 # Set normalization gain
-a_weighting_gain=1/a_weighting(1000, normal=False, power=False)
+a_weighting_gain = 1/a_weighting(1000, normal=False, power=False)
+
 
 def b_weighting(f, normal=True, power=True):
     """Returns the B-weighting as a function of frequency.
@@ -174,12 +179,13 @@ def b_weighting(f, normal=True, power=True):
     """
     if power:
         return b_weighting(f, normal, power=False)**2
-    w = (12200.0**2*f**3)/((f**2+20.6**2)*
-        np.sqrt(f**2+158.5**2)*(f**2+12200.0**2))
+    w = (12200.0**2*f**3)/((f**2+20.6**2) *
+                           np.sqrt(f**2+158.5**2)*(f**2+12200.0**2))
     return w if not normal else w*b_weighting_gain
 
 # Set normalization gain
-b_weighting_gain=1/b_weighting(1000, normal=False, power=False)
+b_weighting_gain = 1/b_weighting(1000, normal=False, power=False)
+
 
 def c_weighting(f, normal=True, power=True):
     """Returns the C-weighting as a function of frequency.
@@ -202,12 +208,12 @@ def c_weighting(f, normal=True, power=True):
     """
     if power:
         return c_weighting(f, normal, power=False)**2
-    w = (12200.0**2*f**2)/((f**2+20.6**2)*
-       (f**2+12200.0**2))
+    w = (12200.0**2*f**2)/((f**2+20.6**2)*(f**2+12200.0**2))
     return w if not normal else w*c_weighting_gain
 
 # Set normalization gain
-c_weighting_gain=1/c_weighting(1000, normal=False, power=False)
+c_weighting_gain = 1/c_weighting(1000, normal=False, power=False)
+
 
 def d_weighting(f, normal=True, power=True):
     """Returns the D-weighting as a function of frequency.
@@ -231,11 +237,14 @@ def d_weighting(f, normal=True, power=True):
     """
     if power:
         return d_weighting(f, normal, power=False)**2
+
     def h(f):
-        return ((1037918.48-f**2)**2+1080768.16*f**2)/((9837328.0-f**2)**2+
-            11723776.0*f**2)
-    return f/6.8966888496476E-5*np.sqrt(h(f)/((f**2+79919.29)*
-        (f**2+1345600.0)))
+        return (((1037918.48-f**2)**2+1080768.16*f**2) /
+                ((9837328.0-f**2)**2+11723776.0*f**2))
+
+    return (f/6.8966888496476E-5 *
+            np.sqrt(h(f)/((f**2+79919.29)*(f**2+1345600.0))))
+
 
 def f_weighting(f, normal=True, power=True):
     """Returns the F-weighting as a function of frequency.
@@ -267,18 +276,18 @@ def f_weighting(f, normal=True, power=True):
     """
     if not power:
         return np.sqrt(f_weighting(f, normal, power=True))
-    fx=f/1000.
-    g=2.536e-5
-    z1=fx**2;
-    z2=((0.58**2)+(1.03**2)-z1)**2 + 4.0*(0.58**2)*z1
-    z3=((3.18**2)+(8.75**2)-z1)**2 + 4.0*(3.18**2)*z1
-    p1=0.18**2+z1
-    p2=1.63**2+z1
-    p3=((2.51**2)+(3.85**2)-z1)**2 + 4.0*(2.51**2)*z1
-    p4=((6.62**2)+(14.29**2)-z1)**2 + 4.0*(6.62**2)*z1
-    w = (g*((z1**3)*z2*(z3**3))/
-        ((p1**3)*(p2**2)*(p3**4))*((1e5/p4)**20))
+    fx = f/1000.
+    g = 2.536e-5
+    z1 = fx**2
+    z2 = ((0.58**2)+(1.03**2)-z1)**2 + 4.0*(0.58**2)*z1
+    z3 = ((3.18**2)+(8.75**2)-z1)**2 + 4.0*(3.18**2)*z1
+    p1 = 0.18**2+z1
+    p2 = 1.63**2+z1
+    p3 = ((2.51**2)+(3.85**2)-z1)**2 + 4.0*(2.51**2)*z1
+    p4 = ((6.62**2)+(14.29**2)-z1)**2 + 4.0*(6.62**2)*z1
+    w = ((g*((z1**3)*z2*(z3**3)) /
+         ((p1**3)*(p2**2)*(p3**4))*((1e5/p4)**20)))
     return w if not normal else w*f_weighting_gain
 
 # Set normalization gain
-f_weighting_gain=1/f_weighting(1000, normal=False, power=True)
+f_weighting_gain = 1/f_weighting(1000, normal=False, power=True)

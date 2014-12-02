@@ -18,10 +18,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-__all__=['mirroredNTF']
+from __future__ import division, print_function
 
 import numpy as np
 from scipy.signal import tf2zpk, zpk2tf
+
+__all__ = ['mirroredNTF']
+
 
 def mirroredNTF(ntf):
     """Creates a symmetric noise transfer function from a prototype.
@@ -45,15 +48,15 @@ def mirroredNTF(ntf):
     ntf2 : tuple
         output noise transfer function in zpk form
     """
-    zpk_mode=True
-    if len(ntf)!=3:
-        zpk_mode=False
-        ntf=tf2zpk(*ntf)
+    zpk_mode = True
+    if len(ntf) != 3:
+        zpk_mode = False
+        ntf = tf2zpk(*ntf)
     # Take the opposite of poles and zeros to get an HP filter
-    ntf_flipped=(-ntf[0], -ntf[1], ntf[2])
+    ntf_flipped = (-ntf[0], -ntf[1], ntf[2])
     # Take the product of the two
-    ntf_mirrored=(np.hstack((ntf[0],ntf_flipped[0])),
-                  np.hstack((ntf[1],ntf_flipped[1])),1)
+    ntf_mirrored = (np.hstack((ntf[0], ntf_flipped[0])),
+                    np.hstack((ntf[1], ntf_flipped[1])), 1)
     if not zpk_mode:
-        ntf_mirrored=zpk2tf(*ntf_mirrored)
+        ntf_mirrored = zpk2tf(*ntf_mirrored)
     return ntf_mirrored

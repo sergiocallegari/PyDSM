@@ -2,27 +2,42 @@
 - [delsig] implement findPattern
 - [delsig] implement calculateSNR
 - [delsig] implement simulateSNR
-- reuse common code between _simulateDSM_scipy_blas and
-  _simulateDSM_cblas
+- [simulator] reuse common code between _simulateDSM_scipy_blas and
+    _simulateDSM_cblas
+- [simulator] verify speed difference between scipy_blas and cblas simulator
+    possibly including an fblas simulator in the picture and trying
+    different matrix representations (C, fortran)
 - implement quadratic form
 - implement scanner with quadratic form
 - [sdtoolbox] implement calcSNR
 - [sdtoolbox] sinusx
-- [os support] port to macos
 - [documentation] add tutorial
-- [tests] let tests be run individually
 - [cython] in the cython simulator use np.double and np.intc for casting
-- move zpk and ba representations to named tuple model
+- maybe move zpk and ba representations to named tuple model or to LTI
+    representations
 - avoid __import__ statements and follow
-  http://docs.scipy.org/doc/scipy/reference/api.html
-- [distutils] fix sdist
-- [distutils] add metadata
-- [api] rename quantization_noise_gain as quantization_filtered_noise_gain
+    http://docs.scipy.org/doc/scipy/reference/api.html
+- [docstring] possibly move some documentation in the module level docstrings,
+    so that it is available in IDEs
 - [cython] user numpy.require to assure that arrays have the right properties
-- manage optimizer/integrator options better in ntf design functions based
-  on cvxopt
 - [optimization] move to the newer cvxpy
+- [optimization] check picos too for the optimization backend
 - [python] make python3 compatible
-- [python] make pep8 clean
 - [examples] provide notebook version of the examples
-- [setup] add to setup some command to build documentation (docbuild, docdist)
+- [setuptools] assure that setuptools build the package before calling
+    build_sphinx
+- [setuptools] make docdist pass options to build_sphinx
+- [documentation] Maybe use the versionadded/versionchanged/deprecated sphinx
+    features to document api changes
+- [*examples*] The numeric results in the ICECS 2012 paper are not consistent
+    with what the sample script returns. Specifically, the SNR values
+    evaluated via the NTF on the paper are better than those obtained by
+    the code by a factor 2. In the original version of the code, the results
+    where identical due to a missing factor 2 in the quantization noise gain
+    evaluation. Probably, this error slipped in because it makes the NTF-based
+    results and the time-domain-simulation results more similar. In fact, the
+    'real' modulator behavior is better than predicted by the NTF model
+    because in the specific example the quantization noise is not white,
+    but for some reason slightly blue (more power at higher frequencies).
+    A note should probably be added to the code and to the ArXiv version of
+    the ICECS paper.

@@ -18,11 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 """
-A collection of routines for the synthesis of Delta Sigma modulators.
-=====================================================================
-
-The delsig_optimize_NTF variable specifies whether to use optimization
-techniques in the delsig_synthesizeNTF function.
+Routines for the synthesis of the NTF of Delta Sigma modulators.
+================================================================
 """
 
 from . import filter_based
@@ -30,3 +27,16 @@ from . import weighting
 from . import delsig
 from . import psychoacoustic
 from . import minmax
+from . import merit_factors
+
+from .merit_factors import quantization_noise_gain
+from .minmax import ntf_fir_minmax
+from .delsig import ntf_schreier, ntf_chebyshev, ntf_clans
+from .psychoacoustic import ntf_dunn, ntf_fir_audio_weighting
+from .weighting import ntf_fir_weighting
+
+from . import tests as test_suite
+
+from numpy.testing import Tester
+test = Tester().test
+bench = Tester().bench

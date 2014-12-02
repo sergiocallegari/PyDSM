@@ -32,9 +32,11 @@ Copyright (c) Sergio Callegari, 2013.
 All rights reserved.
 """
 
+from __future__ import division, print_function
+
 import numpy as np
 from scipy import signal
-from pydsm.delsig import (evalTF, dbv, dbp, simulateDSM, synthesizeNTF)
+from pydsm.delsig import evalTF, dbv, dbp, simulateDSM, synthesizeNTF
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 from extract_tone import find_tone
@@ -45,178 +47,178 @@ from extract_tone import find_tone
 #
 B1 = 20E3     # Bandwidth of first signal
 B2 = 20E3     # Bandwidth of second signal
-OSR=64        # Oversampling ratio
-A1=0.2        # Amplitude of first signal
-A2=0.44       # Amplitude of the second signal
-f1=1003       # Frequency used to test the first test signal with a tone
-f2=3193       # Frequency used to test the second test signal with a tone
+OSR = 64      # Oversampling ratio
+A1 = 0.2      # Amplitude of first signal
+A2 = 0.44     # Amplitude of the second signal
+f1 = 1003     # Frequency used to test the first test signal with a tone
+f2 = 3193     # Frequency used to test the second test signal with a tone
 
-Amax=0.64     # Max amplitude used for testing
+Amax = 0.64   # Max amplitude used for testing
 
 # Clock frequency of modulator
-fphi=2*OSR*(B1)
+fphi = 2*OSR*(B1)
 
 # Cut off frequency of reconstruction filter
 # ...set twice as wide as it should to better see artifacts
-brk=B1/fphi
+brk = B1/fphi
 
 # Create NTF with DELSIG synthesizeNTF
-ntf_a=synthesizeNTF(order=4, osr=OSR, opt=3, H_inf=1.5)
+ntf_a = synthesizeNTF(order=4, osr=OSR, opt=3, H_inf=1.5)
 
 # Prepare frequency grid
-ff_log=np.logspace(np.log10(0.5E-5),np.log10(0.5),4096)
-ff_lin=np.linspace(0,0.5,1024)
+ff_log = np.logspace(np.log10(0.5E-5), np.log10(0.5), 4096)
+ff_lin = np.linspace(0, 0.5, 1024)
 
 # Compute magnitude responses of NTF for plotting
-ntf_a_mag=lambda f: np.abs(evalTF(ntf_a,np.exp(-2j*np.pi*f)))
-vv_ntf_a_log=ntf_a_mag(ff_log)
-vv_ntf_a_lin=ntf_a_mag(ff_lin)
+ntf_a_mag = lambda f: np.abs(evalTF(ntf_a, np.exp(-2j*np.pi*f)))
+vv_ntf_a_log = ntf_a_mag(ff_log)
+vv_ntf_a_lin = ntf_a_mag(ff_lin)
 
 # Design output filter
-hz=signal.butter(4, 2*brk, btype='low')
+hz = signal.butter(4, 2*brk, btype='low')
 
 # Compute magnitude responses of output filter for plotting
-hz_mag=lambda f: np.abs(evalTF(hz,np.exp(-2j*np.pi*f)))
-vv_hz_log=hz_mag(ff_log)
-vv_hz_lin=hz_mag(ff_lin)
+hz_mag = lambda f: np.abs(evalTF(hz, np.exp(-2j*np.pi*f)))
+vv_hz_log = hz_mag(ff_log)
+vv_hz_lin = hz_mag(ff_lin)
 
-print "Plotting the noise transfer function..."
+print("Plotting the noise transfer function...")
 
 # Plot magnitude responses with log scale - same as Fig. 5a
 plt.figure()
-plt.plot(ff_log,dbv(vv_ntf_a_log), label=r'$\mathit{NTF}(z)$')
+plt.plot(ff_log, dbv(vv_ntf_a_log), label=r'$\mathit{NTF}(z)$')
 plt.xlim(5E-5, 0.5)
-plt.ylim(-119.99,5)
-plt.xscale('log',basex=10)
+plt.ylim(-119.99, 5)
+plt.xscale('log', basex=10)
 plt.xlabel(r'$\hat f$', x=1.)
 plt.ylabel(r'magnitude [dB]')
 plt.gca().set_xticks([1E-5, 0.5])
-plt.gca().set_xticklabels(['$10^{-5}$',r'$\frac{1}{2}$'])
+plt.gca().set_xticklabels(['$10^{-5}$', r'$\frac{1}{2}$'])
 plt.suptitle('NTF mag response - log scale')
 
 # Plot magnitude responses with linear scale - same as Fig. 5b
 # but with a single band
 plt.figure()
-plt.plot(ff_lin,dbv(vv_ntf_a_lin), label=r'$\mathit{NTF}(z)$')
-plt.xlim(0,0.5)
-plt.ylim(-100,5)
+plt.plot(ff_lin, dbv(vv_ntf_a_lin), label=r'$\mathit{NTF}(z)$')
+plt.xlim(0, 0.5)
+plt.ylim(-100, 5)
 plt.xlabel(r'$\hat f$', x=1.)
 plt.ylabel(r'magnitude [dB]')
-plt.gca().set_xticks([0,1./2])
-plt.gca().set_xticklabels(['$0$',r'$\frac{1}{2}$'])
+plt.gca().set_xticks([0, 1./2])
+plt.gca().set_xticklabels(['$0$', r'$\frac{1}{2}$'])
 plt.suptitle('NTF mag response - linear scale')
 
-print "Doing time domain simulations..."
+print("Doing time domain simulations...")
 
 # Define test time for time domain simulations
-Tstop=200*fphi/1000 # approximately 200 periods at 1kHz
-tt=np.arange(Tstop, dtype=int)
-print "Test time:", len(tt), 'points'
+Tstop = 200*fphi/1000  # approximately 200 periods at 1kHz
+tt = np.arange(Tstop, dtype=int)
+print("Test time:", len(tt), 'points')
 
 # Generate signals for time domain simulations
-print "Generate input signals ",
-s1=A1*np.sin(2*np.pi*f1*tt/fphi)
-print "* ",
-s2=A2*np.sin(2*np.pi*f2*tt/fphi)
-print "* ",
-clk=2*(tt % 2)-1
-print "*"
-dither_sigma=1e-9  # Use a little dither
-dither=np.random.randn(len(tt))*dither_sigma
+print("Generate input signals ", end="")
+s1 = A1*np.sin(2*np.pi*f1*tt/fphi)
+print("* ", end="")
+s2 = A2*np.sin(2*np.pi*f2*tt/fphi)
+print("* ", end="")
+clk = 2*(tt % 2)-1
+print("*")
+dither_sigma = 1e-9  # Use a little dither
+dither = np.random.randn(len(tt))*dither_sigma
 
 # Do the simulation
-print "Simulating DSM",
-xx1=simulateDSM(s1+dither,ntf_a)[0]
-print "* ",
-xx2=simulateDSM(s2+dither,ntf_a)[0]
-print "*"
+print("Simulating DSM ", end="")
+xx1 = simulateDSM(s1+dither, ntf_a)[0]
+print("* ", end="")
+xx2 = simulateDSM(s2+dither, ntf_a)[0]
+print("*")
 
 # Plot a fragment of the modulator output - same as Fig. 5c
 plt.figure()
-plt.plot(tt[100:150],xx1[100:150], linestyle='steps')
+plt.plot(tt[100:150], xx1[100:150], linestyle='steps')
 plt.xlabel(r'$n$', x=1.)
 plt.ylabel(r'$x(nT)$', x=1.)
-plt.ylim(-1.2,1.2)
+plt.ylim(-1.2, 1.2)
 plt.suptitle('Fragment of modulator output - 1st signal')
 
 # Reconstruct the signals
-print "Applying a low pass filter"
-yy1=signal.lfilter(hz[0],hz[1],xx1)
-yy2=signal.lfilter(hz[0],hz[1],xx2)
+print("Applying a low pass filter")
+yy1 = signal.lfilter(hz[0], hz[1], xx1)
+yy2 = signal.lfilter(hz[0], hz[1], xx2)
 
 # Plot fragment of first reconstructed signal - same as Figs. 5e, 5f
-Tdisp_start=10*fphi/1000
-Tdisp_stop=15*fphi/1000
-ttp=np.arange(Tdisp_start,Tdisp_stop, dtype=int)
+Tdisp_start = 10*fphi/1000
+Tdisp_stop = 15*fphi/1000
+ttp = np.arange(Tdisp_start, Tdisp_stop, dtype=int)
 plt.figure()
-plt.plot(ttp/fphi*1000,yy1[ttp], 'b', label='1st signal')
-plt.plot(ttp/fphi*1000,yy2[ttp], 'r', label='2nd signal')
+plt.plot(ttp/fphi*1000, yy1[ttp], 'b', label='1st signal')
+plt.plot(ttp/fphi*1000, yy2[ttp], 'r', label='2nd signal')
 plt.xlabel(r'$t$ [ms]', x=1.)
 plt.ylabel(r'$\hat s_1(t)$')
 plt.suptitle('Fragment of reconstructed output')
 plt.legend()
 
 # Estimate some spectra
-print "Compute some spectra (",
-Tsp_start=2*fphi/1000
-Tsp_stop=199*fphi/1000
-NFFT=4096*32
-(psd,freqs)=mlab.psd((xx1)[Tsp_start:Tsp_stop],Fs=fphi, NFFT=NFFT,
-    noverlap=NFFT/2, scale_by_freq=True)
-print '@modulator, ',
-(psd1,freqs1)=mlab.psd((yy1)[Tsp_start:Tsp_stop],Fs=fphi, NFFT=NFFT,
-    noverlap=NFFT/2, scale_by_freq=True)
-print '@1st signal, ',
-(psd2,freqs2)=mlab.psd((yy2)[Tsp_start:Tsp_stop],Fs=fphi, NFFT=NFFT,
-    noverlap=NFFT/2, scale_by_freq=True)
-print '@2nd signal)'
+print("Compute some spectra (", end="")
+Tsp_start = 2*fphi/1000
+Tsp_stop = 199*fphi/1000
+NFFT = 4096*32
+(psd, freqs) = mlab.psd((xx1)[Tsp_start:Tsp_stop], Fs=fphi, NFFT=NFFT,
+                        noverlap=NFFT/2, scale_by_freq=True)
+print('@modulator, ', end="")
+(psd1, freqs1) = mlab.psd((yy1)[Tsp_start:Tsp_stop], Fs=fphi, NFFT=NFFT,
+                          noverlap=NFFT/2, scale_by_freq=True)
+print('@1st signal, ', end="")
+(psd2, freqs2) = mlab.psd((yy2)[Tsp_start:Tsp_stop], Fs=fphi, NFFT=NFFT,
+                          noverlap=NFFT/2, scale_by_freq=True)
+print('@2nd signal)')
 
-print "Check overall power from psd"
-print " (should be 1): ",
-df=freqs[1]-freqs[0]
-print np.sum(psd)*df
+print("Check overall power from psd")
+print(" (should be 1): ", end="")
+df = freqs[1]-freqs[0]
+print(np.sum(psd)*df)
 
 # Plot PDS of signal at modulator output
 # This is the same as in Fig. 5b, but with a single band
 # Try to express quantities in dBm (referred to 1 mW over a 50 Ohm resistor)
 plt.figure()
-plt.plot(freqs,dbp(psd)+30-10*np.log10(50))
-plt.xlim(0,fphi/2)
+plt.plot(freqs, dbp(psd)+30-10*np.log10(50))
+plt.xlim(0, fphi/2)
 plt.xlabel(r'$f$ [MHz]', x=1.)
 plt.ylabel(r'PDS [dBm/Hz]')
-plt.gca().set_xticks([0,fphi/2])
-plt.gca().set_xticklabels(['$0$',r'$2.56$'])
+plt.gca().set_xticks([0, fphi/2])
+plt.gca().set_xticklabels(['$0$', r'$2.56$'])
 plt.suptitle('PSD at modulator output')
 
 # Plot PDS of first reconstructed signal
 plt.figure()
-plt.plot(freqs1,dbp(psd1))
+plt.plot(freqs1, dbp(psd1))
 plt.xscale('log', base=10)
 plt.suptitle('PSD of reconstructed signal - 1st signal')
 
 # Plot PDS of second reconstructed signal
 plt.figure()
-plt.plot(freqs2,dbp(psd2))
+plt.plot(freqs2, dbp(psd2))
 plt.xscale('log', base=10)
 plt.suptitle('PSD of reconstructed signal - 2nd signal')
 
 # Check modulator output when tone is subtracted
-tone_xx1=find_tone(xx1, f1, fphi, start=Tsp_start, N=Tsp_stop-Tsp_start,
-                   output='polar')
-tone_xx2=find_tone(xx2, f2, fphi, start=Tsp_start, N=Tsp_stop-Tsp_start,
-                   output='polar')
+tone_xx1 = find_tone(xx1, f1, fphi, start=Tsp_start, N=Tsp_stop-Tsp_start,
+                     output='polar')
+tone_xx2 = find_tone(xx2, f2, fphi, start=Tsp_start, N=Tsp_stop-Tsp_start,
+                     output='polar')
 # Remove the tone, quick version
-xx1q=xx1-tone_xx1[0]*np.cos(2*np.pi*f1/fphi*tt-tone_xx1[1])
-xx2q=xx2-tone_xx2[0]*np.cos(2*np.pi*f2/fphi*tt-tone_xx2[1])
-(psd1q, freqs1q)=mlab.psd(xx1q[Tsp_start:Tsp_stop],Fs=fphi, NFFT=NFFT,
-    noverlap=NFFT/2, scale_by_freq=True)
-(psd2q, freqs2q)=mlab.psd(xx2q[Tsp_start:Tsp_stop],Fs=fphi, NFFT=NFFT,
-    noverlap=NFFT/2, scale_by_freq=True)
+xx1q = xx1-tone_xx1[0]*np.cos(2*np.pi*f1/fphi*tt-tone_xx1[1])
+xx2q = xx2-tone_xx2[0]*np.cos(2*np.pi*f2/fphi*tt-tone_xx2[1])
+(psd1q, freqs1q) = mlab.psd(xx1q[Tsp_start:Tsp_stop], Fs=fphi, NFFT=NFFT,
+                            noverlap=NFFT/2, scale_by_freq=True)
+(psd2q, freqs2q) = mlab.psd(xx2q[Tsp_start:Tsp_stop], Fs=fphi, NFFT=NFFT,
+                            noverlap=NFFT/2, scale_by_freq=True)
 
 # Plot PDS of quantization noise for channel 1 at modulator output
 # This is the same as Fig. 5g
 plt.figure()
-plt.plot(freqs1q/1000,dbp(psd1q)+30-10*np.log10(50))
+plt.plot(freqs1q/1000, dbp(psd1q)+30-10*np.log10(50))
 plt.xscale('log', base=10)
 plt.xlim(freqs1q[0]/1000, freqs1q[-1]/1000)
 plt.xlabel(r'$f$ [kHz]', x=1.)
@@ -226,7 +228,7 @@ plt.suptitle('PSD of quantization noise - 1st signal')
 # Plot PDS of quantization noise for channel 2 at modulator output
 # This is the same as Fig. 5h
 plt.figure()
-plt.plot(freqs2q/1000,dbp(psd2q)+30-10*np.log10(50))
+plt.plot(freqs2q/1000, dbp(psd2q)+30-10*np.log10(50))
 plt.xscale('log', base=10)
 plt.xlim(freqs2q[0]/1000, freqs2q[-1]/1000)
 plt.ylabel(r'q. noise #2 [dBm/Hz]')
@@ -234,45 +236,45 @@ plt.xlabel(r'$f$ [kHz]', x=1.)
 plt.suptitle('PSD of quantization noise - 2nd signal')
 
 # Compute merit factors referred to the modulator output
-print 'Compute merit factors for delta sigma sequences'
-df1q=freqs1q[1]-freqs1q[0]
-df2q=freqs2q[1]-freqs2q[0]
-ifm1=np.round((B1-freqs1q[0])/df1q)+1
-ifm2=np.round((B2-freqs2q[0])/df2q)+1
-ibqnp1=np.sum(psd1q[0:ifm1])*df1q
-ibqnp2=np.sum(psd2q[0:ifm1])*df2q
-print 'Noise floors', dbp(ibqnp1)+30-dbp(50), dbp(ibqnp2)+30-dbp(50)
-print 'SNRs', dbp(0.5*A1**2/ibqnp1), dbp(0.5*A2**2/ibqnp2)
-print 'SNRmax', dbp(0.5*Amax**2/ibqnp1), dbp(0.5*Amax**2/ibqnp2), 'dB'
+print('Compute merit factors for delta sigma sequences')
+df1q = freqs1q[1]-freqs1q[0]
+df2q = freqs2q[1]-freqs2q[0]
+ifm1 = np.round((B1-freqs1q[0])/df1q)+1
+ifm2 = np.round((B2-freqs2q[0])/df2q)+1
+ibqnp1 = np.sum(psd1q[0:ifm1])*df1q
+ibqnp2 = np.sum(psd2q[0:ifm1])*df2q
+print('Noise floors', dbp(ibqnp1)+30-dbp(50), dbp(ibqnp2)+30-dbp(50))
+print('SNRs', dbp(0.5*A1**2/ibqnp1), dbp(0.5*A2**2/ibqnp2))
+print('SNRmax', dbp(0.5*Amax**2/ibqnp1), dbp(0.5*Amax**2/ibqnp2), 'dB')
 
 # Compute merit factors referred to the reconstructed signals
-print "Compute merit factors for reconstructed signals"
-tone1=find_tone(yy1, f1, fphi, start=Tsp_start, N=Tsp_stop-Tsp_start,
-                    output='polar')
-tone2=find_tone(yy2, f2, fphi, start=Tsp_start, N=Tsp_stop-Tsp_start,
-                    output='polar')
-print 'Signals at filter output:'
-print 'tone 1:', tone1
-print 'tone 2:', tone2
+print("Compute merit factors for reconstructed signals")
+tone1 = find_tone(yy1, f1, fphi, start=Tsp_start, N=Tsp_stop-Tsp_start,
+                  output='polar')
+tone2 = find_tone(yy2, f2, fphi, start=Tsp_start, N=Tsp_stop-Tsp_start,
+                  output='polar')
+print('Signals at filter output:')
+print('tone 1:', tone1)
+print('tone 2:', tone2)
 # Remove the tone
-yy1q=yy1-tone1[0]*np.cos(2*np.pi*f1/fphi*tt-tone1[1])
-yy2q=yy2-tone2[0]*np.cos(2*np.pi*f2/fphi*tt-tone2[1])
+yy1q = yy1-tone1[0]*np.cos(2*np.pi*f1/fphi*tt-tone1[1])
+yy2q = yy2-tone2[0]*np.cos(2*np.pi*f2/fphi*tt-tone2[1])
 
-(psd1yq,freqs1yq)=mlab.psd(yy1q[Tsp_start:Tsp_stop],Fs=fphi, NFFT=NFFT,
-    noverlap=NFFT/2, scale_by_freq=True)
-(psd2yq,freqs2yq)=mlab.psd(yy2q[Tsp_start:Tsp_stop],Fs=fphi, NFFT=NFFT,
-    noverlap=NFFT/2, scale_by_freq=True)
-df1yq=freqs1yq[1]-freqs1yq[0]
-df2yq=freqs2yq[1]-freqs2yq[0]
-ibqnpy1=np.sum(psd1yq)*df1yq
-ibqnpy2=np.sum(psd2yq)*df2yq
-print 'Noise floors', dbp(ibqnpy1)+30-dbp(50), dbp(ibqnpy2)+30-dbp(50)
-print 'SNRs', dbp(0.5*tone1[0]**2/ibqnpy1), dbp(0.5*tone2[0]**2/ibqnpy2)
+(psd1yq, freqs1yq) = mlab.psd(yy1q[Tsp_start:Tsp_stop], Fs=fphi, NFFT=NFFT,
+                              noverlap=NFFT/2, scale_by_freq=True)
+(psd2yq, freqs2yq) = mlab.psd(yy2q[Tsp_start:Tsp_stop], Fs=fphi, NFFT=NFFT,
+                              noverlap=NFFT/2, scale_by_freq=True)
+df1yq = freqs1yq[1]-freqs1yq[0]
+df2yq = freqs2yq[1]-freqs2yq[0]
+ibqnpy1 = np.sum(psd1yq)*df1yq
+ibqnpy2 = np.sum(psd2yq)*df2yq
+print('Noise floors', dbp(ibqnpy1)+30-dbp(50), dbp(ibqnpy2)+30-dbp(50))
+print('SNRs', dbp(0.5*tone1[0]**2/ibqnpy1), dbp(0.5*tone2[0]**2/ibqnpy2))
 
 # Plot PDS of quantization noise for channel 1 at filter output
 # The same as in Fig. 5g, after filtering
 plt.figure()
-plt.plot(freqs1q/1000,dbp(psd1yq)+30-10*np.log10(50))
+plt.plot(freqs1q/1000, dbp(psd1yq)+30-10*np.log10(50))
 plt.xscale('log', base=10)
 plt.xlim(freqs1q[0]/1000, freqs1q[-1]/1000)
 plt.xlabel(r'$f$ [kHz]', x=1.)
@@ -282,7 +284,7 @@ plt.suptitle('PSD of quantization noise - 1st signal - filtered')
 # Plot PDS of quantization noise for channel 2 at filter output
 # The same as in Fig. 5h, after filtering
 plt.figure()
-plt.plot(freqs2q/1000,dbp(psd2yq)+30-10*np.log10(50))
+plt.plot(freqs2q/1000, dbp(psd2yq)+30-10*np.log10(50))
 plt.xscale('log', base=10)
 plt.xlim(freqs2q[0]/1000, freqs2q[-1]/1000)
 plt.ylabel(r'q. noise #2 [dBm/Hz]')

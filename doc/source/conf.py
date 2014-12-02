@@ -14,9 +14,6 @@
 import sys, os
 from distutils.util import get_platform
 
-# Find version
-execfile('../../pydsm/_version.py')
-
 # Find build dir
 pv=sys.version_info
 distutil_bd='../../build/lib.'+get_platform()+'-'+\
@@ -25,6 +22,8 @@ distutil_bd=os.path.abspath(distutil_bd)
 
 # extend sys.path
 sys.path.insert(0, distutil_bd)
+
+from pydsm._version import __version__
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -38,7 +37,8 @@ sys.path.insert(0, distutil_bd)
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.pngmath', 'numpydoc']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.pngmath', 'numpydoc',
+              'sphinx.ext.autosummary']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -87,7 +87,7 @@ exclude_patterns = []
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
-#add_module_names = True
+add_module_names = True
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
@@ -97,7 +97,7 @@ exclude_patterns = []
 pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
+modindex_common_prefix = ['pydsm.']
 
 
 # -- Options for HTML output ---------------------------------------------------
@@ -256,3 +256,6 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
+
+# -- Autosummary ---------------------------------------
+autosummary_generate = True

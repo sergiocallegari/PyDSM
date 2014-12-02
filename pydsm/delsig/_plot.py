@@ -54,7 +54,7 @@ Collection of DELSIG style plotting routines
 
 import numpy as np
 import matplotlib.pyplot as plt
-from ..utilities import cplxpair
+from ..relab import cplxpair
 from scipy.signal import tf2zpk
 
 __all__ = ["plotPZ"]
@@ -154,6 +154,9 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
                          horizontalalignment='left',
                          verticalalignment='center')
                 y = y - 0.1
+
+    plt.ylabel('Imag')
+    plt.xlabel('Real')
 
     if not hold_status:
         plt.hold(False)

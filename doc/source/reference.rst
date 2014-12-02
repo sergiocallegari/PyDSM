@@ -13,14 +13,19 @@ Functions for Digital ΔΣ Modulators and in the simulation of the
 resulting modulators.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    delsig-module
    ntf-design-module
    simulation-module
-   utility-modules
    audio-weightings-module
    iso226-module
+
+.. toctree::
+   :maxdepth: 2
+
+   utility-modules
+
 
 .. _DELSIG:
    http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox

@@ -55,7 +55,7 @@ DELSIG-like synthesizeChebyshevNTF
 import numpy as np
 from scipy.signal import cheby2
 from ._ds import ds_f1f2
-from ..utilities import cplxpair
+from ..relab import cplxpair
 
 __all__ = ["synthesizeChebyshevNTF"]
 

@@ -49,9 +49,9 @@
 
 import numpy as np
 from warnings import warn
-from ..errors import PyDsmWarning, PyDsmError
+from ..exceptions import PyDsmApproximationWarning
 from ._tf import evalTF
-from ..utilities import cplxpair
+from ..relab import cplxpair
 from ._ds import ds_optzeros
 
 
@@ -71,7 +71,7 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
         else:
             z = dw*ds_optzeros(order, opt)
         if z.size == 0:
-            raise PyDsmError('Cannot synthesize NTF zeros')
+            raise RuntimeError('Cannot synthesize NTF zeros')
         if f0 != 0:
             # Bandpass design-- shift and replicate the zeros.
             order = order*2
@@ -91,9 +91,9 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
         HinfLimit = 2**order
         # !!! The limit is actually lower for opt=1 and low OSR
         if H_inf >= HinfLimit:
-            warn('Unable to achieve specified H_inf.\n'
-                 'Setting all NTF poles to zero.',
-                 PyDsmWarning)
+            warn('Unable to achieve specified H_inf, '
+                 'setting all NTF poles to zero',
+                 PyDsmApproximationWarning)
             p = np.zeros(order)
         else:
             x = 0.3**(order-1)   # starting guess
@@ -122,12 +122,14 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
                 if abs(f) < 1e-10 or abs(delta_x) < 1e-10:
                     break
                 if x > 1e6:
-                    warn('Unable to achieve specified Hinf.\n'
-                         'Setting all NTF poles to zero.', PyDsmWarning)
+                    warn('Unable to achieve specified Hinf, '
+                         'setting all NTF poles to zero',
+                         PyDsmApproximationWarning)
                     p = np.zeros(order)
                     break
                 if itn == itn_limit:
-                    warn('Danger! Iteration limit exceeded.', PyDsmWarning)
+                    warn('Iteration limit exceeded',
+                         PyDsmApproximationWarning)
     else:
         # Bandpass design
         x = 0.3**(order/2-1)   # starting guess (not very good for f0~0)
@@ -160,12 +162,13 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
             if abs(f) < 1e-10 or abs(delta_x) < 1e-10:
                 break
             if x > 1e6:
-                warn('Unable to achieve specified Hinf.\n'
-                     'Setting all NTF poles to zero.', PyDsmWarning)
+                warn('Unable to achieve specified Hinf, '
+                     'Setting all NTF poles to zero',
+                     PyDsmApproximationWarning)
                 p = np.zeros(order)
                 break
             if itn == itn_limit:
-                warn('Danger! Iteration limit exceeded.', PyDsmWarning)
+                warn('Iteration limit exceeded', PyDsmApproximationWarning)
 
     z = cplxpair(z)
     return z, p, k

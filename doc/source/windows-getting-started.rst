@@ -135,13 +135,7 @@ download, you need to expand the archive and launch the
    python setup.py install
 
 As before, you may want to provide the ``--user`` option to make a
-personal installation. The single advantage of manually downloading
-the package instead of installing with ``pip`` is the possibility of
-running some self test. This can be done by issuing the command::
-
-   python setup.py test
-
-However, note that the tests are currently rather incomplete.
+personal installation.
 
 
 So why cannot I build all my pre-requisites from source?
@@ -163,6 +157,22 @@ either very inefficient (e.g., the reference Netlib_ implementation) or
 relatively efficient, but a pain to compile on Windows
 (e.g., Atlas_). Possibly, the advent of Openblas_, that provides
 pre-built binaries for windows may change the scenario in the future.
+
+
+Testing the code
+''''''''''''''''
+
+PyDSM includes a (rather incomplete for the moment) set of self tests.
+Once the package is installed, the tests can be run by
+opening a python interpreter and by typing::
+
+  import pydsm
+  pydsm.test()
+
+Alternatively, when building from the source tree (see above), the
+tests can be run by issuing the command::
+
+  python setup.py test
 
 
 Using the code

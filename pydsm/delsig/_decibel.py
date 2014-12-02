@@ -52,6 +52,8 @@ Collection of DELSIG style decibel routines
 ===========================================
 """
 
+from __future__ import division
+
 import numpy as np
 
 __all__ = ["dbv", "dbp", "dbm", "undbv", "undbp", "undbm"]
@@ -71,7 +73,11 @@ def dbv(x):
     y : real or array_like of reals
         20*log10(x)
     """
-    return 20*np.log10(x)
+    x = np.asarray(np.abs(x))
+    y = np.asarray(-np.inf*np.ones_like(x))
+    nonzero = np.asarray(x != 0)
+    y[nonzero] = 20*np.log10(x[nonzero])
+    return y[()]
 
 
 def dbp(x):
@@ -88,7 +94,11 @@ def dbp(x):
     y : real or array_like of reals
         10*log10(x)
     """
-    return 10*np.log10(x)
+    x = np.asarray(np.abs(x))
+    y = np.asarray(-np.inf*np.ones_like(x))
+    nonzero = np.asarray(x != 0)
+    y[nonzero] = 10*np.log10(x[nonzero])
+    return y[()]
 
 
 def dbm(v, R=50.):
@@ -108,7 +118,11 @@ def dbm(v, R=50.):
         dBm value corresponding to the power provided by the rms voltag v
         on the test resistor R, normalized over the reference value of 1mW
     """
-    return 10*np.log10(np.abs(v**2)/R)+30
+    v = np.asarray(np.abs(v))
+    y = np.asarray(-np.inf*np.ones_like(v))
+    nonzero = np.asarray(v != 0)
+    y[nonzero] = 10*np.log10(v[nonzero]**2/R)+30
+    return y[()]
 
 
 def undbv(x):

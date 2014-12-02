@@ -18,4 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-__version__ = "0.10.1"
+from pkg_resources import resource_string
+
+__version__ = resource_string(__name__, 'RELEASE-VERSION').strip()
