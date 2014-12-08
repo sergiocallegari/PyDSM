@@ -30,15 +30,17 @@ of ΔΣ modulators.
 .. autosummary::
    :toctree: generated/
 
-   maxflat_fir_zeros            -- Zeros of a maxflat FIR transfer function
+   maxflat_fir_zeros     -- Zeros of a maxflat FIR transfer function
+   spread_fir_uc_zeros   -- Zeros spread on unit circle according to cost
 """
 
 
 from __future__ import division
 
 import numpy as np
+from scipy.optimize import minimize
 
-__all__ = ["maxflat_fir_zeros"]
+__all__ = ["maxflat_fir_zeros", "spread_fir_uc_zeros"]
 
 
 def maxflat_fir_zeros(order, alpha):
@@ -72,3 +74,99 @@ def maxflat_fir_zeros(order, alpha):
     out = (np.abs(p) > 1)
     p[out] = 1/p[out]
     return p
+
+
+def spread_fir_uc_zeros(order, OSR, cf, cf_args=[], cf_kwargs={}, **options):
+    """
+    Compute the best spreading of zerors on the unit circle.
+
+    The computed FIR transfer function is optimal according to a
+    criterion expressed by the cost function ``cf``.
+
+     The computed FIR transfer function is used in the DELSIG
+    :func:`pydsm.delsig.synthesizeDSM()` design method
+    (also known as :func:`pydsm.NTFdesign.ntf_schreier()`)
+    for the numerator of the noise transfer function.
+
+    Parameters
+    ----------
+    order : int
+        the transfer function order
+    OSR : float
+        the oversampling ratio
+    cf : function
+        cost function for the optimization. Takes a transfer
+        function in zpk form as the first argument plus more
+        arguments as required
+    cf_args: list
+        positional args of function ``cf``
+    cf_kwargs: dict
+        keyword args of function ``cf``
+
+    Returns
+    -------
+    zeros : ndarray
+        an array of complex roots of the FIR transfer function
+
+    Other parameters
+    ----------------
+    L-BFGS-B_xxx : various types, optional
+        Parameters prefixed by ``L-BFGS-B_`` are passed to the ``F-BFGS-B``
+        optimizer. Allowed options are:
+
+        ``L_BFGS_B_ftol``
+            stop condition for the minimization
+        ``L_BFGS_B_gtol``
+            gradient stop condition for the minimization
+        ``L_BFGS_B_maxcor``
+            max number of variables used in hessian approximation
+        ``L_BFGS_B_maxiter``
+            max number of iterations
+        ``L_BFGS_B_maxfun``
+            max number of function evaluations
+        ``L_BFGS_B_eps``
+            Step size used for numerical approximation of the jacobian
+
+        Do not use other options since they could break the minimizer in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
+    Notes
+    -----
+    The system is implicitly assumed to be low-pass. Hence, the zeros
+    are spread on the unit circle in the [0, pi/OSR] range.
+
+    See Also
+    --------
+    scipy.optimize.minimize :  Internally used minimizer
+    """
+    def dof2zeros(xx):
+        zeros[0:xl] = np.exp(1j*xx)
+        zeros[xl:2*xl] = zeros[0:xl].conj()
+        if order % 2 is 1:
+            zeros[-1] = 1
+        return zeros
+
+    def mf(xx):
+        return np.log10(cf((dof2zeros(xx), np.zeros(order), 1),
+                           *cf_args, **cf_kwargs))
+
+    # Manage optional parameters
+    opts = spread_fir_uc_zeros.default_options.copy()
+    opts.update(options)
+    lbfgsb_opts = {k[9:]: v for k, v in opts.iteritems()
+                   if k.startswith('L_BFGS_B_')}
+
+    xl = order // 2
+    zeros = np.zeros(order, dtype=complex)
+    xx = minimize(mf, np.linspace(np.pi/OSR/order, np.pi/OSR, xl),
+                  method='l-bfgs-b', options=lbfgsb_opts,
+                  bounds=[(0, np.pi/OSR)] * xl).x
+    return dof2zeros(xx)
+
+spread_fir_uc_zeros.default_options = {"L_BFGS_B_ftol": 2.220446049250313e-09,
+                                       "L_BFGS_B_gtol": 1e-05,
+                                       "L_BFGS_B_maxcor": 10,
+                                       "L_BFGS_B_maxiter": 15000,
+                                       "L_BFGS_B_maxfun": 15000,
+                                       "L_BFGS_B_eps": 1E-8}
