@@ -33,7 +33,7 @@ from .merit_factors import quantization_noise_gain
 from .minmax import ntf_fir_minmax
 from .delsig import ntf_schreier, ntf_chebyshev, ntf_clans
 from .psychoacoustic import ntf_dunn, ntf_fir_audio_weighting
-from .weighting import ntf_fir_weighting
+from .weighting import ntf_fir_weighting, mult_weightings
 
 from . import tests as test_suite
 

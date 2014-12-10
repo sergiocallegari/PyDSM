@@ -41,7 +41,8 @@ from ...utilities import split_options, strip_options
 
 __all__ = ["q0_from_noise_weighting", "q0_weighting",
            "ntf_fir_from_q0", "synthesize_ntf_from_q0",
-           "ntf_fir_weighting", "synthesize_ntf_from_noise_weighting"]
+           "ntf_fir_weighting", "synthesize_ntf_from_noise_weighting",
+           "mult_weightings"]
 
 
 def q0_weighting(P, w, **options):
@@ -260,6 +261,35 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
 
 ntf_fir_weighting.default_options = q0_weighting.default_options.copy()
 ntf_fir_weighting.default_options.update(ntf_fir_from_q0.default_options)
+
+
+def mult_weightings(*ww):
+    """
+    Product of weighting functions.
+
+    Returns a function that is the product of many weighting functions.
+
+    Parameters
+    ----------
+    w1, w2, ... : functions or tuples
+        Weighting functions.
+        If an entry is a function, it is used as is.
+        If it is a tuple, it interpreted as filters in ba or zpk form from
+        which a weighting function is implicitly obtained.
+
+    Returns
+    -------
+    w : function
+        Overall weighting function
+    """
+    wn = [0] * len(ww)
+    for i, wi in enumerate(ww):
+        if type(wi) is tuple and 2 <= len(wi) <= 3:
+            h = wi
+            wn[i] = lambda f: np.abs(evalTF(h, np.exp(2j*np.pi*f)))**2
+        else:
+            wn[i] = wi
+    return lambda f: np.prod([w(f) for w in wn], axis=0)
 
 
 # Following part is deprecated
