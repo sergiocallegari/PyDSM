@@ -31,6 +31,7 @@ import numpy as np
 import scipy as sp
 __import__("scipy.fftpack")
 __import__("scipy.integrate")
+from .utilities import split_options, strip_options
 
 __all__ = ["fft_centered", "dtft", "dtft_hermitian", "idtft",
            "idtft_hermitian"]
@@ -171,8 +172,8 @@ def idtft(Ff, tt, fs=1, **options):
     # Manage optional parameters
     opts = idtft.default_options.copy()
     opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
+    o = split_options(opts, ['quad_'])
+    quad_opts = strip_options(o, 'quad_')
     # Do the computation
     if np.isscalar(tt):
         return _idtft(Ff, tt, fs, **quad_opts)
@@ -231,8 +232,8 @@ def idtft_hermitian(Ff, tt, fs=1, **options):
     # Manage optional parameters
     opts = idtft_hermitian.default_options.copy()
     opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
+    o = split_options(opts, ['quad_'])
+    quad_opts = strip_options(o, 'quad_')
     # Do the computation
     if np.isscalar(tt):
         return _idtft_hermitian(Ff, tt, fs, **quad_opts)

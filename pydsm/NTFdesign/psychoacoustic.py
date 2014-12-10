@@ -29,7 +29,7 @@ import numpy as np
 from .delsig import synthesizeNTF
 from ..delsig import undbp as undbp
 from .. import audio_weightings
-from .weighting import synthesize_ntf_from_noise_weighting
+from .weighting import ntf_fir_weighting
 from warnings import warn
 from ..exceptions import PyDsmDeprecationWarning
 
@@ -276,11 +276,10 @@ def ntf_fir_audio_weighting(
         w = audio_weighting(fx) if fx <= audio_band else 0
         return max(w, ma)
 
-    return synthesize_ntf_from_noise_weighting(order, w, H_inf,
-                                               normalize, **opts)
+    return ntf_fir_weighting(order, w, H_inf, normalize, **opts)
 
 ntf_fir_audio_weighting.default_options = \
-    synthesize_ntf_from_noise_weighting.default_options.copy()
+    ntf_fir_weighting.default_options.copy()
 
 
 # Following part is deprecated

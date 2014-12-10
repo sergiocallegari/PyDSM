@@ -29,6 +29,7 @@ from __future__ import division, print_function
 import numpy as np
 from scipy.integrate import quad
 from ..delsig import evalTF
+from ..utilities import split_options, strip_options
 
 __all__ = ["quantization_noise_gain"]
 
@@ -92,8 +93,8 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
     # Manage optional parameters
     opts = quantization_noise_gain.default_options.copy()
     opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
+    o = split_options(opts, ['quad_'])
+    quad_opts = strip_options(o, 'quad_')
     # Compute
     return quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
                 bounds[0], bounds[1], **quad_opts)[0]/(bounds[1]-bounds[0])

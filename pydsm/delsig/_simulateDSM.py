@@ -30,8 +30,10 @@ try:
 except:
     HAS_CBLAS = False
 from ._simulateDSM_scipy_blas import simulateDSM as _simulateDSM_scipy_blas
+from ..utilities import split_options
 
 __all__ = ["simulateDSM"]
+
 
 def simulateDSM(u, arg2, nlev=2, x0=0,
                 store_xn=False, store_xmax=False, store_y=False,
@@ -144,9 +146,8 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     # Manage options
     opts = simulateDSM.default_options.copy()
     opts.update(options)
-    backend = 'auto'
-    if 'backend' in opts:
-        backend = opts['backend']
+    o = split_options(opts, [], ['backend'])
+    backend = o.get('backend', 'auto')
     if backend == 'auto':
         simulator = _simulateDSM_scipy_blas
     elif backend == 'scipy':

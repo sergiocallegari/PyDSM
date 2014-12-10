@@ -64,6 +64,7 @@ from ..relab import cplxpair
 from ._tf import evalTF
 from ..ir import impulse_response
 from ._dsclansNTF import dsclansNTF
+from ..utilities import split_options, strip_options
 
 __all__ = ["clans"]
 
@@ -148,10 +149,9 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
     # Manage optional parameters
     opts = clans.default_options.copy()
     opts.update(options)
-    slsqp_opts = {k[6:]: v for k, v in opts.iteritems()
-                  if k.startswith('slsqp_')}
-    if 'show_progress' in opts:
-        slsqp_opts['disp'] = opts['show_progress']
+    o = split_options(opts, ['slsqp_'], ['show_progress'])
+    slsqp_opts = strip_options(o, 'slsqp_')
+    slsqp_opts['disp'] = o.get('show_progress', False)
     # Create the initial guess
     NTF = synthesizeNTF(order, osr, opt, 1+nq, 0)
     Hz = NTF[0]

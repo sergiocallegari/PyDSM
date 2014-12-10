@@ -65,6 +65,7 @@ from scipy.signal import ss2zpk
 import cvxpy_tinoco as cvxpy
 from warnings import warn
 from ..exceptions import PyDsmDeprecationWarning
+from ..utilities import split_options, strip_options
 
 __all__ = ['ntf_fir_minmax', 'synthesize_ntf_minmax']
 
@@ -136,12 +137,9 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     # Manage optional parameters
     opts = ntf_fir_minmax.default_options.copy()
     opts.update(options)
-    cvxpy_opts = {k[6:]: v for k, v in opts.iteritems()
-                  if k.startswith('cvxpy_')}
-    if 'show_progress' in opts:
-        quiet = not opts['show_progress']
-    else:
-        quiet = False
+    o = split_options(opts, ['cvxpy_'], ['show_progress'])
+    cvxpy_opts = strip_options(o, 'cvxpy_')
+    quiet = not o.get('show_progress', True)
 
     # Maximum signal frequency
     Omega = 1./osr*np.pi

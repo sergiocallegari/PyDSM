@@ -37,6 +37,7 @@ from ...delsig import evalTF
 import cvxpy_tinoco
 from warnings import warn
 from ...exceptions import PyDsmDeprecationWarning
+from ...utilities import split_options, strip_options
 
 __all__ = ["q0_from_noise_weighting", "q0_weighting",
            "ntf_fir_from_q0", "synthesize_ntf_from_q0",
@@ -144,12 +145,8 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     # Manage optional parameters
     opts = ntf_fir_from_q0.default_options.copy()
     opts.update(options)
-    cvxpy_opts = {k[6:]: v for k, v in opts.iteritems()
-                  if k.startswith('cvxpy_')}
-    if 'show_progress' in opts:
-        quiet = not opts['show_progress']
-    else:
-        quiet = False
+    o = split_options(opts, ['cvxpy_'], ['show_progress'])
+    quiet = not o.get('show_progress', True)
     # Do the computation
     order = q0.shape[0]-1
     if normalize == 'auto':
@@ -176,7 +173,7 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     constraint2 = cvxpy_tinoco.belongs(X, cvxpy_tinoco.semidefinite_cone)
     p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(target),
                              [constraint1, constraint2])
-    p.options.update(cvxpy_opts)
+    p.options.update(strip_options(o, 'cvxpy_'))
     p.solve(quiet)
     ntf_ir = np.hstack((1, np.asarray(ar.value.T)[0]))
     return (np.roots(ntf_ir), np.zeros(order), 1.)
@@ -255,9 +252,11 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
     # Manage optional parameters
     opts = ntf_fir_weighting.default_options.copy()
     opts.update(options)
+    o = split_options(opts, ['quad_', 'cvxpy_'], ['show_progress'])
     # Do the computation
-    q0 = q0_weighting(order, w, **opts)
-    return ntf_fir_from_q0(q0, H_inf, normalize, **opts)
+    q0 = q0_weighting(order, w, **o['quad_'])
+    return ntf_fir_from_q0(q0, H_inf, normalize,
+                           show_progress=o['show_progress'], **o['cvxpy_'])
 
 ntf_fir_weighting.default_options = q0_weighting.default_options.copy()
 ntf_fir_weighting.default_options.update(ntf_fir_from_q0.default_options)

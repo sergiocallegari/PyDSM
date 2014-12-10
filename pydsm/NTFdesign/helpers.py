@@ -39,6 +39,7 @@ from __future__ import division
 
 import numpy as np
 from scipy.optimize import minimize
+from ..utilities import split_options, strip_options
 
 __all__ = ["maxflat_fir_zeros", "spread_fir_uc_zeros"]
 
@@ -154,8 +155,8 @@ def spread_fir_uc_zeros(order, OSR, cf, cf_args=[], cf_kwargs={}, **options):
     # Manage optional parameters
     opts = spread_fir_uc_zeros.default_options.copy()
     opts.update(options)
-    lbfgsb_opts = {k[9:]: v for k, v in opts.iteritems()
-                   if k.startswith('L_BFGS_B_')}
+    o = split_options(opts, ['L_BFGS_B_'])
+    lbfgsb_opts = strip_options(o, 'L_BFGS_B_')
 
     xl = order // 2
     zeros = np.zeros(order, dtype=complex)
