@@ -113,7 +113,7 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
 
     # Draw unit circle, real axis and imag axis
     circle = np.exp(2j*np.pi*np.linspace(0, 1, 100))
-    plt.plot(circle.real, circle.imag)
+    plt.plot(circle.real, circle.imag, 'k')
     plt.axis('equal')
     limits = plt.axis()
     plt.plot([0, 0], limits[1:3], 'k:')
