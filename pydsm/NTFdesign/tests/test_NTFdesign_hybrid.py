@@ -53,10 +53,12 @@ class TestNTF_Hybrid(TestCase):
             return 1. if f <= 0.5/OSR else 1E-12
 
         z, p, k = ntf_hybrid_weighting(order, w, H_inf=1.5, poles=e_p,
-                                       show_progress=False)
+                                       show_progress=False,
+                                       cvxpy_reltol=1E-14,
+                                       cvxpy_abstol=1E-16)
         np.testing.assert_almost_equal(k, e_k, 6)
-        np.testing.assert_almost_equal(z, e_z, 4)
-        np.testing.assert_almost_equal(p, e_p, 4)
+        np.testing.assert_almost_equal(z, e_z, 3)
+        np.testing.assert_almost_equal(p, e_p, 3)
 
 
 if __name__ == '__main__':
