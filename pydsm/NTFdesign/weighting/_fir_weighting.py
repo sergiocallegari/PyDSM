@@ -42,7 +42,36 @@ from ...utilities import split_options, strip_options
 __all__ = ["q0_from_noise_weighting", "q0_weighting",
            "ntf_fir_from_q0", "synthesize_ntf_from_q0",
            "ntf_fir_weighting", "synthesize_ntf_from_noise_weighting",
-           "mult_weightings", "ntf_hybrid_from_q0"]
+           "mult_weightings", "ntf_hybrid_from_q0", "ntf_hybrid_weighting"]
+
+
+def mult_weightings(*ww):
+    """
+    Product of weighting functions.
+
+    Returns a function that is the product of many weighting functions.
+
+    Parameters
+    ----------
+    w1, w2, ... : functions or tuples
+        Weighting functions.
+        If an entry is a function, it is used as is.
+        If it is a tuple, it interpreted as filters in ba or zpk form from
+        which a weighting function is implicitly obtained.
+
+    Returns
+    -------
+    w : function
+        Overall weighting function
+    """
+    wn = [0] * len(ww)
+    for i, wi in enumerate(ww):
+        if type(wi) is tuple and 2 <= len(wi) <= 3:
+            h = wi
+            wn[i] = lambda f: np.abs(evalTF(h, np.exp(2j*np.pi*f)))**2
+        else:
+            wn[i] = wi
+    return lambda f: np.prod([w(f) for w in wn], axis=0)
 
 
 def q0_weighting(P, w, **options):
@@ -289,6 +318,91 @@ ntf_fir_from_q0.default_options = {'cvxpy_maxiters': 100,
                                    'show_progress': True}
 
 
+def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
+                         normalize="auto", **options):
+    u"""
+    Synthesize am NTF based on a noise weighting function or filter and poles.
+
+    The ΔΣ modulator NTF is designed after a noise weigthing function stating
+    how expensive noise is at the various frequencies.
+
+    Parameters
+    ----------
+    order : int
+        Delta sigma modulator order
+    w : callable with argument f in [0,1/2] or tuple
+            * if function: noise weighting function
+            * if filter definition as zpk or ba tuple: weighting is implicitly
+              provided by the filter
+    H_inf : real, optional
+        Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
+    poles : array_like
+        List of pre-assigned NTF poles. Must be no longer than ``order``.
+    normalize : string or real, optional
+        Normalization to apply to the quadratic form used in the NTF
+        selection. Defaults to 'auto' which means setting the top left entry
+        in the matrix Q defining the quadratic form to 1.
+
+    Returns
+    -------
+    ntf : ndarray
+        FIR NTF in zpk form
+
+    Other parameters
+    ----------------
+    show_progress : bool, optional
+        provide extended output, default is True
+    cvxpy_xxx : various type, optional
+        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
+        optimizer. Allowed options are:
+
+        ``cvxpy_maxiters``
+            Maximum number of iterations (defaults to 100)
+        ``cvxpy_abstol``
+            Absolute accuracy (defaults to 1e-7)
+        ``cvxpy_reltol``
+            Relative accuracy (defaults to 1e-6)
+        ``cvxpy_feastol``
+            Tolerance for feasibility conditions (defaults to 1e-6)
+
+        Do not use other options since they could break ``cvxpy`` in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+    quad_xxx : various type
+        Parameters prefixed by ``quad_`` are passed to the ``quad``
+        function that is used internally as an integrator. Allowed options
+        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
+        Do not use other options since they could break the integrator in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
+    See Also
+    --------
+        scipy.integrate.quad : integrator used internally.
+            For the meaning of the integrator parametersa.
+
+    Notes
+    -----
+    Check also the documentation of ``cvxopt`` for further information.
+    """
+    # Manage optional parameters
+    opts = ntf_fir_weighting.default_options.copy()
+    opts.update(options)
+    o = split_options(opts, ['quad_', 'cvxpy_'], ['show_progress'])
+    # Do the computation
+    poles = np.asarray(poles).reshape(-1)
+    if len(poles) > 0:
+        wn = mult_weightings(w, ([], poles, 1))
+    else:
+        wn = w
+    q0 = q0_weighting(order, wn, **o['quad_'])
+    return ntf_hybrid_from_q0(q0, H_inf, poles, normalize,
+                              show_progress=o['show_progress'], **o['cvxpy_'])
+
+ntf_hybrid_weighting.default_options = q0_weighting.default_options.copy()
+ntf_hybrid_weighting.default_options.update(ntf_hybrid_from_q0.default_options)
+
+
 def ntf_fir_weighting(order, w, H_inf=1.5,
                       normalize="auto", **options):
     u"""Synthesize a FIR NTF based on a noise weighting function or filter.
@@ -364,35 +478,6 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
 
 ntf_fir_weighting.default_options = q0_weighting.default_options.copy()
 ntf_fir_weighting.default_options.update(ntf_fir_from_q0.default_options)
-
-
-def mult_weightings(*ww):
-    """
-    Product of weighting functions.
-
-    Returns a function that is the product of many weighting functions.
-
-    Parameters
-    ----------
-    w1, w2, ... : functions or tuples
-        Weighting functions.
-        If an entry is a function, it is used as is.
-        If it is a tuple, it interpreted as filters in ba or zpk form from
-        which a weighting function is implicitly obtained.
-
-    Returns
-    -------
-    w : function
-        Overall weighting function
-    """
-    wn = [0] * len(ww)
-    for i, wi in enumerate(ww):
-        if type(wi) is tuple and 2 <= len(wi) <= 3:
-            h = wi
-            wn[i] = lambda f: np.abs(evalTF(h, np.exp(2j*np.pi*f)))**2
-        else:
-            wn[i] = wi
-    return lambda f: np.prod([w(f) for w in wn], axis=0)
 
 
 # Following part is deprecated
