@@ -201,11 +201,12 @@ ntf_hybrid_from_q0.default_options = {'cvxpy_maxiters': 100,
 
 
 def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
-    """Synthesize FIR NTF from quadratic form defining quantization noise gain.
+    """
+    Synthesize FIR NTF from quadratic form expressing noise weighting.
 
     Parameters
     ----------
-    q0 : array_like
+    q0 : ndarray
         first row of the Toeplitz symmetric matrix defining the quadratic form
     H_inf : real, optional
         Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
@@ -258,19 +259,19 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         q0 = q0*normalize
     Q = cvxpy_tinoco.matrix(la.toeplitz(q0[0:-1]))
     L = cvxpy_tinoco.matrix(2*q0[1:])
-    ar = cvxpy_tinoco.variable(order, 1, name='ar')
-    target = cvxpy_tinoco.quad_form(ar, Q) + L*ar
+    br = cvxpy_tinoco.variable(order, 1, name='br')
+    target = cvxpy_tinoco.quad_form(br, Q) + L*br
     X = cvxpy_tinoco.variable(order, order, structure='symmetric', name='X')
     A = cvxpy_tinoco.matrix(np.eye(order, order, 1))
-    B = cvxpy_tinoco.matrix(np.vstack((np.zeros((order-1, 1)), 1)))
-    C = (cvxpy_tinoco.matrix(np.eye(order, order)[:, ::-1])*ar).T
-    D = cvxpy_tinoco.matrix([[1]])
+    B = cvxpy_tinoco.vstack((cvxpy_tinoco.zeros((order-1, 1)), 1.))
+    C = (cvxpy_tinoco.matrix(np.eye(order, order)[:, ::-1])*br).T
+    D = cvxpy_tinoco.matrix(1.)
     M1 = A.T*X
     M2 = M1*B
     M = cvxpy_tinoco.vstack((
         cvxpy_tinoco.hstack((M1*A-X, M2, C.T)),
         cvxpy_tinoco.hstack((M2.T, B.T*X*B-H_inf**2, D)),
-        cvxpy_tinoco.hstack((C, D, cvxpy_tinoco.matrix([[-1]])))
+        cvxpy_tinoco.hstack((C, D, cvxpy_tinoco.matrix(-1.)))
         ))
     constraint1 = cvxpy_tinoco.belongs(-M, cvxpy_tinoco.semidefinite_cone)
     constraint2 = cvxpy_tinoco.belongs(X, cvxpy_tinoco.semidefinite_cone)
@@ -278,7 +279,7 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
                              [constraint1, constraint2])
     p.options.update(strip_options(o, 'cvxpy_'))
     p.solve(quiet)
-    ntf_ir = np.hstack((1, np.asarray(ar.value.T)[0]))
+    ntf_ir = np.hstack((1, np.asarray(br.value.T)[0]))
     return (np.roots(ntf_ir), np.zeros(order), 1.)
 
 ntf_fir_from_q0.default_options = {'cvxpy_maxiters': 100,
