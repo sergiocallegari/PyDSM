@@ -187,7 +187,7 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
         raise ValueError('Too many poles provided')
     poles = padr(poles, order, 0)
     # Get denominator coefficients from a_1 to a_order (a_0 is 1)
-    ar = np.poly(poles)[1:]
+    ar = np.poly(poles)[1:].real
     if normalize == 'auto':
         q0 = q0/q0[0]
     elif normalize is not None:
