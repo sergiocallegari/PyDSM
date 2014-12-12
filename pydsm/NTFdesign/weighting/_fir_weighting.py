@@ -33,7 +33,7 @@ from __future__ import division, print_function
 import numpy as np
 import scipy.linalg as la
 from ...ft import idtft_hermitian
-from ...delsig import evalTF
+from ...delsig import evalTF, padr
 import cvxpy_tinoco
 from warnings import warn
 from ...exceptions import PyDsmDeprecationWarning
@@ -42,7 +42,7 @@ from ...utilities import split_options, strip_options
 __all__ = ["q0_from_noise_weighting", "q0_weighting",
            "ntf_fir_from_q0", "synthesize_ntf_from_q0",
            "ntf_fir_weighting", "synthesize_ntf_from_noise_weighting",
-           "mult_weightings"]
+           "mult_weightings", "ntf_hybrid_from_q0"]
 
 
 def q0_weighting(P, w, **options):
@@ -96,6 +96,108 @@ q0_weighting.default_options = {'quad_epsabs': 1E-14,
                                 'quad_epsrel': 1E-9,
                                 'quad_limit': 100,
                                 'quad_points': None}
+
+
+def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
+    """
+    Synthesize NTF from quadratic form expressing noise weighting and poles.
+
+    Parameters
+    ----------
+    q0 : ndarray
+        first row of the Toeplitz symmetric matrix defining the quadratic form
+    H_inf : real, optional
+        Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
+    poles : array_like
+        List of pre-assigned NTF poles. Must be no longer than length of q0
+        minus 1.
+    normalize : string or real, optional
+        Normalization to apply to the quadratic form used in the NTF
+        selection. Defaults to 'auto' which means setting the top left entry
+        in the matrix Q defining the quadratic form to 1.
+
+    Returns
+    -------
+    ntf : ndarray
+        NTF in zpk form
+
+    Other parameters
+    ----------------
+    show_progress : bool, optional
+        provide extended output, default is True
+    cvxpy_xxx : various type, optional
+        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
+        optimizer. Allowed options are:
+
+        ``cvxpy_maxiters``
+            Maximum number of iterations (defaults to 100)
+        ``cvxpy_abstol``
+            Absolute accuracy (defaults to 1e-7)
+        ``cvxpy_reltol``
+            Relative accuracy (defaults to 1e-6)
+        ``cvxpy_feastol``
+            Tolerance for feasibility conditions (defaults to 1e-6)
+
+        Do not use other options since they could break ``cvxpy`` in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
+    Notes
+    -----
+    Check the documentation of ``cvxopt`` for further information.
+    """
+    # Manage optional parameters
+    opts = ntf_hybrid_from_q0.default_options.copy()
+    opts.update(options)
+    o = split_options(opts, ['cvxpy_'], ['show_progress'])
+    quiet = not o.get('show_progress', True)
+    # Do the computation
+    order = q0.shape[0]-1
+    poles = np.asarray(poles).reshape(-1)
+    if poles.shape[0] > order:
+        raise ValueError('Too many poles provided')
+    poles = padr(poles, order, 0)
+    # Get denominator coefficients from a_1 to a_order (a_0 is 1)
+    ar = np.poly(poles)[1:]
+    if normalize == 'auto':
+        q0 = q0/q0[0]
+    elif normalize is not None:
+        q0 = q0*normalize
+    Q = cvxpy_tinoco.matrix(la.toeplitz(q0[0:-1]))
+    L = cvxpy_tinoco.matrix(2*q0[1:])
+    # Vector of numerator coefficients to be found from b_1 to b_order
+    # (b_0 = 1)
+    br = cvxpy_tinoco.variable(order, 1, name='br')
+    # ar = cvxpy_tinoco.variable(order, 1, name='ar')
+    target = cvxpy_tinoco.quad_form(br, Q) + L*br
+    X = cvxpy_tinoco.variable(order, order, structure='symmetric', name='X')
+    A = cvxpy_tinoco.matrix(np.eye(order, order, 1.))
+    A[order-1] = -ar[::-1]
+    B = cvxpy_tinoco.vstack((cvxpy_tinoco.zeros((order-1, 1)), 1.))
+    C = (cvxpy_tinoco.matrix(np.eye(order, order)[:, ::-1])*br).T
+    C = C-cvxpy_tinoco.matrix(ar[::-1])
+    D = cvxpy_tinoco.matrix(1.)
+    M1 = A.T*X
+    M2 = M1*B
+    M = cvxpy_tinoco.vstack((
+        cvxpy_tinoco.hstack((M1*A-X, M2, C.T)),
+        cvxpy_tinoco.hstack((M2.T, B.T*X*B-H_inf**2, D)),
+        cvxpy_tinoco.hstack((C, D, cvxpy_tinoco.matrix(-1.)))
+        ))
+    constraint1 = cvxpy_tinoco.belongs(-M, cvxpy_tinoco.semidefinite_cone)
+    constraint2 = cvxpy_tinoco.belongs(X, cvxpy_tinoco.semidefinite_cone)
+    p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(target),
+                             [constraint1, constraint2])
+    p.options.update(strip_options(o, 'cvxpy_'))
+    p.solve(quiet)
+    ntf_ir = np.hstack((1, np.asarray(br.value.T)[0]))
+    return (np.roots(ntf_ir), poles, 1.)
+
+ntf_hybrid_from_q0.default_options = {'cvxpy_maxiters': 100,
+                                      'cvxpy_abstol': 1e-7,
+                                      'cvxpy_reltol': 1e-6,
+                                      'cvxpy_feastol': 1e-6,
+                                      'show_progress': True}
 
 
 def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
