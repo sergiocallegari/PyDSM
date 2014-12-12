@@ -37,7 +37,7 @@ from ...delsig import evalTF, padr
 import cvxpy_tinoco
 from warnings import warn
 from ...exceptions import PyDsmDeprecationWarning
-from ...utilities import split_options, strip_options
+from ...utilities import split_options, strip_options, mdot
 
 __all__ = ["q0_from_noise_weighting", "q0_weighting",
            "ntf_fir_from_q0", "synthesize_ntf_from_q0",
@@ -192,13 +192,12 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
         q0 = q0/q0[0]
     elif normalize is not None:
         q0 = q0*normalize
-    Q = cvxpy_tinoco.matrix(la.toeplitz(q0[0:-1]))
-    L = cvxpy_tinoco.matrix(2*q0[1:])
-    # Vector of numerator coefficients to be found from b_1 to b_order
-    # (b_0 = 1)
+    Q = la.toeplitz(q0)
+    d, v = np.linalg.eigh(Q)
+    qs = cvxpy_tinoco.matrix(mdot(v, np.diag(np.sqrt(d)), np.linalg.inv(v)))
     br = cvxpy_tinoco.variable(order, 1, name='br')
-    # ar = cvxpy_tinoco.variable(order, 1, name='ar')
-    target = cvxpy_tinoco.quad_form(br, Q) + L*br
+    b = cvxpy_tinoco.vstack((1, br))
+    target = cvxpy_tinoco.norm2(qs*b)
     X = cvxpy_tinoco.variable(order, order, structure='symmetric', name='X')
     A = cvxpy_tinoco.matrix(np.eye(order, order, 1.))
     A[order-1] = -ar[::-1]
@@ -286,10 +285,12 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         q0 = q0/q0[0]
     elif normalize is not None:
         q0 = q0*normalize
-    Q = cvxpy_tinoco.matrix(la.toeplitz(q0[0:-1]))
-    L = cvxpy_tinoco.matrix(2*q0[1:])
+    Q = la.toeplitz(q0)
+    d, v = np.linalg.eigh(Q)
+    qs = cvxpy_tinoco.matrix(mdot(v, np.diag(np.sqrt(d)), np.linalg.inv(v)))
     br = cvxpy_tinoco.variable(order, 1, name='br')
-    target = cvxpy_tinoco.quad_form(br, Q) + L*br
+    b = cvxpy_tinoco.vstack((1, br))
+    target = cvxpy_tinoco.norm2(qs*b)
     X = cvxpy_tinoco.variable(order, order, structure='symmetric', name='X')
     A = cvxpy_tinoco.matrix(np.eye(order, order, 1))
     B = cvxpy_tinoco.vstack((cvxpy_tinoco.zeros((order-1, 1)), 1.))
