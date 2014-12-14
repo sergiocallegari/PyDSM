@@ -34,8 +34,10 @@ from ..utilities import split_options, strip_options
 __all__ = ["quantization_noise_gain"]
 
 
-def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
-    r"""Computes the NTF quantization noise power gain
+def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), avg=False,
+                            **options):
+    r"""
+    Compute the NTF quantization noise power gain.
 
     Parameters
     ----------
@@ -49,6 +51,9 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
     bounds : 2 elements tuple, optional
         the frequency range where the noise gain is computed. Defaults to
         (0, 0.5)
+    avg: bool, optional
+        If True, rather than returning the overall noise gain, the function
+        returns the average noise gain over the bandwidth.
 
     Returns
     -------
@@ -95,9 +100,10 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
     opts.update(options)
     o = split_options(opts, ['quad_'])
     quad_opts = strip_options(o, 'quad_')
+    c = 1/(bounds[1]-bounds[0]) if avg else 2.
     # Compute
-    return quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
-                bounds[0], bounds[1], **quad_opts)[0]/(bounds[1]-bounds[0])
+    return c*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
+                  bounds[0], bounds[1], **quad_opts)[0]
 
 quantization_noise_gain.default_options = {'quad_epsabs': 1.49e-08,
                                            'quad_epsrel': 1.49e-08,
