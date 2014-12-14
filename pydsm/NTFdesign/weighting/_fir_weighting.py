@@ -154,6 +154,9 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
     ----------------
     show_progress : bool, optional
         provide extended output, default is True
+    fix_pos : bool, optional
+        fix quadratic form for positive definiteness. Numerical noise
+        may make it not positive definite leading to errors. Default is True
     cvxpy_xxx : various type, optional
         Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
         optimizer. Allowed options are:
@@ -178,7 +181,7 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
     # Manage optional parameters
     opts = ntf_hybrid_from_q0.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['cvxpy_'], ['show_progress'])
+    o = split_options(opts, ['cvxpy_'], ['show_progress', 'fix_pos'])
     quiet = not o.get('show_progress', True)
     # Do the computation
     order = q0.shape[0]-1
@@ -194,6 +197,9 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
         q0 = q0*normalize
     Q = la.toeplitz(q0)
     d, v = np.linalg.eigh(Q)
+    if o.get('fix_pos', True):
+        d = d/np.max(d)
+        d[d < 0] = 0.
     qs = cvxpy_tinoco.matrix(mdot(v, np.diag(np.sqrt(d)), np.linalg.inv(v)))
     br = cvxpy_tinoco.variable(order, 1, name='br')
     b = cvxpy_tinoco.vstack((1, br))
@@ -225,7 +231,8 @@ ntf_hybrid_from_q0.default_options = {'cvxpy_maxiters': 100,
                                       'cvxpy_abstol': 1e-7,
                                       'cvxpy_reltol': 1e-6,
                                       'cvxpy_feastol': 1e-6,
-                                      'show_progress': True}
+                                      'show_progress': True,
+                                      'fix_pos': True}
 
 
 def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
@@ -252,6 +259,9 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     ----------------
     show_progress : bool, optional
         provide extended output, default is True
+    fix_pos : bool, optional
+        fix quadratic form for positive definiteness. Numerical noise
+        may make it not positive definite leading to errors. Default is True
     cvxpy_xxx : various type, optional
         Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
         optimizer. Allowed options are:
@@ -277,7 +287,7 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     # Manage optional parameters
     opts = ntf_fir_from_q0.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['cvxpy_'], ['show_progress'])
+    o = split_options(opts, ['cvxpy_'], ['show_progress', 'fix_pos'])
     quiet = not o.get('show_progress', True)
     # Do the computation
     order = q0.shape[0]-1
@@ -287,6 +297,9 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         q0 = q0*normalize
     Q = la.toeplitz(q0)
     d, v = np.linalg.eigh(Q)
+    if o.get('fix_pos', True):
+        d = d/np.max(d)
+        d[d < 0] = 0.
     qs = cvxpy_tinoco.matrix(mdot(v, np.diag(np.sqrt(d)), np.linalg.inv(v)))
     br = cvxpy_tinoco.variable(order, 1, name='br')
     b = cvxpy_tinoco.vstack((1, br))
@@ -316,7 +329,8 @@ ntf_fir_from_q0.default_options = {'cvxpy_maxiters': 100,
                                    'cvxpy_abstol': 1e-7,
                                    'cvxpy_reltol': 1e-6,
                                    'cvxpy_feastol': 1e-6,
-                                   'show_progress': True}
+                                   'show_progress': True,
+                                   'fix_pos': True}
 
 
 def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
@@ -353,6 +367,9 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
     ----------------
     show_progress : bool, optional
         provide extended output, default is True
+    fix_pos : bool, optional
+        fix quadratic form for positive definiteness. Numerical noise
+        may make it not positive definite leading to errors. Default is True
     cvxpy_xxx : various type, optional
         Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
         optimizer. Allowed options are:
@@ -389,7 +406,7 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
     # Manage optional parameters
     opts = ntf_fir_weighting.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['quad_', 'cvxpy_'], ['show_progress'])
+    o = split_options(opts, ['quad_', 'cvxpy_'], ['show_progress', 'fix_pos'])
     # Do the computation
     poles = np.asarray(poles).reshape(-1)
     if len(poles) > 0:
@@ -435,6 +452,9 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
     ----------------
     show_progress : bool, optional
         provide extended output, default is True
+    fix_pos : bool, optional
+        fix quadratic form for positive definiteness. Numerical noise
+        may make it not positive definite leading to errors. Default is True
     cvxpy_xxx : various type, optional
         Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
         optimizer. Allowed options are:
@@ -471,7 +491,7 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
     # Manage optional parameters
     opts = ntf_fir_weighting.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['quad_', 'cvxpy_'], ['show_progress'])
+    o = split_options(opts, ['quad_', 'cvxpy_'], ['show_progress', 'fix_pos'])
     # Do the computation
     q0 = q0_weighting(order, w, **o['quad_'])
     return ntf_fir_from_q0(q0, H_inf, normalize,
