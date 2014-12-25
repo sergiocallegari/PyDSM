@@ -214,7 +214,7 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
     b = cvxpy_tinoco.vstack((1, br))
     target = cvxpy_tinoco.norm2(qs*b)
     X = cvxpy_tinoco.variable(order, order, structure='symmetric', name='X')
-    A = cvxpy_tinoco.matrix(np.eye(order, order, 1.))
+    A = cvxpy_tinoco.matrix(np.eye(order, order, 1))
     A[order-1] = -ar[::-1]
     B = cvxpy_tinoco.vstack((cvxpy_tinoco.zeros((order-1, 1)), 1.))
     C = (cvxpy_tinoco.matrix(np.eye(order, order)[:, ::-1])*br).T
