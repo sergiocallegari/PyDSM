@@ -19,13 +19,19 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Functions to obtain the matrix used in the NTF optimization
-===========================================================
+Design optimal NTF with NTF zeros as parameters
+===============================================
 
-These routines return the matrix from a noise weigthing function.
+Routines to design an optimal NTF from a weighting function using
+the NTF zeros as free parameters.
 
-The matrix is symmetric Toeplitz, thus actually described by its first
-row only, which is what the routines here return.
+The optimization is practiced in two steps:
+
+* First a matrix (symmetric, Toeplitz, Positive semidefinite) is
+  extracted from the weighting function to define a quadratic cost
+  function for the optimization problem. The Toeplitz-symmetric property of
+  the matrix let it be fully defined from its first row only.
+* Then the NTF zeros are optimized based on this cost function.
 """
 
 from __future__ import division, print_function
