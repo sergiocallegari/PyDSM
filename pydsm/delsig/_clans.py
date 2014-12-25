@@ -64,7 +64,7 @@ from ..relab import cplxpair
 from ._tf import evalTF
 from ..ir import impulse_response
 from ._dsclansNTF import dsclansNTF
-from ..utilities import split_options, strip_options
+from ..utilities import check_options
 
 __all__ = ["clans"]
 
@@ -97,17 +97,17 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
     Other Parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is False
-    slsqp_xxx : various type, optional
-        Parameters prefixed by ``slsqp_`` are passed to the ``fmin_slsqp``
-        optimizer. Allowed options are:
+        provide extended output, default is False and can be updated by
+        changing the function ``default_options`` attribute.
+    slsqp_opts : dictionary, optional
+        Parameters passed to the ``fmin_slsqp`` optimizer. Allowed options are:
 
-        ``slsqp_maxiters``
+        ``maxiters``
             Maximum number of iterations (defaults to 100)
-        ``slsqp_ftol``
+        ``ftol``
             Precision goal for the value of f in the stopping criterion
             (defaults to 1e-6)
-        ``slsqp_eps``
+        ``eps``
             Step size used for numerical approximation of the jacobian
             (defaults to 1.4901161193847656e-08)
 
@@ -149,9 +149,9 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
     # Manage optional parameters
     opts = clans.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['slsqp_'], ['show_progress'])
-    slsqp_opts = strip_options(o, 'slsqp_')
-    slsqp_opts['disp'] = o.get('show_progress', False)
+    check_options(opts, frozenset({"slsqp_opts", "show_progress"}))
+    slsqp_opts = opts['slsqp_opts']
+    slsqp_opts['disp'] = opts.get('show_progress', False)
     # Create the initial guess
     NTF = synthesizeNTF(order, osr, opt, 1+nq, 0)
     Hz = NTF[0]
@@ -209,9 +209,9 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
     return dsclansNTF(x, order, rmax, Hz)
 
 clans.default_options = {'show_progress': False,
-                         'slsqp_maxiter': 100,
-                         'slsqp_ftol': 1e-06,
-                         'slsqp_eps': 1.4901161193847656e-08}
+                         'slsqp_opts': {'maxiter': 100,
+                                        'ftol': 1e-06,
+                                        'eps': 1.4901161193847656e-08}}
 
 
 def _dsclansObj6a(x, order, osr, nq, rmax, Hz):

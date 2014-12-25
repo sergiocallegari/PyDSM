@@ -31,7 +31,7 @@ from .exceptions import PyDsmDeprecationWarning
 from .import relab
 
 __all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS",
-           "split_options", "strip_options"]
+           "check_options"]
 
 
 EPS = np.finfo(float).eps
@@ -102,37 +102,10 @@ def mdot(*args):
     return reduce(np.dot, args)
 
 
-def split_options(opts, prefixes=[], keys=[]):
-    """
-    Splits a set of keyword arguments by name and prefix.
-    """
-    o = {}
-    for prefix in prefixes:
-        o[prefix] = {}
-    for key in opts:
-        found = False
-        if key in keys:
-            o[key] = opts[key]
-        else:
-            for prefix in prefixes:
-                if key.startswith(prefix):
-                    o[prefix][key] = opts[key]
-                    found = True
-                    break
-            if not found:
-                raise TypeError("Unexpected keyword argument '%s'" % key)
-    return o
-
-
-def strip_options(opts, prefix):
-    """
-    Strips a prefix from a set of keyword arguments.
-    """
-    o = {}
-    opts = opts[prefix]
-    for key in opts:
-        o[key[len(prefix):]] = opts[key]
-    return o
+def check_options(opts, keys=frozenset()):
+    if not opts.viewkeys() <= keys:
+        raise TypeError("Unexpected keyword argument '%s'" %
+                        list(opts.viewkeys()-keys))
 
 
 # Following two functions are deprecated

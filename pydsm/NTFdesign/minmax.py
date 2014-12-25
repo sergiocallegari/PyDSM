@@ -65,7 +65,7 @@ from scipy.signal import ss2zpk
 import cvxpy_tinoco as cvxpy
 from warnings import warn
 from ..exceptions import PyDsmDeprecationWarning
-from ..utilities import split_options, strip_options
+from ..utilities import check_options
 
 __all__ = ['ntf_fir_minmax', 'synthesize_ntf_minmax']
 
@@ -110,18 +110,19 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     Other parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True
-    cvxpy_xxx : various type, optional
-        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
-        optimizer. Allowed options are:
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
 
-        ``cvxpy_maxiters``
+        ``maxiters``
             Maximum number of iterations (defaults to 100)
-        ``cvxpy_abstol``
+        ``abstol``
             Absolute accuracy (defaults to 1e-7)
-        ``cvxpy_reltol``
+        ``reltol``
             Relative accuracy (defaults to 1e-6)
-        ``cvxpy_feastol``
+        ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
         Do not use other options since they could break ``cvxpy`` in
@@ -132,14 +133,15 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     -----
     Bandpass modulator design is not yet supported.
 
-    Check also the documentation of ``cvxopt`` for further information.
+    See also
+    --------
+    cvxopt : for the optimizer parameters.
     """
     # Manage optional parameters
     opts = ntf_fir_minmax.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['cvxpy_'], ['show_progress'])
-    cvxpy_opts = strip_options(o, 'cvxpy_')
-    quiet = not o.get('show_progress', True)
+    check_options(opts, frozenset({"cvxopt_opts", "show_progress"}))
+    quiet = not opts.get('show_progress', True)
 
     # Maximum signal frequency
     Omega = 1./osr*np.pi
@@ -185,15 +187,15 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
         return None
     F += [cvxpy.greater_equals(g, 0)]
     p = cvxpy.program(cvxpy.minimize(g), F)
-    p.options.update(cvxpy_opts)
+    p.options.update(opts["cvxopt_opts"])
     p.solve(quiet)
     ntf = ss2zpk(A, B, np.asarray(c.value), D)
     return ntf
 
-ntf_fir_minmax.default_options = {'cvxpy_maxiters': 100,
-                                  'cvxpy_abstol': 1e-7,
-                                  'cvxpy_reltol': 1e-6,
-                                  'cvxpy_feastol': 1e-6,
+ntf_fir_minmax.default_options = {"cvxopt_opts": {'maxiters': 100,
+                                                  'abstol': 1e-7,
+                                                  'reltol': 1e-6,
+                                                  'feastol': 1e-6},
                                   'show_progress': True}
 
 

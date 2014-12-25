@@ -43,7 +43,7 @@ from ...delsig import evalTF, padr
 import cvxpy_tinoco
 from warnings import warn
 from ...exceptions import PyDsmDeprecationWarning
-from ...utilities import split_options, strip_options, mdot
+from ...utilities import check_options, mdot
 
 __all__ = ["q0_from_noise_weighting", "q0_weighting",
            "ntf_fir_from_q0", "synthesize_ntf_from_q0",
@@ -99,13 +99,12 @@ def q0_weighting(P, w, **options):
 
     Other parameters
     ----------------
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     See Also
     --------
@@ -123,14 +122,15 @@ def q0_weighting(P, w, **options):
     # Manage optional parameters
     opts = q0_weighting.default_options.copy()
     opts.update(options)
+    check_options(opts, frozenset({"quad_opts"}))
     # Do the computation
     ac = lambda t: idtft_hermitian(w, t, **opts)
     return np.asarray(map(ac, np.arange(P+1)))
 
-q0_weighting.default_options = {'quad_epsabs': 1E-14,
-                                'quad_epsrel': 1E-9,
-                                'quad_limit': 100,
-                                'quad_points': None}
+q0_weighting.default_options = {"quad_opts": {"epsabs": 1E-14,
+                                              "epsrel": 1E-9,
+                                              "limit": 100,
+                                              "points": None}}
 
 
 def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
@@ -159,36 +159,39 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
     Other parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
     fix_pos : bool, optional
         fix quadratic form for positive definiteness. Numerical noise
         may make it not positive definite leading to errors. Default is True
-    cvxpy_xxx : various type, optional
-        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
-        optimizer. Allowed options are:
+        and can be updated by changing the function ``default_options``
+        attribute.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
 
-        ``cvxpy_maxiters``
+        ``maxiters``
             Maximum number of iterations (defaults to 100)
-        ``cvxpy_abstol``
+        ``abstol``
             Absolute accuracy (defaults to 1e-7)
-        ``cvxpy_reltol``
+        ``reltol``
             Relative accuracy (defaults to 1e-6)
-        ``cvxpy_feastol``
+        ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
         Do not use other options since they could break ``cvxpy`` in
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
 
-    Notes
-    -----
-    Check the documentation of ``cvxopt`` for further information.
+    See also
+    --------
+    cvxopt : for the optimizer parameters.
     """
     # Manage optional parameters
     opts = ntf_hybrid_from_q0.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['cvxpy_'], ['show_progress', 'fix_pos'])
-    quiet = not o.get('show_progress', True)
+    check_options(opts, frozenset({"cvxopt_opts", "show_progress", "fix_pos"}))
+    quiet = not opts.get('show_progress', True)
     # Do the computation
     order = q0.shape[0]-1
     poles = np.asarray(poles).reshape(-1)
@@ -203,7 +206,7 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
         q0 = q0*normalize
     Q = la.toeplitz(q0)
     d, v = np.linalg.eigh(Q)
-    if o.get('fix_pos', True):
+    if opts.get('fix_pos', True):
         d = d/np.max(d)
         d[d < 0] = 0.
     qs = cvxpy_tinoco.matrix(mdot(v, np.diag(np.sqrt(d)), np.linalg.inv(v)))
@@ -228,15 +231,15 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
     constraint2 = cvxpy_tinoco.belongs(X, cvxpy_tinoco.semidefinite_cone)
     p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(target),
                              [constraint1, constraint2])
-    p.options.update(strip_options(o, 'cvxpy_'))
+    p.options.update(opts["cvxopt_opts"])
     p.solve(quiet)
     ntf_ir = np.hstack((1, np.asarray(br.value.T)[0]))
     return (np.roots(ntf_ir), poles, 1.)
 
-ntf_hybrid_from_q0.default_options = {'cvxpy_maxiters': 100,
-                                      'cvxpy_abstol': 1e-7,
-                                      'cvxpy_reltol': 1e-6,
-                                      'cvxpy_feastol': 1e-6,
+ntf_hybrid_from_q0.default_options = {"cvxopt_opts": {'maxiters': 100,
+                                                      'abstol': 1e-7,
+                                                      'reltol': 1e-6,
+                                                      'feastol': 1e-6},
                                       'show_progress': True,
                                       'fix_pos': True}
 
@@ -264,21 +267,24 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     Other parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
     fix_pos : bool, optional
         fix quadratic form for positive definiteness. Numerical noise
         may make it not positive definite leading to errors. Default is True
-    cvxpy_xxx : various type, optional
-        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
-        optimizer. Allowed options are:
+        and can be updated by changing the function ``default_options``
+        attribute.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
 
-        ``cvxpy_maxiters``
+        ``maxiters``
             Maximum number of iterations (defaults to 100)
-        ``cvxpy_abstol``
+        ``abstol``
             Absolute accuracy (defaults to 1e-7)
-        ``cvxpy_reltol``
+        ``reltol``
             Relative accuracy (defaults to 1e-6)
-        ``cvxpy_feastol``
+        ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
         Do not use other options since they could break ``cvxpy`` in
@@ -287,14 +293,13 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
 
     See Also
     --------
-
-    Check the documentation of ``cvxopt`` for further information.
+    cvxopt : for the optimizer parameters
     """
     # Manage optional parameters
     opts = ntf_fir_from_q0.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['cvxpy_'], ['show_progress', 'fix_pos'])
-    quiet = not o.get('show_progress', True)
+    check_options(opts, frozenset({"cvxopt_opts", "show_progress", "fix_pos"}))
+    quiet = not opts.get('show_progress', True)
     # Do the computation
     order = q0.shape[0]-1
     if normalize == 'auto':
@@ -303,7 +308,7 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         q0 = q0*normalize
     Q = la.toeplitz(q0)
     d, v = np.linalg.eigh(Q)
-    if o.get('fix_pos', True):
+    if opts.get('fix_pos', True):
         d = d/np.max(d)
         d[d < 0] = 0.
     qs = cvxpy_tinoco.matrix(mdot(v, np.diag(np.sqrt(d)), np.linalg.inv(v)))
@@ -326,15 +331,15 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     constraint2 = cvxpy_tinoco.belongs(X, cvxpy_tinoco.semidefinite_cone)
     p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(target),
                              [constraint1, constraint2])
-    p.options.update(strip_options(o, 'cvxpy_'))
+    p.options.update(opts["cvxopt_opts"])
     p.solve(quiet)
     ntf_ir = np.hstack((1, np.asarray(br.value.T)[0]))
     return (np.roots(ntf_ir), np.zeros(order), 1.)
 
-ntf_fir_from_q0.default_options = {'cvxpy_maxiters': 100,
-                                   'cvxpy_abstol': 1e-7,
-                                   'cvxpy_reltol': 1e-6,
-                                   'cvxpy_feastol': 1e-6,
+ntf_fir_from_q0.default_options = {"cvxopt_opts": {'maxiters': 100,
+                                                   'abstol': 1e-7,
+                                                   'reltol': 1e-6,
+                                                   'feastol': 1e-6},
                                    'show_progress': True,
                                    'fix_pos': True}
 
@@ -372,56 +377,56 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
     Other parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
     fix_pos : bool, optional
         fix quadratic form for positive definiteness. Numerical noise
         may make it not positive definite leading to errors. Default is True
-    cvxpy_xxx : various type, optional
-        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
-        optimizer. Allowed options are:
+        and can be updated by changing the function ``default_options``
+        attribute.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
 
-        ``cvxpy_maxiters``
+        ``maxiters``
             Maximum number of iterations (defaults to 100)
-        ``cvxpy_abstol``
+        ``abstol``
             Absolute accuracy (defaults to 1e-7)
-        ``cvxpy_reltol``
+        ``reltol``
             Relative accuracy (defaults to 1e-6)
-        ``cvxpy_feastol``
+        ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
         Do not use other options since they could break ``cvxpy`` in
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     See Also
     --------
-        scipy.integrate.quad : integrator used internally.
-            For the meaning of the integrator parametersa.
-
-    Notes
-    -----
-    Check also the documentation of ``cvxopt`` for further information.
+    scipy.integrate.quad : for the meaning of the integrator parameters
+    cvxopt : for the optimizer parameters
     """
     # Manage optional parameters
     opts = ntf_fir_weighting.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['quad_', 'cvxpy_'], ['show_progress', 'fix_pos'])
+    check_options(opts, frozenset({"quad_opts", "cvxopt_opts", "show_progress",
+                                   "fix_pos"}))
     # Do the computation
     poles = np.asarray(poles).reshape(-1)
     if len(poles) > 0:
         wn = mult_weightings(w, ([], poles, 1))
     else:
         wn = w
-    q0 = q0_weighting(order, wn, **o['quad_'])
+    q0 = q0_weighting(order, wn, quad_opts=opts['quad_opts'])
     return ntf_hybrid_from_q0(q0, H_inf, poles, normalize,
-                              show_progress=o['show_progress'], **o['cvxpy_'])
+                              show_progress=opts['show_progress'],
+                              cvxopt_opts=opts['cvxopt_opts'])
 
 ntf_hybrid_weighting.default_options = q0_weighting.default_options.copy()
 ntf_hybrid_weighting.default_options.update(ntf_hybrid_from_q0.default_options)
@@ -457,51 +462,51 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
     Other parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
     fix_pos : bool, optional
         fix quadratic form for positive definiteness. Numerical noise
         may make it not positive definite leading to errors. Default is True
-    cvxpy_xxx : various type, optional
-        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
-        optimizer. Allowed options are:
+        and can be updated by changing the function ``default_options``
+        attribute.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
 
-        ``cvxpy_maxiters``
+        ``maxiters``
             Maximum number of iterations (defaults to 100)
-        ``cvxpy_abstol``
+        ``abstol``
             Absolute accuracy (defaults to 1e-7)
-        ``cvxpy_reltol``
+        ``reltol``
             Relative accuracy (defaults to 1e-6)
-        ``cvxpy_feastol``
+        ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
         Do not use other options since they could break ``cvxpy`` in
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     See Also
     --------
-        scipy.integrate.quad : integrator used internally.
-            For the meaning of the integrator parametersa.
-
-    Notes
-    -----
-    Check also the documentation of ``cvxopt`` for further information.
+    scipy.integrate.quad : for the meaning of the integrator parameters
+    cvxopt : for the optimizer parameters
     """
     # Manage optional parameters
     opts = ntf_fir_weighting.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['quad_', 'cvxpy_'], ['show_progress', 'fix_pos'])
+    check_options(opts, frozenset({"quad_opts", "cvxopt_opts", "show_progress",
+                                   "fix_pos"}))
     # Do the computation
-    q0 = q0_weighting(order, w, **o['quad_'])
+    q0 = q0_weighting(order, w, quad_opts=opts['quad_opts'])
     return ntf_fir_from_q0(q0, H_inf, normalize,
-                           show_progress=o['show_progress'], **o['cvxpy_'])
+                           show_progress=opts['show_progress'],
+                           cvxopt_opts=opts['cvxopt_opts'])
 
 ntf_fir_weighting.default_options = q0_weighting.default_options.copy()
 ntf_fir_weighting.default_options.update(ntf_fir_from_q0.default_options)

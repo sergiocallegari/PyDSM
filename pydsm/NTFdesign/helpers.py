@@ -39,7 +39,7 @@ from __future__ import division
 
 import numpy as np
 from scipy.optimize import minimize
-from ..utilities import split_options, strip_options
+from ..utilities import check_options
 
 __all__ = ["maxflat_fir_zeros", "spread_fir_uc_zeros"]
 
@@ -111,21 +111,21 @@ def spread_fir_uc_zeros(order, OSR, cf, cf_args=[], cf_kwargs={}, **options):
 
     Other parameters
     ----------------
-    L-BFGS-B_xxx : various types, optional
-        Parameters prefixed by ``L-BFGS-B_`` are passed to the ``F-BFGS-B``
+    L-BFGS-B_opts : dictionary, optional
+        Parameters passed to the ``F-BFGS-B``
         optimizer. Allowed options are:
 
-        ``L_BFGS_B_ftol``
+        ``ftol``
             stop condition for the minimization
-        ``L_BFGS_B_gtol``
+        ``gtol``
             gradient stop condition for the minimization
-        ``L_BFGS_B_maxcor``
+        ``maxcor``
             max number of variables used in hessian approximation
-        ``L_BFGS_B_maxiter``
+        ``maxiter``
             max number of iterations
-        ``L_BFGS_B_maxfun``
+        ``maxfun``
             max number of function evaluations
-        ``L_BFGS_B_eps``
+        ``eps``
             Step size used for numerical approximation of the jacobian
 
         Do not use other options since they could break the minimizer in
@@ -139,7 +139,8 @@ def spread_fir_uc_zeros(order, OSR, cf, cf_args=[], cf_kwargs={}, **options):
 
     See Also
     --------
-    scipy.optimize.minimize :  Internally used minimizer
+    scipy.optimize.minimize :  for the parameters passed to the ``L-BFGS-B``
+        minimizer
     """
     def dof2zeros(xx):
         zeros[0:xl] = np.exp(1j*xx)
@@ -155,19 +156,18 @@ def spread_fir_uc_zeros(order, OSR, cf, cf_args=[], cf_kwargs={}, **options):
     # Manage optional parameters
     opts = spread_fir_uc_zeros.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['L_BFGS_B_'])
-    lbfgsb_opts = strip_options(o, 'L_BFGS_B_')
-
+    check_options(opts, frozenset({"L_BFGS_B_opts"}))
     xl = order // 2
     zeros = np.zeros(order, dtype=complex)
     xx = minimize(mf, np.linspace(np.pi/OSR/order, np.pi/OSR, xl),
-                  method='l-bfgs-b', options=lbfgsb_opts,
+                  method='l-bfgs-b', options=opts["L_BFGS_B_opts"],
                   bounds=[(0, np.pi/OSR)] * xl).x
     return dof2zeros(xx)
 
-spread_fir_uc_zeros.default_options = {"L_BFGS_B_ftol": 2.220446049250313e-09,
-                                       "L_BFGS_B_gtol": 1e-05,
-                                       "L_BFGS_B_maxcor": 10,
-                                       "L_BFGS_B_maxiter": 15000,
-                                       "L_BFGS_B_maxfun": 15000,
-                                       "L_BFGS_B_eps": 1E-8}
+spread_fir_uc_zeros.default_options = {"L_BFGS_B_opts":
+                                       {"ftol": 2.220446049250313e-09,
+                                        "gtol": 1e-05,
+                                        "maxcor": 10,
+                                        "maxiter": 15000,
+                                        "maxfun": 15000,
+                                        "eps": 1E-8}}

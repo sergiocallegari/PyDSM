@@ -29,7 +29,7 @@ from __future__ import division, print_function
 import numpy as np
 from scipy.integrate import quad
 from ..delsig import evalTF
-from ..utilities import split_options, strip_options
+from ..utilities import check_options
 
 __all__ = ["quantization_noise_gain"]
 
@@ -62,13 +62,12 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), avg=False,
 
     Other parameters
     ----------------
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     Notes
     -----
@@ -86,8 +85,7 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), avg=False,
 
     See Also
     --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
+    scipy.integrate.quad : for the meaning of the integrator parameters.
     """
     # Manage parameters
     if w is None:
@@ -98,14 +96,13 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), avg=False,
     # Manage optional parameters
     opts = quantization_noise_gain.default_options.copy()
     opts.update(options)
-    o = split_options(opts, ['quad_'])
-    quad_opts = strip_options(o, 'quad_')
+    check_options(opts, frozenset({"quad_opts"}))
     c = 1/(bounds[1]-bounds[0]) if avg else 2.
     # Compute
     return c*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
-                  bounds[0], bounds[1], **quad_opts)[0]
+                  bounds[0], bounds[1], **opts["quad_opts"])[0]
 
-quantization_noise_gain.default_options = {'quad_epsabs': 1.49e-08,
-                                           'quad_epsrel': 1.49e-08,
-                                           'quad_limit': 50,
-                                           'quad_points': None}
+quantization_noise_gain.default_options = {"quad_opts": {"epsabs": 1E-14,
+                                                         "epsrel": 1E-9,
+                                                         "limit": 100,
+                                                         "points": None}}
