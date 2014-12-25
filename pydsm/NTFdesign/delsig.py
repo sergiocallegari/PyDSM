@@ -31,7 +31,6 @@ The routines have abbreviated names here.
 
 from __future__ import division, print_function
 
-import numpy as np
 from ..delsig import (synthesizeNTF as ntf_schreier,
                       synthesizeChebyshevNTF as ntf_chebyshev,
                       clans as ntf_clans)
