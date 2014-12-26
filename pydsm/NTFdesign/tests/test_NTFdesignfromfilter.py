@@ -24,7 +24,8 @@ from numpy.testing import TestCase, run_module_suite
 import numpy as np
 from scipy import signal
 from pydsm.ir import impulse_response
-from pydsm.NTFdesign import ntf_fir_weighting, quantization_noise_gain
+from pydsm.NTFdesign import (ntf_fir_weighting, quantization_noise_gain,
+                             mult_weightings)
 from pydsm.NTFdesign.weighting import ntf_fir_from_q0
 from pydsm.NTFdesign.legacy import (quantization_noise_gain_by_conv,
                                     q0_from_filter_ir)
@@ -64,6 +65,16 @@ class TestNTF_Filter(TestCase):
         np.testing.assert_almost_equal(mf1, mf2, decimal=12)
         mf3 = quantization_noise_gain_by_conv(ntf1, hz)
         np.testing.assert_almost_equal(mf1, mf3, decimal=10)
+
+
+class Test_MultWeightings(TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_mult_weightings(self):
+        f = mult_weightings(([], [], 1), ([], [], 2))
+        np.testing.assert_equal(f(0), 4)
 
 if __name__ == '__main__':
     run_module_suite()

@@ -73,8 +73,8 @@ def mult_weightings(*ww):
     wn = [0] * len(ww)
     for i, wi in enumerate(ww):
         if type(wi) is tuple and 2 <= len(wi) <= 3:
-            h = wi
-            wn[i] = lambda f: np.abs(evalTF(h, np.exp(2j*np.pi*f)))**2
+            wn[i] = (lambda wi:
+                     lambda f: np.abs(evalTF(wi, np.exp(2j*np.pi*f)))**2)(wi)
         else:
             wn[i] = wi
     return lambda f: np.prod([w(f) for w in wn], axis=0)
