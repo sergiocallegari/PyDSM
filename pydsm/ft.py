@@ -178,7 +178,7 @@ def idtft(Ff, tt, fs=1, **options):
     else:
         return np.asarray([_idtft(Ff, t, fs, **opts["quad_opts"]) for t in tt])
 
-idtft.default_options = {"quad_opts": {"epsabs": 1E-14,
+idtft.default_options = {"quad_opts": {"epsabs": 1E-12,
                                        "epsrel": 1E-9,
                                        "limit": 100,
                                        "points": None}}
