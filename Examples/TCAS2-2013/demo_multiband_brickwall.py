@@ -68,9 +68,9 @@ plt.tight_layout(rect=[0, 0, 1, 0.98])
 
 print("... computing optimal NTF")
 ntf_opti = ntf_fir_weighting(order, w1, H_inf=H_inf,
-                             cvxpy_reltol=1E-11,
-                             cvxpy_abstol=1E-9,
-                             cvxpy_feastol=1E-9)
+                             cvxopt_opts={'reltol': 1E-11,
+                                          'abstol': 1E-9,
+                                          'feastol': 1E-9})
 ntf_opti_mag = lambda f: np.abs(evalTF(ntf_opti, np.exp(-2j*np.pi*f)))
 
 
