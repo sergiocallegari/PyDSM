@@ -40,6 +40,7 @@ from .legacy import (quantization_noise_gain_by_conv as
 from .weighting import q0_weighting, ntf_fir_from_q0
 from warnings import warn
 from ..exceptions import PyDsmDeprecationWarning
+from ..utilities import digested_options
 
 __all__ = ["quantization_noise_gain", "quantization_noise_gain_by_conv",
            "q0_from_filter", "synthesize_ntf_from_filter"]
@@ -70,13 +71,12 @@ def quantization_noise_gain(NTF, H, H_type='zpk', **options):
 
     Other parameters
     ----------------
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     Raises
     ------
@@ -96,13 +96,12 @@ def quantization_noise_gain(NTF, H, H_type='zpk', **options):
 
     See Also
     --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
+    scipy.integrate.quad : for the meaning of the integrator parameters.
     """
     warn("Function meant for removal", PyDsmDeprecationWarning)
     # Manage optional parameters
-    opts = quantization_noise_gain.default_options.copy()
-    opts.update(options)
+    opts = digested_options(options, quantization_noise_gain.default_options,
+                            [], ['quad_opts'])
     if H_type == 'zpk' or H_type == 'ba':
         w = H
     elif H_type == 'imp':
@@ -153,13 +152,12 @@ def q0_from_filter(P, H, H_type='zpk', **options):
 
     Other parameters
     ----------------
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     Raises
     ------
@@ -173,13 +171,12 @@ def q0_from_filter(P, H, H_type='zpk', **options):
 
     See Also
     --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
+    scipy.integrate.quad : for the meaning of the integrator parameters.
     """
     warn("Function meant for removal", PyDsmDeprecationWarning)
     # Manage optional parameters
-    opts = q0_from_filter.default_options.copy()
-    opts.update(options)
+    opts = digested_options(options, q0_from_filter.default_options,
+                            [], ['quad_options'])
     # Do the computation
     if H_type == 'zpk' or H_type == 'ba':
         w = H
@@ -230,45 +227,47 @@ def synthesize_ntf_from_filter(order, H, H_type='zpk', H_inf=1.5,
     Other parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True
-    cvxpy_xxx : various type, optional
-        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
-        optimizer. Allowed options are:
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
 
-        ``cvxpy_maxiters``
+        ``maxiters``
             Maximum number of iterations (defaults to 100)
-        ``cvxpy_abstol``
+        ``abstol``
             Absolute accuracy (defaults to 1e-7)
-        ``cvxpy_reltol``
+        ``reltol``
             Relative accuracy (defaults to 1e-6)
-        ``cvxpy_feastol``
+        ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
         Do not use other options since they could break ``cvxpy`` in
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+   quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     See Also
     --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
-
-    Check also the documentation of ``cvxopt`` for further information.
+    scipy.integrate.quad : for the meaning of the integrator parameters.
+    cvxopt : for the optimizer parameters
     """
     warn("Function meant for removal", PyDsmDeprecationWarning)
     # Manage optional parameters
-    opts = synthesize_ntf_from_filter.default_options.copy()
-    opts.update(options)
+    opts1 = digested_options(options,
+                             synthesize_ntf_from_filter.default_options,
+                             ['quad_opts'], False)
+    opts2 = digested_options(options,
+                             synthesize_ntf_from_filter.default_options,
+                             ['show_progress'], ['cvxopt_opts'])
     # Do the computation
-    q0 = q0_from_filter(order, H, H_type, **opts)
-    return ntf_fir_from_q0(q0, H_inf, normalize, **opts)
+    q0 = q0_from_filter(order, H, H_type, **opts1)
+    return ntf_fir_from_q0(q0, H_inf, normalize, **opts2)
 
 synthesize_ntf_from_filter.default_options = \
     q0_from_filter.default_options.copy()
