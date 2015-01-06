@@ -31,7 +31,7 @@ from .exceptions import PyDsmDeprecationWarning
 from .import relab
 
 __all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS",
-           "check_options", "digested_options"]
+           "digested_options"]
 
 
 EPS = np.finfo(float).eps
@@ -100,12 +100,6 @@ def mdot(*args):
         y=np.dot(np.dot(np.dot(...np.dot(x1,x2),xn_2)xn_1)xn)
     """
     return reduce(np.dot, args)
-
-
-def check_options(opts, keys=frozenset()):
-    if not opts.viewkeys() <= keys:
-        raise TypeError("Unexpected keyword argument '%s'" %
-                        list(opts.viewkeys()-keys))
 
 
 def digested_options(opts, defaults, keys=[], multikeys=[], emptycheck=True):
