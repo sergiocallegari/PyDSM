@@ -43,7 +43,7 @@ from ...delsig import evalTF, padr
 import cvxpy_tinoco
 from warnings import warn
 from ...exceptions import PyDsmDeprecationWarning
-from ...utilities import check_options, mdot
+from ...utilities import digested_options, mdot
 
 __all__ = ["q0_from_noise_weighting", "q0_weighting",
            "ntf_fir_from_q0", "synthesize_ntf_from_q0",
@@ -120,9 +120,8 @@ def q0_weighting(P, w, **options):
         h = w
         w = lambda f: np.abs(evalTF(h, np.exp(2j*np.pi*f)))**2
     # Manage optional parameters
-    opts = q0_weighting.default_options.copy()
-    opts.update(options)
-    check_options(opts, frozenset({"quad_opts"}))
+    opts = digested_options(options, q0_weighting.default_options,
+                            [], ['quad_opts'])
     # Do the computation
     ac = lambda t: idtft_hermitian(w, t, **opts)
     return np.asarray(map(ac, np.arange(P+1)))
@@ -188,10 +187,9 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
     cvxopt : for the optimizer parameters.
     """
     # Manage optional parameters
-    opts = ntf_hybrid_from_q0.default_options.copy()
-    opts.update(options)
-    check_options(opts, frozenset({"cvxopt_opts", "show_progress", "fix_pos"}))
-    quiet = not opts.get('show_progress', True)
+    opts = digested_options(options, ntf_hybrid_from_q0.default_options,
+                            ['show_progress', 'fix_pos'], ['cvxopt_opts'])
+    quiet = not opts['show_progress']
     # Do the computation
     order = q0.shape[0]-1
     poles = np.asarray(poles).reshape(-1)
@@ -206,7 +204,7 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
         q0 = q0*normalize
     Q = la.toeplitz(q0)
     d, v = np.linalg.eigh(Q)
-    if opts.get('fix_pos', True):
+    if opts['fix_pos']:
         d = d/np.max(d)
         d[d < 0] = 0.
     qs = cvxpy_tinoco.matrix(mdot(v, np.diag(np.sqrt(d)), np.linalg.inv(v)))
@@ -296,10 +294,9 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     cvxopt : for the optimizer parameters
     """
     # Manage optional parameters
-    opts = ntf_fir_from_q0.default_options.copy()
-    opts.update(options)
-    check_options(opts, frozenset({"cvxopt_opts", "show_progress", "fix_pos"}))
-    quiet = not opts.get('show_progress', True)
+    opts = digested_options(options, ntf_fir_from_q0.default_options,
+                            ['show_progress', 'fix_pos'], ['cvxopt_opts'])
+    quiet = not opts['show_progress']
     # Do the computation
     order = q0.shape[0]-1
     if normalize == 'auto':
@@ -308,7 +305,7 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         q0 = q0*normalize
     Q = la.toeplitz(q0)
     d, v = np.linalg.eigh(Q)
-    if opts.get('fix_pos', True):
+    if opts['fix_pos']:
         d = d/np.max(d)
         d[d < 0] = 0.
     qs = cvxpy_tinoco.matrix(mdot(v, np.diag(np.sqrt(d)), np.linalg.inv(v)))
@@ -413,20 +410,18 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
     cvxopt : for the optimizer parameters
     """
     # Manage optional parameters
-    opts = ntf_fir_weighting.default_options.copy()
-    opts.update(options)
-    check_options(opts, frozenset({"quad_opts", "cvxopt_opts", "show_progress",
-                                   "fix_pos"}))
+    opts1 = digested_options(options, ntf_hybrid_weighting.default_options,
+                             [], ['quad_opts'], False)
+    opts2 = digested_options(options, ntf_hybrid_weighting.default_options,
+                             ['show_progress', 'fix_pos'], ['cvxopt_opts'])
     # Do the computation
     poles = np.asarray(poles).reshape(-1)
     if len(poles) > 0:
         wn = mult_weightings(w, ([], poles, 1))
     else:
         wn = w
-    q0 = q0_weighting(order, wn, quad_opts=opts['quad_opts'])
-    return ntf_hybrid_from_q0(q0, H_inf, poles, normalize,
-                              show_progress=opts['show_progress'],
-                              cvxopt_opts=opts['cvxopt_opts'])
+    q0 = q0_weighting(order, wn, **opts1)
+    return ntf_hybrid_from_q0(q0, H_inf, poles, normalize, **opts2)
 
 ntf_hybrid_weighting.default_options = q0_weighting.default_options.copy()
 ntf_hybrid_weighting.default_options.update(ntf_hybrid_from_q0.default_options)
@@ -498,15 +493,13 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
     cvxopt : for the optimizer parameters
     """
     # Manage optional parameters
-    opts = ntf_fir_weighting.default_options.copy()
-    opts.update(options)
-    check_options(opts, frozenset({"quad_opts", "cvxopt_opts", "show_progress",
-                                   "fix_pos"}))
+    opts1 = digested_options(options, ntf_fir_weighting.default_options,
+                             [], ['quad_opts'], False)
+    opts2 = digested_options(options, ntf_fir_weighting.default_options,
+                             ['show_progress', 'fix_pos'], ['cvxopt_opts'])
     # Do the computation
-    q0 = q0_weighting(order, w, quad_opts=opts['quad_opts'])
-    return ntf_fir_from_q0(q0, H_inf, normalize,
-                           show_progress=opts['show_progress'],
-                           cvxopt_opts=opts['cvxopt_opts'])
+    q0 = q0_weighting(order, w, **opts1)
+    return ntf_fir_from_q0(q0, H_inf, normalize, **opts2)
 
 ntf_fir_weighting.default_options = q0_weighting.default_options.copy()
 ntf_fir_weighting.default_options.update(ntf_fir_from_q0.default_options)
