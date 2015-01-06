@@ -31,7 +31,7 @@ import numpy as np
 import scipy as sp
 __import__("scipy.fftpack")
 __import__("scipy.integrate")
-from .utilities import check_options
+from .utilities import digested_options
 
 __all__ = ["fft_centered", "dtft", "dtft_hermitian", "idtft",
            "idtft_hermitian"]
@@ -169,14 +169,12 @@ def idtft(Ff, tt, fs=1, **options):
         For the meaning of the integrator parameters.
     """
     # Manage optional parameters
-    opts = idtft.default_options.copy()
-    opts.update(options)
-    check_options(opts, frozenset({"quad_opts"}))
+    opts = digested_options(options, idtft.default_options, [], ['quad_opts'])
     # Do the computation
     if np.isscalar(tt):
-        return _idtft(Ff, tt, fs, **opts["quad_opts"])
+        return _idtft(Ff, tt, fs, **opts['quad_opts'])
     else:
-        return np.asarray([_idtft(Ff, t, fs, **opts["quad_opts"]) for t in tt])
+        return np.asarray([_idtft(Ff, t, fs, **opts['quad_opts']) for t in tt])
 
 idtft.default_options = {"quad_opts": {"epsabs": 1E-12,
                                        "epsrel": 1E-9,
@@ -227,14 +225,12 @@ def idtft_hermitian(Ff, tt, fs=1, **options):
         For the meaning of the integrator parameters.
     """
     # Manage optional parameters
-    opts = idtft_hermitian.default_options.copy()
-    opts.update(options)
-    check_options(opts, frozenset({"quad_opts"}))
+    opts = digested_options(options, idtft.default_options, [], ['quad_opts'])
     # Do the computation
     if np.isscalar(tt):
-        return _idtft_hermitian(Ff, tt, fs, **opts["quad_opts"])
+        return _idtft_hermitian(Ff, tt, fs, **opts['quad_opts'])
     else:
-        return np.asarray([_idtft_hermitian(Ff, t, fs, **opts["quad_opts"])
+        return np.asarray([_idtft_hermitian(Ff, t, fs, **opts['quad_opts'])
                            for t in tt])
 
 idtft_hermitian.default_options = idtft.default_options.copy()

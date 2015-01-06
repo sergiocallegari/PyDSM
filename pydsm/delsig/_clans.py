@@ -64,7 +64,7 @@ from ..relab import cplxpair
 from ._tf import evalTF
 from ..ir import impulse_response
 from ._dsclansNTF import dsclansNTF
-from ..utilities import check_options
+from ..utilities import digested_options
 
 __all__ = ["clans"]
 
@@ -147,9 +147,8 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
     exceptions as ``synthesizeNTF``.
     """
     # Manage optional parameters
-    opts = clans.default_options.copy()
-    opts.update(options)
-    check_options(opts, frozenset({"slsqp_opts", "show_progress"}))
+    opts = digested_options(options, clans.default_options,
+                            ['show_progress'], ['slsqp_opts'])
     slsqp_opts = opts['slsqp_opts']
     slsqp_opts['disp'] = opts.get('show_progress', False)
     # Create the initial guess

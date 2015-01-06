@@ -31,7 +31,7 @@ from .exceptions import PyDsmDeprecationWarning
 from .import relab
 
 __all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS",
-           "check_options"]
+           "check_options", "digested_options"]
 
 
 EPS = np.finfo(float).eps
@@ -106,6 +106,21 @@ def check_options(opts, keys=frozenset()):
     if not opts.viewkeys() <= keys:
         raise TypeError("Unexpected keyword argument '%s'" %
                         list(opts.viewkeys()-keys))
+
+
+def digested_options(opts, defaults, keys=[], multikeys=[], emptycheck=True):
+    """Helper function for the management of default options"""
+    out = {}
+    for key in keys:
+        out[key] = opts.pop(key, defaults[key])
+    for key in multikeys:
+        d = defaults[key].copy()
+        d.update(opts.pop(key, []))
+        out[key] = d
+    if emptycheck and (len(opts) != 0):
+        raise TypeError("Unexpected keyword argument(s) '%s'" %
+                        list(opts.viewkeys()))
+    return out
 
 
 # Following two functions are deprecated
