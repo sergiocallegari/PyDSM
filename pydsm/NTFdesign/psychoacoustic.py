@@ -205,21 +205,6 @@ def ntf_fir_audio_weighting(
         Normalization to apply to the quadratic form used in the NTF
         selection. Defaults to 'auto' which means setting the top left entry
         in the matrix Q defining the quadratic form to 1.
-    options : dict, optional
-        parameters for the SDP optimizer. These include:
-
-        ``maxiters``
-            Maximum number of iterations (defaults to 100)
-        ``abstol``
-            Absolute accuracy (defaults to 1e-7)
-        ``reltol``
-            Relative accuracy (defaults to 1e-6)
-        ``feastol``
-            Tolerance for feasibility conditions (defaults to 1e-6)
-        ``show_progress``
-            Print progress (defaults to True)
-
-        See also the documentation of ``cvxopt`` for further information.
 
     Returns
     -------
@@ -229,46 +214,36 @@ def ntf_fir_audio_weighting(
     Other parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True
-    cvxpy_xxx : various type, optional
-        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
-        optimizer. Allowed options are:
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
 
-        ``cvxpy_maxiters``
+        ``maxiters``
             Maximum number of iterations (defaults to 100)
-        ``cvxpy_abstol``
+        ``abstol``
             Absolute accuracy (defaults to 1e-7)
-        ``cvxpy_reltol``
+        ``reltol``
             Relative accuracy (defaults to 1e-6)
-        ``cvxpy_feastol``
+        ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
         Do not use other options since they could break ``cvxpy`` in
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+   quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     See Also
     --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
-    weighting.synthesize_ntf_from_noise_weighting :
-        synthesize an NTF from a noise weighting
-
-    Notes
-    -----
-    Check also the documentation of ``cvxopt`` for further information.
+    scipy.integrate.quad : for the meaning of the integrator parameters.
+    cvxopt : for the optimizer parameters
     """
-    # Manage optional parameters
-    opts = ntf_fir_audio_weighting.default_options.copy()
-    opts.update(options)
-    # Do the computation
 
     def w(f):
         ma = undbp(-max_attn)
@@ -276,7 +251,7 @@ def ntf_fir_audio_weighting(
         w = audio_weighting(fx) if fx <= audio_band else 0
         return max(w, ma)
 
-    return ntf_fir_weighting(order, w, H_inf, normalize, **opts)
+    return ntf_fir_weighting(order, w, H_inf, normalize, **options)
 
 ntf_fir_audio_weighting.default_options = \
     ntf_fir_weighting.default_options.copy()
