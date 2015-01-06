@@ -39,7 +39,7 @@ from __future__ import division
 
 import numpy as np
 from scipy.optimize import minimize
-from ..utilities import check_options
+from ..utilities import digested_options
 
 __all__ = ["maxflat_fir_zeros", "spread_fir_uc_zeros"]
 
@@ -154,9 +154,8 @@ def spread_fir_uc_zeros(order, OSR, cf, cf_args=[], cf_kwargs={}, **options):
                            *cf_args, **cf_kwargs))
 
     # Manage optional parameters
-    opts = spread_fir_uc_zeros.default_options.copy()
-    opts.update(options)
-    check_options(opts, frozenset({"L_BFGS_B_opts"}))
+    opts = digested_options(options, spread_fir_uc_zeros.default_options,
+                            [], ['L_BFGS_B_opts'])
     xl = order // 2
     zeros = np.zeros(order, dtype=complex)
     xx = minimize(mf, np.linspace(np.pi/OSR/order, np.pi/OSR, xl),
