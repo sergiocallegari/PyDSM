@@ -19,13 +19,25 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 u"""
-Legacy NTF synthesis methods
-============================
+Legacy NTF synthesis methods (:mod:`pydsm.NTFDesign.legacy`)
+============================================================
 
 This modules provides code for the synthesis of the modulator NTF, based
 on methods that are now superseded but that are worth keeping around for
 reproducing published results.
+
+.. currentmodule:: pydsm.NTFdesign.legacy
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree: generated/
+
+   q0_from_filter_ir                -- Legacy `q0_weighting`
+   quantization_noise_gain_by_conv  -- Legacy `quantization_noise_gain`
 """
 
 from ._quantization_noise_gain import *
 from ._q0_from_ir import *
+
+__all__ = _quantization_noise_gain.__all__ + _q0_from_ir.__all__

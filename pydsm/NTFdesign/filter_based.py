@@ -19,16 +19,28 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 u"""
-Output filter based NTF synthesis
-=================================
+Output filter based NTF synthesis (:mod:`pydsm.NTFDesign.filter_based`)
+=======================================================================
 
 This modules provides code for the synthesis of the modulator NTF, based
 on the filter placed after the modulator for the removal of the quantization
 noise.
 
 .. deprecated:: 0.11.0
-    Use ``ntf_fir_weighting`` or functions from ``NTFdesign.weighting``
+    Use `ntf_fir_weighting` or functions from `NTFdesign.weighting`
     module.
+
+.. currentmodule:: pydsm.NTFdesign.filter_based
+
+.. rubric:: Deprecated functions
+
+.. autosummary::
+   :toctree: generated/
+
+   quantization_noise_gain -- Alternate quantization noise power gain func
+   quantization_noise_gain_by_conv -- Alternate function based on convolution
+   q0_from_filter -- Alternate compute Q matrix from the output filter
+   synthesize_ntf_from_filter -- Alternate compute FIR NTF from output filter
 """
 
 from __future__ import division, print_function
@@ -48,6 +60,10 @@ __all__ = ["quantization_noise_gain", "quantization_noise_gain_by_conv",
 
 def quantization_noise_gain(NTF, H, H_type='zpk', **options):
     r"""Compute the quantization noise power gain after a filter
+
+    .. deprecated:: 0.11.0
+       Use :func:`NTFdesign.quantization_noise_gain`. Note that the interface
+       is slightly different.
 
     Parameters
     ----------
@@ -117,19 +133,24 @@ quantization_noise_gain.default_options = \
 
 
 def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
+    """
+    Alias of :func:`NTFdesign.legacy.quantization_noise_gain_by_conv`
+
+    .. deprecated:: 0.11.0
+        Function has been moved to the :mod"`NTFdesign.legacy` module.
+    """
     warn("Function moved in ``NTFdesign.legacy`` module",
          PyDsmDeprecationWarning)
     return _quantization_noise_gain_by_conv(NTF, H, H_type, db)
 
-quantization_noise_gain_by_conv.__doc__ = \
-    _quantization_noise_gain_by_conv.__doc__ + """
-    .. deprecated:: 0.11.0
-        Function has been moved to the ``NTFdesign.legacy`` module.
-    """
-
 
 def q0_from_filter(P, H, H_type='zpk', **options):
-    """Compute Q matrix from the modulator output filter
+    """
+    Compute Q matrix from the modulator output filter
+
+    .. deprecated:: 0.11.0
+       Use :func:`NTFdesign.weighting.q0_weighting`. Note that the
+       interface is slightly different.
 
     Parameters
     ----------
@@ -200,6 +221,10 @@ def synthesize_ntf_from_filter(order, H, H_type='zpk', H_inf=1.5,
     The ΔΣ modulator NTF is designed after a specification of the
     filter in charge of removing the quantization noise
 
+    .. deprecated:: 0.11.0
+       Use :func:`NTFdesign.ntf_fir_weighting`. Note that the interface
+       is slightly different.
+
     Parameters
     ----------
     order : int
@@ -242,10 +267,10 @@ def synthesize_ntf_from_filter(order, H, H_type='zpk', H_inf=1.5,
         ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
-        Do not use other options since they could break ``cvxpy`` in
+        Do not use other options since they could break `cvxopt` in
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
-   quad_opts : dictionary, optional
+    quad_opts : dictionary, optional
         Parameters to be passed to the ``quad`` function used internally as
         an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
         ``points``. Do not use other options since they could break the

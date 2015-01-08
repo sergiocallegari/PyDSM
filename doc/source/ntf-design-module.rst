@@ -11,30 +11,31 @@ The NTFdesign module
    specific to PyDSM and entry points to functions in :doc:`the delsig
    module of PyDSM <delsig-module>`.
 
-   The module includes the following submodules
+Submodules
+----------
 
    .. toctree::
       :maxdepth: 1
 
       ntf-design-weighting
+      ntf-design-merit_factors
       ntf-design-minmax
       ntf-design-delsig
       ntf-design-psychoacoustic
       ntf-design-legacy
-      ntf-design-filter-based
+      ntf-design-helpers
 
-
-   Non automatically imported submodules
-   .....................................
+Deprecated submodules
+---------------------
 
    .. toctree::
       :maxdepth: 1
 
-      ntf-design-helpers
+      ntf-design-filter_based
 
 
-   Key functions promoted at module top level
-   ..........................................
+Key functions promoted at module top level
+..........................................
 
    .. autofunction:: ntf_schreier
    .. autofunction:: ntf_chebyshev

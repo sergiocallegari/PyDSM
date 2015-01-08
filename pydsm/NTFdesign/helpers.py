@@ -27,10 +27,12 @@ of ΔΣ modulators.
 
 .. currentmodule:: pydsm.NTFdesign.helpers
 
+.. rubric:: Functions
+
 .. autosummary::
    :toctree: generated/
 
-   maxflat_fir_zeros     -- Zeros of a maxflat FIR transfer function
+   maxflat_fir_zeros     -- Zeros of maxflat FIR transfer function
    spread_fir_uc_zeros   -- Zeros spread on unit circle according to cost
 """
 
@@ -84,7 +86,7 @@ def spread_fir_uc_zeros(order, OSR, cf, cf_args=[], cf_kwargs={}, **options):
     The computed FIR transfer function is optimal according to a
     criterion expressed by the cost function ``cf``.
 
-     The computed FIR transfer function is used in the DELSIG
+    The computed FIR transfer function is used in the DELSIG
     :func:`pydsm.delsig.synthesizeDSM()` design method
     (also known as :func:`pydsm.NTFdesign.ntf_schreier()`)
     for the numerator of the noise transfer function.

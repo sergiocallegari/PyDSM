@@ -19,9 +19,20 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-"""
-Computation of NTF related merit factors
-========================================
+u"""
+Computation of NTF related merit factors (:mod:`pydsm.NTFdesign.merit_factors`)
+===============================================================================
+
+This module provides functions for the computation of NTF merit factors
+
+.. currentmodule:: pydsm.NTFdesign.merit_factors
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree: generated/
+
+   quantization_noise_gain  -- NTF quantization noise power gain
 """
 
 from __future__ import division, print_function

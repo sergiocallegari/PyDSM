@@ -19,11 +19,36 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 u"""
-Noise weighting NTF synthesis
-=============================
+Noise weighting NTF synthesis (:mod:`pydsm.NTFdesign.weighting`)
+================================================================
 
 This modules provides code for the synthesis of the modulator NTF, based
 on a noise weighting function.
+
+.. currentmodule:: pydsm.NTFdesign.weighting
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree: generated/
+
+    mult_weightings      -- Product of weighting functions
+    q0_weighting         -- Q matrix from a noise weighting function
+    ntf_hybrid_from_q0   -- design hybrid NTF from matrix Q
+    ntf_fir_from_q0      -- design FIR NTF from matrix Q
+    ntf_hybrid_weighting -- design hybrid NTF from weighting function
+    ntf_fir_weighting    -- design FIR NTF from weighting function
+
+
+.. rubric:: Deprecated Functions
+
+.. autosummary::
+   :toctree: generated/
+
+   quantization_weighted_noise_gain    -- Alias of `quantization_noise_gain`
+   q0_from_noise_weighting             -- Alias of `q0_weighting`
+   synthesize_ntf_from_q0              -- Alias of `ntf_fir_from_q0`
+   synthesize_ntf_from_noise_weighting -- Alias of `ntf_fir_weighting`
 """
 
 from ._fir_weighting import *
