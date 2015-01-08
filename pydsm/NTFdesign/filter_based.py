@@ -62,8 +62,8 @@ def quantization_noise_gain(NTF, H, H_type='zpk', **options):
     r"""Compute the quantization noise power gain after a filter
 
     .. deprecated:: 0.11.0
-       Use :func:`NTFdesign.quantization_noise_gain`. Note that the interface
-       is slightly different.
+       Use :func:`pydsm.NTFdesign.quantization_noise_gain`. Note that the
+       interface is slightly different.
 
     Parameters
     ----------

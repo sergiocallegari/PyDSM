@@ -73,12 +73,9 @@ of ΔΣ modulators
 
 Notes
 -----
-
-The design strategy implemented in this module is described in the paper [1]_.
-
-.. [1] M. Nagahara and Y. Yamamoto, *Frequency-Domain Min-Max Optimization
-       of Noise-Shaping Delta-Sigma Modulators*, IEEE Trans. SP, vol. 60 n. 6
-       June 2012.
+The design strategy implemented in this module was originally proposed by
+M. Nagahara and Y. Yamamoto. See the documentation of :func:`ntf_fir_minmax`
+for further details.
 """
 
 from __future__ import division, print_function

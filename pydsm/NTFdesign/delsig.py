@@ -70,7 +70,7 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0,
     Alias of :func:`ntf_schreier`
 
     .. deprecated:: 0.11.0
-        Function has been moved to the :mod:`NTFdesign` module with
+        Function has been moved to the :mod:`pydsm.NTFdesign` module with
         name :func:`ntf_schreier`.
     """
     warn("Function superseded by ntf_schreier in "
@@ -83,7 +83,7 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     Alias of :func:`ntf_chebyshev`
 
     .. deprecated:: 0.11.0
-        Function has been moved to the :mod:`NTFdesign` module with
+        Function has been moved to the :mod:`pydsm.NTFdesign` module with
         name :func:`ntf_chebyshev`.
     """
     warn("Function superseded by ntf_chebyshev in "
@@ -96,7 +96,7 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
     Alias of :func:`ntf_clans`
 
     .. deprecated:: 0.11.0
-        Function has been moved to the :mod:`NTFdesign` module with
+        Function has been moved to the :mod:`pydsm.NTFdesign` module with
         name :func:`ntf_clans`.
     """
     warn("Function superseded by ntf_clans in "
