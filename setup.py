@@ -19,11 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-
-# Note: before launching setup with build_sphinx or docdist targets
-# it is necessary to build the package
-
-
 import sys
 
 if sys.version_info[:2] < (2, 6) or (2, 7) < sys.version_info[:2]:
