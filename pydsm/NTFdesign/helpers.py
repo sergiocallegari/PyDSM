@@ -27,7 +27,9 @@ of ΔΣ modulators.
 
 .. currentmodule:: pydsm.NTFdesign.helpers
 
-.. rubric:: Functions
+
+Functions
+---------
 
 .. autosummary::
    :toctree: generated/

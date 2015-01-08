@@ -27,7 +27,9 @@ of ΔΣ modulators used in audio applications.
 
 .. currentmodule:: pydsm.NTFdesign.psychoacoustic
 
-.. rubric:: Functions
+
+Functions
+---------
 
 .. autosummary::
    :toctree: generated/
@@ -37,7 +39,9 @@ of ΔΣ modulators used in audio applications.
     ntf_dunn                 -- NTF design a la Dunn
     ntf_fir_audio_weighting  -- FIR NTF design with psychoacustic weighting
 
-.. rubric:: Deprecated functions
+
+Deprecated functions
+--------------------
 
 .. autosummary::
 

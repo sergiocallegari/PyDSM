@@ -29,6 +29,7 @@ module of PyDSM <delsig-module>`.
 
 .. currentmodule:: pydsm.NTFdesign
 
+
 Key functions
 -------------
 
@@ -102,12 +103,14 @@ Submodules
 :mod:`pydsm.NTFdesign.helpers`
   Helper functions
 
+
 Legacy submodule
 ----------------
 
 :mod:`pydsm.NTFdesign.legacy`
   Functions that are now superseded but that are worth keeping around for
   reproducing published results
+
 
 Deprecated submodules
 ---------------------

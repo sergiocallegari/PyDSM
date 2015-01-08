@@ -57,19 +57,24 @@ of ΔΣ modulators
 
 .. currentmodule:: pydsm.NTFdesign.minmax
 
-.. rubric:: Functions
+
+Functions
+---------
 
 .. autosummary::
    :toctree: generated/
 
    ntf_fir_minmax    -- Design FIR NTF with minmax approach
 
-.. rubric:: Deprecated Functions
+
+Deprecated Functions
+--------------------
 
 .. autosummary::
    :toctree: generated/
 
    synthesize_ntf_minmax -- Alias of ntf_fir_minmax
+
 
 Notes
 -----

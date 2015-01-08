@@ -31,7 +31,9 @@ abbreviated names here.
 
 .. currentmodule:: pydsm.NTFdesign.delsig
 
-.. rubric:: Functions
+
+Functions
+---------
 
 .. autosummary::
    :toctree: generated/
@@ -40,7 +42,9 @@ abbreviated names here.
     ntf_chebyshev   -- Design NTF based on Chebyshev type II form
     ntf_clans       -- Design NTF based on CLANS mehtod
 
-.. rubric:: Deprecated functions
+
+Deprecated functions
+--------------------
 
 .. autosummary::
    :toctree: generated/

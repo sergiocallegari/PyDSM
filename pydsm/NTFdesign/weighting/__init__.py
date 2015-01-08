@@ -27,7 +27,8 @@ on a noise weighting function.
 
 .. currentmodule:: pydsm.NTFdesign.weighting
 
-.. rubric:: Functions
+Functions
+---------
 
 .. autosummary::
    :toctree: generated/
@@ -40,7 +41,8 @@ on a noise weighting function.
     ntf_fir_weighting    -- design FIR NTF from weighting function
 
 
-.. rubric:: Deprecated Functions
+Deprecated Functions
+--------------------
 
 .. autosummary::
    :toctree: generated/

@@ -27,7 +27,9 @@ This module provides functions for the computation of NTF merit factors
 
 .. currentmodule:: pydsm.NTFdesign.merit_factors
 
-.. rubric:: Functions
+
+Functions
+---------
 
 .. autosummary::
    :toctree: generated/

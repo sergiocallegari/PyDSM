@@ -32,7 +32,9 @@ noise.
 
 .. currentmodule:: pydsm.NTFdesign.filter_based
 
-.. rubric:: Deprecated functions
+
+Deprecated functions
+--------------------
 
 .. autosummary::
    :toctree: generated/

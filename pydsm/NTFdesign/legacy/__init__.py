@@ -28,7 +28,9 @@ reproducing published results.
 
 .. currentmodule:: pydsm.NTFdesign.legacy
 
-.. rubric:: Functions
+
+Functions
+---------
 
 .. autosummary::
    :toctree: generated/
