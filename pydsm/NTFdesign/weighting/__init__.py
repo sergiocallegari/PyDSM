@@ -27,6 +27,7 @@ on a noise weighting function.
 
 .. currentmodule:: pydsm.NTFdesign.weighting
 
+
 Functions
 ---------
 
