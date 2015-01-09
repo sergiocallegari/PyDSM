@@ -94,9 +94,6 @@ and summarized in some illustrative web pages such as [2]_ and
 The filter-based implementation of the F-weighting is so high-order that
 evaluation of the transfer function may require special care.
 
-
-References
-----------
 .. [1] Wikipedia (http://en.wikipedia.org/wiki/A-weighting)
 .. [2] Cross spectrum (http://www.cross-spectrum.com/audio/weighting.html)
 .. [3] Product Technology Parters "Noise Measurement Briefing"
