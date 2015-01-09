@@ -19,36 +19,71 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-ISO 226 loudness countours
-==========================
+ISO 226 loudness countours (:mod:`pysdm.iso226`)
+==========================================
 
 Loudness contours from ISO 226.
 
+Contours are returned both as tables of data and as contour functions
+
+.. currentmodule:: pydsm.iso226
+
+
+Functions returning ISO 226 contours
+------------------------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   iso226_spl_contour -- Equal loudness contour (tabled)
+   iso226_spl_itpl  -- Interpolated equal loudness contour
+
+
+Functions computing loudness/acoustic pressure
+----------------------------------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   tabled_L_p  -- Return table of sound pressure levels for given loudness
+   tabled_L_N  -- Return table of perceived loudness for given sound pressure
+
+
+Functions returning data tabled in the standard
+-----------------------------------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   tabled_f  -- Return table of frequencies in ISO 226
+   tabled_alpha_f  -- Return table of exponents for loudness perception
+   tabled_L_U  -- Return table of magnitudes of the linear transfer function
+   tabled_T_f  -- Return table of thresholds of hearing
+
+
 Notes
 -----
-This module uses data from the latest revision of ISO 226 [ISO226]_.
-For reference, also consider [Tackett-2005]_.
+This module uses data from the latest revision of ISO 226 [1]_.
+For reference, also consider [2]_.
 
 The ISO standard provides the equal loudness contours as tabled data.
 Tables end at 12.5 kHz. Above this frequency equal-loudness-level data are
-relatively scarce and tend to be variable [Suzuki-2003]_. Yet, it is known
+relatively scarce and tend to be variable [3]_. Yet, it is known
 that the human ear has a precipitous decline in sensitivity with increasing
 frequency above 15 kHz, to the point that at about 20 kHz the percieved sound
-becomes negligible (> 100 dB attenuation) [Wannamaker-1992a]_. For this reason,
+becomes negligible (> 100 dB attenuation) [4]_. For this reason,
 this module includes the possibility of delivering some modified ISO contours
 where the tabled data is augmented by creating a new data point at 20 kHz
 where the behavior found at 20 Hz is replicated.
 
-References
-----------
-.. [ISO226] ISO 226:2003 "Acoustics - Normal equal-loudness-level contours"
-.. [Tackett-2005] Jeff Tackett, "ISO 226 Equal-Loudness-Level Contour Signal,"
+.. [1] ISO 226:2003 "Acoustics - Normal equal-loudness-level contours"
+.. [2] Jeff Tackett, "ISO 226 Equal-Loudness-Level Contour Signal,"
    2005
    (http://www.mathworks.com/matlabcentral/fileexchange/7028)
-.. [Suzuki-2003] Yoiti Suzuki et al, "Precise and Full-range Determination of
+.. [3] Yoiti Suzuki et al, "Precise and Full-range Determination of
    Two-dimensional Equal Loudness Contours," 2003
    (http://www.nedo.go.jp/itd/grant-e/report/00pdf/is-01e.pdf)
-.. [Wannamaker-1992a] Robert A. Wannamaker "Psychoacoustically Optimal Noise
+.. [4] Robert A. Wannamaker "Psychoacoustically Optimal Noise
    Shaping", J. Audio Eng. Soc., Vol. 40, N. 7/8, 1992 July/August
 """
 
