@@ -5,6 +5,7 @@ Utility modules
    :maxdepth: 1
 
    correlations
+   ft
 
 .. automodule:: pydsm.ir
   :members:
