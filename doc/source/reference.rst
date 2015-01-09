@@ -1,5 +1,5 @@
 Reference guide
----------------
+===============
 
 The current codebase comprises both code that is specific to PyDSM and
 code ported from the DELSIG_ Toolbox by R. Schreier. This is reflected
@@ -12,6 +12,9 @@ Right now, PyDSM is mostly specialized in the design of Noise Transfer
 Functions for Digital ΔΣ Modulators and in the simulation of the
 resulting modulators.
 
+Main modules
+------------
+
 .. toctree::
    :maxdepth: 1
 
@@ -21,13 +24,21 @@ resulting modulators.
    pydsm.audio_weightings
    pydsm.iso226
 
-.. toctree::
-   :maxdepth: 2
+Utility modules
+---------------
 
-   utility-modules
+.. toctree::
+   :maxdepth: 1
+
+   pydsm.correlations
+   pydsm.ft
+   pydsm.ir
+   pydsm.relab
+   pydsm.utilities
+
 
 Error handling
-..............
+--------------
 
 .. toctree::
    :maxdepth: 1
