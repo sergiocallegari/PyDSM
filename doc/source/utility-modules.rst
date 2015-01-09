@@ -8,6 +8,4 @@ Utility modules
    ft
    ir
    relab
-
-.. automodule:: pydsm.utilities
-  :members:
+   utilities
