@@ -19,11 +19,24 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Compatibility functions for PyDSM
-=================================
+Compatibility functions for PyDSM (:mod:`pydsm.relab`)
+======================================================
 
-This module re-implements some matlab interfaces that are useful
+This module re-implements some Matlab interfaces that are useful
 for PyDSM.
+
+.. currentmodule:: pydsm.relab
+
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+   eps       -- Floating point relative accuracy
+   db        -- Converts a value to dB a la Matlab
+   cplxpair  -- Sorts values in input list by complex pairs
 """
 
 from __future__ import division, print_function

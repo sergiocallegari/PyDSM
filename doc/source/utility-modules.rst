@@ -7,9 +7,7 @@ Utility modules
    correlations
    ft
    ir
+   relab
 
 .. automodule:: pydsm.utilities
-  :members:
-
-.. automodule:: pydsm.relab
   :members:
