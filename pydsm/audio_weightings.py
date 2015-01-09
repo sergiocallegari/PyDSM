@@ -19,8 +19,8 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Acoustic weighting functions
-============================
+Acoustic weighting functions (:mod:`pydsm.audio_weightings`)
+============================================================
 
 Some standard acoustic weighting functions.
 
@@ -31,30 +31,77 @@ It also includes the D-weighting from the now withdrawn IEC 537.
 
 It also includes the F-weighting proposed by R. A. Wannamaker.
 
-Notes
------
-The ANSI and IEC weightings are also described in Wikipedia [A-weighting]_
-and summarized in some illustrative web pages such as [Cross-Spectrum]_ and
-[Product-Tech]_. The F-weighting is documented in [Wannamaker-1992]_.
-
 The weighting functions can be expressed either in terms of
 acoustic power or in terms of signal amplitude.
 
 The weighting functions are also available in terms of a filter-based
-implementation. In this case, be careful since: (i) no normalization is
-present so that the gain at 1 kHz can be arbitrary; and (ii) the filter
-transfer function is referred to a signal amplitude weighting. Furthermore,
-the filter-based implementation of the F-weighting is so high-order that
+implementation. In this case, be careful since no normalization is
+present so that the gain at 1 kHz can be arbitrary. The filter
+transfer function is referred to a signal amplitude weighting.
+
+.. currentmodule:: pydsm.audio_weightings
+
+
+Weighting functions
+-------------------
+
+.. autosummary::
+   :toctree: generated/
+
+    a_weighting
+    b_weighting
+    c_weighting
+    d_weighting
+    f_weighting
+
+
+Filter implementation of weighting functions
+--------------------------------------------
+
+.. autodata:: a_zpk
+   :annotation:
+.. autodata:: b_zpk
+   :annotation:
+.. autodata:: c_zpk
+   :annotation:
+.. autodata:: d_zpk
+   :annotation:
+.. autodata:: f_zpk
+   :annotation:
+
+
+Normalization constants
+-----------------------
+
+.. autodata:: a_weighting_gain
+   :annotation:
+.. autodata:: b_weighting_gain
+   :annotation:
+.. autodata:: c_weighting_gain
+   :annotation:
+.. autodata:: d_weighting_gain
+   :annotation:
+.. autodata:: f_weighting_gain
+   :annotation:
+
+
+Notes
+-----
+The ANSI and IEC weightings are also described in Wikipedia [1]
+and summarized in some illustrative web pages such as [2]_ and
+[3]_. The F-weighting is documented in [4]_.
+
+The filter-based implementation of the F-weighting is so high-order that
 evaluation of the transfer function may require special care.
+
 
 References
 ----------
-.. [A-weighting] Wikipedia (http://en.wikipedia.org/wiki/A-weighting)
-.. [Cross-Spectrum]
-   Cross spectrum (http://www.cross-spectrum.com/audio/weighting.html)
-.. [Product-Tech] Product Technology Parters "Noise Measurement Briefing"
+.. [1] Wikipedia (http://en.wikipedia.org/wiki/A-weighting)
+.. [2] Cross spectrum (http://www.cross-spectrum.com/audio/weighting.html)
+.. [3] Product Technology Parters "Noise Measurement Briefing"
    (http://www.ptpart.co.uk/noise-measurement-briefing/)
-.. [Wannamaker-1992] Robert A. Wannamaker "Psychoacoustically Optimal Noise
+.. [4] Robert A. Wannamaker "Psychoacoustically Optimal Noise
    Shaping," J. Audio Eng. Soc., Vol. 40 No. 7/8 1992 July/August
 """
 
@@ -154,8 +201,9 @@ def a_weighting(f, normal=True, power=True):
                            (f**2+737.9**2))*(f**2+12200.0**2))
     return w if not normal else w*a_weighting_gain
 
-# Set normalization gain
 a_weighting_gain = 1/a_weighting(1000, normal=False, power=False)
+"""Normalization gain to apply to A-weighting filter (namely, the
+   attenuation of the filter at 1 kHz)"""
 
 
 def b_weighting(f, normal=True, power=True):
@@ -183,8 +231,9 @@ def b_weighting(f, normal=True, power=True):
                            np.sqrt(f**2+158.5**2)*(f**2+12200.0**2))
     return w if not normal else w*b_weighting_gain
 
-# Set normalization gain
 b_weighting_gain = 1/b_weighting(1000, normal=False, power=False)
+"""Normalization gain to apply to B-weighting filter (namely, the
+   attenuation of the filter at 1 kHz)"""
 
 
 def c_weighting(f, normal=True, power=True):
@@ -211,8 +260,9 @@ def c_weighting(f, normal=True, power=True):
     w = (12200.0**2*f**2)/((f**2+20.6**2)*(f**2+12200.0**2))
     return w if not normal else w*c_weighting_gain
 
-# Set normalization gain
 c_weighting_gain = 1/c_weighting(1000, normal=False, power=False)
+"""Normalization gain to apply to C-weighting filter (namely, the
+   attenuation of the filter at 1 kHz)"""
 
 
 def d_weighting(f, normal=True, power=True):
@@ -244,6 +294,10 @@ def d_weighting(f, normal=True, power=True):
 
     return (f/6.8966888496476E-5 *
             np.sqrt(h(f)/((f**2+79919.29)*(f**2+1345600.0))))
+
+d_weighting_gain = 1.
+"""Normalization gain to apply to D-weighting filter (namely, the
+   attenuation of the filter at 1 kHz)"""
 
 
 def f_weighting(f, normal=True, power=True):
@@ -291,3 +345,5 @@ def f_weighting(f, normal=True, power=True):
 
 # Set normalization gain
 f_weighting_gain = 1/f_weighting(1000, normal=False, power=True)
+"""Normalization gain to apply to F-weighting filter (namely, the
+   attenuation of the filter at 1 kHz)"""
