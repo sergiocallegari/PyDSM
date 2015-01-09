@@ -26,6 +26,15 @@ resulting modulators.
 
    utility-modules
 
+Error handling
+..............
+
+.. toctree::
+   :maxdepth: 1
+
+   exceptions
+
+
 
 .. _DELSIG:
    http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox

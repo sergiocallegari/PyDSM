@@ -19,8 +19,30 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Definition of some exceptions and warnings
-==========================================
+Exceptions and warnings (:mod:`pydsm.exceptions`)
+=================================================
+
+This module defines the custom exceptions and warnings used in PyDSM
+
+.. currentmodule:: pydsm.exceptions
+
+Warning classes
+---------------
+
+.. autosummary::
+   :toctree: generated/
+
+    PyDsmWarning  -- base warning class
+    PyDsmApproximationWarning  -- Approximation warning
+    PyDsmSlowPathWarning  -- Slow path warning
+    PyDsmPendingDeprecationWarning  -- Pending deprecation warning
+    PyDsmDeprecationWarning  -- Deprecation warning
+
+
+Error classes
+-------------
+
+No error classes are currently defined. Standard Python errors are risen.
 """
 
 
