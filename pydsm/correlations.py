@@ -19,12 +19,23 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Auto and cross correlation
-==========================
+Correlation utilities (:mod:`pydsm.correlations`)
+=================================================
 
 Functions to compute the auto- and cross- correlation between two vectors.
 
 So far only unnormalized (raw) correlations are supported.
+
+.. currentmodule:: pydsm.correlations
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+    raw_acorr  -- raw autocorrelation of a vector
+    raw_xcorr  -- raw crosscorrelation of a vector
 """
 
 from __future__ import division, print_function

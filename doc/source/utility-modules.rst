@@ -1,6 +1,11 @@
 Utility modules
 ~~~~~~~~~~~~~~~
 
+.. toctree::
+   :maxdepth: 1
+
+   correlations
+
 .. automodule:: pydsm.ir
   :members:
 
