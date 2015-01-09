@@ -32,7 +32,7 @@ Error handling
 .. toctree::
    :maxdepth: 1
 
-   exceptions
+   pydsm.exceptions
 
 
 

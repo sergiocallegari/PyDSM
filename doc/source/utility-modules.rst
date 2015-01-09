@@ -4,8 +4,8 @@ Utility modules
 .. toctree::
    :maxdepth: 1
 
-   correlations
-   ft
-   ir
-   relab
-   utilities
+   pydsm.correlations
+   pydsm.ft
+   pydsm.ir
+   pydsm.relab
+   pydsm.utilities

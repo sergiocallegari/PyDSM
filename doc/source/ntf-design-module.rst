@@ -3,11 +3,11 @@
 .. toctree::
    :hidden:
 
-   NTFdesign.delsig
-   NTFdesign.weighting
-   NTFdesign.minmax
-   NTFdesign.psychoacoustic
-   NTFdesign.merit_factors
-   NTFdesign.helpers
-   NTFdesign.legacy
-   NTFdesign.filter_based
+   pydsm.NTFdesign.delsig
+   pydsm.NTFdesign.weighting
+   pydsm.NTFdesign.minmax
+   pydsm.NTFdesign.psychoacoustic
+   pydsm.NTFdesign.merit_factors
+   pydsm.NTFdesign.helpers
+   pydsm.NTFdesign.legacy
+   pydsm.NTFdesign.filter_based
