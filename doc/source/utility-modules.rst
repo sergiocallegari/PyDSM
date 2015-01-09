@@ -6,9 +6,7 @@ Utility modules
 
    correlations
    ft
-
-.. automodule:: pydsm.ir
-  :members:
+   ir
 
 .. automodule:: pydsm.utilities
   :members:
