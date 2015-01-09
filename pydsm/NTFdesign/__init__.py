@@ -24,8 +24,8 @@ Synthesis of the NTF of Delta Sigma modulators (:mod:`pydsm.NTFdesign`)
 
 This module provides some strategies for the design of the Noise
 Transfer Function of ΔΣ modulators. There are both functions that are
-specific to PyDSM and entry points to functions in :doc:`the delsig
-module of PyDSM <delsig-module>`.
+specific to PyDSM and entry points to functions in the delsig module
+of PyDSM (:mod:`pydsm.delsig`).
 
 .. currentmodule:: pydsm.NTFdesign
 

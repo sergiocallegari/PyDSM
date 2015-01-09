@@ -15,11 +15,11 @@ resulting modulators.
 .. toctree::
    :maxdepth: 1
 
-   delsig-module
-   ntf-design-module
-   simulation-module
-   audio-weightings-module
-   iso226-module
+   pydsm.delsig
+   pydsm.NTFdesign
+   pydsm.simulation
+   pydsm.audio_weightings
+   pydsm.iso226
 
 .. toctree::
    :maxdepth: 2
