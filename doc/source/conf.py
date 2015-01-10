@@ -20,7 +20,7 @@ from pydsm._version import __version__
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('.'))
 
 # -- General configuration -----------------------------------------------------
 
@@ -29,8 +29,8 @@ from pydsm._version import __version__
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.pngmath', 'numpydoc',
-              'sphinx.ext.autosummary']
+extensions = ['less_texescapes', 'sphinx.ext.autodoc', 'sphinx.ext.pngmath',
+              'numpydoc', 'sphinx.ext.autosummary']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -180,12 +180,14 @@ htmlhelp_basename = 'PyDSMdoc'
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
 #'papersize': 'letterpaper',
+'papersize': 'a4paper',
 
 # The font size ('10pt', '11pt' or '12pt').
 #'pointsize': '10pt',
 
 # Additional stuff for the LaTeX preamble.
 #'preamble': '',
+'preamble': r'\usepackage[artemisia]{textgreek}',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
