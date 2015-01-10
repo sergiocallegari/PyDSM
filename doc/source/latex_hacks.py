@@ -29,7 +29,7 @@ def setup(app):
         (u'→', ur'\(\rightarrow\)'),
         (u'‣', ur'\(\rightarrow\)'),
         # used to separate -- in options
-        (u'﻿', ur'{}'),
+        (u'\ufeff', ur'{}'),
         # map some special Unicode characters to similar ASCII ones
         (u'─', ur'-'),
         (u'⎽', ur'\_'),
@@ -41,3 +41,6 @@ def setup(app):
         (u'₁', ur'1'),
         (u'₂', ur'2')
         ]
+    from sphinx.writers.latex import LaTeXTranslator
+    del LaTeXTranslator.default_elements['longtable']
+    LaTeXTranslator.default_elements['tabu'] = '\usepackage{tabu}'

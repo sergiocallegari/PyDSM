@@ -187,7 +187,7 @@ latex_elements = {
 
 # Additional stuff for the LaTeX preamble.
 #'preamble': '',
-'preamble': r'\usepackage[artemisia]{textgreek}',
+'preamble': r'\usepackage[artemisia]{textgreek}'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
