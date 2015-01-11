@@ -253,3 +253,28 @@ texinfo_documents = [
 
 # -- Autosummary ---------------------------------------
 autosummary_generate = True
+
+
+# Ignore header of main package
+def better_cut_lines(pre, post=0, what=None, name=None):
+    def process(app, what_, name_, obj, options, lines):
+        if what and what_ not in what:
+            return
+        if name and name_ != name:
+            return
+        del lines[:pre]
+        if post:
+            # remove one trailing blank line.
+            if lines and not lines[-1]:
+                lines.pop(-1)
+            del lines[-post:]
+        # make sure there is a blank line at the end
+        if lines and lines[-1]:
+            lines.append('')
+    return process
+
+
+def setup(app):
+    from sphinx.ext.autodoc import cut_lines
+    app.connect('autodoc-process-docstring',
+                better_cut_lines(3, what=['module'], name='pydsm'))
