@@ -136,7 +136,7 @@ quantization_noise_gain.default_options = \
 
 def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
     """
-    Alias of :func:`NTFdesign.legacy.quantization_noise_gain_by_conv`
+    Alias of :func:`pydsm.NTFdesign.legacy.quantization_noise_gain_by_conv`
 
     .. deprecated:: 0.11.0
         Function has been moved to the :mod"`NTFdesign.legacy` module.
