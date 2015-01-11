@@ -320,8 +320,6 @@ def f_weighting(f, normal=True, power=True):
     -----
     The F-weighting function is documented in [1]_.
 
-    References
-    ----------
     .. [1] Robert A. Wannamaker "Psychoacoustically Optimal Noise Shaping,"
        J. Audio Eng. Soc., Vol. 40 No. 7/8 1992 July/August
     """
