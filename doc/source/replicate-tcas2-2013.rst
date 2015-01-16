@@ -2,12 +2,15 @@ TCAS-II 2013 paper by Callegari and Bizzarri
 --------------------------------------------
 
 This section illustrates how to replicate the results presented in the
-paper
+paper [Cal13b]_
 
-    Sergio Callegari, Federico Bizzarri *"Noise Weighting in the
-    Design of ΔΣ Modulators (with a Psychoacoustic Coder as an
-    Example),"* IEEE Transactions on Circuits and Systems - Part II:
-    Express Briefs. To appear in 2013.
+.. [Cal13b] Sergio Callegari, Federico Bizzarri *“Noise Weighting in the
+   Design of ΔΣ Modulators (with a Psychoacoustic Coder as an
+   Example),”* IEEE Transactions on Circuits and Systems - Part II:
+   Express Briefs, Vol. 60, N. 11, pp. 756-760. Nov. 2013. DOI:
+   `10.1109/TCSII.2013.2281892
+   <http://dx.doi.org/10.1109/TCSII.2013.2281892>`_. Pre-print
+   available on `arXiv <http://arxiv.org/abs/1309.6151>`__.
 
 To this aim, some sample code is provided in the directory
 ``Examples/TCAS2-2013``.
