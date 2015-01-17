@@ -20,7 +20,6 @@
 
 """
 Design optimal NTF with NTF zeros as parameters
-===============================================
 
 Routines to design an optimal NTF from a weighting function using
 the NTF zeros as free parameters.
@@ -81,7 +80,7 @@ def mult_weightings(*ww):
 
 
 def q0_weighting(P, w, **options):
-    """Compute Q matrix from a noise weighting function or filter
+    """Compute Q matrix from a noise weighting function or a filter
 
     Parameters
     ----------
@@ -106,14 +105,13 @@ def q0_weighting(P, w, **options):
         integrator in unexpected ways. Defaults can be set by changing the
         function ``default_options`` attribute.
 
-    See Also
-    --------
-    scipy.integrate.quad : For the meaning of the integrator parameters.
-
     Notes
     -----
     The Q matrix being synthesized has (P+1) times (P+1) entries.
 
+    See Also
+    --------
+    scipy.integrate.quad : For the meaning of the integrator parameters.
     """
     # Manage parameters
     if type(w) is tuple and 2 <= len(w) <= 3:
@@ -344,7 +342,7 @@ ntf_fir_from_q0.default_options = {"cvxopt_opts": {'maxiters': 100,
 def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
                          normalize="auto", **options):
     u"""
-    Synthesize am NTF based on a noise weighting function or filter and poles.
+    Synthesize NTF based on noise weighting function or filter plus poles.
 
     The ΔΣ modulator NTF is designed after a noise weigthing function stating
     how expensive noise is at the various frequencies.
@@ -429,7 +427,7 @@ ntf_hybrid_weighting.default_options.update(ntf_hybrid_from_q0.default_options)
 
 def ntf_fir_weighting(order, w, H_inf=1.5,
                       normalize="auto", **options):
-    u"""Synthesize a FIR NTF based on a noise weighting function or filter.
+    u"""Synthesize FIR NTF based on a noise weighting function or a filter.
 
     The ΔΣ modulator NTF is designed after a noise weigthing function stating
     how expensive noise is at the various frequencies.
@@ -508,45 +506,41 @@ ntf_fir_weighting.default_options.update(ntf_fir_from_q0.default_options)
 # Following part is deprecated
 
 def q0_from_noise_weighting(P, w, **options):
+    """
+    Alias of :func:`q0_weighting`
+
+    .. deprecated:: 0.11.0
+        Function has been renamed :func:`q0_weighting`.
+    """
     warn("Function superseded by q0_weighting in "
          "NTFdesign.weighting module", PyDsmDeprecationWarning)
     return q0_weighting(P, w, **options)
 
-q0_from_noise_weighting.__doc__ = q0_weighting.__doc__ + """
-    .. deprecated:: 0.11.0
-        Function has been moved to the ``NTFdesign.weighting`` module with
-        name ``q0_weighting``.
-    """
 
 q0_from_noise_weighting.default_options = q0_weighting.default_options
 
 
 def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto", **options):
+    """
+    Alias of :func:`ntf_fir_from_q0`
+
+    .. deprecated:: 0.11.0
+        Function has been renamed :func:`ntf_fir_from_q0`.
+    """
     warn("Function superseded by ntf_fir_from_q0 in "
          "NTFdesign.weighting module", PyDsmDeprecationWarning)
     return ntf_fir_from_q0(q0, H_inf, normalize, **options)
 
-synthesize_ntf_from_q0.__doc__ = ntf_fir_from_q0.__doc__ + """
-    .. deprecated:: 0.11.0
-        Function has been moved to the ``NTFdesign.weighting`` module with
-        name ``ntf_fir_from_q0``.
-    """
-
-synthesize_ntf_from_q0.default_options = ntf_fir_from_q0.default_options
-
 
 def synthesize_ntf_from_noise_weighting(order, noise_weighting, H_inf=1.5,
                                         normalize="auto", **options):
+    """
+    Alias of :func:`ntf_fir_weighting`
+
+    .. deprecated:: 0.11.0
+        Function has been renamed :func:`ntf_fir_weighting`.
+    """
     warn("Function superseded by ntf_fir_weighting in "
          "NTFdesign module", PyDsmDeprecationWarning)
     return ntf_fir_weighting(order, noise_weighting, H_inf,
                              normalize, **options)
-
-synthesize_ntf_from_noise_weighting.__doc__ = ntf_fir_weighting.__doc__ + """
-    .. deprecated:: 0.11.0
-        Function has been moved to the ``NTFdesign`` module with
-        name ``ntf_fir_weighting``.
-    """
-
-synthesize_ntf_from_noise_weighting.default_options = \
-    ntf_fir_weighting.default_options

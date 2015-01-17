@@ -2,3 +2,8 @@ Regeneration of the documentation requires
 
 sphinx
 numpydoc (Extension to sphinx to manage doc in numpy standard)
+
+Documentation should be built exclusively from the top dir
+of the project by issuing the command
+
+    python setup.py build_sphinx

@@ -19,10 +19,24 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Fourier transform related routines
-==================================
+Fourier transform related routines (:mod:`pydsm.ft`)
+====================================================
 
-Functions to compute the fft and the dtft.
+Functions to compute the fft and the dtft
+
+.. currentmodule:: pydsm.ft
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+    fft_centered  -- FFT function where output vector has 0 frequency at center
+    dtft  -- discrete time Fourier transform
+    dtft_hermitian  -- DTFT specialized to hermitian vectors
+    idtft -- inverse discrete time Fourier transform
+    idtft_hermitian -- IDTFT specialized to hermitian vectors
 """
 
 from __future__ import division, print_function

@@ -140,7 +140,7 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
 
     The computation is based on a nonlinear, nonlinearly constrained
     optimization. Since the optimizer used here is different from the
-    optimizer used in other toolboxes implementing this funciton,
+    optimizer used in other toolboxes implementing this function,
     the results may differ. The current optimizer is ``SLSQP``.
 
     The function internally calls ``synthesizeNTF``, and rises the same

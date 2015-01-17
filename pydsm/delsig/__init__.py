@@ -48,8 +48,73 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """
-Code ported from the DELSIG toolbox by R. Schreier
-==================================================
+Code ported from the DELSIG toolbox by R. Schreier (:mod:`pydsm.delsig`)
+========================================================================
+
+.. currentmodule:: pydsm.delsig
+
+
+Key functions
+-------------
+
+.. autosummary::
+   :toctree: generated/
+
+   synthesizeNTF
+   clans
+   synthesizeChebyshevNTF
+   simulateDSM
+
+Other selected functions
+------------------------
+
+Delta sigma utilities
+.....................
+
+.. autosummary::
+   :toctree: generated/
+
+   partitionABCD
+   rmsGain
+
+General utilities
+.................
+
+.. autosummary::
+   :toctree: generated/
+
+   dbv
+   dbp
+   undbv
+   undbp
+   dbm
+   undbm
+
+Graphing
+........
+
+.. autosummary::
+   :toctree: generated/
+
+   plotPZ
+
+
+Plumbing
+--------
+
+.. autosummary::
+   :toctree: generated/
+
+   ds_synNTFobj1
+   ds_f1f2
+   ds_optzeros
+   dsclansNTF
+   padl
+   padr
+   padt
+   padb
+   evalTF
+   evalRPoly
 """
 
 __delsig_version__ = "7.4"
@@ -63,6 +128,7 @@ from ._plot import *
 from ._synthesizeNTF import *
 from ._synthesizeChebyshevNTF import *
 from ._clans import *
+from ._dsclansNTF import *
 from ._simulateDSM import *
 from ._simulateDSM_scipy import *
 from ._partitionABCD import *

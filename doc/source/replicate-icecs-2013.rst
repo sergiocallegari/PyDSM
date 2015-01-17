@@ -2,15 +2,15 @@ ICECS 2013 paper by Callegari
 -----------------------------
 
 This section illustrates how to replicate the results presented in the
-paper
+paper [Cal13c]_
 
-    Sergio Callegari, *"Should ΔΣ modulators used in AC motor drives
-    be adapted to the mechanical load of the motor?"*, Proceedings of
-    the 20th IEEE International Conference on Electronics, Circuits
-    and Systems (ICECS), 2013, pp. 589 - 592. DOI:
-    `10.1109/ICECS.2013.6815483`_.
-
-.. _10.1109/ICECS.2013.6815483: http://dx.doi.org/10.1109/ICECS.2013.6815483
+.. [Cal13c] Sergio Callegari, Federico Bizzarri, *"Should ΔΣ
+    modulators used in AC motor drives be adapted to the mechanical
+    load of the motor?"*, Proceedings of the 20th IEEE International
+    Conference on Electronics, Circuits and Systems (ICECS), 2013,
+    pp. 589 - 592. DOI: `10.1109/ICECS.2013.6815483
+    <http://dx.doi.org/10.1109/ICECS.2013.6815483>`_. Also available
+    in `arXiv <http://arxiv.org/abs/1302.7172>`__.
 
 To this aim, some sample code is provided in the directory
 ``Examples/ICECS-2013``.

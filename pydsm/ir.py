@@ -19,11 +19,23 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Computation of the impulse response of a filter
-===============================================
+Computation of the impulse response of a DT filter (:mod:`pydsm.ir`)
+====================================================================
 
-Function to compute (approximating it by truncation) the impulse response
-of a discrete time filter.
+Compute (approximating by truncation) the impulse response
+of a discrete time filter, trying to (roughly) guess the appropriate
+truncation.
+
+.. currentmodule:: pydsm.ir
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+    guess_ir_length  -- Guess appropriate truncation length
+    impulse_response  -- Compute impulse response of DT filter
 """
 
 from __future__ import division, print_function
@@ -61,7 +73,8 @@ def impulse_response(h, m=None, db=80):
     Notes
     -----
     The guess about the lenght where the impulse response can be truncated
-    is extremely rough. See guess_ir_lenght in this module for further info.
+    is extremely rough. See :func:`guess_ir_length` in this module for
+    further info.
     """
     if len(h) == 3:
         (b, a) = sp.signal.zpk2tf(*h)

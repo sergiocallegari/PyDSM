@@ -48,14 +48,39 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-"""
-Synthesize a FIR NTF using the min-max strategy by M. Nagahara et al
-====================================================================
+u"""
+MinMax FIR NTF design (:mod:`pydsm.NTFdesign.minmax`)
+=====================================================
 
-The design strategy implemented in this module is described in the paper
+This modules provides a minmax FIR design method for the NTF
+of ΔΣ modulators
 
-    M. Nagahara and Y. Yamamoto, *Frequency-Domain Min-Max Optimization of
-    Noise-Shaping Delta-Sigma Modulators*, IEEE Trans. SP, 2012.
+.. currentmodule:: pydsm.NTFdesign.minmax
+
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+   ntf_fir_minmax    -- Design FIR NTF with minmax approach
+
+
+Deprecated Functions
+--------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   synthesize_ntf_minmax -- Alias of ntf_fir_minmax
+
+
+Notes
+-----
+The design strategy implemented in this module was originally proposed by
+M. Nagahara and Y. Yamamoto. See the documentation of :func:`ntf_fir_minmax`
+for further details.
 """
 
 from __future__ import division, print_function
@@ -72,13 +97,8 @@ __all__ = ['ntf_fir_minmax', 'synthesize_ntf_minmax']
 
 def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
                    **options):
-    u"""Synthesize FIR NTF for LP or BP ΔΣ modulator by min-max optimization.
-
-    The design strategy implemented in this module is described in the paper
-
-        M. Nagahara and Y. Yamamoto, *Frequency-Domain Min-Max Optimization of
-        Noise-Shaping Delta-Sigma Modulators*, IEEE Trans. SP, vol. 60 n. 6
-        June 2012.
+    u"""
+    Synthesize FIR NTF for LP or BP ΔΣ modulator by min-max optimization.
 
     The strategy aims at minimizing the peak value of the NTF in the signal
     band, while respecting the Lee criterion.
@@ -110,7 +130,7 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     Other parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True and can be updated by
+        Provide extended output. Default is True and can be updated by
         changing the function ``default_options`` attribute.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
@@ -131,7 +151,14 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
 
     Notes
     -----
+    The design strategy implemented in this module is described in the paper
+    [1]_.
+
     Bandpass modulator design is not yet supported.
+
+    .. [1] M. Nagahara and Y. Yamamoto, *Frequency-Domain Min-Max Optimization
+       of Noise-Shaping Delta-Sigma Modulators*, IEEE Trans. SP, vol. 60 n. 6
+       June 2012.
 
     See also
     --------
@@ -203,15 +230,13 @@ ntf_fir_minmax.default_options = {"cvxopt_opts": {'maxiters': 100,
 
 def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
                           **options):
+    """
+    Alias of :func:`ntf_fir_minmax`
+
+    .. deprecated:: 0.11.0
+       Function is now available from the :mod:`NTFdesign` module with
+       name :func:`ntf_fir_minmax`
+    """
     warn("Function superseded by ntf_fir_minmax in "
          "NTFdesign module", PyDsmDeprecationWarning)
     return ntf_fir_minmax(order, osr, H_inf, f0, zf, **options)
-
-synthesize_ntf_minmax.__doc__ = ntf_fir_minmax.__doc__ + """
-    .. deprecated:: 0.11.0
-        Function has been moved to the ``NTFdesign`` module with name
-        ``ntf_fir_minmax``.
-    """
-
-synthesize_ntf_minmax.default_options = \
-    ntf_fir_minmax.default_options
