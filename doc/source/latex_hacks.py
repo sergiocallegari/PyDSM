@@ -1,6 +1,46 @@
 # -*- coding: utf-8 -*-
 
-"""Monkey patch some sphinx classes, in order to fix some issues"""
+# Copyright (c) 2015, Sergio Callegari
+# All rights reserved.
+
+# This file is part of PyDSM.
+
+# PyDSM is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# PyDSM is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+
+"""
+Monkey patch Sphinx, in order to fix some issues with LaTeX builds
+
+* Restrict the tex_replacement table, to stop escaping Greek letters.
+  * These are much better supported with the textgreek package.
+  * Converting Greek text to math causes issues with hyperref when Greek
+    letters occur in section headings.
+  * Converting Greek text to math makes it impossible to make it follow
+    the formatting of the surrounding text *eg. bold, italics, etc).
+  * Note that this change also requires the unicode option to be passed to
+    hyperref
+
+* Use tabu package in conjunction with longtable to support multi page
+  tables.
+  * Namely use the longtabu environment in place of longable.
+  * The longtabu environment also supports tabularx features such as the
+    possibility of having automatically sized paragraph type columns.  This
+    is needed by autosummary tables to avoid overfull boxes in the
+    function descriptions.
+
+* Have autosummary use the new column types supported by tabu
+"""
+
 
 from sphinx.locale import _
 from sphinx.util import texescape
@@ -192,6 +232,7 @@ def get_table(self, items):
     return [table_spec, table]
 
 autosummary.Autosummary.get_table = get_table
+
 
 def setup(app):
     pass
