@@ -241,8 +241,9 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         and can be updated by changing the function ``default_options``
         attribute.
     modeler : string
-        modeling backend for the optimization problem. Currently, only the
-        ``cvxpy_old`` backend is supported.
+        modeling backend for the optimization problem. Currently, the
+        ``cvxpy_old`` and ``cvxpy`` backends are supported. Default is
+        ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
         Allowed options include:
@@ -275,9 +276,12 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         q0 = q0*normalize
     if opts['modeler'] == 'cvxpy_old':
         from ._fir_weighting_tinoco import ntf_fir_from_q0 as _ntf_fir_from_q0
-        return _ntf_fir_from_q0(q0, H_inf, **opts)
+    elif opts['modeler'] == 'cvxpy':
+        from ._fir_weighting_cvxpy import ntf_fir_from_q0 as _ntf_fir_from_q0
     else:
         raise ValueError("Unsupported modeling backend")
+    return _ntf_fir_from_q0(q0, H_inf, **opts)
+
 
 ntf_fir_from_q0.default_options = {"modeler": "cvxpy_old",
                                    "cvxopt_opts": {'maxiters': 100,
@@ -416,8 +420,9 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
         and can be updated by changing the function ``default_options``
         attribute.
     modeler : string
-        modeling backend for the optimization problem. Currently, only the
-        ``cvxpy_old`` backend is supported.
+        modeling backend for the optimization problem. Currently, the
+        ``cvxpy_old`` and ``cvxpy`` backends are supported. Default is
+        ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
         Allowed options include:
