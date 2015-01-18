@@ -103,6 +103,37 @@ class TestNTF_Filter(TestCase):
         mf2 = quantization_noise_gain(ntf2, hz)
         np.testing.assert_almost_equal(mf2, mf1, decimal=12)
 
+    def test_ntf_butt_bp8_picos(self):
+        try:
+            import cvxpy     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy' not installed")
+        # Generate filter.
+        # 8th order bandpass filter
+        # Freq. passed to butterworth is normalized between 0 and 1
+        # where 1 is the Nyquist frequency
+        fsig = 1000.
+        B = 400.
+        OSR = 64
+        fphi = B*OSR*2
+        w0 = 2*fsig/fphi
+        B0 = 2*B/fphi
+        w1 = (np.sqrt(B0**2+4*w0**2)-B0)/2
+        w2 = (np.sqrt(B0**2+4*w0**2)+B0)/2
+        hz = signal.butter(4, [w1, w2], 'bandpass', output='zpk')
+        # Order
+        order = 12
+        # Compute q0 in two ways
+        ir = impulse_response(hz, db=80)
+
+        ntf1 = ntf_fir_weighting(order, hz, modeler='picos',
+                                 show_progress=False)
+        q0_2 = q0_from_filter_ir(order, ir)
+        ntf2 = ntf_fir_from_q0(q0_2, modeler='picos', show_progress=False)
+        mf1 = quantization_noise_gain(ntf1, hz)
+        mf2 = quantization_noise_gain(ntf2, hz)
+        np.testing.assert_almost_equal(mf2, mf1, decimal=12)
+
 
 class Test_MultWeightings(TestCase):
 

@@ -281,6 +281,8 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         from ._fir_weighting_tinoco import ntf_fir_from_q0 as _ntf_fir_from_q0
     elif opts['modeler'] == 'cvxpy':
         from ._fir_weighting_cvxpy import ntf_fir_from_q0 as _ntf_fir_from_q0
+    elif opts['modeler'] == 'picos':
+        from ._fir_weighting_picos import ntf_fir_from_q0 as _ntf_fir_from_q0
     else:
         raise ValueError("Unsupported modeling backend")
     return _ntf_fir_from_q0(q0, H_inf, **opts)
