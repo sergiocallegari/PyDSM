@@ -196,9 +196,12 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
     if opts['modeler'] == 'cvxpy_old':
         from ._fir_weighting_tinoco import (
             ntf_hybrid_from_q0 as _ntf_hybrid_from_q0)
-        return _ntf_hybrid_from_q0(q0, H_inf, poles, **opts)
+    elif opts['modeler'] == 'cvxpy':
+        from ._fir_weighting_cvxpy import (
+            ntf_hybrid_from_q0 as _ntf_hybrid_from_q0)
     else:
         raise ValueError("Unsupported modeling backend")
+    return _ntf_hybrid_from_q0(q0, H_inf, poles, **opts)
 
 
 ntf_hybrid_from_q0.default_options = {"modeler": "cvxpy_old",

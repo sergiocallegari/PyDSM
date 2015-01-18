@@ -33,7 +33,7 @@ class TestNTF_Hybrid(TestCase):
     def setUp(self):
         pass
 
-    def test_ntf_hybrid(self):
+    def test_ntf_hybrid_tinoco(self):
         # This test emulates a Schreier-type design using the hybrid
         # design method
 
@@ -54,6 +54,35 @@ class TestNTF_Hybrid(TestCase):
 
         z, p, k = ntf_hybrid_weighting(order, w, H_inf=1.5, poles=e_p,
                                        show_progress=False,
+                                       modeler='cvxpy_old',
+                                       cvxopt_opts={"reltol": 1E-14,
+                                                    "abstol": 1E-16})
+        np.testing.assert_allclose(k, e_k, 1e-6)
+        np.testing.assert_allclose(z, e_z, 3e-4)
+        np.testing.assert_allclose(p, e_p, 3e-4)
+
+    def test_ntf_hybrid_cvxpy(self):
+        # This test emulates a Schreier-type design using the hybrid
+        # design method
+
+        # Set the main design parameters
+        order = 3
+        OSR = 64
+
+        # Set the NTF z, p, k that would be returned by Scheier's method
+        e_k = 1
+        e_z = [1.0000, 0.9993 - 0.0382j, 0.9993 + 0.0382j]
+        e_z = cplxpair(e_z)
+        e_p = [0.6692, 0.7652 - 0.2795j, 0.7652 + 0.2795j]
+        e_p = cplxpair(e_p)
+
+        # Prepare the weighting function for the hybrid method
+        def w(f):
+            return 1. if f <= 0.5/OSR else 1E-12
+
+        z, p, k = ntf_hybrid_weighting(order, w, H_inf=1.5, poles=e_p,
+                                       show_progress=False,
+                                       modeler='cvxpy',
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
         np.testing.assert_allclose(k, e_k, 1e-6)
