@@ -46,7 +46,7 @@ import scipy.linalg as la
 __all__ = ["q0_from_noise_weighting", "q0_weighting",
            "ntf_fir_from_q0", "synthesize_ntf_from_q0",
            "ntf_fir_weighting", "synthesize_ntf_from_noise_weighting",
-           "mult_weightings", "ntf_hybrid_from_q0", "ntf_hybrid_weighting"]
+           "mult_weightings", "ntf_hybrid_weighting"]
 
 
 def mult_weightings(*ww):
@@ -309,112 +309,6 @@ ntf_fir_weighting.default_options = q0_weighting.default_options.copy()
 ntf_fir_weighting.default_options.update(ntf_fir_from_q0.default_options)
 
 
-def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
-    """
-    Synthesize NTF from quadratic form expressing noise weighting and poles.
-
-    Parameters
-    ----------
-    q0 : ndarray
-        first row of the Toeplitz symmetric matrix defining the quadratic form
-    H_inf : real, optional
-        Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
-    poles : array_like
-        List of pre-assigned NTF poles. Must be no longer than length of q0
-        minus 1.
-    normalize : string or real, optional
-        Normalization to apply to the quadratic form used in the NTF
-        selection. Defaults to 'auto' which means setting the top left entry
-        in the matrix Q defining the quadratic form to 1.
-
-    Returns
-    -------
-    ntf : ndarray
-        NTF in zpk form
-
-    Other parameters
-    ----------------
-    show_progress : bool, optional
-        provide extended output, default is True and can be updated by
-        changing the function ``default_options`` attribute.
-    fix_pos : bool, optional
-        fix quadratic form for positive definiteness. Numerical noise
-        may make it not positive definite leading to errors. Default is True
-        and can be updated by changing the function ``default_options``
-        attribute.
-    modeler : string
-        modeling backend for the optimization problem. Currently, the
-        ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
-        Default is ``cvxpy_old``.
-    cvxopt_opts : dictionary, optional
-        A dictionary of options for the ``cvxopt`` optimizer
-        Allowed options include:
-
-        ``maxiters``
-            Maximum number of iterations (defaults to 100)
-        ``abstol``
-            Absolute accuracy (defaults to 1e-7)
-        ``reltol``
-            Relative accuracy (defaults to 1e-6)
-        ``feastol``
-            Tolerance for feasibility conditions (defaults to 1e-6)
-
-        Do not use other options since they could break ``cvxpy`` in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
-
-    See also
-    --------
-    cvxopt : for the optimizer parameters.
-    """
-    # Manage optional parameters
-    opts = digested_options(options, ntf_hybrid_from_q0.default_options,
-                            ['show_progress', 'fix_pos', 'modeler'],
-                            ['cvxopt_opts'])
-    if normalize == 'auto':
-        q0 = q0/q0[0]
-    elif normalize is not None:
-        q0 = q0*normalize
-    if opts['modeler'] == 'cvxpy_old':
-        from ._fir_weighting_tinoco import (
-            ntf_fir_from_digested as _ntf_fir_from_digested)
-    elif opts['modeler'] == 'cvxpy':
-        from ._fir_weighting_cvxpy import (
-            ntf_fir_from_digested as _ntf_fir_from_digested)
-    elif opts['modeler'] == 'picos':
-        from ._fir_weighting_picos import (
-            ntf_fir_from_digested as _ntf_fir_from_digested)
-    else:
-        raise ValueError("Unsupported modeling backend")
-    order = q0.shape[0]-1
-    poles = np.asarray(poles).reshape(-1)
-    if poles.shape[0] > order:
-        raise ValueError('Too many poles provided')
-    poles = padr(poles, order, 0)
-    # Get denominator coefficients from a_1 to a_order (a_0 is 1)
-    ar = np.poly(poles)[1:].real
-    Q = la.toeplitz(q0)
-    d, v = np.linalg.eigh(Q)
-    if opts['fix_pos']:
-        d = d/np.max(d)
-        d[d < 0] = 0.
-    Qs = v.dot(np.diag(np.sqrt(d))).dot(np.linalg.inv(v))
-    A = np.eye(order, order, 1)
-    A[order-1] = -ar[::-1]
-    C = -ar[::-1].reshape((1, order))
-    ntf_ir = _ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts)
-    return (np.roots(ntf_ir), poles, 1.)
-
-
-ntf_hybrid_from_q0.default_options = {"modeler": "cvxpy_old",
-                                      "cvxopt_opts": {'maxiters': 100,
-                                                      'abstol': 1e-7,
-                                                      'reltol': 1e-6,
-                                                      'feastol': 1e-6},
-                                      'show_progress': True,
-                                      'fix_pos': True}
-
-
 def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
                          normalize="auto", **options):
     u"""
@@ -500,10 +394,46 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
     else:
         wn = w
     q0 = q0_weighting(order, wn, **opts1)
-    return ntf_hybrid_from_q0(q0, H_inf, poles, normalize, **opts2)
+    if normalize == 'auto':
+        q0 = q0/q0[0]
+    elif normalize is not None:
+        q0 = q0*normalize
+    if opts2['modeler'] == 'cvxpy_old':
+        from ._fir_weighting_tinoco import (
+            ntf_fir_from_digested as _ntf_fir_from_digested)
+    elif opts2['modeler'] == 'cvxpy':
+        from ._fir_weighting_cvxpy import (
+            ntf_fir_from_digested as _ntf_fir_from_digested)
+    elif opts2['modeler'] == 'picos':
+        from ._fir_weighting_picos import (
+            ntf_fir_from_digested as _ntf_fir_from_digested)
+    else:
+        raise ValueError("Unsupported modeling backend")
+    if poles.shape[0] > order:
+        raise ValueError('Too many poles provided')
+    poles = padr(poles, order, 0)
+    # Get denominator coefficients from a_1 to a_order (a_0 is 1)
+    ar = np.poly(poles)[1:].real
+    Q = la.toeplitz(q0)
+    d, v = np.linalg.eigh(Q)
+    if opts2['fix_pos']:
+        d = d/np.max(d)
+        d[d < 0] = 0.
+    Qs = v.dot(np.diag(np.sqrt(d))).dot(np.linalg.inv(v))
+    A = np.eye(order, order, 1)
+    A[order-1] = -ar[::-1]
+    C = -ar[::-1].reshape((1, order))
+    ntf_ir = _ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts2)
+    return (np.roots(ntf_ir), poles, 1.)
 
-ntf_hybrid_weighting.default_options = q0_weighting.default_options.copy()
-ntf_hybrid_weighting.default_options.update(ntf_hybrid_from_q0.default_options)
+ntf_hybrid_weighting.default_options = {"modeler": "cvxpy_old",
+                                        "cvxopt_opts": {'maxiters': 100,
+                                                        'abstol': 1e-7,
+                                                        'reltol': 1e-6,
+                                                        'feastol': 1e-6},
+                                        'show_progress': True,
+                                        'fix_pos': True}
+ntf_hybrid_weighting.default_options.update(q0_weighting.default_options)
 
 
 # Following part is deprecated
