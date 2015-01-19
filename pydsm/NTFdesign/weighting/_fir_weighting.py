@@ -128,6 +128,173 @@ q0_weighting.default_options = {"quad_opts": {"epsabs": 1E-14,
                                               "points": None}}
 
 
+def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
+    """
+    Synthesize FIR NTF from quadratic form expressing noise weighting.
+
+    Parameters
+    ----------
+    q0 : ndarray
+        first row of the Toeplitz symmetric matrix defining the quadratic form
+    H_inf : real, optional
+        Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
+    normalize : string or real, optional
+        Normalization to apply to the quadratic form used in the NTF
+        selection. Defaults to 'auto' which means setting the top left entry
+        in the matrix Q defining the quadratic form to 1.
+
+    Returns
+    -------
+    ntf : ndarray
+        FIR NTF in zpk form
+
+    Other parameters
+    ----------------
+    show_progress : bool, optional
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
+    fix_pos : bool, optional
+        fix quadratic form for positive definiteness. Numerical noise
+        may make it not positive definite leading to errors. Default is True
+        and can be updated by changing the function ``default_options``
+        attribute.
+    modeler : string
+        modeling backend for the optimization problem. Currently, the
+        ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
+        Default is ``cvxpy_old``.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
+
+        ``maxiters``
+            Maximum number of iterations (defaults to 100)
+        ``abstol``
+            Absolute accuracy (defaults to 1e-7)
+        ``reltol``
+            Relative accuracy (defaults to 1e-6)
+        ``feastol``
+            Tolerance for feasibility conditions (defaults to 1e-6)
+
+        Do not use other options since they could break ``cvxpy`` in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+
+    See Also
+    --------
+    cvxopt : for the optimizer parameters
+    """
+    # Manage optional parameters
+    opts = digested_options(options, ntf_fir_from_q0.default_options,
+                            ['show_progress', 'fix_pos', 'modeler'],
+                            ['cvxopt_opts'])
+    # Do the computation
+    if normalize == 'auto':
+        q0 = q0/q0[0]
+    elif normalize is not None:
+        q0 = q0*normalize
+    if opts['modeler'] == 'cvxpy_old':
+        from ._fir_weighting_tinoco import ntf_fir_from_q0 as _ntf_fir_from_q0
+    elif opts['modeler'] == 'cvxpy':
+        from ._fir_weighting_cvxpy import ntf_fir_from_q0 as _ntf_fir_from_q0
+    elif opts['modeler'] == 'picos':
+        from ._fir_weighting_picos import ntf_fir_from_q0 as _ntf_fir_from_q0
+    else:
+        raise ValueError("Unsupported modeling backend")
+    return _ntf_fir_from_q0(q0, H_inf, **opts)
+
+
+ntf_fir_from_q0.default_options = {"modeler": "cvxpy_old",
+                                   "cvxopt_opts": {'maxiters': 100,
+                                                   'abstol': 1e-7,
+                                                   'reltol': 1e-6,
+                                                   'feastol': 1e-6},
+                                   'show_progress': True,
+                                   'fix_pos': True}
+
+
+def ntf_fir_weighting(order, w, H_inf=1.5,
+                      normalize="auto", **options):
+    u"""Synthesize FIR NTF based on a noise weighting function or a filter.
+
+    The ΔΣ modulator NTF is designed after a noise weigthing function stating
+    how expensive noise is at the various frequencies.
+
+    Parameters
+    ----------
+    order : int
+        Delta sigma modulator order
+    w : callable with argument f in [0,1/2] or tuple
+            * if function: noise weighting function
+            * if filter definition as zpk or ba tuple: weighting is implicitly
+              provided by the filter
+    H_inf : real, optional
+        Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
+    normalize : string or real, optional
+        Normalization to apply to the quadratic form used in the NTF
+        selection. Defaults to 'auto' which means setting the top left entry
+        in the matrix Q defining the quadratic form to 1.
+
+    Returns
+    -------
+    ntf : ndarray
+        FIR NTF in zpk form
+
+    Other parameters
+    ----------------
+    show_progress : bool, optional
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
+    fix_pos : bool, optional
+        fix quadratic form for positive definiteness. Numerical noise
+        may make it not positive definite leading to errors. Default is True
+        and can be updated by changing the function ``default_options``
+        attribute.
+    modeler : string
+        modeling backend for the optimization problem. Currently, the
+        ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
+        Default is ``cvxpy_old``.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
+
+        ``maxiters``
+            Maximum number of iterations (defaults to 100)
+        ``abstol``
+            Absolute accuracy (defaults to 1e-7)
+        ``reltol``
+            Relative accuracy (defaults to 1e-6)
+        ``feastol``
+            Tolerance for feasibility conditions (defaults to 1e-6)
+
+        Do not use other options since they could break ``cvxpy`` in
+        unexpected ways. Defaults can be set by changing the function
+        ``default_options`` attribute.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
+
+    See Also
+    --------
+    scipy.integrate.quad : for the meaning of the integrator parameters
+    cvxopt : for the optimizer parameters
+    """
+    # Manage optional parameters
+    opts1 = digested_options(options, ntf_fir_weighting.default_options,
+                             [], ['quad_opts'], False)
+    opts2 = digested_options(options, ntf_fir_weighting.default_options,
+                             ['show_progress', 'fix_pos', 'modeler'],
+                             ['cvxopt_opts'])
+    # Do the computation
+    q0 = q0_weighting(order, w, **opts1)
+    return ntf_fir_from_q0(q0, H_inf, normalize, **opts2)
+
+ntf_fir_weighting.default_options = q0_weighting.default_options.copy()
+ntf_fir_weighting.default_options.update(ntf_fir_from_q0.default_options)
+
+
 def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
     """
     Synthesize NTF from quadratic form expressing noise weighting and poles.
@@ -212,90 +379,6 @@ ntf_hybrid_from_q0.default_options = {"modeler": "cvxpy_old",
                                                       'feastol': 1e-6},
                                       'show_progress': True,
                                       'fix_pos': True}
-
-
-def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
-    """
-    Synthesize FIR NTF from quadratic form expressing noise weighting.
-
-    Parameters
-    ----------
-    q0 : ndarray
-        first row of the Toeplitz symmetric matrix defining the quadratic form
-    H_inf : real, optional
-        Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
-    normalize : string or real, optional
-        Normalization to apply to the quadratic form used in the NTF
-        selection. Defaults to 'auto' which means setting the top left entry
-        in the matrix Q defining the quadratic form to 1.
-
-    Returns
-    -------
-    ntf : ndarray
-        FIR NTF in zpk form
-
-    Other parameters
-    ----------------
-    show_progress : bool, optional
-        provide extended output, default is True and can be updated by
-        changing the function ``default_options`` attribute.
-    fix_pos : bool, optional
-        fix quadratic form for positive definiteness. Numerical noise
-        may make it not positive definite leading to errors. Default is True
-        and can be updated by changing the function ``default_options``
-        attribute.
-    modeler : string
-        modeling backend for the optimization problem. Currently, the
-        ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
-        Default is ``cvxpy_old``.
-    cvxopt_opts : dictionary, optional
-        A dictionary of options for the ``cvxopt`` optimizer
-        Allowed options include:
-
-        ``maxiters``
-            Maximum number of iterations (defaults to 100)
-        ``abstol``
-            Absolute accuracy (defaults to 1e-7)
-        ``reltol``
-            Relative accuracy (defaults to 1e-6)
-        ``feastol``
-            Tolerance for feasibility conditions (defaults to 1e-6)
-
-        Do not use other options since they could break ``cvxpy`` in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
-
-    See Also
-    --------
-    cvxopt : for the optimizer parameters
-    """
-    # Manage optional parameters
-    opts = digested_options(options, ntf_fir_from_q0.default_options,
-                            ['show_progress', 'fix_pos', 'modeler'],
-                            ['cvxopt_opts'])
-    # Do the computation
-    if normalize == 'auto':
-        q0 = q0/q0[0]
-    elif normalize is not None:
-        q0 = q0*normalize
-    if opts['modeler'] == 'cvxpy_old':
-        from ._fir_weighting_tinoco import ntf_fir_from_q0 as _ntf_fir_from_q0
-    elif opts['modeler'] == 'cvxpy':
-        from ._fir_weighting_cvxpy import ntf_fir_from_q0 as _ntf_fir_from_q0
-    elif opts['modeler'] == 'picos':
-        from ._fir_weighting_picos import ntf_fir_from_q0 as _ntf_fir_from_q0
-    else:
-        raise ValueError("Unsupported modeling backend")
-    return _ntf_fir_from_q0(q0, H_inf, **opts)
-
-
-ntf_fir_from_q0.default_options = {"modeler": "cvxpy_old",
-                                   "cvxopt_opts": {'maxiters': 100,
-                                                   'abstol': 1e-7,
-                                                   'reltol': 1e-6,
-                                                   'feastol': 1e-6},
-                                   'show_progress': True,
-                                   'fix_pos': True}
 
 
 def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
@@ -387,89 +470,6 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
 
 ntf_hybrid_weighting.default_options = q0_weighting.default_options.copy()
 ntf_hybrid_weighting.default_options.update(ntf_hybrid_from_q0.default_options)
-
-
-def ntf_fir_weighting(order, w, H_inf=1.5,
-                      normalize="auto", **options):
-    u"""Synthesize FIR NTF based on a noise weighting function or a filter.
-
-    The ΔΣ modulator NTF is designed after a noise weigthing function stating
-    how expensive noise is at the various frequencies.
-
-    Parameters
-    ----------
-    order : int
-        Delta sigma modulator order
-    w : callable with argument f in [0,1/2] or tuple
-            * if function: noise weighting function
-            * if filter definition as zpk or ba tuple: weighting is implicitly
-              provided by the filter
-    H_inf : real, optional
-        Max peak NTF gain, defaults to 1.5, used to enforce the Lee criterion
-    normalize : string or real, optional
-        Normalization to apply to the quadratic form used in the NTF
-        selection. Defaults to 'auto' which means setting the top left entry
-        in the matrix Q defining the quadratic form to 1.
-
-    Returns
-    -------
-    ntf : ndarray
-        FIR NTF in zpk form
-
-    Other parameters
-    ----------------
-    show_progress : bool, optional
-        provide extended output, default is True and can be updated by
-        changing the function ``default_options`` attribute.
-    fix_pos : bool, optional
-        fix quadratic form for positive definiteness. Numerical noise
-        may make it not positive definite leading to errors. Default is True
-        and can be updated by changing the function ``default_options``
-        attribute.
-    modeler : string
-        modeling backend for the optimization problem. Currently, the
-        ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
-        Default is ``cvxpy_old``.
-    cvxopt_opts : dictionary, optional
-        A dictionary of options for the ``cvxopt`` optimizer
-        Allowed options include:
-
-        ``maxiters``
-            Maximum number of iterations (defaults to 100)
-        ``abstol``
-            Absolute accuracy (defaults to 1e-7)
-        ``reltol``
-            Relative accuracy (defaults to 1e-6)
-        ``feastol``
-            Tolerance for feasibility conditions (defaults to 1e-6)
-
-        Do not use other options since they could break ``cvxpy`` in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
-    quad_opts : dictionary, optional
-        Parameters to be passed to the ``quad`` function used internally as
-        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
-        ``points``. Do not use other options since they could break the
-        integrator in unexpected ways. Defaults can be set by changing the
-        function ``default_options`` attribute.
-
-    See Also
-    --------
-    scipy.integrate.quad : for the meaning of the integrator parameters
-    cvxopt : for the optimizer parameters
-    """
-    # Manage optional parameters
-    opts1 = digested_options(options, ntf_fir_weighting.default_options,
-                             [], ['quad_opts'], False)
-    opts2 = digested_options(options, ntf_fir_weighting.default_options,
-                             ['show_progress', 'fix_pos', 'modeler'],
-                             ['cvxopt_opts'])
-    # Do the computation
-    q0 = q0_weighting(order, w, **opts1)
-    return ntf_fir_from_q0(q0, H_inf, normalize, **opts2)
-
-ntf_fir_weighting.default_options = q0_weighting.default_options.copy()
-ntf_fir_weighting.default_options.update(ntf_fir_from_q0.default_options)
 
 
 # Following part is deprecated
