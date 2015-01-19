@@ -162,8 +162,9 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
         and can be updated by changing the function ``default_options``
         attribute.
     modeler : string
-        modeling backend for the optimization problem. Currently, only the
-        ``cvxpy_old`` backend is supported.
+        modeling backend for the optimization problem. Currently, the
+        ``cvxpy_old`` and ``cvxpy`` backends are supported. Default is
+        ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
         Allowed options include:
@@ -245,8 +246,8 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         attribute.
     modeler : string
         modeling backend for the optimization problem. Currently, the
-        ``cvxpy_old`` and ``cvxpy`` backends are supported. Default is
-        ``cvxpy_old``.
+        ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
+        Default is ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
         Allowed options include:
@@ -338,8 +339,9 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
         and can be updated by changing the function ``default_options``
         attribute.
     modeler : string
-        modeling backend for the optimization problem. Currently, only the
-        ``cvxpy_old`` backend is supported.
+        modeling backend for the optimization problem. Currently, the
+        ``cvxpy_old`` and ``cvxpy`` backends are supported. Default is
+        ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
         Allowed options include:
@@ -426,8 +428,8 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
         attribute.
     modeler : string
         modeling backend for the optimization problem. Currently, the
-        ``cvxpy_old`` and ``cvxpy`` backends are supported. Default is
-        ``cvxpy_old``.
+        ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
+        Default is ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
         Allowed options include:
