@@ -19,36 +19,7 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy as np
-import scipy.linalg as la
 import cvxpy_tinoco
-from ...utilities import mdot
-from ...delsig import padr
-
-
-def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], **opts):
-    """
-    Synthesize NTF from quadratic form expressing noise weighting and poles.
-
-    Version for the cvxpy_tinoco modeler.
-    """
-    order = q0.shape[0]-1
-    poles = np.asarray(poles).reshape(-1)
-    if poles.shape[0] > order:
-        raise ValueError('Too many poles provided')
-    poles = padr(poles, order, 0)
-    # Get denominator coefficients from a_1 to a_order (a_0 is 1)
-    ar = np.poly(poles)[1:].real
-    Q = la.toeplitz(q0)
-    d, v = np.linalg.eigh(Q)
-    if opts['fix_pos']:
-        d = d/np.max(d)
-        d[d < 0] = 0.
-    Qs = mdot(v, np.diag(np.sqrt(d)), np.linalg.inv(v))
-    A = np.eye(order, order, 1)
-    A[order-1] = -ar[::-1]
-    C = -ar[::-1].reshape((1, order))
-    ntf_ir = ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts)
-    return (np.roots(ntf_ir), poles, 1.)
 
 
 def ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts):

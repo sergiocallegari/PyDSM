@@ -37,7 +37,7 @@ from __future__ import division, print_function
 
 import numpy as np
 from ...ft import idtft_hermitian
-from ...delsig import evalTF
+from ...delsig import evalTF, padr
 from warnings import warn
 from ...exceptions import PyDsmDeprecationWarning
 from ...utilities import digested_options
@@ -377,16 +377,33 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
         q0 = q0*normalize
     if opts['modeler'] == 'cvxpy_old':
         from ._fir_weighting_tinoco import (
-            ntf_hybrid_from_q0 as _ntf_hybrid_from_q0)
+            ntf_fir_from_digested as _ntf_fir_from_digested)
     elif opts['modeler'] == 'cvxpy':
         from ._fir_weighting_cvxpy import (
-            ntf_hybrid_from_q0 as _ntf_hybrid_from_q0)
+            ntf_fir_from_digested as _ntf_fir_from_digested)
     elif opts['modeler'] == 'picos':
         from ._fir_weighting_picos import (
-            ntf_hybrid_from_q0 as _ntf_hybrid_from_q0)
+            ntf_fir_from_digested as _ntf_fir_from_digested)
     else:
         raise ValueError("Unsupported modeling backend")
-    return _ntf_hybrid_from_q0(q0, H_inf, poles, **opts)
+    order = q0.shape[0]-1
+    poles = np.asarray(poles).reshape(-1)
+    if poles.shape[0] > order:
+        raise ValueError('Too many poles provided')
+    poles = padr(poles, order, 0)
+    # Get denominator coefficients from a_1 to a_order (a_0 is 1)
+    ar = np.poly(poles)[1:].real
+    Q = la.toeplitz(q0)
+    d, v = np.linalg.eigh(Q)
+    if opts['fix_pos']:
+        d = d/np.max(d)
+        d[d < 0] = 0.
+    Qs = v.dot(np.diag(np.sqrt(d))).dot(np.linalg.inv(v))
+    A = np.eye(order, order, 1)
+    A[order-1] = -ar[::-1]
+    C = -ar[::-1].reshape((1, order))
+    ntf_ir = _ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts)
+    return (np.roots(ntf_ir), poles, 1.)
 
 
 ntf_hybrid_from_q0.default_options = {"modeler": "cvxpy_old",
