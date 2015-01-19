@@ -330,8 +330,8 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
         attribute.
     modeler : string
         modeling backend for the optimization problem. Currently, the
-        ``cvxpy_old`` and ``cvxpy`` backends are supported. Default is
-        ``cvxpy_old``.
+        ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
+        Default is ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
         Allowed options include:
@@ -366,6 +366,9 @@ def ntf_hybrid_from_q0(q0, H_inf=1.5, poles=[], normalize="auto", **options):
             ntf_hybrid_from_q0 as _ntf_hybrid_from_q0)
     elif opts['modeler'] == 'cvxpy':
         from ._fir_weighting_cvxpy import (
+            ntf_hybrid_from_q0 as _ntf_hybrid_from_q0)
+    elif opts['modeler'] == 'picos':
+        from ._fir_weighting_picos import (
             ntf_hybrid_from_q0 as _ntf_hybrid_from_q0)
     else:
         raise ValueError("Unsupported modeling backend")
@@ -423,8 +426,8 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
         attribute.
     modeler : string
         modeling backend for the optimization problem. Currently, the
-        ``cvxpy_old`` and ``cvxpy`` backends are supported. Default is
-        ``cvxpy_old``.
+        ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
+        Default is ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
         Allowed options include:
