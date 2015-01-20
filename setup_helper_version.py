@@ -44,8 +44,8 @@ def call_git_describe(abbrev=4):
         p = Popen(['git', 'describe', '--abbrev=%d' % abbrev],
                   stdout=PIPE, stderr=PIPE)
         p.stderr.close()
-        line = p.stdout.readlines()[0]
-        return line.strip()
+        gitversion = p.stdout.readlines()[0].strip()
+        return gitversion.replace('-', '+git-', 1)
 
     except:
         return None
