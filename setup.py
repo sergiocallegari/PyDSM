@@ -81,7 +81,7 @@ setup(
     ext_modules=ext_modules,
     test_suite="nose.collector",
     requires=['scipy (>=0.10.1)',
-              'numpy (>=1.6.1)',
+              'numpy (>=1.8.0)',
               'matplotlib (>= 1.1.0)',
               'cvxopt (>=1.1.4)',
               'cython (>=0.16)',
