@@ -36,7 +36,6 @@ Functions
 
     mult_weightings      -- Product of weighting functions
     q0_weighting         -- Q matrix from a noise weighting function
-    ntf_hybrid_from_q0   -- design hybrid NTF from matrix Q
     ntf_fir_from_q0      -- design FIR NTF from matrix Q
     ntf_hybrid_weighting -- design hybrid NTF from weighting function
     ntf_fir_weighting    -- design FIR NTF from weighting function

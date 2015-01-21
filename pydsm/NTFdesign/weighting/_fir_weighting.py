@@ -161,7 +161,7 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
         Default is ``cvxpy_old``.
     cvxpy_opts : dictionary, optional
-       A dictionary of options to use with the ``cvxpy` modeling library.
+       A dictionary of options to use with the ``cvxpy`` modeling library.
        Allowed options include:
 
        ``override_kktsolver`` (bool)
@@ -171,6 +171,7 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
            performance price.
        ``solver`` (string)
            The solver backend to use. Either `cvxopt` or `scs`
+
     cvxopt_opts : dict, optional
         A dictionary of options for the ``cvxopt`` optimizer.
         Allowed options include:
@@ -334,7 +335,7 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
         ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
         Default is ``cvxpy_old``.
     cvxpy_opts : dictionary, optional
-       A dictionary of options to use with the ``cvxpy` modeling library.
+       A dictionary of options to use with the ``cvxpy`` modeling library.
        Allowed options include:
 
        ``override_kktsolver`` (bool)
@@ -344,6 +345,7 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
            performance price.
        ``solver`` (string)
            The solver backend to use. Either `cvxopt` or `scs`
+
     cvxopt_opts : dict, optional
         A dictionary of options for the ``cvxopt`` optimizer.
         Allowed options include:
@@ -385,6 +387,16 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
     Default values for the options not directly documented in the function
     call signature can be checked and updated by changing the function
     ``default_options`` attribute.
+
+    The internal operation of this function is described in [1]_.
+
+    .. [1] Sergio Callegari, Federico Bizzarri *“Noise Weighting in the
+       Design of ΔΣ Modulators (with a Psychoacoustic Coder as an
+       Example),”* IEEE Transactions on Circuits and Systems - Part II:
+       Express Briefs, Vol. 60, N. 11, pp. 756-760. Nov. 2013. DOI:
+       `10.1109/TCSII.2013.2281892
+       <http://dx.doi.org/10.1109/TCSII.2013.2281892>`__. Pre-print
+       available on `arXiv <http://arxiv.org/abs/1309.6151>`__.
 
     See Also
     --------
@@ -469,7 +481,7 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
         ``cvxpy_old``, ``cvxpy`` and ``picos`` backends are supported.
         Default is ``cvxpy_old``.
     cvxpy_opts : dictionary, optional
-       A dictionary of options to use with the ``cvxpy` modeling library.
+       A dictionary of options to use with the ``cvxpy`` modeling library.
        Allowed options include:
 
        ``override_kktsolver`` (bool)
@@ -479,6 +491,7 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
            performance price.
        ``solver`` (string)
            The solver backend to use. Either `cvxopt` or `scs`
+
     cvxopt_opts : dict, optional
         A dictionary of options for the ``cvxopt`` optimizer.
         Allowed options include:
