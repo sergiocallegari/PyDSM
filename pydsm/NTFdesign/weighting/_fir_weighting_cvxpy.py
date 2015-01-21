@@ -29,6 +29,10 @@ def ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts):
     Version for the cvxpy modeler.
     """
     verbose = opts['show_progress']
+    if opts['cvxpy_opts']['solver'] == 'cvxopt':
+        opts['cvxpy_opts']['solver'] = cvxpy.CVXOPT
+    elif opts['cvxpy_opts']['solver'] == 'scs':
+        opts['cvxpy_opts']['solver'] = cvxpy.SCS
     order = np.size(Qs, 0)-1
     br = cvxpy.Variable(order, 1, name='br')
     b = cvxpy.vstack(1, br)
@@ -50,6 +54,5 @@ def ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts):
         cvxpy.upper_tri(Mconstr) == cvxpy.upper_tri(M),
     ]
     p = cvxpy.Problem(target, constraints)
-    p.solve(solver=cvxpy.CVXOPT, verbose=verbose,
-            kktsolver="chol", **opts['cvxopt_opts'])
+    p.solve(verbose=verbose, **opts['cvxpy_opts'])
     return np.hstack((1, np.asarray(br.value.T)[0]))

@@ -65,7 +65,7 @@ class TestNTF_Hybrid(TestCase):
         np.testing.assert_allclose(z, self.e_z, 3e-4)
         np.testing.assert_allclose(p, self.e_p, 3e-4)
 
-    def test_ntf_hybrid_cvxpy(self):
+    def test_ntf_hybrid_cvxpy_cvxopt(self):
         try:
             import cvxpy     # analysis:ignore
         except:
@@ -79,6 +79,21 @@ class TestNTF_Hybrid(TestCase):
         np.testing.assert_allclose(k, self.e_k, 1e-6)
         np.testing.assert_allclose(z, self.e_z, 3e-4)
         np.testing.assert_allclose(p, self.e_p, 3e-4)
+
+    def test_ntf_hybrid_cvxpy_scs(self):
+        try:
+            import cvxpy     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy' not installed")
+        z, p, k = ntf_hybrid_weighting(self.order, self.w, H_inf=1.5,
+                                       poles=self.e_p,
+                                       show_progress=False,
+                                       modeler='cvxpy',
+                                       cvxpy_opts={"solver": "scs"},
+                                       scs_opts={"eps": 1E-14})
+        np.testing.assert_allclose(k, self.e_k, 1e-6)
+        np.testing.assert_allclose(z, self.e_z, 5e-1)
+        np.testing.assert_allclose(p, self.e_p, 3e-6)
 
     def test_ntf_hybrid_picos(self):
         try:

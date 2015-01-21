@@ -85,7 +85,7 @@ class TestNTF_Filter(TestCase):
                                  show_progress=False)
         np.testing.assert_allclose(ntf1[0], self.z_e, rtol=1e-5)
 
-    def test_ntf_butt_bp8_cvxpy(self):
+    def test_ntf_butt_bp8_cvxpy_cvxopt(self):
         try:
             import cvxpy     # analysis:ignore
         except:
@@ -93,6 +93,16 @@ class TestNTF_Filter(TestCase):
         ntf1 = ntf_fir_weighting(self.order, self.hz, modeler='cvxpy',
                                  show_progress=False)
         np.testing.assert_allclose(ntf1[0], self.z_e, rtol=1e-7)
+
+    def test_ntf_butt_bp8_cvxpy_scs(self):
+        try:
+            import cvxpy     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy' not installed")
+        ntf1 = ntf_fir_weighting(self.order, self.hz, modeler='cvxpy',
+                                 cvxpy_opts={'solver': 'scs'},
+                                 show_progress=False)
+        np.testing.assert_allclose(ntf1[0], self.z_e, rtol=1e-4)
 
     def test_ntf_butt_bp8_picos(self):
         try:

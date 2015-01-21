@@ -30,10 +30,9 @@ def ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts):
     Version for the cvxpy modeler.
     """
     verbose = 1 if opts.get('show_progress', True) else 0
-    cvxopt_opts = opts['cvxopt_opts']
-    if 'maxiters' in cvxopt_opts:
-        cvxopt_opts['maxit'] = cvxopt_opts['maxiters']
-        del cvxopt_opts['maxiters']
+    if 'maxiters' in opts['picos_opts']:
+        opts['picos_opts']['maxit'] = opts['picos_opts']['maxiters']
+        del opts['picos_opts']['maxiters']
     # Do the computation
     order = np.size(Qs, 0)-1
     Qs = cvxopt.matrix(Qs)
@@ -57,6 +56,6 @@ def ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts):
     p.add_constraint(abs(Qs*b) < power)
     p.add_constraint(constraint1)
     p.add_constraint(constraint2)
-    p.set_options(**opts['cvxopt_opts'])
+    p.set_options(**opts['picos_opts'])
     p.solve(verbose=verbose)
     return np.hstack((1, np.asarray(br.value.T)[0]))

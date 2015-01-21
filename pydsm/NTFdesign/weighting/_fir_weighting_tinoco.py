@@ -51,6 +51,6 @@ def ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts):
     constraint2 = cvxpy_tinoco.belongs(X, cvxpy_tinoco.semidefinite_cone)
     p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(target),
                              [constraint1, constraint2])
-    p.options.update(opts["cvxopt_opts"])
+    p.options.update(opts["tinoco_opts"])
     p.solve(quiet)
     return np.hstack((1, np.asarray(br.value.T)[0]))
