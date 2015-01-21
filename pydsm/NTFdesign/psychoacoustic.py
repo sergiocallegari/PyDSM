@@ -193,7 +193,7 @@ def ntf_dunn(order=3, osr=64, H_inf=1.5):
 
 def ntf_fir_audio_weighting(
         order, osr,
-        audio_weighting=audio_weightings.f_weighting,
+        audio_weighting='f',
         audio_band=22.05E3,
         max_attn=120,
         H_inf=1.5,
@@ -210,7 +210,7 @@ def ntf_fir_audio_weighting(
         Delta sigma modulator order
     osr : float
         the oversampling ratio
-    audio_weighting : callable
+    audio_weighting : callable or string
         audio weighting function. This is a function taking a frequency and
         expressing the weighting at that frequency in terms of acoustic power.
         Functions in the :mod:`pydsm.audio_weightings` module are suitable
@@ -268,6 +268,17 @@ def ntf_fir_audio_weighting(
     scipy.integrate.quad : for the meaning of the integrator parameters.
     cvxopt : for the optimizer parameters
     """
+    if not callable(audio_weighting):
+        if audio_weighting == 'f':
+            audio_weighting = audio_weightings.f_weighting
+        elif audio_weighting == 'a':
+            audio_weighting = audio_weightings.a_weighting
+        elif audio_weighting == 'b':
+            audio_weighting = audio_weightings.b_weighting
+        elif audio_weighting == 'c':
+            audio_weighting = audio_weightings.c_weighting
+        elif audio_weighting == 'd':
+            audio_weighting = audio_weightings.d_weighting
 
     def w(f):
         ma = undbp(-max_attn)
