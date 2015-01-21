@@ -24,6 +24,8 @@ from numpy.testing import TestCase, run_module_suite
 import numpy as np
 from pydsm.NTFdesign import ntf_hybrid_weighting
 from pydsm.relab import cplxpair
+from nose.plugins.skip import SkipTest
+from numpy.testing import decorators as dec
 
 __all__ = ["TestNTF_Hybrid"]
 
@@ -31,34 +33,84 @@ __all__ = ["TestNTF_Hybrid"]
 class TestNTF_Hybrid(TestCase):
 
     def setUp(self):
-        pass
-
-    def test_ntf_hybrid(self):
         # This test emulates a Schreier-type design using the hybrid
         # design method
 
         # Set the main design parameters
-        order = 3
-        OSR = 64
+        self.order = 3
+        self.OSR = 64
 
         # Set the NTF z, p, k that would be returned by Scheier's method
-        e_k = 1
+        self.e_k = 1
         e_z = [1.0000, 0.9993 - 0.0382j, 0.9993 + 0.0382j]
-        e_z = cplxpair(e_z)
+        self.e_z = cplxpair(e_z)
         e_p = [0.6692, 0.7652 - 0.2795j, 0.7652 + 0.2795j]
-        e_p = cplxpair(e_p)
+        self.e_p = cplxpair(e_p)
 
-        # Prepare the weighting function for the hybrid method
-        def w(f):
-            return 1. if f <= 0.5/OSR else 1E-12
+    # Prepare the weighting function for the hybrid method
+    def w(self, f):
+        return 1. if f <= 0.5/self.OSR else 1E-12
 
-        z, p, k = ntf_hybrid_weighting(order, w, H_inf=1.5, poles=e_p,
+    def test_ntf_hybrid_tinoco(self):
+        try:
+            import cvxpy_tinoco     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy_old' not installed")
+        z, p, k = ntf_hybrid_weighting(self.order, self.w, H_inf=1.5,
+                                       poles=self.e_p,
                                        show_progress=False,
+                                       modeler='cvxpy_old',
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
-        np.testing.assert_allclose(k, e_k, 1e-6)
-        np.testing.assert_allclose(z, e_z, 3e-4)
-        np.testing.assert_allclose(p, e_p, 3e-4)
+        np.testing.assert_allclose(k, self.e_k, 1e-6)
+        np.testing.assert_allclose(z, self.e_z, 3e-4)
+        np.testing.assert_allclose(p, self.e_p, 3e-4)
+
+    def test_ntf_hybrid_cvxpy_cvxopt(self):
+        try:
+            import cvxpy     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy' not installed")
+        z, p, k = ntf_hybrid_weighting(self.order, self.w, H_inf=1.5,
+                                       poles=self.e_p,
+                                       show_progress=False,
+                                       modeler='cvxpy',
+                                       cvxopt_opts={"reltol": 1E-14,
+                                                    "abstol": 1E-16})
+        np.testing.assert_allclose(k, self.e_k, 1e-6)
+        np.testing.assert_allclose(z, self.e_z, 3e-4)
+        np.testing.assert_allclose(p, self.e_p, 3e-4)
+
+    @dec.skipif(True, 'SCS has poor accuracy')
+    def test_ntf_hybrid_cvxpy_scs(self):
+        try:
+            import cvxpy     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy' not installed")
+        z, p, k = ntf_hybrid_weighting(self.order, self.w, H_inf=1.5,
+                                       poles=self.e_p,
+                                       show_progress=False,
+                                       modeler='cvxpy',
+                                       cvxpy_opts={"solver": "scs"},
+                                       scs_opts={"eps": 1E-14})
+        np.testing.assert_allclose(k, self.e_k, 1e-6)
+        np.testing.assert_allclose(z, self.e_z, 5e-1)
+        np.testing.assert_allclose(p, self.e_p, 3e-6)
+
+    def test_ntf_hybrid_picos(self):
+        try:
+            import picos     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'picos' not installed")
+        z, p, k = ntf_hybrid_weighting(self.order, self.w, H_inf=1.5,
+                                       poles=self.e_p,
+                                       show_progress=False,
+                                       modeler='picos',
+                                       cvxopt_opts={"reltol": 1E-14,
+                                                    "abstol": 1E-16})
+        np.testing.assert_allclose(k, self.e_k, 1e-6)
+        np.testing.assert_allclose(z, self.e_z, 3e-4)
+        np.testing.assert_allclose(p, self.e_p, 3e-4)
 
 
 if __name__ == '__main__':
