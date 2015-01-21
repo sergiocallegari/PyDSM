@@ -23,7 +23,8 @@ from __future__ import division, print_function
 import numpy as np
 from scipy import signal
 import time
-from pydsm.NTFdesign import ntf_fir_weighting
+from pydsm.NTFdesign import ntf_fir_weighting, quantization_noise_gain
+from pydsm.delsig import evalTF
 from nose.plugins.skip import SkipTest
 
 
@@ -45,6 +46,7 @@ class Bench_ntf_fir_weighting(object):
         w1 = (np.sqrt(B0**2+4*w0**2)-B0)/2
         w2 = (np.sqrt(B0**2+4*w0**2)+B0)/2
         cls.hz = signal.butter(4, [w1, w2], 'bandpass', output='zpk')
+        cls.ff = np.linspace(0, 0.5, 1024)
 
     @classmethod
     def teardown_class(cls):
@@ -57,22 +59,69 @@ class Bench_ntf_fir_weighting(object):
             raise SkipTest("Modeler 'cvxpy_old' not installed")
         print("Benchmarking NTF FIR synthesis with 'cvxpy_old' modeler")
         tic = time.clock()
-        ntf_fir_weighting(self.order, self.hz, self.H_inf,
-                          modeler='cvxpy_old', show_progress=False)
+        ntf = ntf_fir_weighting(self.order, self.hz, self.H_inf,
+                                modeler='cvxpy_old', show_progress=False)
         timing = time.clock()-tic
-        print("NTF FIR synthesis with 'cvxpy_old' modeler: %6.2f" % timing)
+        mf = quantization_noise_gain(ntf, self.hz)
+        vv = np.abs(evalTF(ntf, np.exp(2j*np.pi*self.ff)))
+        pe = np.max(vv)-self.H_inf
+        print("Timing: {:6.2f}".format(timing))
+        print("Accuracy on constraint: {:e}".format(pe))
+        print("Accuracy on goal: {:e}".format(mf))
 
-    def bench_ntf_fir_weighting_cvxpy(self):
+    def bench_ntf_fir_weighting_cvxpy_cvxopt(self):
         try:
             import cvxpy     # analysis:ignore
         except:
             raise SkipTest("Modeler 'cvxpy' not installed")
-        print("Benchmarking NTF FIR synthesis with 'cvxpy' modeler")
+        print("Benchmarking NTF FIR synthesis with 'cvxpy' modeler + `cvxopt`")
         tic = time.clock()
-        ntf_fir_weighting(self.order, self.hz, self.H_inf,
-                          modeler='cvxpy', show_progress=False)
+        ntf = ntf_fir_weighting(self.order, self.hz, self.H_inf,
+                                modeler='cvxpy', show_progress=False)
         timing = time.clock()-tic
-        print("NTF FIR synthesis with 'cvxpy' modeler: %6.2f" % timing)
+        mf = quantization_noise_gain(ntf, self.hz)
+        vv = np.abs(evalTF(ntf, np.exp(2j*np.pi*self.ff)))
+        pe = np.max(vv)-self.H_inf
+        print("Timing: {:6.2f}".format(timing))
+        print("Accuracy on constraint: {:e}".format(pe))
+        print("Accuracy on goal: {:e}".format(mf))
+
+    def bench_ntf_fir_weighting_cvxpy_cvxopt2(self):
+        try:
+            import cvxpy     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy' not installed")
+        print("Benchmarking NTF FIR synthesis with 'cvxpy' modeler + `cvxopt`"
+              " + default kkt solver")
+        tic = time.clock()
+        ntf = ntf_fir_weighting(self.order, self.hz, self.H_inf,
+                                modeler='cvxpy', show_progress=False,
+                                cvxpy_opts={'override_kktsolver': False})
+        timing = time.clock()-tic
+        mf = quantization_noise_gain(ntf, self.hz)
+        vv = np.abs(evalTF(ntf, np.exp(2j*np.pi*self.ff)))
+        pe = np.max(vv)-self.H_inf
+        print("Timing: {:6.2f}".format(timing))
+        print("Accuracy on constraint: {:e}".format(pe))
+        print("Accuracy on goal: {:e}".format(mf))
+
+    def bench_ntf_fir_weighting_cvxpy_scs(self):
+        try:
+            import cvxpy     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy' not installed")
+        print("Benchmarking NTF FIR synthesis with 'cvxpy' modeler + `scs`")
+        tic = time.clock()
+        ntf = ntf_fir_weighting(self.order, self.hz, self.H_inf,
+                                modeler='cvxpy', show_progress=False,
+                                cvxpy_opts={'solver': 'scs'})
+        timing = time.clock()-tic
+        mf = quantization_noise_gain(ntf, self.hz)
+        vv = np.abs(evalTF(ntf, np.exp(2j*np.pi*self.ff)))
+        pe = np.max(vv)-self.H_inf
+        print("Timing: {:6.2f}".format(timing))
+        print("Accuracy on constraint: {:e}".format(pe))
+        print("Accuracy on goal: {:e}".format(mf))
 
     def bench_ntf_fir_weighting_picos(self):
         try:
@@ -81,7 +130,12 @@ class Bench_ntf_fir_weighting(object):
             raise SkipTest("Modeler 'picos' not installed")
         print("Benchmarking NTF FIR synthesis with 'picos' modeler")
         tic = time.clock()
-        ntf_fir_weighting(self.order, self.hz, self.H_inf,
-                          modeler='picos', show_progress=False)
+        ntf = ntf_fir_weighting(self.order, self.hz, self.H_inf,
+                                modeler='picos', show_progress=False)
         timing = time.clock()-tic
-        print("NTF FIR synthesis with 'picos' modeler: %6.2f" % timing)
+        mf = quantization_noise_gain(ntf, self.hz)
+        vv = np.abs(evalTF(ntf, np.exp(2j*np.pi*self.ff)))
+        pe = np.max(vv)-self.H_inf
+        print("Timing: {:6.2f}".format(timing))
+        print("Accuracy on constraint: {:e}".format(pe))
+        print("Accuracy on goal: {:e}".format(mf))
