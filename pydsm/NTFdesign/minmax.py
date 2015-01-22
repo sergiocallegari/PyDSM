@@ -87,7 +87,7 @@ from __future__ import division, print_function
 
 import numpy as np
 from scipy.signal import ss2zpk
-import cvxpy_tinoco as cvxpy
+import cvxpy_tinoco
 from warnings import warn
 from ..exceptions import PyDsmDeprecationWarning
 from ..utilities import digested_options
@@ -173,46 +173,48 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     Omega = 1./osr*np.pi
 
     # State space representation of NTF
-    A = cvxpy.matrix(np.vstack((np.hstack((np.zeros((order-1, 1)),
-                                           np.eye(order-1))),
-                                np.zeros((1, order)))))
-    B = cvxpy.matrix(np.vstack((np.zeros((order-1, 1)), [1.])))
+    A = cvxpy_tinoco.matrix(
+        np.vstack((np.hstack((np.zeros((order-1, 1)), np.eye(order-1))),
+                   np.zeros((1, order)))))
+    B = cvxpy_tinoco.matrix(np.vstack((np.zeros((order-1, 1)), [1.])))
     # C contains the NTF coefficients
-    D = cvxpy.matrix([[1]])
+    D = cvxpy_tinoco.matrix([[1]])
 
     # Set up the problem
-    c = cvxpy.variable(1, order)
-    P = cvxpy.variable(order, order, 'symmetric')
-    Q = cvxpy.variable(order, order, 'symmetric')
-    g = cvxpy.variable(1, 1)
+    c = cvxpy_tinoco.variable(1, order)
+    P = cvxpy_tinoco.variable(order, order, 'symmetric')
+    Q = cvxpy_tinoco.variable(order, order, 'symmetric')
+    g = cvxpy_tinoco.variable(1, 1)
     F = []
     if f0 == 0:
         # Lowpass modulator
         M1 = A.T*P*A+Q*A+A.T*Q-P-2*Q*np.cos(Omega)
         M2 = A.T*P*B + Q*B
         M3 = B.T*P*B-g
-        M = cvxpy.vstack((cvxpy.hstack((M1, M2, c.T)),
-                          cvxpy.hstack((M2.T, M3, D)),
-                          cvxpy.hstack((c, D, -D))))
-        F += [cvxpy.belongs(Q, cvxpy.semidefinite_cone)]
-        F += [cvxpy.belongs(-M, cvxpy.semidefinite_cone)]
+        M = cvxpy_tinoco.vstack(
+            (cvxpy_tinoco.hstack((M1, M2, c.T)),
+             cvxpy_tinoco.hstack((M2.T, M3, D)),
+             cvxpy_tinoco.hstack((c, D, -1))))
+        F += [cvxpy_tinoco.belongs(Q, cvxpy_tinoco.semidefinite_cone)]
+        F += [cvxpy_tinoco.belongs(-M, cvxpy_tinoco.semidefinite_cone)]
         if zf:
             # Force a zero at DC
-            F += [cvxpy.equals(cvxpy.sum(c), -1)]
+            F += [cvxpy_tinoco.equals(cvxpy_tinoco.sum(c), -1)]
         if H_inf < np.inf:
             # Enforce the Lee constraint
-            R = cvxpy.variable(order, order, 'symmetric')
-            F += [cvxpy.belongs(R, cvxpy.semidefinite_cone)]
-            MM = cvxpy.vstack((cvxpy.hstack((A.T*R*A-R, A.T*R*B, c.T)),
-                               cvxpy.hstack((B.T*R*A, -H_inf**2+B.T*R*B, 1)),
-                               cvxpy.hstack((c, D, -D))))
-            F += [cvxpy.belongs(-MM, cvxpy.semidefinite_cone)]
+            R = cvxpy_tinoco.variable(order, order, 'symmetric')
+            F += [cvxpy_tinoco.belongs(R, cvxpy_tinoco.semidefinite_cone)]
+            MM = cvxpy_tinoco.vstack(
+                (cvxpy_tinoco.hstack((A.T*R*A-R, A.T*R*B, c.T)),
+                 cvxpy_tinoco.hstack((B.T*R*A, -H_inf**2+B.T*R*B, D)),
+                 cvxpy_tinoco.hstack((c, D, -1))))
+            F += [cvxpy_tinoco.belongs(-MM, cvxpy_tinoco.semidefinite_cone)]
     else:
         # Bandpass modulator
         # not implemented yet
         return None
-    F += [cvxpy.greater_equals(g, 0)]
-    p = cvxpy.program(cvxpy.minimize(g), F)
+    F += [cvxpy_tinoco.greater_equals(g, 0)]
+    p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(g), F)
     p.options.update(opts["cvxopt_opts"])
     p.solve(quiet)
     ntf = ss2zpk(A, B, np.asarray(c.value), D)
