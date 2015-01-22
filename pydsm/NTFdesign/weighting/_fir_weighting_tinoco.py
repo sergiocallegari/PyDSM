@@ -45,7 +45,7 @@ def ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts):
     M = cvxpy_tinoco.vstack((
         cvxpy_tinoco.hstack((M1*A-X, M2, C.T)),
         cvxpy_tinoco.hstack((M2.T, B.T*X*B-H_inf**2, D)),
-        cvxpy_tinoco.hstack((C, D, cvxpy_tinoco.matrix(-1.)))
+        cvxpy_tinoco.hstack((C, D, -1))
         ))
     constraint1 = cvxpy_tinoco.belongs(-M, cvxpy_tinoco.semidefinite_cone)
     constraint2 = cvxpy_tinoco.belongs(X, cvxpy_tinoco.semidefinite_cone)
