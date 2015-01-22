@@ -49,5 +49,22 @@ class TestSynthesizeNTFminmax(TestCase):
         np.testing.assert_almost_equal(k, e_k, 6)
         np.testing.assert_almost_equal(z, e_z, 4)
 
+    def test_BP8(self):
+        z, p, k = ntf_fir_minmax(order=8, osr=32, f0=0.2, show_progress=False)
+        e_k = 1
+        e_z = [2.94348009789963e-01 + 9.14543800193135e-01j,
+               2.94348009789963e-01 - 9.14543800193135e-01j,
+               6.76745367518838e-01 + 0.00000000000000e+00j,
+               2.46816733211163e-01 + 5.50000475735513e-01j,
+               2.46816733211163e-01 - 5.50000475735513e-01j,
+               -4.58884378359569e-01 + 4.10643263860101e-01j,
+               -4.58884378359569e-01 - 4.10643263860101e-01j,
+               -5.91022020183929e-01 + 0.00000000000000e+00j]
+        e_z = cplxpair(e_z)
+        z = cplxpair(z)
+        np.testing.assert_almost_equal(k, e_k, 6)
+        np.testing.assert_almost_equal(z, e_z, 4)
+
+
 if __name__ == '__main__':
     run_module_suite()
