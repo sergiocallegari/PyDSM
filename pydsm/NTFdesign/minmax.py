@@ -175,9 +175,7 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     omega0 = 2*f0*np.pi
 
     # State space representation of NTF
-    A = cvxpy_tinoco.matrix(
-        np.vstack((np.hstack((np.zeros((order-1, 1)), np.eye(order-1))),
-                   np.zeros((1, order)))))
+    A = cvxpy_tinoco.matrix(np.eye(order, order, 1))
     B = cvxpy_tinoco.matrix(np.vstack((np.zeros((order-1, 1)), [1.])))
     # C contains the NTF coefficients
     D = cvxpy_tinoco.matrix([[1]])
