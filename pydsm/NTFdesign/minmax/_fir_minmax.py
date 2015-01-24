@@ -115,6 +115,8 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
         raise ValueError('Unsupported modeling backend {}'.format(
             opts['modeler']))
     digested_options(options, {})
+    if np.isscalar(f0):
+        f0 = [f0]
     # Do the computation
     ntf_ir = _ntf_fir_from_digested(order, osr, H_inf, f0, zf, **dig_opts)
     return (np.roots(ntf_ir), np.zeros(order), 1.)

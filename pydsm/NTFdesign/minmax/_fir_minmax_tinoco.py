@@ -22,9 +22,10 @@ from __future__ import division, print_function
 
 import numpy as np
 import cvxpy_tinoco
+import operator
 
 
-def ntf_fir_from_digested(order, osr, H_inf, f0, zf, **opts):
+def ntf_fir_from_digested(order, osr, H_inf, f0s, zf, **opts):
     """
     Synthesize FIR NTF with minmax approach from predigested specification
 
@@ -34,8 +35,6 @@ def ntf_fir_from_digested(order, osr, H_inf, f0, zf, **opts):
 
     # Maximum signal bandwidth in angular frequency
     Omega = 1./osr*np.pi
-    # Centerband in angular frequency
-    omega0 = 2*f0*np.pi
 
     # State space representation of NTF
     A = cvxpy_tinoco.matrix(np.eye(order, order, 1))
@@ -45,54 +44,60 @@ def ntf_fir_from_digested(order, osr, H_inf, f0, zf, **opts):
 
     # Set up the problem
     c = cvxpy_tinoco.variable(1, order)
-    P = cvxpy_tinoco.variable(order, order, 'symmetric')
-    Q = cvxpy_tinoco.variable(order, order, 'symmetric')
-    g = cvxpy_tinoco.variable(1, 1)
     F = []
-    if f0 == 0:
-        # Lowpass modulator
-        M1 = A.T*P*A+Q*A+A.T*Q-P-2*Q*np.cos(Omega)
-        M2 = A.T*P*B + Q*B
-        M3 = B.T*P*B-g
-        M = cvxpy_tinoco.vstack(
-            (cvxpy_tinoco.hstack((M1, M2, c.T)),
-             cvxpy_tinoco.hstack((M2.T, M3, D)),
-             cvxpy_tinoco.hstack((c, D, -1))))
-        F += [cvxpy_tinoco.belongs(Q, cvxpy_tinoco.semidefinite_cone)]
-        F += [cvxpy_tinoco.belongs(-M, cvxpy_tinoco.semidefinite_cone)]
-        if zf:
-            # Force a zero at DC
-            F += [cvxpy_tinoco.equals(cvxpy_tinoco.sum(c), -1)]
-    else:
-        # Bandpass modulator
-        M1r = (A.T*P*A + Q*A*np.cos(omega0) + A.T*Q*np.cos(omega0) -
-               P - 2*Q*np.cos(Omega))
-        M2r = A.T*P*B + Q*B*np.cos(omega0)
-        M3r = B.T*P*B - g
-        M1i = A.T*Q*np.sin(omega0) - Q*A*np.sin(omega0)
-        M21i = -Q*B*np.sin(omega0)
-        M22i = B.T*Q*np.sin(omega0)
-        Mr = cvxpy_tinoco.vstack(
-            (cvxpy_tinoco.hstack((M1r, M2r, c.T)),
-             cvxpy_tinoco.hstack((M2r.T, M3r, D)),
-             cvxpy_tinoco.hstack((c, D, -1))))
-        Mi = cvxpy_tinoco.vstack(
-            (cvxpy_tinoco.hstack((M1i, M21i, cvxpy_tinoco.zeros((order, 1)))),
-             cvxpy_tinoco.hstack((M22i, 0, 0)),
-             cvxpy_tinoco.hstack((cvxpy_tinoco.zeros((1, order)), 0, 0))))
-        M = cvxpy_tinoco.vstack(
-            (cvxpy_tinoco.hstack((Mr, Mi)),
-             cvxpy_tinoco.hstack((-Mi, Mr))))
-        F += [cvxpy_tinoco.belongs(Q, cvxpy_tinoco.semidefinite_cone)]
-        F += [cvxpy_tinoco.belongs(-M, cvxpy_tinoco.semidefinite_cone)]
-        if zf:
-            # Force a zero at z=np.exp(1j*omega0)
-            nn = np.arange(order).reshape((order, 1))
-            vr = cvxpy_tinoco.matrix(np.cos(omega0*nn))
-            vi = cvxpy_tinoco.matrix(np.sin(omega0*nn))
-            vn = cvxpy_tinoco.matrix(
-                [-np.cos(omega0*order), -np.sin(omega0*order)])
-            F += [cvxpy_tinoco.equals(c*cvxpy_tinoco.hstack((vr, vi)), vn)]
+    gg = []
+
+    for f0 in f0s:
+        omega0 = 2*f0*np.pi
+        P = cvxpy_tinoco.variable(order, order, 'symmetric')
+        Q = cvxpy_tinoco.variable(order, order, 'symmetric')
+        g = cvxpy_tinoco.variable(1, 1)
+        if f0 == 0:
+            # Lowpass modulator
+            M1 = A.T*P*A+Q*A+A.T*Q-P-2*Q*np.cos(Omega)
+            M2 = A.T*P*B + Q*B
+            M3 = B.T*P*B-g
+            M = cvxpy_tinoco.vstack(
+                (cvxpy_tinoco.hstack((M1, M2, c.T)),
+                 cvxpy_tinoco.hstack((M2.T, M3, D)),
+                 cvxpy_tinoco.hstack((c, D, -1))))
+            F += [cvxpy_tinoco.belongs(Q, cvxpy_tinoco.semidefinite_cone)]
+            F += [cvxpy_tinoco.belongs(-M, cvxpy_tinoco.semidefinite_cone)]
+            if zf:
+                # Force a zero at DC
+                F += [cvxpy_tinoco.equals(cvxpy_tinoco.sum(c), -1)]
+        else:
+            # Bandpass modulator
+            M1r = (A.T*P*A + Q*A*np.cos(omega0) + A.T*Q*np.cos(omega0) -
+                   P - 2*Q*np.cos(Omega))
+            M2r = A.T*P*B + Q*B*np.cos(omega0)
+            M3r = B.T*P*B - g
+            M1i = A.T*Q*np.sin(omega0) - Q*A*np.sin(omega0)
+            M21i = -Q*B*np.sin(omega0)
+            M22i = B.T*Q*np.sin(omega0)
+            Mr = cvxpy_tinoco.vstack(
+                (cvxpy_tinoco.hstack((M1r, M2r, c.T)),
+                 cvxpy_tinoco.hstack((M2r.T, M3r, D)),
+                 cvxpy_tinoco.hstack((c, D, -1))))
+            Mi = cvxpy_tinoco.vstack(
+                (cvxpy_tinoco.hstack((M1i, M21i,
+                                      cvxpy_tinoco.zeros((order, 1)))),
+                 cvxpy_tinoco.hstack((M22i, 0, 0)),
+                 cvxpy_tinoco.hstack((cvxpy_tinoco.zeros((1, order)), 0, 0))))
+            M = cvxpy_tinoco.vstack(
+                (cvxpy_tinoco.hstack((Mr, Mi)),
+                 cvxpy_tinoco.hstack((-Mi, Mr))))
+            F += [cvxpy_tinoco.belongs(Q, cvxpy_tinoco.semidefinite_cone)]
+            F += [cvxpy_tinoco.belongs(-M, cvxpy_tinoco.semidefinite_cone)]
+            if zf:
+                # Force a zero at z=np.exp(1j*omega0)
+                nn = np.arange(order).reshape((order, 1))
+                vr = cvxpy_tinoco.matrix(np.cos(omega0*nn))
+                vi = cvxpy_tinoco.matrix(np.sin(omega0*nn))
+                vn = cvxpy_tinoco.matrix(
+                    [-np.cos(omega0*order), -np.sin(omega0*order)])
+                F += [cvxpy_tinoco.equals(c*cvxpy_tinoco.hstack((vr, vi)), vn)]
+        gg += [g]
     if H_inf < np.inf:
         # Enforce the Lee constraint
         R = cvxpy_tinoco.variable(order, order, 'symmetric')
@@ -102,6 +107,7 @@ def ntf_fir_from_digested(order, osr, H_inf, f0, zf, **opts):
              cvxpy_tinoco.hstack((B.T*R*A, -H_inf**2+B.T*R*B, D)),
              cvxpy_tinoco.hstack((c, D, -1))))
         F += [cvxpy_tinoco.belongs(-MM, cvxpy_tinoco.semidefinite_cone)]
+    g = reduce(operator.add, gg)
     p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(g), F)
     p.options.update(opts["tinoco_opts"])
     p.solve(quiet)
