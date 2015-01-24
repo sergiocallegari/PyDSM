@@ -102,7 +102,6 @@ def ntf_fir_from_digested(order, osr, H_inf, f0, zf, **opts):
              cvxpy_tinoco.hstack((B.T*R*A, -H_inf**2+B.T*R*B, D)),
              cvxpy_tinoco.hstack((c, D, -1))))
         F += [cvxpy_tinoco.belongs(-MM, cvxpy_tinoco.semidefinite_cone)]
-    F += [cvxpy_tinoco.greater_equals(g, 0)]
     p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(g), F)
     p.options.update(opts["tinoco_opts"])
     p.solve(quiet)
