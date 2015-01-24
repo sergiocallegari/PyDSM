@@ -276,7 +276,7 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     Qs = v.dot(np.diag(np.sqrt(d))).dot(np.linalg.inv(v))
     A = np.eye(order, order, 1)
     C = np.zeros((1, order))
-    ntf_ir = _ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **dig_opts)
+    ntf_ir = _ntf_fir_from_digested(Qs, A, C, H_inf, **dig_opts)
     return (np.roots(ntf_ir), np.zeros(order), 1.)
 
 
@@ -604,7 +604,7 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
     A = np.eye(order, order, 1)
     A[order-1] = -ar[::-1]
     C = -ar[::-1].reshape((1, order))
-    ntf_ir = _ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **dig_opts)
+    ntf_ir = _ntf_fir_from_digested(Qs, A, C, H_inf, **dig_opts)
     return (np.roots(ntf_ir), poles, 1.)
 
 ntf_hybrid_weighting.default_options = {"modeler": "cvxpy_old",

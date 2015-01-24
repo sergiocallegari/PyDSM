@@ -23,7 +23,7 @@ import picos
 import cvxopt
 
 
-def ntf_fir_from_digested(Qs, A, C, H_inf=1.5, **opts):
+def ntf_fir_from_digested(Qs, A, C, H_inf, **opts):
     """
     Synthesize FIR NTF from predigested specification
 
