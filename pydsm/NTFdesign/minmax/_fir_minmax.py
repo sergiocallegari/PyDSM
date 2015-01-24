@@ -40,16 +40,17 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     ----------
     order : int, optional
         Order of the delta-sigma modulator. Defaults to 32.
-    osr : real, optional
+    osr : real or array of reals, optional
         The oversampling ratio, based on the input signal bandwidth
-        Defaults to 32.
+        Defaults to 32. If there are multiple signal bands, multiple
+        OSRs can be provided, one for each of them.
     H_inf : real, optional
         Max allowed peak value of the NTF. Used to enforce the Lee criterion.
         Defaults to 1.5.
-    f0 : real, optional
+    f0 : real, or array of reals, optional
         The normalized center frequency of the modulator. Value in [0,1/2].
         1/2 indicates half the sample frequency. Defaults to 0, indicating an
-        LP modulator.
+        LP modulator. An array of values can be provided for multiband design.
     zf : bool, optional
         Flag controlling the pre-assignement of NTF zeros. If ``False``, the
         design is practiced without any zero pre-assignment. If ``True``, a
@@ -63,8 +64,11 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     Other parameters
     ----------------
     show_progress : bool, optional
-        Provide extended output. Default is True and can be updated by
-        changing the function ``default_options`` attribute.
+        Provide extended output.
+    modeler : string, optional
+        modeling backend for the optimization problem. Currently, the
+        ``cvxpy_old`` backend is supported.
+        Default is ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
         Allowed options include:
@@ -79,15 +83,16 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
             Tolerance for feasibility conditions (defaults to 1e-6)
 
         Do not use other options since they could break ``cvxpy`` in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+        unexpected ways.
 
     Notes
     -----
     The design strategy implemented in this module is described in the paper
     [1]_.
 
-    Bandpass modulator design is not yet supported.
+    Default values for the options not directly documented in the function
+    call signature can be checked and updated by changing the function
+    ``default_options`` attribute.
 
     .. [1] M. Nagahara and Y. Yamamoto, *Frequency-Domain Min-Max Optimization
        of Noise-Shaping Delta-Sigma Modulators*, IEEE Trans. SP, vol. 60 n. 6
@@ -117,6 +122,10 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     digested_options(options, {})
     if np.isscalar(f0):
         f0 = [f0]
+    if np.isscalar(osr):
+        osr = len(f0) * [osr]
+    if not len(osr) == len(f0):
+        raise ValueError('Incorrect multiband specification')
     # Do the computation
     ntf_ir = _ntf_fir_from_digested(order, osr, H_inf, f0, zf, **dig_opts)
     return (np.roots(ntf_ir), np.zeros(order), 1.)

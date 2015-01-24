@@ -25,16 +25,13 @@ import cvxpy_tinoco
 import operator
 
 
-def ntf_fir_from_digested(order, osr, H_inf, f0s, zf, **opts):
+def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
     """
     Synthesize FIR NTF with minmax approach from predigested specification
 
     Version for the cvxpy_tinoco modeler.
     """
     quiet = not opts['show_progress']
-
-    # Maximum signal bandwidth in angular frequency
-    Omega = 1./osr*np.pi
 
     # State space representation of NTF
     A = cvxpy_tinoco.matrix(np.eye(order, order, 1))
@@ -47,8 +44,9 @@ def ntf_fir_from_digested(order, osr, H_inf, f0s, zf, **opts):
     F = []
     gg = []
 
-    for f0 in f0s:
+    for f0, osr in zip(f0s, osrs):
         omega0 = 2*f0*np.pi
+        Omega = 1./osr*np.pi
         P = cvxpy_tinoco.variable(order, order, 'symmetric')
         Q = cvxpy_tinoco.variable(order, order, 'symmetric')
         g = cvxpy_tinoco.variable(1, 1)
