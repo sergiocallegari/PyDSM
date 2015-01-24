@@ -83,6 +83,6 @@ M. Nagahara and Y. Yamamoto. See the documentation of :func:`ntf_fir_minmax`
 for further details.
 """
 
-from ._fir_minmax import *
+from ._fir_minmax import *     # analysis:ignore
 
 __all__ = _fir_minmax.__all__

@@ -46,8 +46,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -512.031157651993e-003 - 194.699627385223e-003j]
         e_z = cplxpair(e_z)
         z = cplxpair(z)
-        np.testing.assert_almost_equal(k, e_k, 6)
-        np.testing.assert_almost_equal(z, e_z, 4)
+        np.testing.assert_allclose(k, e_k, rtol=1e-6)
+        np.testing.assert_allclose(z, e_z, rtol=2e-4)
 
     def test_BP8(self):
         z, p, k = ntf_fir_minmax(order=8, osr=32, f0=0.2, show_progress=False)
@@ -62,8 +62,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -5.91022020183929e-01 + 0.00000000000000e+00j]
         e_z = cplxpair(e_z)
         z = cplxpair(z)
-        np.testing.assert_almost_equal(k, e_k, 6)
-        np.testing.assert_almost_equal(z, e_z, 4)
+        np.testing.assert_allclose(k, e_k, rtol=1e-6)
+        np.testing.assert_allclose(z, e_z, rtol=2e-4)
 
 
 if __name__ == '__main__':
