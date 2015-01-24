@@ -22,7 +22,6 @@ from __future__ import division, print_function
 
 import numpy as np
 import cvxpy_tinoco
-import operator
 
 
 def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
@@ -40,21 +39,23 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
     D = cvxpy_tinoco.matrix([[1]])
 
     # Set up the problem
+    bands = len(f0s)
     c = cvxpy_tinoco.variable(1, order)
     F = []
-    gg = []
+    gg = cvxpy_tinoco.arrays.cvxpy_var(bands, 1)
 
-    for f0, osr in zip(f0s, osrs):
+    for idx in range(bands):
+        f0 = f0s[idx]
+        osr = osrs[idx]
         omega0 = 2*f0*np.pi
         Omega = 1./osr*np.pi
         P = cvxpy_tinoco.variable(order, order, 'symmetric')
         Q = cvxpy_tinoco.variable(order, order, 'symmetric')
-        g = cvxpy_tinoco.variable(1, 1)
         if f0 == 0:
             # Lowpass modulator
             M1 = A.T*P*A+Q*A+A.T*Q-P-2*Q*np.cos(Omega)
             M2 = A.T*P*B + Q*B
-            M3 = B.T*P*B-g
+            M3 = B.T*P*B - gg[idx, 0]
             M = cvxpy_tinoco.vstack(
                 (cvxpy_tinoco.hstack((M1, M2, c.T)),
                  cvxpy_tinoco.hstack((M2.T, M3, D)),
@@ -69,7 +70,7 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
             M1r = (A.T*P*A + Q*A*np.cos(omega0) + A.T*Q*np.cos(omega0) -
                    P - 2*Q*np.cos(Omega))
             M2r = A.T*P*B + Q*B*np.cos(omega0)
-            M3r = B.T*P*B - g
+            M3r = B.T*P*B - gg[idx, 0]
             M1i = A.T*Q*np.sin(omega0) - Q*A*np.sin(omega0)
             M21i = -Q*B*np.sin(omega0)
             M22i = B.T*Q*np.sin(omega0)
@@ -95,7 +96,6 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
                 vn = cvxpy_tinoco.matrix(
                     [-np.cos(omega0*order), -np.sin(omega0*order)])
                 F += [cvxpy_tinoco.equals(c*cvxpy_tinoco.hstack((vr, vi)), vn)]
-        gg += [g]
     if H_inf < np.inf:
         # Enforce the Lee constraint
         R = cvxpy_tinoco.variable(order, order, 'symmetric')
@@ -105,8 +105,7 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
              cvxpy_tinoco.hstack((B.T*R*A, -H_inf**2+B.T*R*B, D)),
              cvxpy_tinoco.hstack((c, D, -1))))
         F += [cvxpy_tinoco.belongs(-MM, cvxpy_tinoco.semidefinite_cone)]
-    g = reduce(operator.add, gg)
-    p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(g), F)
+    p = cvxpy_tinoco.program(cvxpy_tinoco.minimize(cvxpy_tinoco.norm2(gg)), F)
     p.options.update(opts["tinoco_opts"])
     p.solve(quiet)
     return np.hstack((1, np.asarray(c.value)[0, ::-1]))
