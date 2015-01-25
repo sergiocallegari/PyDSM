@@ -67,7 +67,7 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
         Provide extended output.
     modeler : string, optional
         modeling backend for the optimization problem. Currently, the
-        ``cvxpy_old`` backend is supported.
+        ``cvxpy_old`` and the ``picos`` backends are supported.
         Default is ``cvxpy_old``.
     cvxopt_opts : dictionary, optional
         A dictionary of options for the ``cvxopt`` optimizer
@@ -115,6 +115,12 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
             options, ntf_fir_minmax.default_options,
             [], ['cvxopt_opts'], False)['cvxopt_opts'])
         from ._fir_minmax_tinoco import (
+            ntf_fir_from_digested as _ntf_fir_from_digested)
+    elif opts['modeler'] == 'picos':
+        dig_opts['picos_opts'].update(digested_options(
+            options, ntf_fir_minmax.default_options,
+            [], ['cvxopt_opts'], False)['cvxopt_opts'])
+        from ._fir_minmax_picos import (
             ntf_fir_from_digested as _ntf_fir_from_digested)
     else:
         raise ValueError('Unsupported modeling backend {}'.format(

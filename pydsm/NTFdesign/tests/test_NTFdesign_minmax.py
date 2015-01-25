@@ -26,6 +26,8 @@ import numpy as np
 from pydsm.NTFdesign import ntf_fir_minmax
 from pydsm.relab import cplxpair
 
+from nose.plugins.skip import SkipTest
+
 __all__ = ["TestSynthesizeNTFminmax"]
 
 
@@ -33,8 +35,13 @@ class TestSynthesizeNTFminmax(TestCase):
     def setUp(self):
         pass
 
-    def test_LP8(self):
-        z, p, k = ntf_fir_minmax(order=8, show_progress=False)
+    def test_LP8_tinoco(self):
+        try:
+            import cvxpy_tinoco     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy_old' not installed")
+        z, p, k = ntf_fir_minmax(order=8, show_progress=False,
+                                 modeler='cvxpy_old')
         e_k = 1
         e_z = [990.349427225477e-003 + 69.0500612157020e-003j,
                990.349427225477e-003 - 69.0500612157020e-003j,
@@ -49,8 +56,13 @@ class TestSynthesizeNTFminmax(TestCase):
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=2e-4)
 
-    def test_BP8(self):
-        z, p, k = ntf_fir_minmax(order=8, osr=32, f0=0.2, show_progress=False)
+    def test_BP8_tinoco(self):
+        try:
+            import cvxpy_tinoco     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy_old' not installed")
+        z, p, k = ntf_fir_minmax(order=8, osr=32, f0=0.2, show_progress=False,
+                                 modeler='cvxpy_old')
         e_k = 1
         e_z = [2.94348009789963e-01 + 9.14543800193135e-01j,
                2.94348009789963e-01 - 9.14543800193135e-01j,
@@ -65,9 +77,77 @@ class TestSynthesizeNTFminmax(TestCase):
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=2e-4)
 
-    def test_MB16(self):
+    def test_MB16_tinoco(self):
+        try:
+            import cvxpy_tinoco     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'cvxpy_old' not installed")
         z, p, k = ntf_fir_minmax(order=8, osr=64, f0=[0.1, 0.2],
-                                 show_progress=False)
+                                 show_progress=False, modeler='cvxpy_old')
+        e_k = 1
+        e_z = [7.201593591543093e-01 + 4.847692940420519e-01j,
+               7.201593591543093e-01 - 4.847692940420519e-01j,
+               2.503311061929155e-01 + 8.210993460982702e-01j,
+               2.503311061929155e-01 - 8.210993460982702e-01j,
+               -4.140998358546186e-01 + 4.504982522544850e-01j,
+               -4.140998358546186e-01 - 4.504982522544850e-01j,
+               -5.755598430642412e-01,
+               -1.159555247895333e-01]
+        e_z = cplxpair(e_z)
+        z = cplxpair(z)
+        np.testing.assert_allclose(k, e_k, rtol=1e-6)
+        np.testing.assert_allclose(z, e_z, rtol=1e-3, atol=3e-2)
+
+    def test_LP8_picos(self):
+        try:
+            import picos     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'picos' not installed")
+        z, p, k = ntf_fir_minmax(order=8, show_progress=False,
+                                 modeler='picos')
+        e_k = 1
+        e_z = [990.349427225477e-003 + 69.0500612157020e-003j,
+               990.349427225477e-003 - 69.0500612157020e-003j,
+               166.532844346146e-003 + 591.251073811726e-003j,
+               166.532844346146e-003 - 591.251073811726e-003j,
+               -259.915617496087e-003 + 503.342225950477e-003j,
+               -259.915617496087e-003 - 503.342225950477e-003j,
+               -512.031157651993e-003 + 194.699627385223e-003j,
+               -512.031157651993e-003 - 194.699627385223e-003j]
+        e_z = cplxpair(e_z)
+        z = cplxpair(z)
+        np.testing.assert_allclose(k, e_k, rtol=1e-6)
+        np.testing.assert_allclose(z, e_z, rtol=1e-3)
+
+    def test_BP8_picos(self):
+        try:
+            import picos     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'picos' not installed")
+        z, p, k = ntf_fir_minmax(order=8, osr=32, f0=0.2, show_progress=False,
+                                 modeler='picos')
+        e_k = 1
+        e_z = [2.94348009789963e-01 + 9.14543800193135e-01j,
+               2.94348009789963e-01 - 9.14543800193135e-01j,
+               6.76745367518838e-01 + 0.00000000000000e+00j,
+               2.46816733211163e-01 + 5.50000475735513e-01j,
+               2.46816733211163e-01 - 5.50000475735513e-01j,
+               -4.58884378359569e-01 + 4.10643263860101e-01j,
+               -4.58884378359569e-01 - 4.10643263860101e-01j,
+               -5.91022020183929e-01 + 0.00000000000000e+00j]
+        e_z = cplxpair(e_z)
+        z = cplxpair(z)
+        np.testing.assert_allclose(k, e_k, rtol=1e-6)
+        np.testing.assert_allclose(z, e_z, rtol=2e-4)
+
+    def test_MB16_picos(self):
+        try:
+            import picos     # analysis:ignore
+        except:
+            raise SkipTest("Modeler 'picos' not installed")
+        z, p, k = ntf_fir_minmax(order=8, osr=64, f0=[0.1, 0.2],
+                                 show_progress=False,
+                                 modeler='picos')
         e_k = 1
         e_z = [7.201593591543093e-01 + 4.847692940420519e-01j,
                7.201593591543093e-01 - 4.847692940420519e-01j,
