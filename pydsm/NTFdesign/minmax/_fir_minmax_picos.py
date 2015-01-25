@@ -111,4 +111,3 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
     p.set_options(**opts['picos_opts'])
     p.solve(verbose=verbose)
     return np.hstack((1, np.asarray(c.value)[0, ::-1]))
-    return c.value

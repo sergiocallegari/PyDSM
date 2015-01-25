@@ -109,4 +109,3 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
     p.options.update(opts["tinoco_opts"])
     p.solve(quiet)
     return np.hstack((1, np.asarray(c.value)[0, ::-1]))
-    return c.value
