@@ -110,7 +110,25 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
                 'cvxpy_opts': {},
                 'tinoco_opts': {},
                 'picos_opts': {}}
-    if opts['modeler'] == 'cvxpy_old':
+    if opts['modeler'] == 'cvxpy':
+        opts.update(digested_options(
+            options, ntf_fir_minmax.default_options,
+            [], ['cvxpy_opts'], False))
+        if opts['cvxpy_opts']['solver'] == 'cvxopt':
+            dig_opts['cvxpy_opts'].update(digested_options(
+                options, ntf_fir_minmax.default_options,
+                [], ['cvxopt_opts'], False)['cvxopt_opts'])
+            if opts['cvxpy_opts'].get('override_kktsolver', True):
+                dig_opts['cvxpy_opts']['kktsolver'] = 'chol'
+        elif opts['cvxpy_opts']['solver'] == 'scs':
+            dig_opts['cvxpy_opts'].update(digested_options(
+                options, ntf_fir_minmax.default_options,
+                [], ['scs_opts'], False)['scs_opts'])
+        opts['cvxpy_opts'].pop('override_kktsolver')
+        dig_opts['cvxpy_opts'].update(opts['cvxpy_opts'])
+        from ._fir_minmax_cvxpy import (
+            ntf_fir_from_digested as _ntf_fir_from_digested)
+    elif opts['modeler'] == 'cvxpy_old':
         dig_opts['tinoco_opts'].update(digested_options(
             options, ntf_fir_minmax.default_options,
             [], ['cvxopt_opts'], False)['cvxopt_opts'])
@@ -136,10 +154,17 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     ntf_ir = _ntf_fir_from_digested(order, osr, H_inf, f0, zf, **dig_opts)
     return (np.roots(ntf_ir), np.zeros(order), 1.)
 
-ntf_fir_minmax.default_options = {"cvxopt_opts": {'maxiters': 100,
+ntf_fir_minmax.default_options = {"cvxpy_opts": {'override_kktsolver': True,
+                                                 'solver': 'cvxopt'},
+                                  "cvxopt_opts": {'maxiters': 100,
                                                   'abstol': 1e-7,
                                                   'reltol': 1e-6,
                                                   'feastol': 1e-6},
+                                  'scs_opts': {'max_iters': 2500,
+                                               'eps': 1e-12,
+                                               'alpha': 1.8,
+                                               'normalize': True,
+                                               'use_indirect': False},
                                   'show_progress': True,
                                   'modeler': 'cvxpy_old'}
 
