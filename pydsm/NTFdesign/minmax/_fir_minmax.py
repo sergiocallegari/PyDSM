@@ -154,7 +154,7 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     ntf_ir = _ntf_fir_from_digested(order, osr, H_inf, f0, zf, **dig_opts)
     return (np.roots(ntf_ir), np.zeros(order), 1.)
 
-ntf_fir_minmax.default_options = {"cvxpy_opts": {'override_kktsolver': True,
+ntf_fir_minmax.default_options = {"cvxpy_opts": {'override_kktsolver': False,
                                                  'solver': 'cvxopt'},
                                   "cvxopt_opts": {'maxiters': 100,
                                                   'abstol': 1e-7,
