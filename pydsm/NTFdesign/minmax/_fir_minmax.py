@@ -61,29 +61,52 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     ntf : tuple
         noise transfer function in zpk form.
 
-    Other parameters
-    ----------------
-    show_progress : bool, optional
-        Provide extended output.
-    modeler : string, optional
-        modeling backend for the optimization problem. Currently, the
-        ``cvxpy_old`` and the ``picos`` backends are supported.
-        Default is ``cvxpy_old``.
-    cvxopt_opts : dictionary, optional
-        A dictionary of options for the ``cvxopt`` optimizer
+    cvxpy_opts : dictionary, optional
+       A dictionary of options to use with the ``cvxpy`` modeling library.
+       Allowed options include:
+
+       ``override_kktsolver`` (bool)
+           Whether to override the default ``cvxopt`` kkt solver using the
+           ``chol`` kkt solver.
+           Leave this at the default False setting, to avoid errors.
+       ``solver`` (string)
+           The solver backend to use. Either `cvxopt` or `scs`
+
+    cvxopt_opts : dict, optional
+        A dictionary of options for the ``cvxopt`` optimizer.
         Allowed options include:
 
-        ``maxiters``
-            Maximum number of iterations (defaults to 100)
-        ``abstol``
-            Absolute accuracy (defaults to 1e-7)
-        ``reltol``
-            Relative accuracy (defaults to 1e-6)
-        ``feastol``
+        ``maxiters`` (int)
+            Maximum number of iterations
+        ``abstol`` (real)
+            Absolute accuracy
+        ``reltol`` (real)
+            Relative accuracy
+        ``feastol`` (real)
             Tolerance for feasibility conditions (defaults to 1e-6)
 
-        Do not use other options since they could break ``cvxpy`` in
-        unexpected ways.
+        Do not use other options since they could break ``cvxopt`` in
+        unexpected ways. These options can be passed when using the
+        ``cvxpy_old`` modeler, the ``picos`` modeler or the ``cvxpy`` modeler
+        with the ``cvxopt`` backend.
+    scs_opts : dict, optional
+        A dictionary of options for the ``scs`` optimizer.  Allowed options
+        include:
+
+        ``max_iters`` (int)
+            Maximum number of iterations
+        ``eps`` (real)
+            Convergence tolerance
+        ``alpha`` (real)
+            Relaxation parameter
+        ``normalize`` (bool)
+            Whether to precondition data matrices
+        ``use_indirect`` (bool)
+            Whether to use indirect solver for KKT sytem (instead of direct)
+
+       Do not use other options since they could break ``scs`` in
+       unexpected ways. These options can be passed when using the
+       ``cvxpy`` modeler with the ``scs`` backend.
 
     Notes
     -----
@@ -98,9 +121,11 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
        of Noise-Shaping Delta-Sigma Modulators*, IEEE Trans. SP, vol. 60 n. 6
        June 2012.
 
-    See also
+    See Also
     --------
-    cvxopt : for the optimizer parameters.
+    cvxopt : for the optimizer parameters
+    scs : for the optimizer parameters
+    cvxpy : for the modeler parameters
     """
     # Manage optional parameters
     opts = digested_options(
