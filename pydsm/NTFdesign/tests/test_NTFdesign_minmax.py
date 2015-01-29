@@ -20,7 +20,7 @@
 
 from __future__ import division, print_function
 
-from numpy.testing import TestCase, run_module_suite
+from numpy.testing import TestCase, run_module_suite, dec
 import numpy as np
 
 from pydsm.NTFdesign import ntf_fir_minmax
@@ -162,6 +162,7 @@ class TestSynthesizeNTFminmax(TestCase):
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=1e-3, atol=3e-2)
 
+    @dec.slow
     def test_LP8_cvxpy(self):
         try:
             import cvxpy     # analysis:ignore
@@ -183,6 +184,7 @@ class TestSynthesizeNTFminmax(TestCase):
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=1e-3)
 
+    @dec.slow
     def test_BP8_cvxpy(self):
         try:
             import cvxpy     # analysis:ignore
@@ -204,6 +206,7 @@ class TestSynthesizeNTFminmax(TestCase):
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=2e-4)
 
+    @dec.slow
     def test_MB16_cvxpy(self):
         try:
             import cvxpy     # analysis:ignore
