@@ -94,7 +94,7 @@ class TestNTF_Hybrid(TestCase):
                                        cvxpy_opts={"solver": "scs"},
                                        scs_opts={"eps": 1E-14})
         np.testing.assert_allclose(k, self.e_k, 1e-6)
-        np.testing.assert_allclose(z, self.e_z, 5e-1)
+        np.testing.assert_allclose(z, self.e_z, 5e-2)
         np.testing.assert_allclose(p, self.e_p, 3e-6)
 
     def test_ntf_hybrid_picos(self):
