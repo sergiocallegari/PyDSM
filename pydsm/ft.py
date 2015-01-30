@@ -148,7 +148,7 @@ def _idtft(Ff, t, fs=1, **quad_opts):
                            -0.5, 0.5, **quad_opts)[0]
     ri = sp.integrate.quad(lambda f: np.imag(Ff(f*fs)*np.exp(2j*np.pi*f*t)),
                            -0.5, 0.5, **quad_opts)[0]
-    return rr+ri
+    return rr+1j*ri
 
 
 def idtft(Ff, tt, fs=1, **options):
