@@ -120,8 +120,7 @@ def q0_weighting(P, w, **options):
     opts = digested_options(options, q0_weighting.default_options,
                             [], ['quad_opts'])
     # Do the computation
-    ac = lambda t: idtft_hermitian(w, t, **opts)
-    return np.asarray(map(ac, np.arange(P+1)))
+    return idtft_hermitian(w, np.arange(P+1), **opts)
 
 q0_weighting.default_options = {"quad_opts": {"epsabs": 1E-14,
                                               "epsrel": 1E-9,
