@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012, Sergio Callegari
+# Copyright (c) 2015, Sergio Callegari
 # All rights reserved.
 
 # This file is part of PyDSM.
@@ -47,95 +47,55 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-"""
-Code ported from the DELSIG toolbox by R. Schreier (:mod:`pydsm.delsig`)
-========================================================================
+from __future__ import division
 
-.. currentmodule:: pydsm.delsig
+import numpy as np
 
-
-Key functions
--------------
-
-.. autosummary::
-   :toctree: generated/
-
-   synthesizeNTF
-   clans
-   synthesizeChebyshevNTF
-   simulateDSM
-
-Other selected functions
-------------------------
-
-Delta sigma utilities
-.....................
-
-.. autosummary::
-   :toctree: generated/
-
-   partitionABCD
-   rmsGain
-
-General utilities
-.................
-
-.. autosummary::
-   :toctree: generated/
-
-   dbv
-   dbp
-   undbv
-   undbp
-   dbm
-   undbm
-
-Graphing
-........
-
-.. autosummary::
-   :toctree: generated/
-
-   plotPZ
-   axisLabels
+from ._tf import evalTF
 
 
-Plumbing
---------
+__all__ = ["rmsGain"]
 
-.. autosummary::
-   :toctree: generated/
 
-   ds_synNTFobj1
-   ds_f1f2
-   ds_optzeros
-   dsclansNTF
-   padl
-   padr
-   padt
-   padb
-   evalTF
-   evalRPoly
-"""
+def rmsGain(H, f1, f2, N=100):
+    """
+    Compute the root-mean-square gain of a DT transfer function.
 
-__delsig_version__ = "7.4"
+    The computation is practiced on an assigned frequency interval.
+    By root-mean-square, it is meant that the magnitude response of the
+    transfer function is squared and averaged over the band of interest.
+    Then, the square root of this averaged value is returned.
 
-# The delsig module reflects the flat organization of the original DELSIG
-from ._axisLabels import *
-from ._decibel import *
-from ._ds import *
-from ._padding import *
-from ._tf import *
-from ._plot import *
-from ._synthesizeNTF import *
-from ._synthesizeChebyshevNTF import *
-from ._clans import *
-from ._dsclansNTF import *
-from ._simulateDSM import *
-from ._simulateDSM_scipy import *
-from ._partitionABCD import *
-from ._rmsGain import *
+    Parameters
+    ----------
+    H : tuple
+        transfer function either in (z,p,k) or (n,d) form
+    f1 : real
+        lower bound of frequency band on which the transfer function
+        is evaluated
+    f2 : real
+        upper bound of frequency band on which the transfer function
+        is evaluated
+    N : int, optional
+        number of points where the transfer function is evaluated in the
+        interval. Defaults to 100.
 
-from numpy.testing import Tester
-test = Tester().test
-bench = Tester().bench
+    Returns
+    -------
+    rms : real
+        rms value of the discrete time transfer function.
+
+    Notes
+    -----
+    The discrete-time transer function H is evaluated in the frequency band
+    (f1,f2).  Spanning of the bandwidth is linear. Frequencies are normalized
+    in the [0, 0.5] interval.
+
+    Warning: the result of the computation is normalized in the number of
+    points used for the computation, but not on the frequency range.
+
+    This computation could be practiced much more accurately and possibly
+    faster, using algorithms for the numerical computation of integrals.
+    """
+    w = np.linspace(2*np.pi*f1, 2*np.pi*f2, N)
+    return np.linalg.norm(evalTF(H, np.exp(1j*w))) / np.sqrt(N)
