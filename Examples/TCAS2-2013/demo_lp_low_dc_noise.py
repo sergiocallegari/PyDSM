@@ -62,8 +62,8 @@ def w2(f):
 
 
 print("... computing optimal NTF...")
-ntf1 = ntf_fir_weighting(order, w1, quad_points=[B/fphi])
-ntf2 = ntf_fir_weighting(order, w2, quad_points=[B/fphi, B/fphi/10])
+ntf1 = ntf_fir_weighting(order, w1, quad_opts={'points': [B/fphi]})
+ntf2 = ntf_fir_weighting(order, w2, quad_opts={'points': [B/fphi, B/fphi/10]})
 
 # Prepare frequency axis for plotting
 fmin = 10**np.ceil(np.log10(B/OSR/100))
