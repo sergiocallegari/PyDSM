@@ -101,12 +101,15 @@ def q0_weighting(P, w, **options):
         Parameters to be passed to the ``quad`` function used internally as
         an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
         ``points``. Do not use other options since they could break the
-        integrator in unexpected ways. Defaults can be set by changing the
-        function ``default_options`` attribute.
+        integrator in unexpected ways.
 
     Notes
     -----
     The Q matrix being synthesized has (P+1) times (P+1) entries.
+
+    Default values for the options not directly documented in the function
+    call signature can be checked and updated by changing the function
+    ``default_options`` attribute.
 
     See Also
     --------
@@ -380,6 +383,11 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
        Do not use other options since they could break ``scs`` in
        unexpected ways. These options can be passed when using the
        ``cvxpy`` modeler with the ``scs`` backend.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways.
 
     Notes
     -----
@@ -526,6 +534,11 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
        Do not use other options since they could break ``scs`` in
        unexpected ways. These options can be passed when using the
        ``cvxpy`` modeler with the ``scs`` backend.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways.
 
     See Also
     --------
