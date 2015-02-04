@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012, Sergio Callegari
+# Copyright (c) 2015, Sergio Callegari
 # All rights reserved.
 
 # This file is part of PyDSM.
@@ -47,94 +47,57 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-"""
-Code ported from the DELSIG toolbox by R. Schreier (:mod:`pydsm.delsig`)
-========================================================================
+from __future__ import division
 
-.. currentmodule:: pydsm.delsig
+import numpy as np
 
-
-Key functions
--------------
-
-.. autosummary::
-   :toctree: generated/
-
-   synthesizeNTF
-   clans
-   synthesizeChebyshevNTF
-   simulateDSM
-
-Other selected functions
-------------------------
-
-Delta sigma utilities
-.....................
-
-.. autosummary::
-   :toctree: generated/
-
-   partitionABCD
-   rmsGain
-
-General utilities
-.................
-
-.. autosummary::
-   :toctree: generated/
-
-   dbv
-   dbp
-   undbv
-   undbp
-   dbm
-   undbm
-
-Graphing
-........
-
-.. autosummary::
-   :toctree: generated/
-
-   plotPZ
-   axisLabels
+__all__ = ["axisLabels"]
 
 
-Plumbing
---------
+def axisLabels(points, incr):
+    """
+    Generate alphanumeric axis labels.
 
-.. autosummary::
-   :toctree: generated/
+    If the parameter `incr` is an integer, the function returns an array
+    of strings corresponding to the values specified in `points`,
+    stepping through them with indexes 0, incr, 2*incr, ...
 
-   ds_synNTFobj1
-   ds_f1f2
-   ds_optzeros
-   dsclansNTF
-   padl
-   padr
-   padt
-   padb
-   evalTF
-   evalRPoly
-"""
+    If the parameter `incr` is a couple of integers `(start, incr)`,
+    the stepping occurs with indexes start, start+incr, start+2*incr, ...
 
-__delsig_version__ = "7.4"
+    Parameters
+    ----------
+    points : array like of floats
+        the axis points to label
+    incr : int or couple of ints
+        the increment to use in labelling
 
-# The delsig module reflects the flat organization of the original DELSIG
-from ._axisLabels import *
-from ._decibel import *
-from ._ds import *
-from ._padding import *
-from ._tf import *
-from ._plot import *
-from ._synthesizeNTF import *
-from ._synthesizeChebyshevNTF import *
-from ._clans import *
-from ._dsclansNTF import *
-from ._simulateDSM import *
-from ._simulateDSM_scipy import *
-from ._partitionABCD import *
+    Returns
+    -------
+    s : list of strings
+        list of labels
 
-from numpy.testing import Tester
-test = Tester().test
-bench = Tester().bench
+    Notes
+    -----
+
+    In the original DELSIG function, the parameter `points` is named `range`.
+
+    Values in `points` less than 1e-6 are truncated to zero. This value is
+    hardwired in the function.
+    """
+    points = np.asarray(points).flatten()
+    # Flatten assures that a copy is taken, so that the following assignement
+    # does not alter the original vector
+    points[np.abs(points) < 1e-6] = 0
+    if isinstance(incr, int):
+        start = 0
+        step = incr
+    elif (hasattr(incr, '__len__') and
+          len(incr) == 2 and
+          np.all(map(lambda x: isinstance(x, int), incr))):
+        start = incr[0]
+        step = incr[1]
+    else:
+        raise TypeError('Parameter incr must be integer or couple of integer '
+                        'values')
+    return ['%g' % points[i] for i in range(start, len(points), step)]
