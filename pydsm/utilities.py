@@ -61,7 +61,7 @@ from __future__ import division, print_function
 import numpy as np
 from warnings import warn
 from .exceptions import PyDsmDeprecationWarning
-from .import relab
+from . import relab
 
 __all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS",
            "digested_options"]
