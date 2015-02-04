@@ -207,6 +207,8 @@ def cplxpair(x, tol=None):
 
     """
     x = np.asarray(x)
+    if x.size == 0:
+        return x
     if tol is None:
         tol = 100*eps(x.dtype)
     x = np.sort_complex(x)
