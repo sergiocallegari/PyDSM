@@ -12,6 +12,7 @@ Contents:
    replicate-results
    license
    included_code
+   more-references
    changelog
 
 .. only:: html

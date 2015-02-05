@@ -17,7 +17,7 @@ Highlights of the current version consist in:
   <http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox>`__
   for Matlab by R. Schreier
 * The method for the design of psychoacoustically optimal modulators
-  for audio signals proposed by Dunn and Sandler in 1997.
+  for audio signals proposed by Dunn and Sandler in 1997 in [Dun97]_.
 * The NTF design algorithm presented in [Cal13a]_ and [Cal13b]_.  The
   latter includes an optimal strategy for the design of
   psychoacoustically optimal modulators for audio signals,
@@ -25,6 +25,8 @@ Highlights of the current version consist in:
   (e.g. A-Weighting, F-Weigting, user supplied weightings, etc.)  If
   you find this code useful, *please consider citing the two papers
   in your work.*
+* The NTF design algorithm proposed by  [Nag12]_.
+* The NTF design algorithm presented [Cal15]_.
 
 PyDSM is free software and is licensed as detailed in the
 :ref:`license` Section of this manual.
