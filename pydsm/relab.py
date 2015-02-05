@@ -37,6 +37,7 @@ Functions
    eps       -- Floating point relative accuracy
    db        -- Converts a value to dB a la Matlab
    cplxpair  -- Sorts values in input list by complex pairs
+   shiftdim  -- Shift dimensions a la Matlab
 """
 
 from __future__ import division, print_function
