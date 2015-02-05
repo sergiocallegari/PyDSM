@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012, Sergio Callegari
 # All rights reserved.
 
@@ -56,7 +54,7 @@ Transfer function management a la DELSIG.
 
 import numpy as np
 
-__all__ = ["evalTF", "evalRPoly", "rmsGain"]
+__all__ = ["evalTF", "evalRPoly"]
 
 
 def evalTF(tf, x):
@@ -127,47 +125,3 @@ def evalRPoly(roots, x, k=1):
     for i in xrange(roots.size):
         y = y*(x-roots[i])
     return y
-
-
-def rmsGain(H, f1, f2, N=100):
-    """
-    Compute the root-mean-square gain of a DT transfer function.
-
-    The computation is practiced on an assigned frequency interval.
-    By root-mean-square, it is meant that the magnitude response of the
-    transfer function is squared and averaged over the band of interest.
-    Then, the square root of this averaged value is returned.
-
-    Parameters
-    ----------
-    H : tuple
-        transfer function either in (z,p,k) or (n,d) form
-    f1 : real
-        lower bound of frequency band on which the transfer function
-        is evaluated
-    f2 : real
-        upper bound of frequency band on which the transfer function
-        is evaluated
-    N : int, optional
-        number of points where the transfer function is evaluated in the
-        interval. Defaults to 100.
-
-    Returns
-    -------
-    rms : real
-        rms value of the discrete time transfer function.
-
-    Notes
-    -----
-    The discrete-time transer function H is evaluated in the frequency band
-    (f1,f2).  Spanning of the bandwidth is linear. Frequencies are normalized
-    in the [0,0.5] interval.
-
-    Warning: the result of the computation is normalized in the number of
-    points used for the computation, but not on the frequency range.
-
-    This computation could be practiced much more accurately and possibly
-    faster, using algorithms for the numerical computation of integrals.
-    """
-    w = np.linspace(2*np.pi*f1, 2*np.pi*f2, N)
-    return np.linalg.norm(evalTF(H, np.exp(1j*w))) / np.sqrt(N)

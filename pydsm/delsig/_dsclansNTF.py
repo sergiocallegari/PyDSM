@@ -53,6 +53,9 @@ __all__ = ['dsclansNTF']
 
 
 def dsclansNTF(x, order, rmax, Hz):
+    """
+    Convert CLANS parameters into an NTF in ZPK form
+    """
     # Helper function to convert clans parameters into an NTF in zpk form
     # i.e. translate x into H.
     #

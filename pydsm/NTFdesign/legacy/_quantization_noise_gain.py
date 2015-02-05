@@ -24,9 +24,13 @@ import numpy as np
 from ...ir import impulse_response
 import scipy.signal as signal
 
+__all__ = ["quantization_noise_gain_by_conv"]
+
 
 def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
     """
+    Legacy version of :func:`NTFDesign.quantization_noise_gain`
+
     Computes the quantization noise power gain, based on a convolution
 
     Parameters

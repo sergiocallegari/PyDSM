@@ -17,15 +17,11 @@
     representations
 - avoid __import__ statements and follow
     http://docs.scipy.org/doc/scipy/reference/api.html
-- [docstring] possibly move some documentation in the module level docstrings,
-    so that it is available in IDEs
 - [cython] user numpy.require to assure that arrays have the right properties
 - [optimization] move to the newer cvxpy
 - [optimization] check picos too for the optimization backend
 - [python] make python3 compatible
 - [examples] provide notebook version of the examples
-- [setuptools] assure that setuptools build the package before calling
-    build_sphinx
 - [setuptools] make docdist pass options to build_sphinx
 - [documentation] Maybe use the versionadded/versionchanged/deprecated sphinx
     features to document api changes

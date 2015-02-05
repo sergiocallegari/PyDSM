@@ -113,7 +113,7 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
 
     # Draw unit circle, real axis and imag axis
     circle = np.exp(2j*np.pi*np.linspace(0, 1, 100))
-    plt.plot(circle.real, circle.imag)
+    plt.plot(circle.real, circle.imag, 'k')
     plt.axis('equal')
     limits = plt.axis()
     plt.plot([0, 0], limits[1:3], 'k:')
@@ -130,9 +130,9 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
         y = y - 0.1
         for i in xrange(len(pp)):
             if pp[i].imag == 0:
-                str_p = '%+.4f' % pp[i].real
+                str_p = '$%+.4f$' % pp[i].real
             else:
-                str_p = '%+.4f+/-j%.4f' % (pp[i].real, pp[i].imag)
+                str_p = r'$%+.4f\pm \mathrm{j}%.4f$' % (pp[i].real, pp[i].imag)
             plt.text(-0.9, y, str_p,
                      horizontalalignment='left',
                      verticalalignment='center')
@@ -147,9 +147,10 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
             y = y - 0.1
             for i in xrange(len(zz)):
                 if zz[i].imag == 0:
-                    str_z = '%+.4f' % zz[i].real
+                    str_z = '$%+.4f$' % zz[i].real
                 else:
-                    str_z = '%+.4f+/-j%.4f' % (zz[i].real, zz[i].imag)
+                    str_z = (r'$%+.4f\pm \mathrm{j}%.4f$' %
+                             (zz[i].real, zz[i].imag))
                 plt.text(0, y, str_z,
                          horizontalalignment='left',
                          verticalalignment='center')

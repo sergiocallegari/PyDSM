@@ -26,6 +26,8 @@ from scipy import signal
 from pydsm.ir import impulse_response
 from pydsm.NTFdesign.legacy import q0_from_filter_ir
 from pydsm.NTFdesign.weighting import q0_weighting
+from pydsm.NTFdesign import quantization_noise_gain
+import scipy.linalg as la
 
 __all__ = ["TestQ0"]
 
@@ -76,6 +78,21 @@ class TestQ0(TestCase):
         q0_ir = q0_from_filter_ir(P, ir)
         q0_mr = q0_weighting(P, hz)
         np.testing.assert_allclose(q0_ir, q0_mr, atol=1E-7, rtol=1E-5)
+
+    def test_q0_equiv(self):
+        fir = np.asarray([1.00000000e+00,  -7.63387347e-01,  -4.02004111e-01,
+                          -1.53885083e-01,  -2.76434316e-04,   7.91252937e-02,
+                          1.03165832e-01,   8.83276154e-02,   4.92894661e-02])
+        hz = (np.asarray([-1., -1., -1.]),
+              np.asarray([0.99382681+0.01056265j,  0.98780284+0.j,
+                          0.99382681-0.01056265j]),
+              2.2820568419526305e-07)
+        gain1 = quantization_noise_gain((fir, np.hstack((1, np.zeros(8)))), hz)
+        q0 = q0_weighting(8, hz)
+        Q = la.toeplitz(q0)
+        fir_coeff = fir.reshape((1, 9))
+        gain2 = fir_coeff.dot(Q).dot(fir_coeff.T)
+        np.testing.assert_allclose(gain2, gain1)
 
 if __name__ == '__main__':
     run_module_suite()

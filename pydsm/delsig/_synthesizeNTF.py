@@ -57,6 +57,7 @@ from warnings import warn
 from ..exceptions import PyDsmApproximationWarning
 from ._synthesizeNTF0 import synthesizeNTF0
 from ._synthesizeNTF1 import synthesizeNTF1
+from ..utilities import digested_options
 
 __all__ = ["synthesizeNTF"]
 
@@ -141,11 +142,10 @@ def synthesizeNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0,
     synthesizeChebyshevNTF instead.
     """
     # Manage options
-    opts = synthesizeNTF.default_options.copy()
-    opts.update(options)
-    use_optimizer = True
-    if 'use_optimizer' in opts:
-        use_optimizer = opts['use_optimizer']
+    opts = digested_options(options, synthesizeNTF.default_options,
+                            ['use_optimizer'])
+    use_optimizer = opts['use_optimizer']
+    # Do the computation
     if f0 > 0.5:
         raise ValueError('Frequency f0 must be less than 0.5')
     if f0 != 0 and f0 < 0.25/osr:

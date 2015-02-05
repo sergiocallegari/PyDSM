@@ -22,11 +22,15 @@ from __future__ import division, print_function
 
 from ...correlations import raw_acorr
 
+__all__ = ["q0_from_filter_ir"]
+
 
 def q0_from_filter_ir(P, ir):
-    """Compute Q matrix from the modulator output filter impulse response
+    """
+    Legacy version of :func:`NTFDesign.q0_weighting`
 
-    Legacy method based on
+    Legacy method based on correlation for the computation of the
+    description matrix for the weighting function used in FIR NTF design.
 
     Parameters
     ----------

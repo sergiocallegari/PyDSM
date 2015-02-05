@@ -19,10 +19,24 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Fourier transform related routines
-==================================
+Fourier transform related routines (:mod:`pydsm.ft`)
+====================================================
 
-Functions to compute the fft and the dtft.
+Functions to compute the fft and the dtft
+
+.. currentmodule:: pydsm.ft
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+    fft_centered  -- FFT function where output vector has 0 frequency at center
+    dtft  -- discrete time Fourier transform
+    dtft_hermitian  -- DTFT specialized to hermitian vectors
+    idtft -- inverse discrete time Fourier transform
+    idtft_hermitian -- IDTFT specialized to hermitian vectors
 """
 
 from __future__ import division, print_function
@@ -31,6 +45,7 @@ import numpy as np
 import scipy as sp
 __import__("scipy.fftpack")
 __import__("scipy.integrate")
+from .utilities import digested_options
 
 __all__ = ["fft_centered", "dtft", "dtft_hermitian", "idtft",
            "idtft_hermitian"]
@@ -133,7 +148,7 @@ def _idtft(Ff, t, fs=1, **quad_opts):
                            -0.5, 0.5, **quad_opts)[0]
     ri = sp.integrate.quad(lambda f: np.imag(Ff(f*fs)*np.exp(2j*np.pi*f*t)),
                            -0.5, 0.5, **quad_opts)[0]
-    return rr+ri
+    return rr+1j*ri
 
 
 def idtft(Ff, tt, fs=1, **options):
@@ -155,13 +170,12 @@ def idtft(Ff, tt, fs=1, **options):
     ----------------
     fs : real, optional
         the sample frequency for the output sequence (defaults to 1)
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     See Also
     --------
@@ -169,20 +183,17 @@ def idtft(Ff, tt, fs=1, **options):
         For the meaning of the integrator parameters.
     """
     # Manage optional parameters
-    opts = idtft.default_options.copy()
-    opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
+    opts = digested_options(options, idtft.default_options, [], ['quad_opts'])
     # Do the computation
     if np.isscalar(tt):
-        return _idtft(Ff, tt, fs, **quad_opts)
+        return _idtft(Ff, tt, fs, **opts['quad_opts'])
     else:
-        return np.asarray([_idtft(Ff, t, fs, **quad_opts) for t in tt])
+        return np.asarray([_idtft(Ff, t, fs, **opts['quad_opts']) for t in tt])
 
-idtft.default_options = {'quad_epsabs': 1.49e-08,
-                         'quad_epsrel': 1.49e-08,
-                         'quad_limit': 50,
-                         'quad_points': None}
+idtft.default_options = {"quad_opts": {"epsabs": 1E-12,
+                                       "epsrel": 1E-9,
+                                       "limit": 100,
+                                       "points": None}}
 
 
 def _idtft_hermitian(Ff, t, fs=1, **quad_opts):
@@ -215,13 +226,12 @@ def idtft_hermitian(Ff, tt, fs=1, **options):
     ----------------
     fs : real, optional
         the sample frequency for the output sequence (defaults to 1)
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     See Also
     --------
@@ -229,15 +239,12 @@ def idtft_hermitian(Ff, tt, fs=1, **options):
         For the meaning of the integrator parameters.
     """
     # Manage optional parameters
-    opts = idtft_hermitian.default_options.copy()
-    opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
+    opts = digested_options(options, idtft.default_options, [], ['quad_opts'])
     # Do the computation
     if np.isscalar(tt):
-        return _idtft_hermitian(Ff, tt, fs, **quad_opts)
+        return _idtft_hermitian(Ff, tt, fs, **opts['quad_opts'])
     else:
-        return np.asarray([_idtft_hermitian(Ff, t, fs, **quad_opts)
+        return np.asarray([_idtft_hermitian(Ff, t, fs, **opts['quad_opts'])
                            for t in tt])
 
 idtft_hermitian.default_options = idtft.default_options.copy()

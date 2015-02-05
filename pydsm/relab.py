@@ -19,18 +19,32 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Compatibility functions for PyDSM
-=================================
+Compatibility functions for PyDSM (:mod:`pydsm.relab`)
+======================================================
 
-This module re-implements some matlab interfaces that are useful
+This module re-implements some Matlab interfaces that are useful
 for PyDSM.
+
+.. currentmodule:: pydsm.relab
+
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+   eps       -- Floating point relative accuracy
+   db        -- Converts a value to dB a la Matlab
+   cplxpair  -- Sorts values in input list by complex pairs
+   shiftdim  -- Shift dimensions a la Matlab
 """
 
 from __future__ import division, print_function
 
 import numpy as np
 
-__all__ = ["eps", "db", "cplxpair"]
+__all__ = ["eps", "db", "cplxpair", "shiftdim"]
 
 
 def eps(x):
@@ -98,6 +112,67 @@ def db(x, signal_type='voltage', R=1):
         return 10*np.log10(np.abs(x)**2./R)
 
 
+def shiftdim(x, n=None, retvals=slice(2)):
+    """
+    Shift dimensions a la Matlab
+
+    When n is provided, shiftdim shifts the axes of x by n.
+    If n is positive, it shifts the axes to the left, wrapping the
+    leading axes with non unitary dimension to the end.
+    When n is negative, it shifts the axes to the right, inserting n leading
+    axes with unitary dimension.
+    When n is not provided or None, it shifts the axes to the left, reducing
+    the number of dimensions and removing all the leading axes with unitary
+    dimension.
+
+    Parameters
+    ----------
+    x : array like
+        multi-dimensional array to operate upon
+    n : int or None, optional
+        amount to shift. Defaults to None, which means automatic computation
+    retvals : index or slice
+        indexes of values to actually return among the available ones
+
+    Returns
+    -------
+    y : ndarray
+        the result of the axes shift operation
+    n : int
+        the actual shift
+
+    Examples
+    --------
+
+    >>> from numpy.random import rand
+    >>> a = rand(1, 1, 3, 1, 2)
+    >>> b, n = shiftdim(a)
+    >>> b.shape
+    (3, 1, 2)
+    >>> n
+    2
+    >>> c = shiftdim(b, -n, retvals=0)
+    >>> np.alltrue(c == a)
+    True
+    >>> d = shiftdim(a, 3, retvals=0)
+    >>> d.shape
+    (1, 2, 1, 1, 3)
+    """
+    x = np.asarray(x)
+    s = x.shape
+    if n is None:
+        n = next(i for i, v in enumerate(s) if v > 1)
+    if n > 0:
+        m = next(i for i, v in enumerate(s) if v > 1)
+        if n > m:
+            x = x.transpose(np.roll(range(x.ndim), -n))
+        else:
+            x = x.reshape(s[n:])
+    elif n < 0:
+            x = x.reshape((1,)*(-n)+x.shape)
+    return (x, n)[retvals]
+
+
 def cplxpair(x, tol=None):
     """
     Sorts values in input list by complex pairs.
@@ -133,6 +208,8 @@ def cplxpair(x, tol=None):
 
     """
     x = np.asarray(x)
+    if x.size == 0:
+        return x
     if tol is None:
         tol = 100*eps(x.dtype)
     x = np.sort_complex(x)

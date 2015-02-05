@@ -22,20 +22,10 @@ from __future__ import division, print_function
 
 import numpy as np
 import time
-import sys
 import warnings
 from pkg_resources import resource_stream
 from numpy.testing import dec
-from pydsm.delsig._simulateDSM_scipy import simulateDSM as \
-    simulateDSM_scipy
-from pydsm.delsig._simulateDSM_scipy_blas import simulateDSM as \
-    simulateDSM_scipyblas
-try:
-    from pydsm.delsig._simulateDSM_cblas import simulateDSM as \
-        simulateDSM_cblas
-    HAS_CBLAS = True
-except:
-    HAS_CBLAS = False
+from nose.plugins.skip import SkipTest
 
 __all__ = ["Bench_simulateDSM"]
 
@@ -69,34 +59,39 @@ class Bench_simulateDSM():
 
     def bench_simulateDSM_scipy_blas(self):
         """Benchmark function for the scipy blas version of simulateDSM"""
+        from pydsm.delsig._simulateDSM_scipy_blas import (
+            simulateDSM as simulateDSM_scipyblas)
+        print("Benchmarking simulateDSM with scipy blas libraries")
         tic = time.clock()
         output, da1, da2, da3 = simulateDSM_scipyblas(self.u, self.H)
         timing = time.clock()-tic
         np.testing.assert_equal(output, self.result)
-        print()
         print("Scipy Blas DSM simulator timing: %6.2f" % timing)
-        sys.stdout.flush()
 
-    @dec.skipif(not HAS_CBLAS)
     def bench_simulateDSM_cblas_blas(self):
         """Benchmark function for the cblas version of simulateDSM"""
+        try:
+            from pydsm.delsig._simulateDSM_cblas import (
+                simulateDSM as simulateDSM_cblas)
+        except:
+            raise SkipTest("Cblas libraries not available")
+        print("Benchmarking simulateDSM with cblas libraries")
         tic = time.clock()
         output, da1, da2, da3 = simulateDSM_cblas(self.u, self.H)
         timing = time.clock()-tic
         np.testing.assert_equal(output, self.result)
-        print()
         print("CBlas DSM simulator timing: %6.2f" % timing)
-        sys.stdout.flush()
 
     @dec.slow
     def bench_simulateDSM_scipy(self):
         """Benchmark function for the scipy version of simulateDSM"""
+        from pydsm.delsig._simulateDSM_scipy import (
+            simulateDSM as simulateDSM_scipy)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
+            print("Benchmarking simulateDSM with scipy code")
             tic = time.clock()
             output, da1, da2, da3 = simulateDSM_scipy(self.u, self.H)
             timing = time.clock()-tic
         np.testing.assert_equal(output, self.result)
-        print()
         print("Scipy DSM simulator timing: %6.2f" % timing)
-        sys.stdout.flush()

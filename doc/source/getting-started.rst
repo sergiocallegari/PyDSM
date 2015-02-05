@@ -85,6 +85,10 @@ experience in Matlab. Conveniently, it offers online help for
 coding. The functions in PyDSM are internally documented to work with
 this online help system.
 
+Recent version of PyDSM may also benefit from alternative modeling
+languages for convex optimization. The interested user may want to
+install also the CVXPY_ and/or the PICOS_ Python packages.
+
 .. toctree::
    :maxdepth: 2
 
@@ -102,3 +106,5 @@ this online help system.
 .. _Matplotlib: http://matplotlib.org/
 .. _CVXOPT: http://abel.ee.ucla.edu/cvxopt/
 .. _Spyder: http://code.google.com/p/spyderlib/
+.. _CVXPY: http://www.cvxpy.org
+.. _PICOS: http://picos.zib.de/

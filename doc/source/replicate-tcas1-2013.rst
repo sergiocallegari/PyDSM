@@ -2,16 +2,15 @@ TCAS-I 2013 paper by Callegari and Bizzarri
 -------------------------------------------
 
 This section illustrates how to replicate the results presented in the
-paper
+paper [Cal13a]_.
 
-    Sergio Callegari, Federico Bizzarri *"Output Filter Aware
-    Optimization of the Noise Shaping Properties of ΔΣ Modulators via
-    Semi-Definite Programming"*, IEEE Transactions on Circuits and
-    Systems - Part I: Regular Papers. To appear in 2013. DOI:
-    `10.1109/TCSI.2013.2239091`_, also available on `arXiv:1302.3020`_
-
-.. _10.1109/TCSI.2013.2239091: http://dx.doi.org/10.1109/TCSI.2013.2239091
-.. _arXiv:1302.3020: http://arxiv.org/abs/1302.3020
+.. [Cal13a] Sergio Callegari, Federico Bizzarri *“Output Filter Aware
+   Optimization of the Noise Shaping Properties of ΔΣ Modulators via
+   Semi-Definite Programming”*, IEEE Transactions on Circuits and
+   systems - Part I: Regular Papers, Vol. 60, N. 9,
+   pp. 2352-2365. Sept. 2013. DOI: `10.1109/TCSI.2013.2239091
+   <http://dx.doi.org/10.1109/TCSI.2013.2239091>`_. Pre-print
+   available on `arXiv <http://arxiv.org/abs/1302.3020>`__.
 
 To this aim, some sample code is provided in the directory
 ``Examples/TCAS1-2013``.

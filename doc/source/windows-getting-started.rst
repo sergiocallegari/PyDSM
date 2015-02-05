@@ -174,6 +174,10 @@ tests can be run by issuing the command::
 
   python setup.py test
 
+or::
+
+  python setup.py nosetests
+
 
 Using the code
 ''''''''''''''

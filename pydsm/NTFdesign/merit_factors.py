@@ -19,9 +19,22 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-"""
-Computation of NTF related merit factors
-========================================
+u"""
+Computation of NTF related merit factors (:mod:`pydsm.NTFdesign.merit_factors`)
+===============================================================================
+
+This module provides functions for the computation of NTF merit factors
+
+.. currentmodule:: pydsm.NTFdesign.merit_factors
+
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+   quantization_noise_gain  -- NTF quantization noise power gain
 """
 
 from __future__ import division, print_function
@@ -29,12 +42,15 @@ from __future__ import division, print_function
 import numpy as np
 from scipy.integrate import quad
 from ..delsig import evalTF
+from ..utilities import digested_options
 
 __all__ = ["quantization_noise_gain"]
 
 
-def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
-    r"""Computes the NTF quantization noise power gain
+def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), avg=False,
+                            **options):
+    r"""
+    Compute the NTF quantization noise power gain.
 
     Parameters
     ----------
@@ -48,6 +64,9 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
     bounds : 2 elements tuple, optional
         the frequency range where the noise gain is computed. Defaults to
         (0, 0.5)
+    avg: bool, optional
+        If True, rather than returning the overall noise gain, the function
+        returns the average noise gain over the bandwidth.
 
     Returns
     -------
@@ -56,13 +75,12 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
 
     Other parameters
     ----------------
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the ``quad`` function used internally as
+        an integrator. Allowed options are ``epsabs``, ``epsrel``, ``limit``,
+        ``points``. Do not use other options since they could break the
+        integrator in unexpected ways. Defaults can be set by changing the
+        function ``default_options`` attribute.
 
     Notes
     -----
@@ -80,8 +98,7 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
 
     See Also
     --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
+    scipy.integrate.quad : for the meaning of the integrator parameters.
     """
     # Manage parameters
     if w is None:
@@ -90,15 +107,14 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), **options):
         h = w
         w = lambda f: np.abs(evalTF(h, np.exp(2j*np.pi*f)))**2
     # Manage optional parameters
-    opts = quantization_noise_gain.default_options.copy()
-    opts.update(options)
-    quad_opts = {k[5:]: v for k, v in opts.iteritems()
-                 if k.startswith('quad_')}
+    opts = digested_options(options, quantization_noise_gain.default_options,
+                            [], ['quad_opts'])
     # Compute
-    return quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
-                bounds[0], bounds[1], **quad_opts)[0]/(bounds[1]-bounds[0])
+    c = 1/(bounds[1]-bounds[0]) if avg else 2.
+    return c*quad(lambda f: np.abs(evalTF(NTF, np.exp(2j*np.pi*f)))**2*w(f),
+                  bounds[0], bounds[1], **opts["quad_opts"])[0]
 
-quantization_noise_gain.default_options = {'quad_epsabs': 1.49e-08,
-                                           'quad_epsrel': 1.49e-08,
-                                           'quad_limit': 50,
-                                           'quad_points': None}
+quantization_noise_gain.default_options = {"quad_opts": {"epsabs": 1E-14,
+                                                         "epsrel": 1E-9,
+                                                         "limit": 100,
+                                                         "points": None}}

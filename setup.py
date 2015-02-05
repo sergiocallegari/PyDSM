@@ -19,13 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-
-# Note: before launching setup with build_sphinx or docdist targets
-# it is necessary to build the package
-
-# Note zip_safe set to false even if package is zip safe since
-# spyder does not seem to be able to reload zipped eggs
-
 import sys
 
 if sys.version_info[:2] < (2, 6) or (2, 7) < sys.version_info[:2]:
@@ -87,9 +80,8 @@ setup(
                        'benchmarks/*.py', 'benchmarks/Data/*']},
     ext_modules=ext_modules,
     test_suite="nose.collector",
-    zip_safe=False,
     requires=['scipy (>=0.10.1)',
-              'numpy (>=1.6.1)',
+              'numpy (>=1.8.0)',
               'matplotlib (>= 1.1.0)',
               'cvxopt (>=1.1.4)',
               'cython (>=0.16)',

@@ -55,7 +55,7 @@ DELSIG helpers routines
 import numpy as np
 from math import ceil, sqrt
 from ._padding import padl, padr
-from ._tf import rmsGain
+from ._rmsGain import rmsGain
 from ..relab import db
 
 __all__ = ["ds_synNTFobj1", "ds_f1f2", "ds_optzeros"]
@@ -78,10 +78,10 @@ def ds_synNTFobj1(x, p, osr, f0):
 
 def ds_f1f2(osr=64, f0=0, complex_flag=False):
     """
+    Lower and higher extremes of the signal band as normalized frequencies
+
     Helper function.
 
-    Returns the lower and higher extremes of the signal band for a
-    delta-sigma modulator, as normalized frequencies.
 
     Parameters
     ----------
@@ -113,10 +113,11 @@ def ds_f1f2(osr=64, f0=0, complex_flag=False):
 
 def ds_optzeros(n, opt=1):
     """
-    Helper function for synthesizeNTF.
+    Zeros which minimize the in-band noise of a delta-sigma modulator
 
-    Returns the zeros which minimize the in-band noise power of
-    a delta-sigma modulator's NTF.
+    Helper function for synthesizeNTF, that returns the zeros as normalized
+    angular frequencies
+
 
     Parameters
     ----------

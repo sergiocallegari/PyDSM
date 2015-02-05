@@ -118,9 +118,13 @@ Testing the code
 ''''''''''''''''
 
 PyDSM includes a (rather incomplete for the moment) set of self tests.
-These can be run from the source tree as by issuing the command::
+These can be run from the source tree by issuing the command::
 
   python setup.py test
+
+or::
+
+  python setup.py nosetests
 
 Alternatively, once the package is installed, the tests can be run by
 opening a python interpreter and by typing::

@@ -19,8 +19,24 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-A collection of routines for the simulation of Delta Sigma modulators.
-======================================================================
+Simulation of Delta Sigma modulators (:mod:`pydsm.simulation`)
+==============================================================
+
+This module provides some functions for the simulation of of ΔΣ
+modulators. Currently, the functions included in this module are just
+alternative entry points for functions in the :mod:`pydsm.delsig` module.
+
+.. currentmodule:: pydsm.simulation
+
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+   simulateDSM   -- Delta sigma modulator simulation
+   ds_quantize   -- quantization function
 """
 
 # Promote some functions/global variables to the simulation namespace

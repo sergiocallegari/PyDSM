@@ -12,12 +12,14 @@ Contents:
    replicate-results
    license
    included_code
+   more-references
    changelog
 
+.. only:: html
 
-Indices and tables
-==================
+   Indices and tables
+   ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   * :ref:`genindex`
+   * :ref:`modindex`
+   * :ref:`search`

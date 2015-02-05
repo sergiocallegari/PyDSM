@@ -53,9 +53,9 @@ print("... computing optimal NTF")
 opti_ntf = ntf_fir_audio_weighting(order, osr, f_weighting,
                                    H_inf=H_inf,
                                    normalize=1E3,
-                                   cvxpy_reltol=1E-12,
-                                   cvxpy_abstol=1E-10,
-                                   cvxpy_feastol=1E-2)
+                                   cvxopt_opts={'reltol': 1E-12,
+                                                'abstol': 1E-10,
+                                                'feastol': 1E-2})
 
 dunn_ntf = ntf_dunn(3, osr, H_inf)
 

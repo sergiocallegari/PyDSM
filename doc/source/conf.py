@@ -11,24 +11,16 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
-from distutils.util import get_platform
+import sys
+import os
 
-# Find build dir
-pv=sys.version_info
-distutil_bd='../../build/lib.'+get_platform()+'-'+\
-  str(pv.major)+'.'+str(pv.minor)
-distutil_bd=os.path.abspath(distutil_bd)
-
-# extend sys.path
-sys.path.insert(0, distutil_bd)
-
+# PYDSM specific
 from pydsm._version import __version__
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('.'))
 
 # -- General configuration -----------------------------------------------------
 
@@ -37,8 +29,8 @@ from pydsm._version import __version__
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.pngmath', 'numpydoc',
-              'sphinx.ext.autosummary']
+extensions = ['latex_hacks', 'sphinx.ext.autodoc', 'sphinx.ext.pngmath',
+              'numpydoc', 'sphinx.ext.autosummary']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -145,6 +137,7 @@ html_static_path = ['_static']
 
 # Custom sidebar templates, maps document names to template names.
 #html_sidebars = {}
+html_sidebars = {'**': ['localtoc.html', 'sourcelink.html', 'searchbox.html']}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
@@ -164,6 +157,7 @@ html_domain_indices = ['py-modindex']
 
 # If true, links to the reST sources are added to the pages.
 #html_show_sourcelink = True
+html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 #html_show_sphinx = True
@@ -188,12 +182,14 @@ htmlhelp_basename = 'PyDSMdoc'
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
 #'papersize': 'letterpaper',
+'papersize': 'a4paper',
 
 # The font size ('10pt', '11pt' or '12pt').
 #'pointsize': '10pt',
 
 # Additional stuff for the LaTeX preamble.
 #'preamble': '',
+'preamble': r'\usepackage[artemisia]{textgreek}' '\n' '\hypersetup{unicode}'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -259,3 +255,28 @@ texinfo_documents = [
 
 # -- Autosummary ---------------------------------------
 autosummary_generate = True
+
+
+# Ignore header of main package
+def better_cut_lines(pre, post=0, what=None, name=None):
+    def process(app, what_, name_, obj, options, lines):
+        if what and what_ not in what:
+            return
+        if name and name_ != name:
+            return
+        del lines[:pre]
+        if post:
+            # remove one trailing blank line.
+            if lines and not lines[-1]:
+                lines.pop(-1)
+            del lines[-post:]
+        # make sure there is a blank line at the end
+        if lines and lines[-1]:
+            lines.append('')
+    return process
+
+
+def setup(app):
+    from sphinx.ext.autodoc import cut_lines
+    app.connect('autodoc-process-docstring',
+                better_cut_lines(3, what=['module'], name='pydsm'))

@@ -18,9 +18,35 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-"""
-Design of psychoacoustically optimal modulators
-===============================================
+u"""
+Psychoacoustic NTF design (:mod:`pydsm.NTFdesign.psychoacoustic`)
+=================================================================
+
+This modules provides a psychoacoustic aware design method for the NTF
+of ΔΣ modulators used in audio applications.
+
+.. currentmodule:: pydsm.NTFdesign.psychoacoustic
+
+
+Functions
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+    dunn_optzeros            -- helper function for normalized NTF zeros
+    dunn_optzeros_cplx       -- helper function for NTF zeros
+    ntf_dunn                 -- NTF design a la Dunn
+    ntf_fir_audio_weighting  -- FIR NTF design with psychoacustic weighting
+
+
+Deprecated functions
+--------------------
+
+.. autosummary::
+
+   synthesize_ntf_dunn                 -- alias of ntf_dunn
+   synthesize_ntf_from_audio_weighting -- alias of ntf_fir_audio_weighting
 """
 
 from __future__ import division, print_function
@@ -29,7 +55,7 @@ import numpy as np
 from .delsig import synthesizeNTF
 from ..delsig import undbp as undbp
 from .. import audio_weightings
-from .weighting import synthesize_ntf_from_noise_weighting
+from .weighting import ntf_fir_weighting
 from warnings import warn
 from ..exceptions import PyDsmDeprecationWarning
 
@@ -63,14 +89,11 @@ def dunn_optzeros(n):
     bandwidth, that is fixed at 22.05 kHz.
 
     This function is the equivalent of ds_optzeros in DELSIG. The tabled
-    zeros delivered by this function are from [Dunn-1997a]_.  Note that this
-    function does not return the values that are tabled in [Dunn-1997a]_, but
-    scales them by the reference audio bandwidth used in [Dunn-1997a]_,
-    namely 22.05 kHz.
+    zeros delivered by this function are from [1]_.  Note that this function
+    does not return the values that are tabled in [1]_, but scales them
+    by the reference audio bandwidth used in [1]_, namely 22.05 kHz.
 
-    References
-    ----------
-    .. [Dunn-1997a] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal
+    .. [1] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal
        Sigma Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp.
        212 - 223 (1997 April)
     """
@@ -120,7 +143,8 @@ def dunn_optzeros_cplx(order, osr):
 
 
 def ntf_dunn(order=3, osr=64, H_inf=1.5):
-    """Synthesizes an NTF for a DS audio modulator by Dunn's approach.
+    """
+    Synthesizes an NTF for a DS audio modulator by Dunn's approach.
 
     The signal bandwidth is 22.05 kHz.
 
@@ -146,7 +170,7 @@ def ntf_dunn(order=3, osr=64, H_inf=1.5):
     -----
     This is not exactly Dunn's method (but it should be equivalent or
     slightly better). In fact, to avoid re-implementing the pole selection
-    algorithm, that in [Dunn-1997]_ is based on a Butterworth synthesis, here
+    algorithm, that in [1]_ is based on a Butterworth synthesis, here
     the pole selection logic used in DELSIG's synthesizeNTF is recycled.
     This should not make a big difference since DELSIG logic is anyway based
     on a pole positioning aimed at obtaining a maximally flat response of the
@@ -156,27 +180,26 @@ def ntf_dunn(order=3, osr=64, H_inf=1.5):
 
     Parameter H_inf is used to enforce the Lee stability criterion.
 
-    See Also
-    --------
-    delsig.synthesizeNTF : DELSIG's optimal NTF design strategy.
-
-    References
-    ----------
-    .. [Dunn-1997] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal
+    .. [1] Chris Dunn and Mark Sandler, "Psychoacoustically Optimal
        Sigma Delta Modulation," J. Audio Eng. Soc., Vol. 45, No. 4, pp.
        212 - 223 (1997 April)
+
+    See Also
+    --------
+    pydsm.delsig.synthesizeNTF : DELSIG's optimal NTF design strategy.
     """
     return synthesizeNTF(order, osr, dunn_optzeros_cplx(order, osr), H_inf, 0)
 
 
 def ntf_fir_audio_weighting(
         order, osr,
-        audio_weighting=audio_weightings.f_weighting,
+        audio_weighting='f',
         audio_band=22.05E3,
         max_attn=120,
         H_inf=1.5,
         normalize="auto", **options):
-    u"""Synthesize a FIR NTF based on an audio weighting function.
+    u"""
+    Synthesize a FIR NTF based on an audio weighting function.
 
     The ΔΣ modulator NTF is designed after an audio weigthing function stating
     how loudly noise is perceived at the various frequencies.
@@ -187,11 +210,12 @@ def ntf_fir_audio_weighting(
         Delta sigma modulator order
     osr : float
         the oversampling ratio
-    audio_weighting : callable
+    audio_weighting : callable or string
         audio weighting function. This is a function taking a frequency and
         expressing the weighting at that frequency in terms of acoustic power.
-        Functions in the audio_weightings module are suitable here. Note that
-        the function argument frequency is a real frequency in Hz.
+        Functions in the :mod:`pydsm.audio_weightings` module are suitable
+        here. Note that the function argument frequency is a real frequency in
+        Hz.
     audio_band : float, optional
         how large the audio bandwidth to consider. The signal band is from
         0 to audio_band Hz. Defaults to 22.05 kHz
@@ -205,21 +229,6 @@ def ntf_fir_audio_weighting(
         Normalization to apply to the quadratic form used in the NTF
         selection. Defaults to 'auto' which means setting the top left entry
         in the matrix Q defining the quadratic form to 1.
-    options : dict, optional
-        parameters for the SDP optimizer. These include:
-
-        ``maxiters``
-            Maximum number of iterations (defaults to 100)
-        ``abstol``
-            Absolute accuracy (defaults to 1e-7)
-        ``reltol``
-            Relative accuracy (defaults to 1e-6)
-        ``feastol``
-            Tolerance for feasibility conditions (defaults to 1e-6)
-        ``show_progress``
-            Print progress (defaults to True)
-
-        See also the documentation of ``cvxopt`` for further information.
 
     Returns
     -------
@@ -229,46 +238,47 @@ def ntf_fir_audio_weighting(
     Other parameters
     ----------------
     show_progress : bool, optional
-        provide extended output, default is True
-    cvxpy_xxx : various type, optional
-        Parameters prefixed by ``cvxpy_`` are passed to the ``cvxpy``
-        optimizer. Allowed options are:
+        provide extended output, default is True and can be updated by
+        changing the function ``default_options`` attribute.
+    cvxopt_opts : dictionary, optional
+        A dictionary of options for the ``cvxopt`` optimizer
+        Allowed options include:
 
-        ``cvxpy_maxiters``
+        ``maxiters``
             Maximum number of iterations (defaults to 100)
-        ``cvxpy_abstol``
+        ``abstol``
             Absolute accuracy (defaults to 1e-7)
-        ``cvxpy_reltol``
+        ``reltol``
             Relative accuracy (defaults to 1e-6)
-        ``cvxpy_feastol``
+        ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
-        Do not use other options since they could break ``cvxpy`` in
+        Do not use other options since they could break :mod:`cvxopt` in
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
-    quad_xxx : various type
-        Parameters prefixed by ``quad_`` are passed to the ``quad``
-        function that is used internally as an integrator. Allowed options
-        are ``quad_epsabs``, ``quad_epsrel``, ``quad_limit``, ``quad_points``.
-        Do not use other options since they could break the integrator in
-        unexpected ways. Defaults can be set by changing the function
-        ``default_options`` attribute.
+    quad_opts : dictionary, optional
+        Parameters to be passed to the :func:`scipy.minimize.quad` function
+        used internally as an integrator. Allowed options are ``epsabs``,
+        ``epsrel``, ``limit``, ``points``. Do not use other options since they
+        could break the integrator in unexpected ways. Defaults can be set by
+        changing the function ``default_options`` attribute.
 
     See Also
     --------
-    scipy.integrate.quad : integrator used internally.
-        For the meaning of the integrator parameters.
-    weighting.synthesize_ntf_from_noise_weighting :
-        synthesize an NTF from a noise weighting
-
-    Notes
-    -----
-    Check also the documentation of ``cvxopt`` for further information.
+    scipy.integrate.quad : for the meaning of the integrator parameters.
+    cvxopt : for the optimizer parameters
     """
-    # Manage optional parameters
-    opts = ntf_fir_audio_weighting.default_options.copy()
-    opts.update(options)
-    # Do the computation
+    if not callable(audio_weighting):
+        if audio_weighting == 'f':
+            audio_weighting = audio_weightings.f_weighting
+        elif audio_weighting == 'a':
+            audio_weighting = audio_weightings.a_weighting
+        elif audio_weighting == 'b':
+            audio_weighting = audio_weightings.b_weighting
+        elif audio_weighting == 'c':
+            audio_weighting = audio_weightings.c_weighting
+        elif audio_weighting == 'd':
+            audio_weighting = audio_weightings.d_weighting
 
     def w(f):
         ma = undbp(-max_attn)
@@ -276,25 +286,25 @@ def ntf_fir_audio_weighting(
         w = audio_weighting(fx) if fx <= audio_band else 0
         return max(w, ma)
 
-    return synthesize_ntf_from_noise_weighting(order, w, H_inf,
-                                               normalize, **opts)
+    return ntf_fir_weighting(order, w, H_inf, normalize, **options)
 
 ntf_fir_audio_weighting.default_options = \
-    synthesize_ntf_from_noise_weighting.default_options.copy()
+    ntf_fir_weighting.default_options.copy()
 
 
 # Following part is deprecated
 
 def synthesize_ntf_dunn(order=3, osr=64, H_inf=1.5):
+    """
+    Alias of :func:`ntf_dunn`
+
+    .. deprecated:: 0.11.0
+       Function has been moved to the :mod:`NTFdesign` module with
+       name :func:`ntf_dunn`.
+    """
     warn("Function superseded by ntf_dunn in "
          "NTFdesign module", PyDsmDeprecationWarning)
     return ntf_dunn(order, osr, H_inf)
-
-synthesize_ntf_dunn.__doc__ = ntf_dunn.__doc__ + """
-    .. deprecated:: 0.11.0
-       Function has been moved to the ``NTFdesign`` module with
-       name ``ntf_dunn``.
-    """
 
 
 def synthesize_ntf_from_audio_weighting(
@@ -304,17 +314,14 @@ def synthesize_ntf_from_audio_weighting(
         max_attn=120,
         H_inf=1.5,
         normalize="auto", **options):
+    """
+    Alias of :func:`ntf_fir_audio_weighting`
+
+    .. deprecated:: 0.11.0
+        Function has been moved to the :mod:`NTFdesign` module with
+        name :func:`ntf_fir_audio_weighting`.
+    """
     warn("Function superseded by ntf_fir_audio_weighting in "
          "NTFdesign module", PyDsmDeprecationWarning)
     return ntf_fir_audio_weighting(order, osr, audio_weighting, audio_band,
                                    max_attn, H_inf, normalize, **options)
-
-synthesize_ntf_from_audio_weighting.default_options = \
-    ntf_fir_audio_weighting.default_options
-
-synthesize_ntf_from_audio_weighting.__doc__ = \
-    ntf_fir_audio_weighting.__doc__ + """
-    .. deprecated:: 0.11.0
-        Function has been moved to the ``NTFdesign`` module with
-        name ``ntf_fir_audio_weighting``.
-    """

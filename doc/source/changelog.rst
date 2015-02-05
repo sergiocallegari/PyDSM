@@ -1,6 +1,21 @@
 Changelog
 ---------
 
+0.12.0.0
+   - Switch to new version numbering scheme also in view of
+     PEP 440
+   - Install as zipped package
+   - Modify management of optional parameters in some functions.
+     Note that this implies a minor API breakage.
+   - Implement new hybrid NTF design method
+   - Slightly improve accuracy of weighted NTF design functions
+   - Improve quantization_noise_gain function
+   - Improve html documentation
+   - Let multiple modelers be selected in functions using convex
+     optimization (cvxpy, cvxpy_old and picos are supported)
+   - Implement some more functions in delsig module (axisLabels, rms)
+   - Many small fixes
+
 0.11.0
    - Switch to setuptools for building
    - Improve testing framework
