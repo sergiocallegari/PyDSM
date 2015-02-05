@@ -540,6 +540,19 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
         ``points``. Do not use other options since they could break the
         integrator in unexpected ways.
 
+    Notes
+    -----
+    Default values for the options not directly documented in the function
+    call signature can be checked and updated by changing the function
+    ``default_options`` attribute.
+
+    The internal operation of this function is described in [1]_.
+
+    .. [1] Sergio Callegari, Federico Bizzarri "Optimal Design of the Noise
+       Transfer Function of ΔΣ Modulators: IIR strategies, FIR strategies,
+       FIR strategies with Preassigned Poles," Signal Processing, Elsevier,
+       2015. DOI:  10.1016/j.sigpro.2015.02.001.
+
     See Also
     --------
     scipy.integrate.quad : for the meaning of the integrator parameters
