@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012, Sergio Callegari
+# Copyright (c) 2015, Sergio Callegari
 # All rights reserved.
 
 # This file is part of PyDSM.
@@ -47,97 +47,47 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-"""
-Code ported from the DELSIG toolbox by R. Schreier (:mod:`pydsm.delsig`)
-========================================================================
+from __future__ import division
 
-.. currentmodule:: pydsm.delsig
+import numpy as np
 
 
-Key functions
--------------
-
-.. autosummary::
-   :toctree: generated/
-
-   synthesizeNTF
-   clans
-   synthesizeChebyshevNTF
-   simulateDSM
-
-Other selected functions
-------------------------
-
-Delta sigma utilities
-.....................
-
-.. autosummary::
-   :toctree: generated/
-
-   partitionABCD
-   rmsGain
-
-General utilities
-.................
-
-.. autosummary::
-   :toctree: generated/
-
-   dbv
-   dbp
-   undbv
-   undbp
-   dbm
-   undbm
-   rms
-
-Graphing
-........
-
-.. autosummary::
-   :toctree: generated/
-
-   plotPZ
-   axisLabels
+__all__ = ["rms"]
 
 
-Plumbing
---------
+def rms(x, no_dc=False):
+    """
+    Compute root means square value (RMS) of a vector.
 
-.. autosummary::
-   :toctree: generated/
+    Given an input vector x, this function computes the square root of
+    the sum of the squared elements of x, optionally removing the mean value
+    of x from its entries beforehand.
 
-   ds_synNTFobj1
-   ds_f1f2
-   ds_optzeros
-   dsclansNTF
-   padl
-   padr
-   padt
-   padb
-   evalTF
-   evalRPoly
-"""
+    Parameters
+    ----------
+    x : array like
+        input vector
+    no_dc : bool, optional
+        whether to remove the mean value, default is False
 
-__delsig_version__ = "7.4"
+    Returns
+    -------
+    v : float
+        RMS value
 
-# The delsig module reflects the flat organization of the original DELSIG
-from ._axisLabels import *
-from ._decibel import *
-from ._ds import *
-from ._padding import *
-from ._tf import *
-from ._plot import *
-from ._synthesizeNTF import *
-from ._synthesizeChebyshevNTF import *
-from ._clans import *
-from ._dsclansNTF import *
-from ._simulateDSM import *
-from ._simulateDSM_scipy import *
-from ._partitionABCD import *
-from ._rmsGain import *
-from ._rms import *
+    Notes
+    -----
+    In formal terms, the operation being performed on :math:`n`-entry vector
+    :math:`x` to return rms value :math:`v` is
 
-from numpy.testing import Tester
-test = Tester().test
-bench = Tester().bench
+    .. math::
+
+        v = \\sqrt{\\frac{1}{n}\sum_{i=0}^n x_i^2}
+
+    Input x must be a 1 dimensional vector. If x is a matrix, the DELSIG
+    version of rms returns a meaningless result, and so this function does...
+    just a different result.
+    """
+    if no_dc:
+        x = x - np.mean(x)
+    return np.linalg.norm(x)/np.sqrt(len(x))

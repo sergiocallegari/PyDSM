@@ -85,6 +85,14 @@ def rmsGain(H, f1, f2, N=100):
     rms : real
         rms value of the discrete time transfer function.
 
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> v = np.sin(np.linspace(0, 20*np.pi, 1024))
+    >>> pydsm.delsig.rms(v)
+    0.70676142986866519
+
     Notes
     -----
     The discrete-time transer function H is evaluated in the frequency band
