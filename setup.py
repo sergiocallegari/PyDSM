@@ -19,10 +19,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
+
+from __future__ import print_function
+
 import sys
 
-if sys.version_info[:2] < (2, 6) or (2, 7) < sys.version_info[:2]:
-    raise RuntimeError("Python version 2.6 or 2.7 required.")
+if sys.version_info[:2] < (2, 6):
+    raise RuntimeError("Python version > 2.6 required")
 
 from setuptools import setup, Extension, find_packages
 from Cython.Distutils import build_ext
