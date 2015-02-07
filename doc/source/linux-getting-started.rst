@@ -19,16 +19,16 @@ Steps that can be practiced using the distribution package manager
 First of all, there are some steps that can usually be practiced using
 the distribution package manager.
 
-#. Make sure that a *Python 2.7* environment is installed. For
-   instance, in Ubuntu or Debian, you can use a (graphical) package
-   manager to look for the packages ``python2.7`` and
-   ``python2.7-dev``.
+#. Make sure that a Python environment is installed. For instance, in
+   Ubuntu or Debian, you can use a (graphical) package manager to look
+   for the packages ``python2.7`` (or ``python3.4``) and
+   ``python2.7-dev`` (or ``python3.4-dev``).
 
 #. Similarly, assure that *Numpy*, *Scipy* and *Matplotlib* are
    installed on your system. Since many distribution offer Numpy,
    Scipy and Matplotlib both for Python 2 and for Python 3, assure on
    the package manager that the version that you have installed
-   matches your Python 2.7 environment.
+   matches your Python environment.
 
 #. Use your package manager also to install (or verify the
    installation) of *Cython*.
