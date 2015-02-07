@@ -44,6 +44,9 @@ class cvxpy_obj(object):
         self.parameters = cvxpy_list()        
         self.T = self
 
+    def __lt__(self, other):
+        return self.name < other.name
+
     # Method: is_convex
     def is_convex(self):
         """
