@@ -59,7 +59,7 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
     # Determine the zeros.
     if f0 != 0:
         # Bandpass design-- halve the order temporarily.
-        order = order/2
+        order = int(order/2)
         dw = np.pi/(2*osr)
     else:
         dw = np.pi/osr
