@@ -118,7 +118,7 @@ Tstart = 40E3
 dither_sigma = 1e-6
 
 # Set up DSM simulation
-tt = np.asarray(xrange(int(Tstop)))
+tt = np.asarray(range(int(Tstop)))
 uu = A*np.sin(2*np.pi*fsig/fphi*tt)
 dither = np.random.randn(len(uu))*dither_sigma
 uud = uu+dither

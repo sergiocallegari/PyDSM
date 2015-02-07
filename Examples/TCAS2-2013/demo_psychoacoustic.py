@@ -96,7 +96,7 @@ A = 0.01
 DT = 4*fphi/fsig
 
 # Setting up DS simulation
-tt = np.asarray(xrange(int(Tstop)))
+tt = np.asarray(range(int(Tstop)))
 uu = A*np.sin(2*np.pi*fsig/fphi*tt)
 dither = np.random.randn(len(uu))*dither_sigma
 uud = uu+dither
@@ -137,9 +137,7 @@ plt.title('Spectra from time domain data')
 plt.tight_layout(rect=[0, 0, 1, 0.98])
 
 ww = np.zeros_like(psd1)
-for i in xrange(len(freqs)):
-    ww[i] = max(f_weighting(freqs[i]), 1E-200)
-
+ww = np.asarray([max(f_weighting(freq), 1E-200) for freq in freqs])
 
 plt.figure()
 plt.plot(freqs[minidx:maxidx], dbp((psd1*ww)[minidx:maxidx]), 'r',
