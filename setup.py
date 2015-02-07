@@ -25,7 +25,10 @@ from __future__ import print_function
 import sys
 
 if sys.version_info[:2] < (2, 6):
-    raise RuntimeError("Python version > 2.6 required")
+    raise RuntimeError("Python 2 supported for versions >= 2.6")
+
+if (3,) <= sys.version_info[:2] < (3, 2):
+    raise RuntimeError("Python 3 supported for versions >= 3.2")
 
 from setuptools import setup, Extension, find_packages
 from Cython.Distutils import build_ext
