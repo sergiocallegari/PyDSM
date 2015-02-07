@@ -47,6 +47,8 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+from __future__ import division
+
 import numpy as np
 from warnings import warn
 from ..exceptions import PyDsmApproximationWarning
