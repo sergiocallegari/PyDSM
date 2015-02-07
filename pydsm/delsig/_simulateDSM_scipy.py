@@ -141,7 +141,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
     else:
         xmax = np.empty(0)
 
-    for i in xrange(N):
+    for i in range(N):
         # I guess the coefficients in A, B, C, D should be real...
         y0 = np.real(np.dot(C, x0) + np.dot(D1, u[:, i]))
         if store_y:
@@ -189,7 +189,7 @@ def ds_quantize(y, n):
     mid-tread quantizers.
     """
     v = np.empty_like(y)
-    for qi in xrange(np.size(n)):
+    for qi in range(np.size(n)):
         if np.remainder(n[qi], 2) == 0:
             v[qi] = 2*np.floor(0.5*y[qi])+1
         else:

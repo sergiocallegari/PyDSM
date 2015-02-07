@@ -115,7 +115,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                 p = np.zeros(order)
             else:
                 x = 0.3**(order-1)   # starting guess
-                for itn in xrange(1, Hinf_itn_limit+1):
+                for itn in range(1, Hinf_itn_limit+1):
                     me2 = -0.5*(x**(2./order))
                     w = (2*np.arange(1, order+1)+1)*np.pi/order
                     mb2 = 1+me2*np.exp(1j*w)
@@ -157,7 +157,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
             else:
                 z_inf = -1.
             c2pif0 = np.cos(2*np.pi*f0)
-            for itn in xrange(1, Hinf_itn_limit+1):
+            for itn in range(1, Hinf_itn_limit+1):
                 e2 = 0.5*x**(2./order)
                 w = (2*np.arange(order)+1)*np.pi/order
                 mb2 = c2pif0 + e2*np.exp(1j*w)
@@ -206,7 +206,8 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
             # options = optimset(options,'Display','off');
             # %options = optimset(options,'Display','iter');
             opt_result = fmin_l_bfgs_b(ds_synNTFobj1, x0, args=(p, osr, f0),
-                                       approx_grad=True, bounds=zip(lb, ub))
+                                       approx_grad=True,
+                                       bounds=list(zip(lb, ub)))
             x = opt_result[0]
             x0 = x
             z = np.exp(2j*np.pi*(f0+0.5/osr*x))

@@ -94,7 +94,7 @@ def axisLabels(points, incr):
         step = incr
     elif (hasattr(incr, '__len__') and
           len(incr) == 2 and
-          np.all(map(lambda x: isinstance(x, int), incr))):
+          np.all([isinstance(x, int) for x in incr])):
         start = incr[0]
         step = incr[1]
     else:
