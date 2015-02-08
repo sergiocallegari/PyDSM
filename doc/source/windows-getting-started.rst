@@ -7,11 +7,10 @@ PyDSM itself.
 
 It is worth anticipating that building software from source in Windows
 is somehow less comfortable than on the other platforms where PyDSM is
-supported (this is particularly true of 64bit Windows). For this
-reason *binary installers* may be available for Windows as a
-convenience. Due to limited resources, not all versions of PyDSM may
-ship a binary installer, though.  Binary installers make the
-installation simpler, since it is not necessary to have a C
+supported. For this reason *binary installers* may be available for
+Windows as a convenience. Due to limited resources, not all versions
+of PyDSM may ship a binary installer, though.  Binary installers make
+the installation simpler, since it is not necessary to have a C
 development environment. However, they may also create problems when
 application binary interfaces are mismatched.
 
@@ -29,7 +28,8 @@ automatically includes most of them. The recommendation is to use
 `Python(x,y)`_ or `WinPython`_ that are scientific Python
 distributions for Windows Vista/7/8. WinPython is also available in a
 flavor for 64 bit Windows.  They include Numpy, Scipy, Matplotlib,
-Cython, Spyder. Obviously, it is also possible to use other Python
+Cython, Spyder and, as of the most recent `WinPython`_ also
+CVXOPT. Obviously, it is also possible to use other Python
 distributions, or to install the prerequisites one by one, but with
 this you are on your own.
 
@@ -70,15 +70,15 @@ A word of caution
 
 Currently, the state of affairs with respect to free Python
 distributions for Windows is not completely ideal.  A few
-distributions now ship without `CVXOPT`_ (notably `WinPython`_ has
-dropped this package at version 2.7.6.3) and at the same time the
-`CVXOPT`_ 1.1.7 package provided at the `pythonlibs site by
-Christoph Gohlke`_ seems to have problems with them. Notably there are
-issues when using `CVXOPT`_ 1.1.7 from the `pythonlibs site by
-Christoph Gohlke`_ and `WinPython`_ the latest `WinPython`_ 2.7.6.4.
+distributions may now ship without `CVXOPT`_ (notably `WinPython`_ has
+dropped this package at versions 2.7.6.3, 2.7.6.4 and got it again
+later). There have been reports of some instability with installing
+the `CVXOPT`_ 1.1.7 package provided at the `pythonlibs site by
+Christoph Gohlke`_ with some of these Python distributions.
 
-The suggestion is to use `WinPython`_ 2.7.6.2 (the latest version
-shipping with `CVXOPT`_).
+The suggestion is to use *recent* `WinPython`_ releases, such as
+2.7.9.2 (for Python 2) or 3.4.2.4 (for Python 3), or more recent, that
+are known to ship with a reliable `CVXOPT`_.
 
 
 Installation of PyDSM itself
