@@ -275,7 +275,7 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     if opts['fix_pos']:
         d = d/np.max(d)
         d[d < 0] = 0.
-    Qs = v.dot(np.diag(np.sqrt(d))).dot(np.linalg.inv(v))
+    Qs = v.dot(np.diag(np.sqrt(d))).dot(v.T)
     A = np.eye(order, order, 1)
     C = np.zeros((1, order))
     ntf_ir = _ntf_fir_from_digested(Qs, A, C, H_inf, **dig_opts)
@@ -625,7 +625,7 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
     if opts2['fix_pos']:
         d = d/np.max(d)
         d[d < 0] = 0.
-    Qs = v.dot(np.diag(np.sqrt(d))).dot(np.linalg.inv(v))
+    Qs = v.dot(np.diag(np.sqrt(d))).dot(v.T)
     A = np.eye(order, order, 1)
     A[order-1] = -ar[::-1]
     C = -ar[::-1].reshape((1, order))
