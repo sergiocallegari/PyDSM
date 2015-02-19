@@ -69,7 +69,7 @@ def dsclansNTF(x, order, rmax, Hz):
         s = -x[0]**2
         # Bilinear transform
         Hp[0] = rmax*(1+s)/(1-s)
-    for i in xrange(odd, order, 2):
+    for i in range(odd, order, 2):
         zeta = x[i]**2
         wn = x[i+1]**2
         s = np.roots((1, 2*zeta*wn, wn**2))

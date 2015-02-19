@@ -21,6 +21,12 @@ import numpy as np
 from .defs import *
 import scipy.sparse as sp
 
+import sys
+if sys.version_info >= (3, 0):
+    int_types = (int,)
+else:
+    int_types = (int, long)
+
 #***********************************************************************#
 # Class definition: cvxpy_array                                         #
 #***********************************************************************#
@@ -96,10 +102,8 @@ class cvxpy_array(object):
             raise TypeError('Invalid Key')
         if len(key) != 2:
             raise TypeError('Invalid Key')
-        if (not (issubclass(type(key[0]),(int,long)) or
-                 issubclass(type(key[0]),np.integer)) or
-            not (issubclass(type(key[1]),(int,long)) or
-                 issubclass(type(key[1]),np.integer))):
+        if (not (issubclass(type(key[0]), int_types+(np.integer,))) or
+            not (issubclass(type(key[1]), int_types+(np.integer,)))):
             raise TypeError('Invalid Key')
         if key[0] < 0 or key[0] >= self.shape[0]:
             raise ValueError('Index out of range')
@@ -115,12 +119,10 @@ class cvxpy_array(object):
             raise TypeError('Invalid Key')
         if len(key) != 2:
             raise TypeError('Invalid Key')
-        if (not (issubclass(type(key[0]),(int,long)) or
-                 issubclass(type(key[0]),np.integer)) and
+        if (not (issubclass(type(key[0]), int_types+(np.integer,))) and
             type(key[0]) is not slice):
             raise TypeError('Invalid Key')
-        if (not (issubclass(type(key[1]),(int,long)) or
-                 issubclass(type(key[1]),np.integer)) and
+        if (not (issubclass(type(key[1]), int_types+(np.integer,))) and
             type(key[1]) is not slice):
             raise TypeError('Invalid Key')
 

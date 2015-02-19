@@ -42,6 +42,10 @@ from __future__ import division, print_function
 
 import numpy as np
 
+import sys
+if sys.version_info < (3,):
+    range = xrange
+
 __all__ = ["raw_acorr", "raw_xcorr"]
 
 
@@ -70,7 +74,7 @@ def raw_acorr(x, N):
     (but only in some cases), zero padding is practiced.
     """
     m = len(x)
-    q = np.asarray([np.dot(x[k:m], x[0:m-k]) for k in xrange(N+1)])
+    q = np.asarray([np.dot(x[k:m], x[0:m-k]) for k in range(N+1)])
     return q
 
 
@@ -103,5 +107,5 @@ def raw_xcorr(x, y, N):
     mx = len(x)
     my = len(y)
     q = np.asarray([np.dot(y[k:min(my, mx+k)],
-                           x[0:min(my-k, mx)]) for k in xrange(N+1)])
+                           x[0:min(my-k, mx)]) for k in range(N+1)])
     return q

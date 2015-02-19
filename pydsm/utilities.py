@@ -63,6 +63,10 @@ from warnings import warn
 from .exceptions import PyDsmDeprecationWarning
 from . import relab
 
+import sys
+if sys.version_info >= (3,):
+    from functools import reduce
+
 __all__ = ["is_negligible", "chop", "db", "cplxpair", "mdot", "EPS",
            "digested_options"]
 
@@ -187,7 +191,7 @@ def digested_options(opts, defaults, keys=[], multikeys=[], emptycheck=True):
         out[key] = d
     if emptycheck and (len(opts) != 0):
         raise TypeError("Unexpected keyword argument(s) '%s'" %
-                        list(opts.viewkeys()))
+                        list(opts.keys()))
     return out
 
 

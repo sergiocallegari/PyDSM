@@ -128,7 +128,7 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
                  horizontalalignment='left',
                  verticalalignment='center')
         y = y - 0.1
-        for i in xrange(len(pp)):
+        for i in range(len(pp)):
             if pp[i].imag == 0:
                 str_p = '$%+.4f$' % pp[i].real
             else:
@@ -145,7 +145,7 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
                      horizontalalignment='left',
                      verticalalignment='center')
             y = y - 0.1
-            for i in xrange(len(zz)):
+            for i in range(len(zz)):
                 if zz[i].imag == 0:
                     str_z = '$%+.4f$' % zz[i].real
                 else:

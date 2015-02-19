@@ -122,6 +122,6 @@ def evalRPoly(roots, x, k=1):
     roots = np.asarray(roots)
     # Remove roots at infinity
     roots = roots[np.logical_not(np.isinf(roots))]
-    for i in xrange(roots.size):
+    for i in range(roots.size):
         y = y*(x-roots[i])
     return y
