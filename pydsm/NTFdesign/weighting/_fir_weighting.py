@@ -664,9 +664,6 @@ def q0_from_noise_weighting(P, w, **options):
     return q0_weighting(P, w, **options)
 
 
-q0_from_noise_weighting.default_options = q0_weighting.default_options
-
-
 def synthesize_ntf_from_q0(q0, H_inf=1.5, normalize="auto", **options):
     """
     Alias of :func:`ntf_fir_from_q0`
