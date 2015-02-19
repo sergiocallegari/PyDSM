@@ -58,6 +58,11 @@ from scipy import linalg
 from warnings import warn
 from ..exceptions import PyDsmSlowPathWarning
 
+import sys
+if sys.version_info < (3,):
+    range = xrange
+
+
 __all__ = ["ds_quantize"]
 
 

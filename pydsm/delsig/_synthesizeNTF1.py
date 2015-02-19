@@ -57,6 +57,10 @@ from ..relab import cplxpair
 from ._ds import ds_optzeros, ds_synNTFobj1
 from ._padding import padl
 
+import sys
+if sys.version_info < (3,):
+    range = xrange
+
 
 def synthesizeNTF1(order, osr, opt, H_inf, f0):
     # Determine the zeros.

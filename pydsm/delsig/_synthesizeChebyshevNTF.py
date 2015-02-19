@@ -57,6 +57,10 @@ from scipy.signal import cheby2
 from ._ds import ds_f1f2
 from ..relab import cplxpair
 
+import sys
+if sys.version_info < (3,):
+    range = xrange
+
 __all__ = ["synthesizeChebyshevNTF"]
 
 
