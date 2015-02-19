@@ -47,6 +47,8 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+from __future__ import division
+
 import numpy as np
 from scipy.optimize import fmin_l_bfgs_b
 from warnings import warn
@@ -66,7 +68,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
     # Determine the zeros.
     if f0 != 0:
         # Bandpass design-- halve the order temporarily.
-        order = order/2
+        order = order//2
         dw = np.pi/(2*osr)
     else:
         dw = np.pi/osr
@@ -155,7 +157,7 @@ def synthesizeNTF1(order, osr, opt, H_inf, f0):
                              PyDsmApproximationWarning)
         else:
             # Bandpass design
-            x = 0.3**(order/2-1)   # starting guess (not very good for f0~0)
+            x = 0.3**(order//2-1)   # starting guess (not very good for f0~0)
             if f0 > 0.25:
                 z_inf = 1.
             else:

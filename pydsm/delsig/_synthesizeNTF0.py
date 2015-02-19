@@ -56,12 +56,16 @@ from ._tf import evalTF
 from ..relab import cplxpair
 from ._ds import ds_optzeros
 
+import sys
+if sys.version_info < (3,):
+    range = xrange
+
 
 def synthesizeNTF0(order, osr, opt, H_inf, f0):
     # Determine the zeros.
     if f0 != 0:
         # Bandpass design-- halve the order temporarily.
-        order = int(order/2)
+        order = order//2
         dw = np.pi/(2*osr)
     else:
         dw = np.pi/osr
@@ -134,7 +138,7 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
                          PyDsmApproximationWarning)
     else:
         # Bandpass design
-        x = 0.3**(order/2-1)   # starting guess (not very good for f0~0)
+        x = 0.3**(order//2-1)   # starting guess (not very good for f0~0)
         if f0 > 0.25:
             z_inf = 1.
         else:
