@@ -60,6 +60,7 @@ class TestNTF_Hybrid(TestCase):
                                        poles=self.e_p,
                                        show_progress=False,
                                        modeler='cvxpy_old',
+                                       quad_opts={"points": [0.5/self.OSR]},
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
         np.testing.assert_allclose(k, self.e_k, 1e-6)
@@ -75,6 +76,7 @@ class TestNTF_Hybrid(TestCase):
                                        poles=self.e_p,
                                        show_progress=False,
                                        modeler='cvxpy',
+                                       quad_opts={"points": [0.5/self.OSR]},
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
         np.testing.assert_allclose(k, self.e_k, 1e-6)
@@ -91,6 +93,7 @@ class TestNTF_Hybrid(TestCase):
                                        poles=self.e_p,
                                        show_progress=False,
                                        modeler='cvxpy',
+                                       quad_opts={"points": [0.5/self.OSR]},
                                        cvxpy_opts={"solver": "scs"},
                                        scs_opts={"eps": 1E-14})
         np.testing.assert_allclose(k, self.e_k, 1e-6)
@@ -106,6 +109,8 @@ class TestNTF_Hybrid(TestCase):
                                        poles=self.e_p,
                                        show_progress=False,
                                        modeler='picos',
+                                       quad_opts={"points": [0.5/self.OSR],
+                                                  "epsrel": 1E-12},
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
         np.testing.assert_allclose(k, self.e_k, 1e-6)
