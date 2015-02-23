@@ -112,18 +112,18 @@ def db(x, signal_type='voltage', R=1):
         return 10*np.log10(np.abs(x)**2./R)
 
 
-def shiftdim(x, n=None, retvals=slice(2)):
+def shiftdim(x, n=None, nargout=2):
     """
     Shift dimensions a la Matlab
 
     When n is provided, shiftdim shifts the axes of x by n.
     If n is positive, it shifts the axes to the left, wrapping the
-    leading axes with non unitary dimension to the end.
+    leading axes with non unitary length to the end.
     When n is negative, it shifts the axes to the right, inserting n leading
-    axes with unitary dimension.
+    axes with unitary length.
     When n is not provided or None, it shifts the axes to the left, reducing
     the number of dimensions and removing all the leading axes with unitary
-    dimension.
+    length.
 
     Parameters
     ----------
@@ -131,8 +131,8 @@ def shiftdim(x, n=None, retvals=slice(2)):
         multi-dimensional array to operate upon
     n : int or None, optional
         amount to shift. Defaults to None, which means automatic computation
-    retvals : index or slice
-        indexes of values to actually return among the available ones
+    nargout : int
+        number of output values
 
     Returns
     -------
@@ -151,26 +151,33 @@ def shiftdim(x, n=None, retvals=slice(2)):
     (3, 1, 2)
     >>> n
     2
-    >>> c = shiftdim(b, -n, retvals=0)
+    >>> c = shiftdim(b, -n, nargout=1)
     >>> np.alltrue(c == a)
     True
-    >>> d = shiftdim(a, 3, retvals=0)
+    >>> d = shiftdim(a, 3, nargout=1)
     >>> d.shape
     (1, 2, 1, 1, 3)
+
+    >>> b, n = shiftdim([[[1]]])
+    >>> b, n
+    (array([[[1]]]), 0)
     """
+    outsel = slice(nargout) if nargout > 1 else 0
     x = np.asarray(x)
     s = x.shape
+    m = next((i for i, v in enumerate(s) if v > 1), 0)
     if n is None:
-        n = next(i for i, v in enumerate(s) if v > 1)
+        n = m
     if n > 0:
-        m = next(i for i, v in enumerate(s) if v > 1)
-        if n > m:
-            x = x.transpose(np.roll(range(x.ndim), -n))
-        else:
+        n = n % x.ndim
+    if n > 0:
+        if n <= m:
             x = x.reshape(s[n:])
+        else:
+            x = x.transpose(np.roll(range(x.ndim), -n))
     elif n < 0:
             x = x.reshape((1,)*(-n)+x.shape)
-    return (x, n)[retvals]
+    return (x, n)[outsel]
 
 
 def cplxpair(x, tol=None):
