@@ -180,21 +180,35 @@ def shiftdim(x, n=None, nargout=2):
     return (x, n)[outsel]
 
 
-def cplxpair(x, tol=None):
+def cplxpair(x, tol=None, dim=None):
     """
-    Sorts values in input list by complex pairs.
+    Sorts values into complex pairs a la Matlab.
 
-    This function tries to replicate the ``cplxpair`` of Matlab, but
-    currently does a very poor job.
+    The function takes a vector or multidimensional array of of complex
+    conjugate pairs or real numbers and rearranges it so that the complex
+    numbers are collected into matched pairs of complex conjugates. The pairs
+    are ordered by increasing real part, with purely real elements placed
+    after all the complex pairs.
+
+    In the search for complex conjugate pairs a relative tolerance equal to
+    ``tol`` is used for comparison purposes. The default tolerance is
+    100 times the system floating point accuracy.
+
+    If the input vector is a multidimensional array, the rearrangement is done
+    working along the axis specifid by the parameter ``dim`` or along the
+    first axis with non-unitary length if ``dim`` is not provided.
 
     Parameters
     ----------
     x : array_like of complex
         x is an array of complex values, with the assumption that it contains
-        either real values or complex values in conjugate couples.
+        either real values or complex values in conjugate pairs.
     tol: real, optional
         absolute tolerance for the recognition of pairs.
-        Defaults to 100 times the system epsilon.
+        Defaults to 100 times the system floating point accuracy for the
+        specific number type.
+    dim: integer, optional
+        The axis to operate upon.
 
     Returns
     -------
@@ -206,30 +220,53 @@ def cplxpair(x, tol=None):
     Raises
     ------
     ValueError
-        'Cannot identify complex pairs.' if there are unpaired complex entries
-        in x.
+        'Complex numbers cannot be paired' if there are unpaired complex
+        entries in x.
 
-    Notes
-    -----
-    This function is similar to Matlab cplxpair, but not quite.
-
+    See also
+    --------
+    eps : the system floating point accuracy
     """
+
+    def cplxpair_vec(x, tol):
+        real_mask = np.abs(x.imag) < tol*np.abs(x)
+        x_real = np.sort(np.real(x[real_mask]))
+        x_cplx = np.sort(x[np.logical_not(real_mask)])
+        if x_cplx.size == 0:
+            return x_real
+        if (x_cplx.size % 2) != 0:
+            raise ValueError('Complex numbers cannot be paired')
+        if np.any(np.real(x_cplx[1::2])-np.real(x_cplx[0::2]) >
+                  tol*np.abs(x_cplx[0::2])):
+            raise ValueError('Complex numbers cannot be paired')
+        start = 0
+        while start < x_cplx.size:
+            sim_len = next((i for i, v in enumerate(x_cplx[start+1:]) if
+                           (np.abs(np.real(v)-np.real(x_cplx[start])) >
+                            tol*np.abs(v))), x_cplx.size-start-1)+1
+            if (sim_len % 2) != 0:
+                sim_len -= 1
+            # At this point, sim_len elements with identical real part
+            # have been identified.
+            sub_x = x_cplx[start:start+sim_len]
+            srt = np.argsort(np.imag(sub_x))
+            sub_x = sub_x[srt]
+            if np.any(np.abs(np.imag(sub_x)+np.imag(sub_x[::-1])) >
+                      tol*np.abs(sub_x)):
+                raise ValueError('Complex numbers cannot be paired')
+            # Output should contain "perfect" pairs. Hence, keep entries
+            # with positive imaginary parts amd use conjugate for pair
+            x_cplx[start:start+sim_len] = np.concatenate(
+                (np.conj(sub_x[:sim_len//2-1:-1]),
+                 sub_x[:sim_len//2-1:-1]))
+            start += sim_len
+        return np.concatenate((x_cplx, x_real))
+
     x = np.asarray(x)
     if x.size == 0:
         return x
+    if dim is None:
+        dim = next((i for i, v in enumerate(x.shape) if v > 1), 0)
     if tol is None:
         tol = 100*eps(x.dtype)
-    x = np.sort_complex(x)
-    real_mask = np.abs(x.imag) < tol*np.abs(x)
-    x_real = x[real_mask]
-    x_cplx = x[np.logical_not(real_mask)]
-    pos_mask = x_cplx.imag > 0
-    x_cplx_pos = x_cplx[pos_mask]
-    x_cplx_neg = x_cplx[np.logical_not(pos_mask)]
-    x_cplx2 = 1j*np.zeros(2*x_cplx_pos.size)
-    for i in range(len(x_cplx_pos)):
-        x_cplx2[2*i] = x_cplx_pos[i]
-        x_cplx2[2*i+1] = x_cplx_neg[i]
-        if abs(x_cplx2[2*i]-np.conj(x_cplx2[2*i+1])) > tol:
-            raise ValueError('Cannot identify complex pairs.')
-    return np.concatenate((x_cplx2, x_real))
+    return np.apply_along_axis(cplxpair_vec, dim, x, tol)
