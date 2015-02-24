@@ -63,6 +63,8 @@ class TestNTF_Hybrid(TestCase):
                                        quad_opts={"points": [0.5/self.OSR]},
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
+        z = cplxpair(z)
+        p = cplxpair(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
         np.testing.assert_allclose(z, self.e_z, 3e-4)
         np.testing.assert_allclose(p, self.e_p, 3e-4)
@@ -79,6 +81,8 @@ class TestNTF_Hybrid(TestCase):
                                        quad_opts={"points": [0.5/self.OSR]},
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
+        z = cplxpair(z)
+        p = cplxpair(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
         np.testing.assert_allclose(z, self.e_z, 3e-4)
         np.testing.assert_allclose(p, self.e_p, 3e-4)
@@ -96,6 +100,8 @@ class TestNTF_Hybrid(TestCase):
                                        quad_opts={"points": [0.5/self.OSR]},
                                        cvxpy_opts={"solver": "scs"},
                                        scs_opts={"eps": 1E-14})
+        z = cplxpair(z)
+        p = cplxpair(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
         np.testing.assert_allclose(z, self.e_z, 5e-2)
         np.testing.assert_allclose(p, self.e_p, 3e-6)
@@ -113,6 +119,8 @@ class TestNTF_Hybrid(TestCase):
                                                   "epsrel": 1E-12},
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
+        z = cplxpair(z)
+        p = cplxpair(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
         np.testing.assert_allclose(z, self.e_z, 3e-4)
         np.testing.assert_allclose(p, self.e_p, 3e-4)
