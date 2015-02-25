@@ -49,6 +49,7 @@ class TestNTF_Filter(TestCase):
                                -0.67350105+0.0j,
                                -0.59201143+0.32765994j,
                                -0.59201143-0.32765994j])
+        self.z_e = np.sort(self.z_e)
         # Generate filter.
         # 8th order bandpass filter
         # Freq. passed to butterworth is normalized between 0 and 1
@@ -83,7 +84,7 @@ class TestNTF_Filter(TestCase):
             raise SkipTest("Modeler 'cvxpy_old' not installed")
         ntf1 = ntf_fir_weighting(self.order, self.hz, modeler='cvxpy_old',
                                  show_progress=False)
-        np.testing.assert_allclose(ntf1[0], self.z_e, rtol=1e-5)
+        np.testing.assert_allclose(np.sort(ntf1[0]), self.z_e, rtol=1e-5)
 
     def test_ntf_butt_bp8_cvxpy_cvxopt(self):
         try:
@@ -92,7 +93,7 @@ class TestNTF_Filter(TestCase):
             raise SkipTest("Modeler 'cvxpy' not installed")
         ntf1 = ntf_fir_weighting(self.order, self.hz, modeler='cvxpy',
                                  show_progress=False)
-        np.testing.assert_allclose(ntf1[0], self.z_e, rtol=1e-7)
+        np.testing.assert_allclose(np.sort(ntf1[0]), self.z_e, rtol=1e-7)
 
     def test_ntf_butt_bp8_cvxpy_scs(self):
         try:
@@ -102,7 +103,7 @@ class TestNTF_Filter(TestCase):
         ntf1 = ntf_fir_weighting(self.order, self.hz, modeler='cvxpy',
                                  cvxpy_opts={'solver': 'scs'},
                                  show_progress=False)
-        np.testing.assert_allclose(ntf1[0], self.z_e, rtol=1e-4)
+        np.testing.assert_allclose(np.sort(ntf1[0]), self.z_e, rtol=1e-4)
 
     def test_ntf_butt_bp8_picos(self):
         try:
@@ -111,7 +112,7 @@ class TestNTF_Filter(TestCase):
             raise SkipTest("Modeler 'picos' not installed")
         ntf1 = ntf_fir_weighting(self.order, self.hz, modeler='picos',
                                  show_progress=False)
-        np.testing.assert_allclose(ntf1[0], self.z_e, rtol=1e-7)
+        np.testing.assert_allclose(np.sort(ntf1[0]), self.z_e, rtol=1e-7)
 
 
 class Test_MultWeightings(TestCase):
