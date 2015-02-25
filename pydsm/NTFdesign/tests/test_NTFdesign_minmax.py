@@ -24,7 +24,6 @@ from numpy.testing import TestCase, run_module_suite, dec
 import numpy as np
 
 from pydsm.NTFdesign import ntf_fir_minmax
-from pydsm.relab import cplxpair
 
 from nose.plugins.skip import SkipTest
 
@@ -51,8 +50,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -259.915617496087e-003 - 503.342225950477e-003j,
                -512.031157651993e-003 + 194.699627385223e-003j,
                -512.031157651993e-003 - 194.699627385223e-003j]
-        e_z = cplxpair(e_z)
-        z = cplxpair(z)
+        e_z = np.sort(e_z)
+        z = np.sort(z)
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=2e-4)
 
@@ -72,8 +71,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -4.58884378359569e-01 + 4.10643263860101e-01j,
                -4.58884378359569e-01 - 4.10643263860101e-01j,
                -5.91022020183929e-01 + 0.00000000000000e+00j]
-        e_z = cplxpair(e_z)
-        z = cplxpair(z)
+        e_z = np.sort(e_z)
+        z = np.sort(z)
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=2e-4)
 
@@ -93,8 +92,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -4.140998358546186e-01 - 4.504982522544850e-01j,
                -5.755598430642412e-01,
                -1.159555247895333e-01]
-        e_z = cplxpair(e_z)
-        z = cplxpair(z)
+        e_z = np.sort(e_z)
+        z = np.sort(z)
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=1e-3, atol=3e-2)
 
@@ -114,8 +113,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -259.915617496087e-003 - 503.342225950477e-003j,
                -512.031157651993e-003 + 194.699627385223e-003j,
                -512.031157651993e-003 - 194.699627385223e-003j]
-        e_z = cplxpair(e_z)
-        z = cplxpair(z)
+        e_z = np.sort(e_z)
+        z = np.sort(z)
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=1e-3)
 
@@ -135,8 +134,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -4.58884378359569e-01 + 4.10643263860101e-01j,
                -4.58884378359569e-01 - 4.10643263860101e-01j,
                -5.91022020183929e-01 + 0.00000000000000e+00j]
-        e_z = cplxpair(e_z)
-        z = cplxpair(z)
+        e_z = np.sort(e_z)
+        z = np.sort(z)
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=2e-4)
 
@@ -157,8 +156,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -4.140998358546186e-01 - 4.504982522544850e-01j,
                -5.755598430642412e-01,
                -1.159555247895333e-01]
-        e_z = cplxpair(e_z)
-        z = cplxpair(z)
+        e_z = np.sort(e_z)
+        z = np.sort(z)
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=1e-3, atol=3e-2)
 
@@ -179,8 +178,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -259.915617496087e-003 - 503.342225950477e-003j,
                -512.031157651993e-003 + 194.699627385223e-003j,
                -512.031157651993e-003 - 194.699627385223e-003j]
-        e_z = cplxpair(e_z)
-        z = cplxpair(z)
+        e_z = np.sort(e_z)
+        z = np.sort(z)
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=1e-3)
 
@@ -201,8 +200,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -4.58884378359569e-01 + 4.10643263860101e-01j,
                -4.58884378359569e-01 - 4.10643263860101e-01j,
                -5.91022020183929e-01 + 0.00000000000000e+00j]
-        e_z = cplxpair(e_z)
-        z = cplxpair(z)
+        e_z = np.sort(e_z)
+        z = np.sort(z)
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=2e-4)
 
@@ -224,8 +223,8 @@ class TestSynthesizeNTFminmax(TestCase):
                -4.140998358546186e-01 - 4.504982522544850e-01j,
                -5.755598430642412e-01,
                -1.159555247895333e-01]
-        e_z = cplxpair(e_z)
-        z = cplxpair(z)
+        e_z = np.sort(e_z)
+        z = np.sort(z)
         np.testing.assert_allclose(k, e_k, rtol=1e-6)
         np.testing.assert_allclose(z, e_z, rtol=1e-3, atol=3e-2)
 
