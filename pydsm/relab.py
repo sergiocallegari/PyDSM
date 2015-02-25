@@ -152,7 +152,6 @@ def shiftdim(x, n=None, nargout=2):
 
     Examples
     --------
-
     >>> from numpy.random import rand
     >>> a = rand(1, 1, 3, 1, 2)
     >>> b, n = shiftdim(a)
