@@ -47,7 +47,7 @@ import numpy as np
 __all__ = ["eps", "db", "cplxpair", "shiftdim"]
 
 
-def eps(x):
+def eps(x=1.):
     """Provide floating point relative accuracy
 
     This function tries to replicate the ``eps`` interface of Matlab.
@@ -65,6 +65,15 @@ def eps(x):
         If x is an array, operation is elementwise.
 
         If x is a numeric type, operation is for 1.0 in that numeric type.
+
+    Examples
+    --------
+    >>> eps()
+    2.2204460492503131e-16
+    >>> eps(1/2)
+    1.1102230246251565e-16
+    >>> eps(np.float32)
+    1.1920929e-07
     """
 
     def _eps(xi):
