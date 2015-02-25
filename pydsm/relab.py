@@ -223,6 +223,17 @@ def cplxpair(x, tol=None, dim=None):
         'Complex numbers cannot be paired' if there are unpaired complex
         entries in x.
 
+    Examples
+    --------
+
+    >>> a = np.exp(2j*np.pi*np.arange(0,5)/5)
+    >>> b1 = cplxpair(a)
+    >>> b2 = np.asarray([-0.80901699-0.58778525j, -0.80901699+0.58778525j,
+    ...                   0.30901699-0.95105652j,  0.30901699+0.95105652j,
+    ...                   1.00000000+0.j])
+    >>> np.allclose(b1, b2)
+    True
+
     See also
     --------
     eps : the system floating point accuracy
