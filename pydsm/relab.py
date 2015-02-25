@@ -233,14 +233,24 @@ def cplxpair(x, tol=None, dim=None):
 
     Examples
     --------
-
-    >>> a = np.exp(2j*np.pi*np.arange(0,5)/5)
+    >>> a = np.exp(2j*np.pi*np.arange(0, 5)/5)
     >>> b1 = cplxpair(a)
     >>> b2 = np.asarray([-0.80901699-0.58778525j, -0.80901699+0.58778525j,
     ...                   0.30901699-0.95105652j,  0.30901699+0.95105652j,
     ...                   1.00000000+0.j])
     >>> np.allclose(b1, b2)
     True
+
+    >>> cplxpair(1)
+    array([1])
+
+    >>> cplxpair([[5, 6, 4], [3, 2, 1]])
+    array([[3, 2, 1],
+           [5, 6, 4]])
+
+    >>> cplxpair([[5, 6, 4], [3, 2, 1]], dim=1)
+    array([[4, 5, 6],
+           [1, 2, 3]])
 
     See also
     --------
@@ -281,11 +291,14 @@ def cplxpair(x, tol=None, dim=None):
             start += sim_len
         return np.concatenate((x_cplx, x_real))
 
-    x = np.asarray(x)
+    x = np.atleast_1d(x)
     if x.size == 0:
         return x
     if dim is None:
         dim = next((i for i, v in enumerate(x.shape) if v > 1), 0)
     if tol is None:
-        tol = 100*eps(x.dtype)
+        try:
+            tol = 100*eps(x.dtype)
+        except:
+            tol = 100*eps(np.float)
     return np.apply_along_axis(cplxpair_vec, dim, x, tol)
