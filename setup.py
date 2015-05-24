@@ -52,7 +52,7 @@ ext_modules = [
 description = 'Python Based Delta-Sigma modulator design tools'
 # Long description can contain restructured text and goes on display
 # on Pypi
-long_description = (read_from_here('README') +
+long_description = (read_from_here('README.rst') +
                     '\n\n' +
                     read_from_here('CHANGELOG'))
 
