@@ -288,7 +288,7 @@ def synthesize_ntf_from_filter(order, H, H_type='zpk', H_inf=1.5,
     # Manage optional parameters
     opts1 = digested_options(options,
                              synthesize_ntf_from_filter.default_options,
-                             ['quad_opts'], False)
+                             ['quad_opts'], [], False)
     opts2 = digested_options(options,
                              synthesize_ntf_from_filter.default_options,
                              ['show_progress'], ['cvxopt_opts'])
