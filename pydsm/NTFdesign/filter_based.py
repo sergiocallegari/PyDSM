@@ -199,7 +199,7 @@ def q0_from_filter(P, H, H_type='zpk', **options):
     warn("Function meant for removal", PyDsmDeprecationWarning)
     # Manage optional parameters
     opts = digested_options(options, q0_from_filter.default_options,
-                            [], ['quad_options'])
+                            [], ['quad_opts'])
     # Do the computation
     if H_type == 'zpk' or H_type == 'ba':
         w = H
