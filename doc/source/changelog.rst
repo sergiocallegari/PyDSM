@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+0.12.0.1
+   - Fix crashes due to incorrect management of parameters in deprecated
+     functions
+
 0.12.0.0
    - Switch to new version numbering scheme also in view of
      PEP 440
