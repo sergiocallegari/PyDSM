@@ -7,3 +7,7 @@ Documentation should be built exclusively from the top dir
 of the project by issuing the command
 
     python setup.py build_sphinx
+
+
+WARNING!!!
+Documentation can only be built using sphinx 1.2.3
