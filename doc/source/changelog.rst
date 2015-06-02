@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+0.13.0.0
+   - Python 3 compatibility!
+   - Bugfixes
+
 0.12.0.1
    - Fix crashes due to incorrect management of parameters in deprecated
      functions
