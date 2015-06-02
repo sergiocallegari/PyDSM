@@ -71,7 +71,7 @@ setup(
     long_description=long_description,
     author='Sergio Callegari',
     author_email='sergio.callegari@unibo.it',
-    url='http://pydsm.googlecode.com',
+    url='https://github.com/sergiocallegari/PyDSM',
     license='GNU General Public License v3 or later (GPLv3+)',
     platforms=['Linux', 'Windows', 'Mac'],
     packages=find_packages(),
