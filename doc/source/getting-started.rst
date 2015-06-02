@@ -7,8 +7,9 @@ prerequisites are also free. This means that anyone can try and use
 it. PyDSM is routinely built and tested by its developers on Linux and
 Windows 7. On a more occasional basis, it is tested on MacOs too.  The
 code is written in Python and includes some C extensions for
-efficiency reasons. Currently, it requires a `Python 2.7`_
-environment. A port to Python 3 will likely happen in the near future.
+efficiency reasons. Currently, it requires a Python 2 environment
+(`Python 2.7`_ recommended) or a Python 3 environment (at least at
+version 3.2, `Python 3.4`_ recommended).
 
 Apart from a generic Python environment, PyDSM has the following
 prerequisites:
@@ -97,6 +98,7 @@ install also the CVXPY_ and/or the PICOS_ Python packages.
    macos-getting-started
 
 .. _Python 2.7: http://www.python.org/download/releases/2.7/
+.. _Python 3.4: http://www.python.org/download/releases/3.4/
 .. _Cython: http://www.cython.org/
 .. _Netlib: http://www.netlib.org
 .. _Atlas: http://math-atlas.sourceforge.net/

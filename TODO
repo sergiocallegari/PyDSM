@@ -19,8 +19,6 @@
     http://docs.scipy.org/doc/scipy/reference/api.html
 - [cython] user numpy.require to assure that arrays have the right properties
 - [optimization] move to the newer cvxpy
-- [optimization] check picos too for the optimization backend
-- [python] make python3 compatible
 - [examples] provide notebook version of the examples
 - [setuptools] make docdist pass options to build_sphinx
 - [documentation] Maybe use the versionadded/versionchanged/deprecated sphinx
@@ -37,3 +35,6 @@
     but for some reason slightly blue (more power at higher frequencies).
     A note should probably be added to the code and to the ArXiv version of
     the ICECS paper.
+- [accuracy] A recent code change removes a matrix inversion noticing that
+    the matrix is orthonormal, and that transposition should suffice.  However
+    this seems to cause come accuracy issues on some platforms (AMD?)

@@ -47,7 +47,7 @@ import numpy as np
 __all__ = ["eps", "db", "cplxpair", "shiftdim"]
 
 
-def eps(x):
+def eps(x=1.):
     """Provide floating point relative accuracy
 
     This function tries to replicate the ``eps`` interface of Matlab.
@@ -65,6 +65,15 @@ def eps(x):
         If x is an array, operation is elementwise.
 
         If x is a numeric type, operation is for 1.0 in that numeric type.
+
+    Examples
+    --------
+    >>> eps()
+    2.2204460492503131e-16
+    >>> eps(1/2)
+    1.1102230246251565e-16
+    >>> eps(np.float32)
+    1.1920929e-07
     """
 
     def _eps(xi):
@@ -112,18 +121,18 @@ def db(x, signal_type='voltage', R=1):
         return 10*np.log10(np.abs(x)**2./R)
 
 
-def shiftdim(x, n=None, retvals=slice(2)):
+def shiftdim(x, n=None, nargout=2):
     """
     Shift dimensions a la Matlab
 
     When n is provided, shiftdim shifts the axes of x by n.
     If n is positive, it shifts the axes to the left, wrapping the
-    leading axes with non unitary dimension to the end.
+    leading axes with non unitary length to the end.
     When n is negative, it shifts the axes to the right, inserting n leading
-    axes with unitary dimension.
+    axes with unitary length.
     When n is not provided or None, it shifts the axes to the left, reducing
     the number of dimensions and removing all the leading axes with unitary
-    dimension.
+    length.
 
     Parameters
     ----------
@@ -131,8 +140,8 @@ def shiftdim(x, n=None, retvals=slice(2)):
         multi-dimensional array to operate upon
     n : int or None, optional
         amount to shift. Defaults to None, which means automatic computation
-    retvals : index or slice
-        indexes of values to actually return among the available ones
+    nargout : int
+        number of output values
 
     Returns
     -------
@@ -143,7 +152,6 @@ def shiftdim(x, n=None, retvals=slice(2)):
 
     Examples
     --------
-
     >>> from numpy.random import rand
     >>> a = rand(1, 1, 3, 1, 2)
     >>> b, n = shiftdim(a)
@@ -151,43 +159,64 @@ def shiftdim(x, n=None, retvals=slice(2)):
     (3, 1, 2)
     >>> n
     2
-    >>> c = shiftdim(b, -n, retvals=0)
+    >>> c = shiftdim(b, -n, nargout=1)
     >>> np.alltrue(c == a)
     True
-    >>> d = shiftdim(a, 3, retvals=0)
+    >>> d = shiftdim(a, 3, nargout=1)
     >>> d.shape
     (1, 2, 1, 1, 3)
+
+    >>> b, n = shiftdim([[[1]]])
+    >>> b, n
+    (array([[[1]]]), 0)
     """
+    outsel = slice(nargout) if nargout > 1 else 0
     x = np.asarray(x)
     s = x.shape
+    m = next((i for i, v in enumerate(s) if v > 1), 0)
     if n is None:
-        n = next(i for i, v in enumerate(s) if v > 1)
+        n = m
     if n > 0:
-        m = next(i for i, v in enumerate(s) if v > 1)
-        if n > m:
-            x = x.transpose(np.roll(range(x.ndim), -n))
-        else:
+        n = n % x.ndim
+    if n > 0:
+        if n <= m:
             x = x.reshape(s[n:])
+        else:
+            x = x.transpose(np.roll(range(x.ndim), -n))
     elif n < 0:
             x = x.reshape((1,)*(-n)+x.shape)
-    return (x, n)[retvals]
+    return (x, n)[outsel]
 
 
-def cplxpair(x, tol=None):
+def cplxpair(x, tol=None, dim=None):
     """
-    Sorts values in input list by complex pairs.
+    Sorts values into complex pairs a la Matlab.
 
-    This function tries to replicate the ``cplxpair`` of Matlab, but
-    currently does a very poor job.
+    The function takes a vector or multidimensional array of of complex
+    conjugate pairs or real numbers and rearranges it so that the complex
+    numbers are collected into matched pairs of complex conjugates. The pairs
+    are ordered by increasing real part, with purely real elements placed
+    after all the complex pairs.
+
+    In the search for complex conjugate pairs a relative tolerance equal to
+    ``tol`` is used for comparison purposes. The default tolerance is
+    100 times the system floating point accuracy.
+
+    If the input vector is a multidimensional array, the rearrangement is done
+    working along the axis specifid by the parameter ``dim`` or along the
+    first axis with non-unitary length if ``dim`` is not provided.
 
     Parameters
     ----------
     x : array_like of complex
         x is an array of complex values, with the assumption that it contains
-        either real values or complex values in conjugate couples.
+        either real values or complex values in conjugate pairs.
     tol: real, optional
         absolute tolerance for the recognition of pairs.
-        Defaults to 100 times the system epsilon.
+        Defaults to 100 times the system floating point accuracy for the
+        specific number type.
+    dim: integer, optional
+        The axis to operate upon.
 
     Returns
     -------
@@ -199,30 +228,77 @@ def cplxpair(x, tol=None):
     Raises
     ------
     ValueError
-        'Cannot identify complex pairs.' if there are unpaired complex entries
-        in x.
+        'Complex numbers cannot be paired' if there are unpaired complex
+        entries in x.
 
-    Notes
-    -----
-    This function is similar to Matlab cplxpair, but not quite.
+    Examples
+    --------
+    >>> a = np.exp(2j*np.pi*np.arange(0, 5)/5)
+    >>> b1 = cplxpair(a)
+    >>> b2 = np.asarray([-0.80901699-0.58778525j, -0.80901699+0.58778525j,
+    ...                   0.30901699-0.95105652j,  0.30901699+0.95105652j,
+    ...                   1.00000000+0.j])
+    >>> np.allclose(b1, b2)
+    True
 
+    >>> cplxpair(1)
+    array([1])
+
+    >>> cplxpair([[5, 6, 4], [3, 2, 1]])
+    array([[3, 2, 1],
+           [5, 6, 4]])
+
+    >>> cplxpair([[5, 6, 4], [3, 2, 1]], dim=1)
+    array([[4, 5, 6],
+           [1, 2, 3]])
+
+    See also
+    --------
+    eps : the system floating point accuracy
     """
-    x = np.asarray(x)
+
+    def cplxpair_vec(x, tol):
+        real_mask = np.abs(x.imag) < tol*np.abs(x)
+        x_real = np.sort(np.real(x[real_mask]))
+        x_cplx = np.sort(x[np.logical_not(real_mask)])
+        if x_cplx.size == 0:
+            return x_real
+        if (x_cplx.size % 2) != 0:
+            raise ValueError('Complex numbers cannot be paired')
+        if np.any(np.real(x_cplx[1::2])-np.real(x_cplx[0::2]) >
+                  tol*np.abs(x_cplx[0::2])):
+            raise ValueError('Complex numbers cannot be paired')
+        start = 0
+        while start < x_cplx.size:
+            sim_len = next((i for i, v in enumerate(x_cplx[start+1:]) if
+                           (np.abs(np.real(v)-np.real(x_cplx[start])) >
+                            tol*np.abs(v))), x_cplx.size-start-1)+1
+            if (sim_len % 2) != 0:
+                sim_len -= 1
+            # At this point, sim_len elements with identical real part
+            # have been identified.
+            sub_x = x_cplx[start:start+sim_len]
+            srt = np.argsort(np.imag(sub_x))
+            sub_x = sub_x[srt]
+            if np.any(np.abs(np.imag(sub_x)+np.imag(sub_x[::-1])) >
+                      tol*np.abs(sub_x)):
+                raise ValueError('Complex numbers cannot be paired')
+            # Output should contain "perfect" pairs. Hence, keep entries
+            # with positive imaginary parts amd use conjugate for pair
+            x_cplx[start:start+sim_len] = np.concatenate(
+                (np.conj(sub_x[:sim_len//2-1:-1]),
+                 sub_x[:sim_len//2-1:-1]))
+            start += sim_len
+        return np.concatenate((x_cplx, x_real))
+
+    x = np.atleast_1d(x)
     if x.size == 0:
         return x
+    if dim is None:
+        dim = next((i for i, v in enumerate(x.shape) if v > 1), 0)
     if tol is None:
-        tol = 100*eps(x.dtype)
-    x = np.sort_complex(x)
-    real_mask = np.abs(x.imag) < tol*np.abs(x)
-    x_real = x[real_mask]
-    x_cplx = x[np.logical_not(real_mask)]
-    pos_mask = x_cplx.imag > 0
-    x_cplx_pos = x_cplx[pos_mask]
-    x_cplx_neg = x_cplx[np.logical_not(pos_mask)]
-    x_cplx2 = 1j*np.zeros(2*x_cplx_pos.size)
-    for i in range(len(x_cplx_pos)):
-        x_cplx2[2*i] = x_cplx_pos[i]
-        x_cplx2[2*i+1] = x_cplx_neg[i]
-        if abs(x_cplx2[2*i]-np.conj(x_cplx2[2*i+1])) > tol:
-            raise ValueError('Cannot identify complex pairs.')
-    return np.concatenate((x_cplx2, x_real))
+        try:
+            tol = 100*eps(x.dtype)
+        except:
+            tol = 100*eps(np.float)
+    return np.apply_along_axis(cplxpair_vec, dim, x, tol)

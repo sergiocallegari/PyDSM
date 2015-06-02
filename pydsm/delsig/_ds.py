@@ -225,7 +225,7 @@ def ds_optzeros(n, opt=1):
         optZeros[0] = z[0]
         z = z[1:]
         m = m+1
-    for i in xrange(len(z)):
+    for i in range(len(z)):
         optZeros[m] = z[i]
         optZeros[m+1] = -z[i]
         m = m+2

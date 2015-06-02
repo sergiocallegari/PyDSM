@@ -53,41 +53,41 @@ from docutils.statemachine import ViewList
 
 texescape.tex_replacements = [
     # map TeX special chars
-    (u'$', ur'\$'),
-    (u'%', ur'\%'),
-    (u'&', ur'\&'),
-    (u'#', ur'\#'),
-    (u'_', ur'\_'),
-    (u'{', ur'\{'),
-    (u'}', ur'\}'),
-    (u'[', ur'{[}'),
-    (u']', ur'{]}'),
-    (u'`', ur'{}`'),
-    (u'\\', ur'\textbackslash{}'),
-    (u'~', ur'\textasciitilde{}'),
-    (u'<', ur'\textless{}'),
-    (u'>', ur'\textgreater{}'),
-    (u'^', ur'\textasciicircum{}'),
+    (u'$', u'\\$'),
+    (u'%', u'\\%'),
+    (u'&', u'\\&'),
+    (u'#', u'\\#'),
+    (u'_', u'\\_'),
+    (u'{', u'\\{'),
+    (u'}', u'\\}'),
+    (u'[', u'{[}'),
+    (u']', u'{]}'),
+    (u'`', u'{}`'),
+    (u'\\', u'\\textbackslash{}'),
+    (u'~', u'\\textasciitilde{}'),
+    (u'<', u'\\textless{}'),
+    (u'>', u'\\textgreater{}'),
+    (u'^', u'\\textasciicircum{}'),
     # map special Unicode characters to TeX commands
-    (u'¶', ur'\P{}'),
-    (u'§', ur'\S{}'),
-    (u'€', ur'\texteuro{}'),
-    (u'∞', ur'\(\infty\)'),
-    (u'±', ur'\(\pm\)'),
-    (u'→', ur'\(\rightarrow\)'),
-    (u'‣', ur'\(\rightarrow\)'),
+    (u'¶', u'\\P{}'),
+    (u'§', u'\\S{}'),
+    (u'€', u'\\texteuro{}'),
+    (u'∞', u'\\(\\infty\\)'),
+    (u'±', u'\\(\\pm\\)'),
+    (u'→', u'\\(\\rightarrow\\)'),
+    (u'‣', u'\\(\\rightarrow\\)'),
     # used to separate -- in options
-    (u'\ufeff', ur'{}'),
+    (u'\ufeff', u'{}'),
     # map some special Unicode characters to similar ASCII ones
-    (u'─', ur'-'),
-    (u'⎽', ur'\_'),
-    (u'╲', ur'\textbackslash{}'),
-    (u'|', ur'\textbar{}'),
-    (u'│', ur'\textbar{}'),
-    (u'ℯ', ur'e'),
-    (u'ⅈ', ur'i'),
-    (u'₁', ur'1'),
-    (u'₂', ur'2')]
+    (u'─', u'-'),
+    (u'⎽', u'\\_'),
+    (u'╲', u'\\textbackslash{}'),
+    (u'|', u'\\textbar{}'),
+    (u'│', u'\\textbar{}'),
+    (u'ℯ', u'e'),
+    (u'ⅈ', u'i'),
+    (u'₁', u'1'),
+    (u'₂', u'2')]
 
 latex.LaTeXTranslator.default_elements['longtable'] = (
     r'\usepackage{longtable}' + '\n' +
@@ -166,8 +166,8 @@ def depart_table(self, node):
         self.body.append('\n\\hline\n')
         self.body.extend(self.tableheaders)
         self.body.append('\\endhead\n\n')
-        self.body.append((ur'\hline \multicolumn{%s}{|r|}{{\textsf{%s}}}'
-                          ur'\\ \hline') % (self.table.colcount,
+        self.body.append((r'\hline \multicolumn{%s}{|r|}{{\textsf{%s}}}'
+                          r'\\ \hline') % (self.table.colcount,
                          _('Continued on next page')))
         self.body.append('\n\\endfoot\n\n')
         self.body.append('\\endlastfoot\n\n')

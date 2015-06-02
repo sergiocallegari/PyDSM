@@ -185,7 +185,7 @@ def clans(order=4, osr=64, nq=5, rmax=0.95, opt=0, **options):
     # All other poles are assumed to be complex.
     # N.B. This may be a wrong assumption, though. There may be more real
     # poles.
-    for i in xrange(odd, order, 2):
+    for i in range(odd, order, 2):
         z = poles[i:i+2]/rmax
         if np.any(np.abs(z) > 1):
             # Project poles outside rmax onto the circle with radius rmax

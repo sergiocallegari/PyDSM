@@ -47,6 +47,8 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+from __future__ import division
+
 import numpy as np
 from warnings import warn
 from ..exceptions import PyDsmApproximationWarning
@@ -54,12 +56,16 @@ from ._tf import evalTF
 from ..relab import cplxpair
 from ._ds import ds_optzeros
 
+import sys
+if sys.version_info < (3,):
+    range = xrange
+
 
 def synthesizeNTF0(order, osr, opt, H_inf, f0):
     # Determine the zeros.
     if f0 != 0:
         # Bandpass design-- halve the order temporarily.
-        order = order/2
+        order = order//2
         dw = np.pi/(2*osr)
     else:
         dw = np.pi/osr
@@ -97,7 +103,7 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
             p = np.zeros(order)
         else:
             x = 0.3**(order-1)   # starting guess
-            for itn in xrange(1, itn_limit+1):
+            for itn in range(1, itn_limit+1):
                 me2 = -0.5*(x**(2./order))
                 w = (2*np.arange(1, order+1)+1)*np.pi/order
                 mb2 = 1+me2*np.exp(1j*w)
@@ -132,13 +138,13 @@ def synthesizeNTF0(order, osr, opt, H_inf, f0):
                          PyDsmApproximationWarning)
     else:
         # Bandpass design
-        x = 0.3**(order/2-1)   # starting guess (not very good for f0~0)
+        x = 0.3**(order//2-1)   # starting guess (not very good for f0~0)
         if f0 > 0.25:
             z_inf = 1.
         else:
             z_inf = -1.
         c2pif0 = np.cos(2*np.pi*f0)
-        for itn in xrange(1, itn_limit+1):
+        for itn in range(1, itn_limit+1):
             e2 = 0.5*x**(2./order)
             w = (2*np.arange(order)+1)*np.pi/order
             mb2 = c2pif0 + e2*np.exp(1j*w)

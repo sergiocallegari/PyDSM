@@ -19,10 +19,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
+
+from __future__ import print_function
+
 import sys
 
-if sys.version_info[:2] < (2, 6) or (2, 7) < sys.version_info[:2]:
-    raise RuntimeError("Python version 2.6 or 2.7 required.")
+if sys.version_info[:2] < (2, 6):
+    raise RuntimeError("Python 2 supported for versions >= 2.6")
+
+if (3,) <= sys.version_info[:2] < (3, 2):
+    raise RuntimeError("Python 3 supported for versions >= 3.2")
 
 from setuptools import setup, Extension, find_packages
 from Cython.Distutils import build_ext
@@ -105,6 +111,10 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Programming Language :: Cython',
         'Topic :: Education',
         ('Topic :: Scientific/Engineering :: '

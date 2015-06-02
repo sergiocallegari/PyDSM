@@ -57,6 +57,10 @@ from scipy.signal import cheby2
 from ._ds import ds_f1f2
 from ..relab import cplxpair
 
+import sys
+if sys.version_info < (3,):
+    range = xrange
+
 __all__ = ["synthesizeChebyshevNTF"]
 
 
@@ -136,7 +140,7 @@ def synthesizeChebyshevNTF(order=3, osr=64, opt=0, H_inf=1.5, f0=0.0):
     #   output : 'ba' or 'zpk'
     # The filter that is returned has peak gain at 1 in the pass-band
 
-    for itn in xrange(itn_limit):
+    for itn in range(itn_limit):
         if f0 == 0:
             z, p, k = cheby2(order, x, 1./osr, 'high', output='zpk')
         else:

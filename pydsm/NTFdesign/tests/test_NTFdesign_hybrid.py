@@ -23,7 +23,6 @@ from __future__ import division, print_function
 from numpy.testing import TestCase, run_module_suite
 import numpy as np
 from pydsm.NTFdesign import ntf_hybrid_weighting
-from pydsm.relab import cplxpair
 from nose.plugins.skip import SkipTest
 from numpy.testing import decorators as dec
 
@@ -43,9 +42,9 @@ class TestNTF_Hybrid(TestCase):
         # Set the NTF z, p, k that would be returned by Scheier's method
         self.e_k = 1
         e_z = [1.0000, 0.9993 - 0.0382j, 0.9993 + 0.0382j]
-        self.e_z = cplxpair(e_z)
+        self.e_z = np.sort(e_z)
         e_p = [0.6692, 0.7652 - 0.2795j, 0.7652 + 0.2795j]
-        self.e_p = cplxpair(e_p)
+        self.e_p = np.sort(e_p)
 
     # Prepare the weighting function for the hybrid method
     def w(self, f):
@@ -63,6 +62,8 @@ class TestNTF_Hybrid(TestCase):
                                        quad_opts={"points": [0.5/self.OSR]},
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
+        z = np.sort(z)
+        p = np.sort(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
         np.testing.assert_allclose(z, self.e_z, 3e-4)
         np.testing.assert_allclose(p, self.e_p, 3e-4)
@@ -79,6 +80,8 @@ class TestNTF_Hybrid(TestCase):
                                        quad_opts={"points": [0.5/self.OSR]},
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
+        z = np.sort(z)
+        p = np.sort(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
         np.testing.assert_allclose(z, self.e_z, 3e-4)
         np.testing.assert_allclose(p, self.e_p, 3e-4)
@@ -96,6 +99,8 @@ class TestNTF_Hybrid(TestCase):
                                        quad_opts={"points": [0.5/self.OSR]},
                                        cvxpy_opts={"solver": "scs"},
                                        scs_opts={"eps": 1E-14})
+        z = np.sort(z)
+        p = np.sort(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
         np.testing.assert_allclose(z, self.e_z, 5e-2)
         np.testing.assert_allclose(p, self.e_p, 3e-6)
@@ -113,6 +118,8 @@ class TestNTF_Hybrid(TestCase):
                                                   "epsrel": 1E-12},
                                        cvxopt_opts={"reltol": 1E-14,
                                                     "abstol": 1E-16})
+        z = np.sort(z)
+        p = np.sort(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
         np.testing.assert_allclose(z, self.e_z, 3e-4)
         np.testing.assert_allclose(p, self.e_p, 3e-4)
