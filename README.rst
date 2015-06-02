@@ -33,11 +33,12 @@ If you find the code useful, *please cite these papers in your work*.
 
 ----
 
-An introduction to the code is available on the project website at
-https://code.google.com/p/pydsm/wiki/Introduction.
+The code is available on the Python Package Index, also known as `Pypi
+<https://pypi.python.org/pypi>`__, in at the `Pypi PYDSM page
+<https://pypi.python.org/pypi/pydsm>`__.
 
-A copy of the code documentation is also available on the project
-website at http://wiki.pydsm.googlecode.com/git/Documentation/index.html.
+The pre-built documentation is also available in a dedicated `PyDSM
+documentation <http://pythonhosted.org/pydsm/>`_ page on Pypi.
 
 ----
 
@@ -62,6 +63,6 @@ This code is copyright by Tomas Tinoco de Rubira and licensed under the GPLv3+,
 as specified in the corresponding files.
 
 PyDSM is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ANY WARRANTY, without even the implied warranty of MERCHANTABILITY or
 FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 for more details.
