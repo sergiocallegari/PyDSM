@@ -22,7 +22,7 @@
 
 from __future__ import print_function
 
-import sys
+import sys, io
 
 if sys.version_info[:2] < (2, 6):
     raise RuntimeError("Python 2 supported for versions >= 2.6")
@@ -42,7 +42,8 @@ __version__ = get_git_version(store="pydsm/RELEASE-VERSION")
 
 
 def read_from_here(fname):
-    with open(os.path.join(os.path.dirname(__file__), fname)) as fp:
+    with io.open(os.path.join(os.path.dirname(__file__), fname),
+                 encoding='utf-8') as fp:
         return fp.read()
 
 # Prepare the extension modules
