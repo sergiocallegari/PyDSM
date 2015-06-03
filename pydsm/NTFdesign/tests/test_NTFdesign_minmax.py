@@ -166,7 +166,7 @@ class TestSynthesizeNTFminmax(TestCase):
         try:
             import cvxpy     # analysis:ignore
         except:
-            raise SkipTest("Modeler 'picos' not installed")
+            raise SkipTest("Modeler 'cvxpy' not installed")
         z, p, k = ntf_fir_minmax(order=8, show_progress=False,
                                  modeler='cvxpy')
         e_k = 1
@@ -188,7 +188,7 @@ class TestSynthesizeNTFminmax(TestCase):
         try:
             import cvxpy     # analysis:ignore
         except:
-            raise SkipTest("Modeler 'picos' not installed")
+            raise SkipTest("Modeler 'cvxpy' not installed")
         z, p, k = ntf_fir_minmax(order=8, osr=32, f0=0.2, show_progress=False,
                                  modeler='cvxpy')
         e_k = 1
@@ -210,7 +210,7 @@ class TestSynthesizeNTFminmax(TestCase):
         try:
             import cvxpy     # analysis:ignore
         except:
-            raise SkipTest("Modeler 'picos' not installed")
+            raise SkipTest("Modeler 'cvxpy' not installed")
         z, p, k = ntf_fir_minmax(order=8, osr=64, f0=[0.1, 0.2],
                                  show_progress=False,
                                  modeler='cvxpy')
