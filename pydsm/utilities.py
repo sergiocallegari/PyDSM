@@ -22,7 +22,7 @@
 Generic utility functions (:mod:`pydsm.utilities`)
 ==================================================
 
-This module includes some generic utility functions. The statbility of these
+This module includes some generic utility functions. The stability of these
 interfaces may not be guaranteed.
 
 .. currentmodule:: pydsm.utilities
