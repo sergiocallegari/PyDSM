@@ -74,7 +74,7 @@ def partitionABCD(ABCD, m=None):
     acceptable value is take, considering the the system must have at least
     an input and an output.
 
-    If ABCD is an ndarray, then its content is not copyed in A, B, C, D.
+    If ABCD is an ndarray, then its content is not copied in A, B, C, D.
     """
     ABCD = np.asarray(ABCD)
     if m is None:
