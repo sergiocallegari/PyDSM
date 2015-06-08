@@ -212,7 +212,7 @@ def cplxpair(x, tol=None, dim=None):
         x is an array of complex values, with the assumption that it contains
         either real values or complex values in conjugate pairs.
     tol: real, optional
-        absolute tolerance for the recognition of pairs.
+        relative tolerance for the recognition of pairs.
         Defaults to 100 times the system floating point accuracy for the
         specific number type.
     dim: integer, optional
@@ -258,7 +258,7 @@ def cplxpair(x, tol=None, dim=None):
     """
 
     def cplxpair_vec(x, tol):
-        real_mask = np.abs(x.imag) < tol*np.abs(x)
+        real_mask = np.abs(x.imag) <= tol*np.abs(x)
         x_real = np.sort(np.real(x[real_mask]))
         x_cplx = np.sort(x[np.logical_not(real_mask)])
         if x_cplx.size == 0:
