@@ -83,8 +83,7 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
         osr = osrs[idx]
         omega0 = 2*f0*np.pi
         Omega = 1./osr*np.pi
-        P = cvxpy.Variable(order, order)
-        F += [cvxpy.upper_tri(P) == cvxpy.upper_tri(P.T)]
+        P = cvxpy.Symmetric(order)
         Q = cvxpy.Semidef(order)
         if f0 == 0:
             # Lowpass modulator
@@ -95,9 +94,7 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
                 cvxpy.hstack(M1, M2, c.T),
                 cvxpy.hstack(M2.T, M3, D),
                 cvxpy.hstack(c, D, -1))
-            Mconstr = -cvxpy.Semidef(order+2)
-            F += [cvxpy.diag(Mconstr) == cvxpy.diag(M),
-                  cvxpy.upper_tri(Mconstr) == cvxpy.upper_tri(M)]
+            F += [M << 0]
             if zf:
                 # Force a zero at DC
                 F += [cvxpy.sum_entries(c) == -1]
@@ -121,9 +118,7 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
             M = cvxpy.vstack(
                 cvxpy.hstack(Mr, Mi),
                 cvxpy.hstack(-Mi, Mr))
-            Mconstr = -cvxpy.Semidef(2*(order+2))
-            F += [cvxpy.diag(Mconstr) == cvxpy.diag(M),
-                  cvxpy.upper_tri(Mconstr) == cvxpy.upper_tri(M)]
+            F += [M << 0]
             if zf:
                 # Force a zero at z=np.exp(1j*omega0)
                 nn = np.arange(order).reshape((order, 1))
@@ -139,9 +134,7 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
             cvxpy.hstack(A.T*R*A-R, A.T*R*B, c.T),
             cvxpy.hstack(B.T*R*A, -H_inf**2+B.T*R*B, D),
             cvxpy.hstack(c, D, -1))
-        Mconstr = -cvxpy.Semidef(order+2)
-        F += [cvxpy.diag(Mconstr) == cvxpy.diag(MM),
-              cvxpy.upper_tri(Mconstr) == cvxpy.upper_tri(MM)]
+        F += [MM << 0]
     target = cvxpy.Minimize(cvxpy.max_entries(gg))
     p = cvxpy.Problem(target, F)
     p.solve(verbose=verbose, **opts['cvxpy_opts'])

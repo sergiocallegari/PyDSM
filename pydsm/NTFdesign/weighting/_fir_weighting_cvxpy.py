@@ -36,7 +36,7 @@ def ntf_fir_from_digested(Qs, A, C, H_inf, **opts):
     order = np.size(Qs, 0)-1
     br = cvxpy.Variable(order, 1, name='br')
     b = cvxpy.vstack(1, br)
-    X = cvxpy.Semidef(order, name='X')
+    X = cvxpy.Symmetric(order, name='X')
     target = cvxpy.Minimize(cvxpy.norm2(Qs*b))
     B = np.vstack((np.zeros((order-1, 1)), 1.))
     C = C+br[::-1].T
@@ -48,11 +48,7 @@ def ntf_fir_from_digested(Qs, A, C, H_inf, **opts):
         cvxpy.hstack(M2.T, B.T*X*B-H_inf**2, D),
         cvxpy.hstack(C, D, np.matrix(-1.))
         )
-    Mconstr = -cvxpy.Semidef(order+2)
-    constraints = [
-        cvxpy.diag(Mconstr) == cvxpy.diag(M),
-        cvxpy.upper_tri(Mconstr) == cvxpy.upper_tri(M),
-    ]
+    constraints = [M << 0, X >> 0]
     p = cvxpy.Problem(target, constraints)
     p.solve(verbose=verbose, **opts['cvxpy_opts'])
     return np.hstack((1, np.asarray(br.value.T)[0]))
