@@ -43,11 +43,9 @@ def ntf_fir_from_digested(Qs, A, C, H_inf, **opts):
     D = np.matrix(1.)
     M1 = A.T*X
     M2 = M1*B
-    M = cvxpy.vstack(
-        cvxpy.hstack(M1*A-X, M2, C.T),
-        cvxpy.hstack(M2.T, B.T*X*B-H_inf**2, D),
-        cvxpy.hstack(C, D, np.matrix(-1.))
-        )
+    M = cvxpy.bmat([[M1*A-X, M2, C.T],
+                    [M2.T, B.T*X*B-H_inf**2, D],
+                    [C, D, np.matrix(-1.)]])
     constraints = [M << 0, X >> 0]
     p = cvxpy.Problem(target, constraints)
     p.solve(verbose=verbose, **opts['cvxpy_opts'])
