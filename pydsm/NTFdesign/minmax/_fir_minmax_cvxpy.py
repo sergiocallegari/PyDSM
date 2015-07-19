@@ -83,21 +83,17 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
         osr = osrs[idx]
         omega0 = 2*f0*np.pi
         Omega = 1./osr*np.pi
-        P = cvxpy.Variable(order, order)
-        F += [cvxpy.upper_tri(P) == cvxpy.upper_tri(P.T)]
+        P = cvxpy.Symmetric(order)
         Q = cvxpy.Semidef(order)
         if f0 == 0:
             # Lowpass modulator
             M1 = A.T*P*A+Q*A+A.T*Q-P-2*Q*np.cos(Omega)
             M2 = A.T*P*B + Q*B
             M3 = B.T*P*B - gg[idx, 0]
-            M = cvxpy.vstack(
-                cvxpy.hstack(M1, M2, c.T),
-                cvxpy.hstack(M2.T, M3, D),
-                cvxpy.hstack(c, D, -1))
-            Mconstr = -cvxpy.Semidef(order+2)
-            F += [cvxpy.diag(Mconstr) == cvxpy.diag(M),
-                  cvxpy.upper_tri(Mconstr) == cvxpy.upper_tri(M)]
+            M = cvxpy.bmat([[M1, M2, c.T],
+                            [M2.T, M3, D],
+                            [c, D, -1]])
+            F += [M << 0]
             if zf:
                 # Force a zero at DC
                 F += [cvxpy.sum_entries(c) == -1]
@@ -110,20 +106,15 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
             M1i = A.T*Q*np.sin(omega0) - Q*A*np.sin(omega0)
             M21i = -Q*B*np.sin(omega0)
             M22i = B.T*Q*np.sin(omega0)
-            Mr = cvxpy.vstack(
-                cvxpy.hstack(M1r, M2r, c.T),
-                cvxpy.hstack(M2r.T, M3r, D),
-                cvxpy.hstack(c, D, -1))
-            Mi = cvxpy.vstack(
-                cvxpy.hstack(M1i, M21i, np.zeros((order, 1))),
-                cvxpy.hstack(M22i, 0, 0),
-                cvxpy.hstack(np.zeros((1, order)), 0, 0))
-            M = cvxpy.vstack(
-                cvxpy.hstack(Mr, Mi),
-                cvxpy.hstack(-Mi, Mr))
-            Mconstr = -cvxpy.Semidef(2*(order+2))
-            F += [cvxpy.diag(Mconstr) == cvxpy.diag(M),
-                  cvxpy.upper_tri(Mconstr) == cvxpy.upper_tri(M)]
+            Mr = cvxpy.bmat([[M1r, M2r, c.T],
+                             [M2r.T, M3r, D],
+                             [c, D, -1]])
+            Mi = cvxpy.bmat([[M1i, M21i, np.zeros((order, 1))],
+                             [M22i, 0, 0],
+                             [np.zeros((1, order)), 0, 0]])
+            M = cvxpy.bmat([[Mr, Mi],
+                            [-Mi, Mr]])
+            F += [M << 0]
             if zf:
                 # Force a zero at z=np.exp(1j*omega0)
                 nn = np.arange(order).reshape((order, 1))
@@ -135,13 +126,10 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
     if H_inf < np.inf:
         # Enforce the Lee constraint
         R = cvxpy.Semidef(order)
-        MM = cvxpy.vstack(
-            cvxpy.hstack(A.T*R*A-R, A.T*R*B, c.T),
-            cvxpy.hstack(B.T*R*A, -H_inf**2+B.T*R*B, D),
-            cvxpy.hstack(c, D, -1))
-        Mconstr = -cvxpy.Semidef(order+2)
-        F += [cvxpy.diag(Mconstr) == cvxpy.diag(MM),
-              cvxpy.upper_tri(Mconstr) == cvxpy.upper_tri(MM)]
+        MM = cvxpy.bmat([[A.T*R*A-R, A.T*R*B, c.T],
+                         [B.T*R*A, -H_inf**2+B.T*R*B, D],
+                         [c, D, -1]])
+        F += [MM << 0]
     target = cvxpy.Minimize(cvxpy.max_entries(gg))
     p = cvxpy.Problem(target, F)
     p.solve(verbose=verbose, **opts['cvxpy_opts'])
