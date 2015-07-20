@@ -79,7 +79,7 @@ class TestNTF_Hybrid(TestCase):
                                        modeler='cvxpy',
                                        quad_opts={"points": [0.5/self.OSR]},
                                        cvxopt_opts={"reltol": 1E-14,
-                                                    "abstol": 1E-16})
+                                                    "abstol": 2E-16})
         z = np.sort(z)
         p = np.sort(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
