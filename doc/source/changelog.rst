@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+0.13.0.1
+   - Fix compatibility with most recent cvxpy
+   - Minor bugfixes
+
 0.13.0.0
    - Python 3 compatibility!
    - Bugfixes
