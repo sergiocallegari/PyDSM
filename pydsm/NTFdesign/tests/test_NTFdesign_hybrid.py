@@ -86,7 +86,6 @@ class TestNTF_Hybrid(TestCase):
         np.testing.assert_allclose(z, self.e_z, 3e-4)
         np.testing.assert_allclose(p, self.e_p, 3e-4)
 
-    @dec.skipif(True, 'SCS has poor accuracy')
     def test_ntf_hybrid_cvxpy_scs(self):
         try:
             import cvxpy     # analysis:ignore
@@ -98,7 +97,8 @@ class TestNTF_Hybrid(TestCase):
                                        modeler='cvxpy',
                                        quad_opts={"points": [0.5/self.OSR]},
                                        cvxpy_opts={"solver": "scs"},
-                                       scs_opts={"eps": 1E-14})
+                                       scs_opts={"eps": 1E-15,
+                                                 "max_iters": 10000})
         z = np.sort(z)
         p = np.sort(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
