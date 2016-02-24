@@ -34,7 +34,7 @@ def ntf_fir_from_digested(Qs, A, C, H_inf, **opts):
         opts['picos_opts']['maxit'] = opts['picos_opts']['maxiters']
         del opts['picos_opts']['maxiters']
     # Do the computation
-    order = np.size(Qs, 0)-1
+    order = int(np.size(Qs, 0)-1)
     Qs = cvxopt.matrix(Qs)
     p = picos.Problem(solver='cvxopt')
     power = p.add_variable('pow')
