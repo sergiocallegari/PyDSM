@@ -17,7 +17,7 @@
     representations
 - avoid __import__ statements and follow
     http://docs.scipy.org/doc/scipy/reference/api.html
-- [cython] user numpy.require to assure that arrays have the right properties
+- [cython] use numpy.require to assure that arrays have the right properties
 - [optimization] move to the newer cvxpy
 - [examples] provide notebook version of the examples
 - [setuptools] make docdist pass options to build_sphinx
@@ -38,3 +38,14 @@
 - [accuracy] A recent code change removes a matrix inversion noticing that
     the matrix is orthonormal, and that transposition should suffice.  However
     this seems to cause come accuracy issues on some platforms (AMD?)
+- [clans] Consider the following suggestion for CLANS, that was submitted as
+    a patch to the clans Matlab code:
+    For better convergence, transform the errors in minimization functions
+    (dsclansObj6a,dsclansObj6b) into quadratic errors.
+    Howto:
+    1. Open clans6.m
+    2. in sub-function dsclansObj6a, after "f = abs(evalTF(H,exp(1i*pi/OSR)));"
+       type "f=f*f".
+    3. in sub-function dsclansObj6a, after
+       "g = sum(abs(impulse(H,100))) -1 - Q;" type "g=g*g".
+    This way the target value for Q will be reached quite accurately at low OSR.
