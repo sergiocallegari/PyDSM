@@ -63,7 +63,7 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
         switch controlling the storage of maxima in state variables.
         See description of return values. Defaults to False.
     store_y : bool, optional
-        switch controlling the storage of input quantizer values.
+        switch controlling the storage of quantizer input values.
         See description of return values. Defaults to False.
 
     Returns
@@ -83,7 +83,6 @@ def simulateDSM(u, arg2, nlev=2, x0=0,
         maximum absolute value reached by the state variables.
         If store_xmax is set to True, then xmax is a vector with as many
         entries as the number of state variables. Otherwise it is null.
-        y -> samples at the quantizer input(s), one per input sample.
     y : ndarray
         samples at the quantizer input(s), one per input sample.
         If store_y is set to True, then y records the quantizer(s)
