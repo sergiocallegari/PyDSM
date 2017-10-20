@@ -122,8 +122,8 @@ print("Expected delsig noise level {} ({} dB).\nExpected SNR {} dB".format(
     dbp(0.5*A**2)-dbp(noise_power_delsig_1)))
 
 # Start and stop time for DS simulation
-Tstop = 100E3
-Tstart = 40E3
+Tstop = 100000
+Tstart = 40000
 dither_sigma = 1e-6
 
 # Set up DSM simulation

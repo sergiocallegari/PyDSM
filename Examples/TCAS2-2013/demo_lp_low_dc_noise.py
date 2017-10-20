@@ -103,9 +103,9 @@ fb = 497.
 periods = 2000
 nfft_periods = 40
 skip_periods = 10
-tmax = np.ceil(periods*1./fa*fphi)
-tplot0 = np.round(skip_periods*1./fa*fphi)
-tplot2 = np.round((periods-2)*1./fa*fphi)
+tmax = int(np.ceil(periods*1./fa*fphi))
+tplot0 = int(np.round(skip_periods*1./fa*fphi))
+tplot2 = int(np.round((periods-2)*1./fa*fphi))
 nn = np.arange(tmax+1)
 
 # Three signal components available. Play freely with DC, slow and fast

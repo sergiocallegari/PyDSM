@@ -87,8 +87,8 @@ plt.legend(loc='lower right')
 plt.tight_layout(rect=[0, 0, 1, 0.98])
 
 # Start and stop time for DS simulation
-Tstop = 400E3
-Tstart = 40E3
+Tstop = 400000
+Tstart = 40000
 dither_sigma = 0
 # Use very little signals, otherwise it is troublesome to
 # remove them completely to evaluate the quantization noise

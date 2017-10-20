@@ -167,8 +167,8 @@ plt.legend()
 
 # Estimate some spectra
 print("Compute some spectra (", end="")
-Tsp_start = 2*fphi/1000
-Tsp_stop = 199*fphi/1000
+Tsp_start = int(2*fphi/1000)
+Tsp_stop = int(199*fphi/1000)
 NFFT = 4096*64
 (psd, freqs) = mlab.psd((xx1)[Tsp_start:Tsp_stop], Fs=fphi, NFFT=NFFT,
                         noverlap=NFFT/2, scale_by_freq=True)
@@ -246,8 +246,8 @@ plt.suptitle('PSD of quantization noise - 2nd signal')
 print('Compute merit factors for delta sigma sequences')
 df1q = freqs1q[1]-freqs1q[0]
 df2q = freqs2q[1]-freqs2q[0]
-ifm1 = np.round((B1-freqs1q[0])/df1q)+1
-ifm2 = np.round((B2-freqs2q[0])/df2q)+1
+ifm1 = int(np.round((B1-freqs1q[0])/df1q)+1)
+ifm2 = int(np.round((B2-freqs2q[0])/df2q)+1)
 ibqnp1 = np.sum(psd1q[0:ifm1])*df1q
 ibqnp2 = np.sum(psd2q[0:ifm1])*df2q
 print('Noise floors', dbp(ibqnp1)+30-dbp(50), dbp(ibqnp2)+30-dbp(50), 'dBm')
