@@ -1,4 +1,3 @@
-.spyderproject
 *~
 *.pyc
 /MANIFEST
@@ -10,3 +9,6 @@
 RELEASE-VERSION
 pydsm.egg-info
 pydsm/**/*.so
+.spyderproject
+.spyproject
+.eggs
