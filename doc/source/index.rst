@@ -1,7 +1,9 @@
 Welcome to PyDSM's documentation!
 =================================
 
-Contents:
+.. only:: not latex
+
+   Contents:
 
 .. toctree::
    :maxdepth: 2

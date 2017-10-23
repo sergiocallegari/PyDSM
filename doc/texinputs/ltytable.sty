@@ -1,0 +1,30 @@
+%% ltytable package
+%% based on code by David Carlisle
+%%
+%% This file may be distributed under the terms of the LPPL.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ltytable}
+                [2016/02/26 v0.1 longtable/tabulary merge]
+\RequirePackage{tabulary,longtable}
+
+\let\endtabularysaved\endtabulary
+\def\ltabulary{%
+  \def\endfirsthead{\\}%
+  \def\endhead{\\}%
+  \def\endfoot{\\}%
+  \def\endlastfoot{\\}%
+  \def\tabulary{%
+    \def\TY@final{%
+      \def\endfirsthead{\LT@end@hd@ft\LT@firsthead}%
+      \def\endhead{\LT@end@hd@ft\LT@head}%
+      \def\endfoot{\LT@end@hd@ft\LT@foot}%
+      \def\endlastfoot{\LT@end@hd@ft\LT@lastfoot}%
+      \longtable}%
+    \let\endTY@final\endlongtable
+    \TY@tabular}%
+  \dimen@\columnwidth
+  \advance\dimen@-\LTleft
+  \advance\dimen@-\LTright
+  \tabulary\dimen@}
+
+\def\endltabulary{\endtabularysaved}
