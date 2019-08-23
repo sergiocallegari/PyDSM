@@ -98,7 +98,7 @@ class TestNTF_Hybrid(TestCase):
                                        quad_opts={"points": [0.5/self.OSR]},
                                        cvxpy_opts={"solver": "scs"},
                                        scs_opts={"eps": 1E-15,
-                                                 "max_iters": 10000})
+                                                 "max_iters": 20000})
         z = np.sort(z)
         p = np.sort(p)
         np.testing.assert_allclose(k, self.e_k, 1e-6)
