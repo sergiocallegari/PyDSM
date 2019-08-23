@@ -74,17 +74,17 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
 
     # Set up the problem
     bands = len(f0s)
-    c = cvxpy.Variable(1, order)
+    c = cvxpy.Variable((1, order))
     F = []
-    gg = cvxpy.Variable(bands, 1)
+    gg = cvxpy.Variable((bands, 1))
 
     for idx in range(bands):
         f0 = f0s[idx]
         osr = osrs[idx]
         omega0 = 2*f0*np.pi
         Omega = 1./osr*np.pi
-        P = cvxpy.Symmetric(order)
-        Q = cvxpy.Semidef(order)
+        P = cvxpy.Variable((order, order), symmetric=True)
+        Q = cvxpy.Variable((order, order), PSD=True)
         if f0 == 0:
             # Lowpass modulator
             M1 = A.T*P*A+Q*A+A.T*Q-P-2*Q*np.cos(Omega)
@@ -92,7 +92,7 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
             M3 = B.T*P*B - gg[idx, 0]
             M = cvxpy.bmat([[M1, M2, c.T],
                             [M2.T, M3, D],
-                            [c, D, -1]])
+                            [c, D, [[-1]]]])
             F += [M << 0]
             if zf:
                 # Force a zero at DC
@@ -108,10 +108,10 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
             M22i = B.T*Q*np.sin(omega0)
             Mr = cvxpy.bmat([[M1r, M2r, c.T],
                              [M2r.T, M3r, D],
-                             [c, D, -1]])
+                             [c, D, [[-1]]]])
             Mi = cvxpy.bmat([[M1i, M21i, np.zeros((order, 1))],
-                             [M22i, 0, 0],
-                             [np.zeros((1, order)), 0, 0]])
+                             [M22i, [[0]], [[0]]],
+                             [np.zeros((1, order)), [[0]], [[0]]]])
             M = cvxpy.bmat([[Mr, Mi],
                             [-Mi, Mr]])
             F += [M << 0]
@@ -125,12 +125,12 @@ def ntf_fir_from_digested(order, osrs, H_inf, f0s, zf, **opts):
                 F += [c*cvxpy.hstack(vr, vi) == vn]
     if H_inf < np.inf:
         # Enforce the Lee constraint
-        R = cvxpy.Semidef(order)
+        R = cvxpy.Variable((order, order), PSD=True)
         MM = cvxpy.bmat([[A.T*R*A-R, A.T*R*B, c.T],
                          [B.T*R*A, -H_inf**2+B.T*R*B, D],
-                         [c, D, -1]])
+                         [c, D, [[-1]]]])
         F += [MM << 0]
-    target = cvxpy.Minimize(cvxpy.max_entries(gg))
+    target = cvxpy.Minimize(cvxpy.max(gg))
     p = cvxpy.Problem(target, F)
     p.solve(verbose=verbose, **opts['cvxpy_opts'])
     return np.hstack((1, np.asarray(c.value)[0, ::-1]))

@@ -34,9 +34,9 @@ def ntf_fir_from_digested(Qs, A, C, H_inf, **opts):
     elif opts['cvxpy_opts']['solver'] == 'scs':
         opts['cvxpy_opts']['solver'] = cvxpy.SCS
     order = int(np.size(Qs, 0)-1)
-    br = cvxpy.Variable(order, 1, name='br')
-    b = cvxpy.vstack(1, br)
-    X = cvxpy.Symmetric(order, name='X')
+    br = cvxpy.Variable((order, 1), name='br')
+    b = cvxpy.vstack([[[1]], br])
+    X = cvxpy.Variable((order, order), symmetric=True, name='X')
     target = cvxpy.Minimize(cvxpy.norm2(Qs*b))
     B = np.vstack((np.zeros((order-1, 1)), 1.))
     C = C+br[::-1].T
