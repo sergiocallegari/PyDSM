@@ -136,7 +136,6 @@ uu_filt = sp.signal.lfilter(hz_ab[0], hz_ab[1], uu)
 xx_opti_filt = sp.signal.lfilter(hz_ab[0], hz_ab[1], xx_opti)
 
 plt.figure()
-plt.hold(True)
 plt.plot(tt[Tstart:Tstart+4*OSR], uu_filt[Tstart:Tstart+4*OSR], 'b',
          label="Filtered input")
 plt.plot(tt[Tstart:Tstart+4*OSR], xx_opti_filt[Tstart:Tstart+4*OSR], 'r',
