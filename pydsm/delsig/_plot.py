@@ -102,12 +102,10 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
     z = cplxpair(H[0])
     p = cplxpair(H[1])
 
-    hold_status = plt.ishold()
     plt.grid(True)
 
     # Plot x and o for poles and zeros, respectively
     plt.plot(p.real, p.imag, linestyle='None', **pole_fmt)
-    plt.hold(True)
     if len(z) > 0:
         plt.plot(z.real, z.imag, linestyle='None', **zero_fmt)
 
@@ -158,6 +156,3 @@ def plotPZ(H, color='b', markersize=5, showlist=False):
 
     plt.ylabel('Imag')
     plt.xlabel('Real')
-
-    if not hold_status:
-        plt.hold(False)
