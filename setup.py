@@ -22,14 +22,8 @@
 
 from __future__ import print_function
 
-import sys, io
-
-if sys.version_info[:2] < (2, 6):
-    raise RuntimeError("Python 2 supported for versions >= 2.6")
-
-if (3,) <= sys.version_info[:2] < (3, 2):
-    raise RuntimeError("Python 3 supported for versions >= 3.2")
-
+import sys
+import io
 from setuptools import setup, Extension, find_packages
 from Cython.Distutils import build_ext
 import os
@@ -38,6 +32,12 @@ import numpy as np
 from setup_helper_version import get_git_version
 from setup_helper_docdist import docdist
 
+if sys.version_info[:2] < (2, 6):
+    raise RuntimeError("Python 2 supported for versions >= 2.6")
+
+if (3,) <= sys.version_info[:2] < (3, 2):
+    raise RuntimeError("Python 3 supported for versions >= 3.2")
+
 __version__ = get_git_version(store="pydsm/RELEASE-VERSION")
 
 
@@ -45,6 +45,7 @@ def read_from_here(fname):
     with io.open(os.path.join(os.path.dirname(__file__), fname),
                  encoding='utf-8') as fp:
         return fp.read()
+
 
 # Prepare the extension modules
 ext_modules = [
@@ -116,6 +117,9 @@ setup(
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Cython',
         'Topic :: Education',
         ('Topic :: Scientific/Engineering :: '
