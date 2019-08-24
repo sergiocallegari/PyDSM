@@ -1,3 +1,8 @@
+- [setup] Get rid of setup.py dependency on nose and cython
+- [speed] Default to scs
+- [cleanup] Remove support for internal cvxpy-old
+  Not needed given the current state of cvxpy and PICOS and also extra slow
+- [cleanup] Remove support for python 2.7 (eol by Jan 2020)
 - [delsig] Look into quadrature modulators
 - [delsig] implement findPattern
 - [delsig] implement calculateSNR
