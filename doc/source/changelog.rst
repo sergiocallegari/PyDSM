@@ -1,6 +1,13 @@
 Changelog
 ---------
 
+0.14.0.0
+   - Fix compatibility with cvxpy 1.0.x
+   - Fix compatibilit with PICOS 1.2.0
+   - Fix compatibility with matplotlib 3
+   - Fix compatibility with sphinx 2.2.0 (html docs only)
+   - Minor bugfixes
+
 0.13.0.1
    - Fix compatibility with most recent cvxpy
    - Minor bugfixes
