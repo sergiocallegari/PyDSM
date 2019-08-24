@@ -56,6 +56,5 @@ def ntf_fir_from_digested(Qs, A, C, H_inf, **opts):
     p.add_constraint(abs(Qs*b) < power)
     p.add_constraint(constraint1)
     p.add_constraint(constraint2)
-    p.set_options(**opts['picos_opts'])
-    p.solve(verbose=verbose)
+    p.solve(verbose=verbose, **opts['picos_opts'])
     return np.hstack((1, np.asarray(br.value.T)[0]))
