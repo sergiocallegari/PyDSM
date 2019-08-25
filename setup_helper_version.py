@@ -48,6 +48,7 @@ def call_git_describe(abbrev=4):
                   stdout=PIPE, stderr=PIPE)
         p.stderr.close()
         gitversion = p.stdout.readlines()[0].strip()
+        gitversion = "".join(chr(x) for x in gitversion)
         return gitversion.replace('-', '+git-', 1)
 
     except:
