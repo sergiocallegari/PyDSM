@@ -11,8 +11,8 @@ toolbox
 <http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox>`__
 by R. Schreier.
 
-As a highlight, the code includes an original NTF design technique
-fully described in the papers:
+The code includes an original NTF design technique fully described in the
+papers:
 
 * Sergio Callegari, Federico Bizzarri *“Output Filter Aware
   Optimization of the Noise Shaping Properties of ΔΣ Modulators via
@@ -39,6 +39,14 @@ The code is available on the Python Package Index, also known as `Pypi
 
 The pre-built documentation is also available in a dedicated `PyDSM
 documentation <http://pythonhosted.org/pydsm/>`_ page on Pypi.
+
+----
+
+Warning
+-------
+
+Version 0.14.0.0 of PyDSM is likely going to be the last version supporting
+Python 2
 
 ----
 
