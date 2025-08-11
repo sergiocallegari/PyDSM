@@ -55,6 +55,11 @@ doc = [
 dev = [
     "spyder-kernels",
 ]
+release = [
+    "check-manifest>=0.50",
+    "pyroma>=5.0",
+    "twine>=6.1.0",
+]
 
 [build-system]
 requires = [
