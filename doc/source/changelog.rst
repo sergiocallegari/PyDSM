@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+0.15.0
+   - build process relies on modern Python practices (PEP 517);
+   - support for modern Python (>=3.10);
+   - extension modules now built in Python 3 mode;
+
 0.14.0.0
    - Fix compatibility with cvxpy 1.0.x
    - Fix compatibilit with PICOS 1.2.0

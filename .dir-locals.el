@@ -1,0 +1,5 @@
+((markdown-mode . ((mode . visual-line)
+		   (mode . visual-wrap-prefix)
+		   )
+		)
+ )

@@ -1,2 +1,7 @@
 include setup_*.py
-recursive-include pydsm *.h *.c
+include CHANGELOG
+recursive-include src/pydsm *.h *.c *.pyx *.pxi
+prune templates
+exclude .dir-locals.el
+exclude README_PDM.md
+exclude TODO.md
