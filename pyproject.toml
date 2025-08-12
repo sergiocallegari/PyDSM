@@ -96,3 +96,9 @@ distribution = true
 coverage = [
     "pytest-cov",
 ]
+
+[tool.check-manifest]
+ignore = [
+    "src/pydsm/_version.py",
+    "src/pydsm/delsig/*.c"
+]
