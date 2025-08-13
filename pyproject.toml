@@ -59,6 +59,7 @@ classifiers = [
 "Documentation" = "https://pythonhosted.org/pydsm/"
 "Source" = "https://github.com/sergiocallegari/PyDSM"
 "Bug Tracker" = "https://github.com/sergiocallegari/PyDSM/issues"
+"Changelog" = "https://github.com/sergiocallegari/PyDSM/blob/main/doc/source/changelog.rst"
 
 [dependency-groups]
 coverage = ["pytest-cov"]
