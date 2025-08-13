@@ -14,7 +14,7 @@ If you find the code useful, *please cite these papers in your work*. In case yo
 
 ## Code availability
 
-The code is available on the Python Package Index, also known as [Pypi](https://pypi.python.org/pypi), at the [Pypi PYDSM page](https://pypi.python.org/pypi/pydsm).
+The code is available on the Python Package Index, also known as [PyPI](https://pypi.python.org/pypi), at the [PyPI PYDSM page](https://pypi.python.org/pypi/pydsm).
 
 No wheels are currently provided and the code builds from a source
 distribution. On Linux, a blas library must currently be available at
@@ -25,7 +25,7 @@ The code is routinely tested on Linux (AMD64) and occasionally on Windows 11 (ag
 ## Documentation
 
 The pre-built documentation is also available in a dedicated [PyDSM
-documentation](http://pythonhosted.org/pydsm/) page on Pypi.
+documentation](http://pythonhosted.org/pydsm/) page on PyPI.
 
 ## Changelog
 
