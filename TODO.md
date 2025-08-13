@@ -63,7 +63,8 @@
 
 ### Framework
 
-- [ ] Avoid local links in `README.md` that may fail from `pypi`.
+- [x] Avoid local links in `README.md` that may fail from `pypi`.
+  - A `README-PyPI.md` file is now generated dynamically from `README.md` in `setup.py`. This is not very canonical, but appears to work.
 - [ ] Make some modelers optional
 - [ ] Provide interface to expose available features
 

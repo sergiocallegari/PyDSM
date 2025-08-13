@@ -18,7 +18,7 @@ dependencies = [
     "pytest-benchmark>=4.0.0",
 ]
 requires-python = ">=3.10"
-readme = "README.md"
+readme = "README-PyPI.md"
 license = "GPL-3.0-or-later"
 keywords = [
     "delta-sigma",
@@ -115,5 +115,6 @@ coverage = [
 [tool.check-manifest]
 ignore = [
     "src/pydsm/_version.py",
-    "src/pydsm/delsig/*.c"
+    "src/pydsm/delsig/*.c",
+    "README-PyPI.md"
 ]

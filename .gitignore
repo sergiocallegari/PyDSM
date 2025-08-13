@@ -13,3 +13,4 @@ __pycache__
 *.egg-info/
 *.c
 *.so
+/README-PyPI.md
