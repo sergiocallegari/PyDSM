@@ -21,8 +21,6 @@
 
 
 import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 import platform
