@@ -25,9 +25,26 @@ from setuptools import setup, Extension
 from Cython.Build import cythonize
 import platform
 import numpy as np
+import re
 
 if sys.version_info[:2] < (3, 10):
     raise RuntimeError("Python 3 supported for versions >= 3.10")
+
+link_prefix = r"https://github.com/sergiocallegari/PyDSM/blob/main/"
+
+def to_abs_links(text):
+    return re.sub(
+        r"\]\((?!https?://)(.*?)\)",
+        rf"]({link_prefix}\1)",
+        text
+    )
+
+# Create readme file for PyPI
+with open("README.md", encoding="utf-8") as f:
+    readme_text = f.read()
+readme_pypi_text = to_abs_links(readme_text)
+with open("README-PyPI.md", "w", encoding="utf-8") as f:
+    f.write(readme_pypi_text)
 
 # Prepare the extension modules
 ext_modules = cythonize([

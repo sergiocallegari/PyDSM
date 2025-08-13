@@ -29,7 +29,7 @@ documentation](http://pythonhosted.org/pydsm/) page on Pypi.
 
 ## Changelog
 
-See [`CHANGELOG.rst`](CHANGELOG.rst).
+See [`CHANGELOG.rst`](doc/source/changelog.rst).
 
 ## Warning
 
