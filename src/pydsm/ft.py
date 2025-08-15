@@ -64,7 +64,7 @@ def fft_centered(x, fs=1):
         1-D sequence to compute the FFT upon
 
     Returns
-    ------
+    -------
     X : ndarray
         samples of the DFT of the input vector
     ff : ndarray
