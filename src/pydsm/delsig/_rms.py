@@ -82,7 +82,7 @@ def rms(x, no_dc=False):
 
     .. math::
 
-        v = \\sqrt{\\frac{1}{n}\sum_{i=0}^n x_i^2}
+        v = \\sqrt{\\frac{1}{n}\\sum_{i=0}^n x_i^2}
 
     Input x must be a 1 dimensional vector. If x is a matrix, the DELSIG
     version of rms returns a meaningless result, and so this function does...
