@@ -73,10 +73,6 @@ Key functions
 
    shorthand for :func:`merit_factors.quantization_noise_gain`
 
-.. function:: ntf_fir_minmax()
-
-   shorthand for :func:`minmax.ntf_fir_minmax()`
-
 
 Submodules
 ----------
