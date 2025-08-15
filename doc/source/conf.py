@@ -23,6 +23,8 @@ version = ".".join(release.split(".", 2)[:2])
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
+nitpicky = True
+
 extensions = ['latex_textgreek', 'sphinx.ext.autodoc', 'sphinx.ext.imgmath',
               'numpydoc', 'sphinx.ext.autosummary', 'latex_ltytable']
 
