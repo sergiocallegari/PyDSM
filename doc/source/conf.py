@@ -25,14 +25,26 @@ version = ".".join(release.split(".", 2)[:2])
 
 nitpicky = True
 
-extensions = ['latex_textgreek', 'sphinx.ext.autodoc', 'sphinx.ext.imgmath',
-              'numpydoc', 'sphinx.ext.autosummary', 'latex_ltytable']
+extensions = [
+    'latex_textgreek',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.imgmath',
+    "sphinx.ext.intersphinx",
+    'numpydoc',
+    'sphinx.ext.autosummary',
+    'latex_ltytable',
+]
 
 templates_path = ['_templates']
 exclude_patterns = []
 
 modindex_common_prefix = ['pydsm.']
 
+intersphinx_mapping = {
+    #"python": ("https://docs.python.org/3", None),
+    "scipy":  ("https://docs.scipy.org/doc/scipy", None),
+    # "cvxopt": ("https://cvxopt.org/userguide", None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
