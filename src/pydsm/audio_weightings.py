@@ -87,7 +87,7 @@ Normalization constants
 
 Notes
 -----
-The ANSI and IEC weightings are also described in Wikipedia [1]
+The ANSI and IEC weightings are also described in Wikipedia [1]_
 and summarized in some illustrative web pages such as [2]_ and
 [3]_. The F-weighting is documented in [4]_.
 
