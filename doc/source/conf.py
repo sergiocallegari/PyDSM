@@ -28,7 +28,7 @@ nitpicky = True
 extensions = [
     'latex_textgreek',
     'sphinx.ext.autodoc',
-    'sphinx.ext.imgmath',
+    'sphinx.ext.mathjax',
     "sphinx.ext.intersphinx",
     'numpydoc',
     'sphinx.ext.autosummary',
