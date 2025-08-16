@@ -19,7 +19,7 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 u"""
-Output filter based NTF synthesis (:mod:`pydsm.NTFDesign.filter_based`)
+Output filter based NTF synthesis (:mod:`pydsm.NTFdesign.filter_based`)
 =======================================================================
 
 This modules provides code for the synthesis of the modulator NTF, based
@@ -151,7 +151,7 @@ def q0_from_filter(P, H, H_type='zpk', **options):
     Compute Q matrix from the modulator output filter
 
     .. deprecated:: 0.11.0
-       Use :func:`NTFdesign.weighting.q0_weighting`. Note that the
+       Use :func:`pydsm.NTFdesign.weighting.q0_weighting`. Note that the
        interface is slightly different.
 
     Parameters
@@ -224,7 +224,7 @@ def synthesize_ntf_from_filter(order, H, H_type='zpk', H_inf=1.5,
     filter in charge of removing the quantization noise
 
     .. deprecated:: 0.11.0
-       Use :func:`NTFdesign.ntf_fir_weighting`. Note that the interface
+       Use :func:`pydsm.NTFdesign.ntf_fir_weighting`. Note that the interface
        is slightly different.
 
     Parameters
@@ -281,8 +281,12 @@ def synthesize_ntf_from_filter(order, H, H_type='zpk', H_inf=1.5,
 
     See Also
     --------
-    scipy.integrate.quad : for the meaning of the integrator parameters.
-    cvxopt : for the optimizer parameters
+    scipy.integrate.quad : for the meaning of the integrator parameters
+
+    Notes
+    -----
+    Cosider the `CVXOPT User’s Guide <https://cvxopt.org/userguide/>`_
+    for the optimizer parameters.
     """
     warn("Function meant for removal", PyDsmDeprecationWarning)
     # Manage optional parameters

@@ -30,8 +30,7 @@ __all__ = ['ntf_fir_minmax', 'synthesize_ntf_minmax']
 
 def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
                    **options):
-    u"""
-    Synthesize FIR NTF for LP or BP ΔΣ modulator by min-max optimization.
+    u"""Synthesize FIR NTF for LP or BP ΔΣ modulator by min-max optimization.
 
     The strategy aims at minimizing the peak value of the NTF in the signal
     band, while respecting the Lee criterion.
@@ -121,11 +120,12 @@ def ntf_fir_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
        of Noise-Shaping Delta-Sigma Modulators*, IEEE Trans. SP, vol. 60 n. 6
        June 2012.
 
-    See Also
-    --------
-    cvxopt : for the optimizer parameters
-    scs : for the optimizer parameters
-    cvxpy : for the modeler parameters
+    For more information on the ``CVXOPT`` optimizer parameters, see
+    the corresponding documentation. Similarly, for more infomration
+    on the ``scs`` optimizer see its documentation. Finally, for more
+    iniformation on the parameters controlling the optimization
+    modeler and frontend ``cvxpy``, see its documentation.
+
     """
     # Manage optional parameters
     opts = digested_options(
@@ -203,8 +203,9 @@ def synthesize_ntf_minmax(order=32, osr=32, H_inf=1.5, f0=0, zf=False,
     Alias of :func:`ntf_fir_minmax`
 
     .. deprecated:: 0.11.0
-       Function is now available from the :mod:`NTFdesign` module with
-       name :func:`ntf_fir_minmax`
+       Function is now available from the :mod:`pydsm.NTFdesign`
+       module with name :func:`ntf_fir_minmax`
+
     """
     warn("Function superseded by ntf_fir_minmax in "
          "NTFdesign module", PyDsmDeprecationWarning)

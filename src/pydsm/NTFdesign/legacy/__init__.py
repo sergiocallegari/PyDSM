@@ -19,7 +19,7 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 u"""
-Legacy NTF synthesis methods (:mod:`pydsm.NTFDesign.legacy`)
+Legacy NTF synthesis methods (:mod:`pydsm.NTFdesign.legacy`)
 ============================================================
 
 This modules provides code for the synthesis of the modulator NTF, based

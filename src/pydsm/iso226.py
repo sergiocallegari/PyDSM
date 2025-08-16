@@ -19,7 +19,7 @@
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-ISO 226 loudness countours (:mod:`pysdm.iso226`)
+ISO 226 loudness countours (:mod:`pydsm.iso226`)
 ================================================
 
 Loudness contours from ISO 226.

@@ -44,9 +44,10 @@ Deprecated functions
 --------------------
 
 .. autosummary::
+   :toctree: generated/
 
-   synthesize_ntf_dunn                 -- alias of ntf_dunn
-   synthesize_ntf_from_audio_weighting -- alias of ntf_fir_audio_weighting
+    synthesize_ntf_dunn                  -- alias of ntf_dunn
+    synthesize_ntf_from_audio_weighting  -- alias of ntf_fir_audio_weighting
 """
 
 from __future__ import division, print_function
@@ -198,8 +199,7 @@ def ntf_fir_audio_weighting(
         max_attn=120,
         H_inf=1.5,
         normalize="auto", **options):
-    u"""
-    Synthesize a FIR NTF based on an audio weighting function.
+    u"""Synthesize a FIR NTF based on an audio weighting function.
 
     The ΔΣ modulator NTF is designed after an audio weigthing function stating
     how loudly noise is perceived at the various frequencies.
@@ -253,11 +253,11 @@ def ntf_fir_audio_weighting(
         ``feastol``
             Tolerance for feasibility conditions (defaults to 1e-6)
 
-        Do not use other options since they could break :mod:`cvxopt` in
+        Do not use other options since they could break ``CVXOPT`` in
         unexpected ways. Defaults can be set by changing the function
         ``default_options`` attribute.
     quad_opts : dictionary, optional
-        Parameters to be passed to the :func:`scipy.minimize.quad` function
+        Parameters to be passed to the :func:`scipy.integrate.quad` function
         used internally as an integrator. Allowed options are ``epsabs``,
         ``epsrel``, ``limit``, ``points``. Do not use other options since they
         could break the integrator in unexpected ways. Defaults can be set by
@@ -266,7 +266,11 @@ def ntf_fir_audio_weighting(
     See Also
     --------
     scipy.integrate.quad : for the meaning of the integrator parameters.
-    cvxopt : for the optimizer parameters
+
+    Notes
+    -----
+    For more information on the ``CVXOPT`` optimizer parameters, see
+    the corresponding documentation.
     """
     if not callable(audio_weighting):
         if audio_weighting == 'f':
@@ -299,8 +303,8 @@ def synthesize_ntf_dunn(order=3, osr=64, H_inf=1.5):
     Alias of :func:`ntf_dunn`
 
     .. deprecated:: 0.11.0
-       Function has been moved to the :mod:`NTFdesign` module with
-       name :func:`ntf_dunn`.
+       Function has been moved to the :mod:`pydsm.NTFdesign` module with
+       name :func:`pydsm.NTFdesign.ntf_dunn`.
     """
     warn("Function superseded by ntf_dunn in "
          "NTFdesign module", PyDsmDeprecationWarning)
@@ -318,8 +322,8 @@ def synthesize_ntf_from_audio_weighting(
     Alias of :func:`ntf_fir_audio_weighting`
 
     .. deprecated:: 0.11.0
-        Function has been moved to the :mod:`NTFdesign` module with
-        name :func:`ntf_fir_audio_weighting`.
+        Function has been moved to the :mod:`pydsm.NTFdesign` module with
+        name :func:`pydsm.NTFdesign.ntf_fir_audio_weighting`.
     """
     warn("Function superseded by ntf_fir_audio_weighting in "
          "NTFdesign module", PyDsmDeprecationWarning)
