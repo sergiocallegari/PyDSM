@@ -89,7 +89,8 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), avg=False,
     .. math::
         2\int_{f=0}^{\frac{1}{2}}
         \left|\mathit{NTF}
-        \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) df
+        \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) \,
+        \mathrm{d}f
 
     Use an on-off weighting function :math:`w(f)` for multiband evaluation.
 
