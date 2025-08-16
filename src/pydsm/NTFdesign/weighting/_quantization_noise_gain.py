@@ -36,8 +36,7 @@ def quantization_weighted_noise_gain(NTF, w=None, bounds=(0, 0.5),
     Alias of :func:`pydsm.NTFdesign.quantization_noise_gain`.
 
     .. deprecated:: 0.11.0
-        Function has been moved to the :mod:`pydsm.NTFdesign` module with name
-        :func:`quantization_noise_gain`.
+        Function has been moved to the :mod:`pydsm.NTFdesign` module.
     """
     warn("Function superseded by quantization_noise_gain in "
          "NTFdesign module", PyDsmDeprecationWarning)

@@ -53,7 +53,7 @@ def maxflat_fir_zeros(order, alpha):
     Compute the zeros of a maxflat FIR transfer function.
 
     The computed FIR transfer function is used in the DELSIG
-    :func:`pydsm.delsig.synthesizeDSM()` design method
+    :func:`pydsm.delsig.synthesizeNTF()` design method
     (also known as :func:`pydsm.NTFdesign.ntf_schreier()`)
     for the denominator of the noise transfer function.
 
@@ -89,7 +89,7 @@ def spread_fir_uc_zeros(order, OSR, cf, cf_args=[], cf_kwargs={}, **options):
     criterion expressed by the cost function ``cf``.
 
     The computed FIR transfer function is used in the DELSIG
-    :func:`pydsm.delsig.synthesizeDSM()` design method
+    :func:`pydsm.delsig.synthesizeNTF()` design method
     (also known as :func:`pydsm.NTFdesign.ntf_schreier()`)
     for the numerator of the noise transfer function.
 
