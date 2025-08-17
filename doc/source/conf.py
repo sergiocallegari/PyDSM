@@ -26,13 +26,13 @@ version = ".".join(release.split(".", 2)[:2])
 nitpicky = True
 
 extensions = [
-    'latex_textgreek',
+    # 'latex_textgreek',
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     "sphinx.ext.intersphinx",
     'numpydoc',
     'sphinx.ext.autosummary',
-    'latex_ltytable',
+    # 'latex_ltytable',
 ]
 
 templates_path = ['_templates']
