@@ -1,37 +1,36 @@
 Introduction
 ------------
 
-PyDSM is a Python Delta Sigma Modulator toolbox. It contains tools for
-experimenting with ΔΣ modulators. Currently, it is still relatively
-small and mostly focused on the experimentation of different
-techniques for the design of the modulator Noise Transfer Function
-(NTF). Furthermore, the current codebase contains means to simulate a
-generic modulator.
+PyDSM is a Python toolbox for Delta Sigma Modulators. It provides tools
+for experimenting with ΔΣ modulators. At present, the library is still
+relatively small and mainly focused on exploring different techniques
+for designing the Noise Transfer Function (NTF). In addition, the code
+includes functionality to simulate a generic modulator.
 
-PyDSM is under development and shall be enriched with further
-functionalities in a near future.
+PyDSM is actively developed and will be extended with new features in
+the near future.
 
-Highlights of the current version consist in:
+Highlights of the current version include:
 
-* Some routines ported from the very well known `DELSIG toolbox
-  <http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox>`__
-  for Matlab by R. Schreier
-* The method for the design of psychoacoustically optimal modulators
-  for audio signals proposed by Dunn and Sandler in 1997 in [Dun97]_.
-* The NTF design algorithm presented in [Cal13a]_ and [Cal13b]_.  The
-  latter includes an optimal strategy for the design of
-  psychoacoustically optimal modulators for audio signals,
-  configurable to deal with different noise weightings
-  (e.g. A-Weighting, F-Weigting, user supplied weightings, etc.)  If
-  you find this code useful, *please consider citing the two papers
-  in your work.*
-* The NTF design algorithm proposed by  [Nag12]_.
-* The NTF design algorithm presented [Cal15]_.
+* Several routines ported from the well-known `DELSIG toolbox`_ for
+  Matlab by R. Schreier.
+* The method proposed by Dunn and Sandler (1997) [Dun97]_ for designing
+  psychoacoustically optimal modulators for audio signals.
+* The NTF design algorithms presented in [Cal13a]_ and [Cal13b]_.  The
+  latter introduces an optimal strategy for designing psychoacoustically
+  optimal modulators for audio signals, configurable for different noise
+  weightings (e.g. A-Weighting, F-Weighting, user-supplied weightings,
+  etc.).  If you find this code useful, *please consider citing these
+  two papers in your work.*
+* The NTF design algorithm proposed in [Nag12]_.
+* The NTF design algorithm presented in [Cal15]_.
 
-PyDSM is free software and is licensed as detailed in the
-:ref:`license` Section of this manual.
+PyDSM is free software and is licensed as described in the
+:ref:`license` section of this manual.
 
 PyDSM is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  This is also detailed together with
-the licensing information.
+ANY WARRANTY; without even the implied warranties of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  Further details are provided along
+with the licensing information.
+
+.. include:: _links.rst
