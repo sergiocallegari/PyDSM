@@ -52,25 +52,20 @@ intersphinx_mapping = {
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
-# refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
-# html_sidebars = {
-#     '**': [
-#         'about.html',
-#         'navigation.html',
-#         'relations.html',  # needs 'show_related': True theme option to display
-#         'searchbox.html',
-#         'donate.html',
-#     ]
-# }
-
 html_logo = "../Figures/pydsm_logo_small.png"
 
 # -- Autosummary ---------------------------------------
 autosummary_generate = True
 
 
-# Ignore header of main package
-def better_cut_lines(pre, post=0, what=None, name=None):
+def mk_docstring_trimmer(pre, post=0, what=None, name=None):
+    '''Create a docstring processing function for autodoc that trims lines.
+
+    Returns a function conforming to the signature of docstring
+    processors in autodoc, that trims the initial `pre` lines and the
+    final `post` lines of the docstring for items of ttype `what`
+    named `name`.
+    '''
     def process(app, what_, name_, obj, options, lines):
         if what and what_ not in what:
             return
@@ -88,7 +83,9 @@ def better_cut_lines(pre, post=0, what=None, name=None):
     return process
 
 
+# Set up autodoc so that the heading of the PyDSM module docstring is
+# trimmed away.
 def setup(app):
     from sphinx.ext.autodoc import cut_lines
     app.connect('autodoc-process-docstring',
-                better_cut_lines(3, what=['module'], name='pydsm'))
+                mk_docstring_trimmer(3, what=['module'], name='pydsm'))
