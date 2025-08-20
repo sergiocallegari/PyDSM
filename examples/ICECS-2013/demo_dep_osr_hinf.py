@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Demo code to replicate the result shown in Figure 4 of the paper:
+"""Demo code to reproduce the result shown in Figure 4 of the paper:
 
 S. Callegari 'Coding of Stereo Signals by a Single Digital ΔΣ Modulator'
 IEEE 20th International Conference on Electronics, Circuits, and Systems
