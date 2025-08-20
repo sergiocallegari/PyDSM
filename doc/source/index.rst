@@ -11,10 +11,10 @@ Welcome to PyDSM's documentation!
    intro
    getting-started
    reference
-   replicate-results
+   how-to-reproduce-results
    license
-   included_code
-   more-references
+   vendored-code
+   bibliographic-references
    changelog
 
 .. only:: html
