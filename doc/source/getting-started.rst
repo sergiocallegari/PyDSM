@@ -1,112 +1,158 @@
 Getting Started
 ---------------
 
-PyDSM is meant to run on all major platforms (Linux, Windows, Mac,
-etc.). It is free software and it is written so that all its
-prerequisites are also free. This means that anyone can try and use
-it. PyDSM is routinely built and tested by its developers on Linux and
-Windows 7. On a more occasional basis, it is tested on MacOs too.  The
-code is written in Python and includes some C extensions for
-efficiency reasons. Currently, it requires a Python 2 environment
-(`Python 2.7`_ recommended) or a Python 3 environment (at least at
-version 3.2, `Python 3.4`_ recommended).
+PyDSM is designed to run on all major platforms (Linux, Windows,
+macOS, etc.). It is free software, and all its runtime prerequisites
+are also free, ensuring that anyone can use it. The toolbox is
+routinely built and tested by its developers on Linux and Windows, and
+is tested on macOS on a more occasional basis.
 
-Apart from a generic Python environment, PyDSM has the following
-prerequisites:
+The code is written in Python_ and includes some C (specifically
+Cython) extensions for efficiency. A Python 3 interpreter is required
+(version 3.10 or above).
 
-Numpy_
-    A powerful library that adds vector and matrix manipulation
-    routines to Python. Currently tested with version 1.8.0 and
-    current. May work with previous releases.
 
-Scipy_
-    A package of tools for science and engineering for
-    Python. Currently tested with version 0.13.2 and current. May work
-    with previous releases.
+The two workflows for Python package management
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Matplotlib_
-    A python plotting library. Currently tested with version
-    1.3.1 and current. May work with previous releases.
+Before discussing the installation of PyDSM, it is worth recalling
+that there are two major *workflows* for managing Python packages and
+environments:
 
-CVXOPT_
-    A free software package for convex optimization based on the
-    Python programming language. Currently tested with version 1.1.6
-    and current. May work with previous releases.
+- the *reference workflow*, recommended by the Python Packaging
+  Authority (PyPA_) and defined through PEPs, the formal documents by
+  which all changes to the Python language and ecosystem are
+  specified.
 
-Furthermore, the following pre-requisites may exist in case one wants to build
-from source (which is expected in Linux and MacOS and optional in Windows):
+  This workflow relies on a central package index (PyPI_) and the
+  standard Python installer (pip_) or compatible tools (for example,
+  the package and project manager `uv`_). It is often referred to as
+  “standard Python,” “PyPI-based,” or “pip-based” installation;
 
-Cython_
-    A language to write C extensions for the Python
-    language. This is actually necessary only for compiling the
-    code. Tested with versions 0.19.2 and current. May work with
-    previous releases.
+- the *conda workflow*, named after conda_, the package manager used
+  in the Anaconda_ distribution. Conda is an open-source,
+  cross-platform, and language-agnostic package manager and
+  environment management system. It is particularly effective at
+  distributing *binary software* and *platform-specific code*
+  alongside pure Python packages. You use conda whenever you install
+  Anaconda_, its lighter variant, Miniconda_, or Miniforge_.
 
-A C compiler
-    This is only for compiling the
-    extension modules and after that is not used anymore. In Linux,
-    the C compiler can typically be installed from the distribution
-    package manager. In MacOs, Xcode can be obtained from the app
-    store. In Windows, just in case you want to build from source, the
-    recommended compiler is Visual C++ Express 2008 (namely, the
-    default compiler used for Python 2.7 itself), that is provided at
-    no cost from Microsoft. Note that the 64 bit compiler needs to be
-    purchased separately with the Microsoft Windows SDK for Windows 7
-    and .NET Framework 3.5 SP1, also available at no cost from
-    Microsoft.
+  Anaconda is available on all three major platforms (Windows, Linux,
+  and macOS). While it is not the only Python distribution, it is by
+  far the most widely used. It is especially popular on platforms that
+  lack a native package manager for installing Python and related
+  tools — most notably Windows.
 
-In Linux only, two different versions of the simulator are built,
-using two different sets of libraries for matrix manipulation (this is
-to have a term of comparison for the simulator speed, but is likely to
-change). Consequently, the Linux build also requires:
+  For a package to be installed with the conda workflow, it must be
+  built in a format different from the one used on PyPI_ and published
+  through Anaconda_ or a compatible channel (such as conda-forge).
 
-CBlas
-    Blas is a library of routines for performing basic
-    vector and matrix operations. CBlas is its edition tailored for C
-    code. For its building, PyDSM requires a *development version* of
-    CBlas, namely a version including header files. For running PyDSM
-    on Linux, a mere CBlas *runtime* library is needed.  CBlas may be
-    available from many sources including Netlib_, Atlas_, Openblas_,
-    etc. On Linux use your distribution package manager to select one.
-    The use of a CBLAS edition fully optimized for your CPU and system
-    architecture is highly recommended.
+PyDSM follows the recommendations of the `Python Packaging User
+Guide`_, the authoritative resource on packaging, publishing, and
+installing Python projects using the reference workflow (although in
+some areas it is still catching up). Accordingly, PyDSM is available
+on PyPI_ and can be installed via pip_.
 
-Although the prerequisites appear to be numerous, their management is
-actually quite easy.
+At present, PyDSM is not packaged for conda. Therefore, even if you
+use Anaconda_, you must still rely on ``pip`` or a compatible tool to
+install it.
 
-A detailed getting started guide is provided for :doc:`Linux
-<linux-getting-started>`, :doc:`Windows <windows-getting-started>` and
-:doc:`MacOs <macos-getting-started>`.
+.. note::
 
-In addition to the above prerequisites, we suggest to try Spyder_ as
-an environment to run the code. This is a Python development
-environment specifically tailored to suit the need of scientific
-applications and to ease the learning path for those with an
-experience in Matlab. Conveniently, it offers online help for
-coding. The functions in PyDSM are internally documented to work with
-this online help system.
+   While it is technically possible to use ``pip`` together with the
+   conda workflow, there are important caveats to consider. Mixing
+   packages installed with ``pip`` and ``conda`` in the same
+   environment can cause version conflicts or broken dependencies,
+   since the two tools resolve and manage packages differently.
 
-Recent version of PyDSM may also benefit from alternative modeling
-languages for convex optimization. The interested user may want to
-install also the CVXPY_ and/or the PICOS_ Python packages.
+
+PyDSM dependencies and prerequisites
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Apart from a standard Python environment, PyDSM requires a number of
+prerequisites. Some are needed at *runtime*, while others are required
+only at *build time* to install the package (since it is currently
+distributed in source form only).
+
+Most prerequisites are regular Python packages, which are handled
+automatically during installation. In addition, there are some
+*external dependencies* (non-Python or system libraries) that must be
+installed manually in advance, often using platform-specific
+procedures.
+
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   linux-getting-started
-   windows-getting-started
-   macos-getting-started
+   external-dependencies
+   python-dependencies
 
-.. _Python 2.7: http://www.python.org/download/releases/2.7/
-.. _Python 3.4: http://www.python.org/download/releases/3.4/
-.. _Cython: http://www.cython.org/
-.. _Netlib: http://www.netlib.org
-.. _Atlas: http://math-atlas.sourceforge.net/
-.. _Openblas: http://www.openblas.net/
-.. _Numpy: http://sourceforge.net/projects/numpy/
-.. _Scipy: http://sourceforge.net/projects/scipy/
-.. _Matplotlib: http://matplotlib.org/
-.. _CVXOPT: http://abel.ee.ucla.edu/cvxopt/
-.. _Spyder: http://code.google.com/p/spyderlib/
-.. _CVXPY: http://www.cvxpy.org
-.. _PICOS: http://picos.zib.de/
+
+PyDSM installation
+~~~~~~~~~~~~~~~~~~
+
+Although the list of prerequisites may look extensive, managing them is
+usually straightforward. Once the required external dependencies are in
+place, PyDSM can be installed directly from its sources on PyPI with a
+simple command:
+
+.. code-block:: console
+
+   pip install pydsm
+
+.. note::
+
+   Installing with ``pip`` is required even if you are following the
+   *conda workflow*, since PyDSM is not currently available in Anaconda_.
+
+   As mentioned in the section on :doc:`Python dependencies
+   <python-dependencies>`, you should run ``pip install pydsm`` only
+   *after* installing the other Python dependencies with ``conda``.
+   This minimizes the risk of conflicts between ``pip`` and ``conda``.
+
+As always with Python, working inside a *virtual environment* is
+strongly recommended.
+
+
+Testing the PyDSM installation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Testing the PyDSM installation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To verify that PyDSM was installed correctly, start a Python REPL
+session and type:
+
+.. code-block:: pycon
+
+   >>> import pydsm
+
+The import should complete without errors.
+
+PyDSM also includes a (still limited) test suite. Once the package has
+been imported, the test suite can be run with:
+
+.. code-block:: pycon
+
+   >>> pydsm.test()
+
+The tests should result in no errors, even if some warnings are
+expected.
+
+
+Additional tools to experiment with PyDSM
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In addition to PyDSM itself, we recommend trying either a `Jupyter
+notebook`_ or the `Spyder IDE`_ as environments for experimenting with
+it. Jupyter provides an interactive workspace that combines code,
+output, and rich text (including headings, equations, and more). Spyder
+is a Python development environment tailored to scientific computing,
+particularly convenient for users transitioning from MATLAB.
+
+Both environments offer integrated online help, and PyDSM has been
+designed so that its objects, functions, and modules include internal
+documentation that integrates seamlessly with these systems.
+
+
+.. include:: _links.rst
