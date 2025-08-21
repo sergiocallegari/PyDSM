@@ -117,9 +117,6 @@ strongly recommended.
 Testing the PyDSM installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Testing the PyDSM installation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 To verify that PyDSM was installed correctly, start a Python REPL
 session and type:
 
