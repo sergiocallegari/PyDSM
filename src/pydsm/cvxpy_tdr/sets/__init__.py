@@ -14,7 +14,7 @@
 # GNU General Public License for more details.                          #
 #                                                                       #
 # You should have received a copy of the GNU General Public License     #
-# along with this program.  If not, see <http://www.gnu.org/licenses/>. #
+# along with this program.  If not, see <https://www.gnu.org/licenses/>. #
 #***********************************************************************#
 from .exp_cone import exp_cone, cvxpy_exp_cone
 from .kl_div_epi import kl_div_epi, cvxpy_kl_div_epi

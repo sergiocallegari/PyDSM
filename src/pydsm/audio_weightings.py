@@ -16,7 +16,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 """
 Acoustic weighting functions (:mod:`pydsm.audio_weightings`)
@@ -94,10 +94,10 @@ and summarized in some illustrative web pages such as [2]_ and
 The filter-based implementation of the F-weighting is so high-order that
 evaluation of the transfer function may require special care.
 
-.. [1] Wikipedia (http://en.wikipedia.org/wiki/A-weighting)
-.. [2] Cross spectrum (http://www.cross-spectrum.com/audio/weighting.html)
+.. [1] Wikipedia (https://en.wikipedia.org/wiki/A-weighting)
+.. [2] Cross spectrum (https://www.cross-spectrum.com/audio/weighting.html)
 .. [3] Product Technology Partners ltd "Noise Measurement Briefing"
-   (http://www.ptpart.co.uk/noise-measurement-briefing/)
+   (https://www.ptpart.co.uk/noise-measurement-briefing/)
 .. [4] Robert A. Wannamaker "Psychoacoustically Optimal Noise
    Shaping," J. Audio Eng. Soc., Vol. 40 No. 7/8 1992 July/August
 """
