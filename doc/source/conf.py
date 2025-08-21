@@ -61,6 +61,16 @@ html_show_sourcelink = False
 
 autosummary_generate = True
 
+# -- Options for linkcheck -----------------------------
+
+linkcheck_ignore = [
+    (r"https://www\.intel\.com/content/www/us/en/developer/tools/"
+     r"oneapi/onemkl\.html"),
+    r"https://www\.mathworks\.com/matlabcentral/fileexchange/.*",
+]
+
+# -- Customization -------------------------------------
+
 
 def mk_docstring_trimmer(pre, post=0, what=None, name=None):
     '''Create a docstring processing function for autodoc that trims lines.
