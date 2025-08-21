@@ -33,7 +33,7 @@
 .. _Netlib: https://www.netlib.org
 .. _Netlib BLAS: https://www.netlib.org/blas/index.html
 .. _Atlas: https://math-atlas.sourceforge.net/
-.. _OpenBLAS: https://www.openmathlib.org/OpenBLAS/
+.. _OpenBLAS: http://www.openmathlib.org/OpenBLAS/
 .. _Intel Math Kernel Library:
 .. _MKL:
    https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl.html
