@@ -1,14 +1,14 @@
 .. _Python:
 .. _Python 3: https://www.python.org
 .. _Python official installers: https://www.python.org/downloads/
-.. _Numpy: https://sourceforge.net/projects/numpy/
-.. _Scipy: https://sourceforge.net/projects/scipy/
+.. _NumPy: https://numpy.org/
+.. _SciPy: https://scipy.org/
 .. _Matplotlib: https://matplotlib.org/
 .. _CVXPY: https://www.cvxpy.org/
 .. _PICOS: https://picos-api.gitlab.io/picos/
-.. _CVXOPT: https://abel.ee.ucla.edu/cvxopt/
+.. _CVXOPT: https://cvxopt.org/
 .. _SCS: https://www.cvxgrp.org/scs/
-.. _Cython: https://www.cython.org/
+.. _Cython: https://cython.org/
 .. _Visual Studio Community Edition:
    https://visualstudio.microsoft.com/vs/community/
 .. _Python Package Index:
