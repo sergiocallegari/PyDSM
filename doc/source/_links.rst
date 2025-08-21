@@ -1,14 +1,14 @@
 .. _Python:
 .. _Python 3: https://www.python.org
 .. _Python official installers: https://www.python.org/downloads/
-.. _Numpy: http://sourceforge.net/projects/numpy/
-.. _Scipy: http://sourceforge.net/projects/scipy/
-.. _Matplotlib: http://matplotlib.org/
+.. _Numpy: https://sourceforge.net/projects/numpy/
+.. _Scipy: https://sourceforge.net/projects/scipy/
+.. _Matplotlib: https://matplotlib.org/
 .. _CVXPY: https://www.cvxpy.org/
 .. _PICOS: https://picos-api.gitlab.io/picos/
-.. _CVXOPT: http://abel.ee.ucla.edu/cvxopt/
+.. _CVXOPT: https://abel.ee.ucla.edu/cvxopt/
 .. _SCS: https://www.cvxgrp.org/scs/
-.. _Cython: http://www.cython.org/
+.. _Cython: https://www.cython.org/
 .. _Visual Studio Community Edition:
    https://visualstudio.microsoft.com/vs/community/
 .. _Python Package Index:
@@ -30,10 +30,10 @@
 .. _Python Packaging User Guide: https://packaging.python.org/
 .. _DELSIG Toolbox:
    https://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox/
-.. _Netlib: http://www.netlib.org
+.. _Netlib: https://www.netlib.org
 .. _Netlib BLAS: https://www.netlib.org/blas/index.html
-.. _Atlas: http://math-atlas.sourceforge.net/
-.. _OpenBLAS: http://www.openmathlib.org/OpenBLAS/
+.. _Atlas: https://math-atlas.sourceforge.net/
+.. _OpenBLAS: https://www.openmathlib.org/OpenBLAS/
 .. _Intel Math Kernel Library:
 .. _MKL:
    https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl.html
