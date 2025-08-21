@@ -10,7 +10,7 @@ Welcome to PyDSM's documentation!
 
    intro
    getting-started
-   reference
+   reference-guide
    how-to-reproduce-results
    license
    vendored-code
