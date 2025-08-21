@@ -9,7 +9,7 @@ Software Foundation; either version 3 of the License, or (at your
 option) any later version.
 
 See file `COPYING` in the source distribution or
-http://www.gnu.org/licenses/ for further details.
+https://www.gnu.org/licenses/ for further details.
 
 Part of this code, limited to the :mod:`pydsm.delsig` module, is
 either ported or reimplemented from the `DELSIG toolbox`_ for MATLAB,
