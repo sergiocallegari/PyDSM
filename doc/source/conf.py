@@ -53,7 +53,7 @@ html_theme = 'sphinx_rtd_theme'
 
 html_static_path = ['_static']
 
-html_logo = "../Figures/pydsm_logo_small.png"
+html_logo = "_static/pydsm_logo_small.png"
 
 html_show_sourcelink = False
 
