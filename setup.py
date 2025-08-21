@@ -36,7 +36,7 @@ ext_modules = cythonize([
     Extension(name='pydsm.delsig._simulateDSM_cblas',
               sources=['src/pydsm/delsig/_simulateDSM_cblas.pyx'],
               include_dirs=[np.get_include()]+["/usr/include/openblas/"],
-              libraries=['cblas'],
+              libraries=['blas'],
               define_macros=[('NPY_NO_DEPRECATED_API',
                               'NPY_1_7_API_VERSION')]),
     Extension(name='pydsm.delsig._simulateDSM_scipy_blas',
