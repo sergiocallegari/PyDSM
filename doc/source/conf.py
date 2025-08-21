@@ -54,6 +54,8 @@ html_static_path = ['_static']
 
 html_logo = "../Figures/pydsm_logo_small.png"
 
+html_show_sourcelink = False
+
 # -- Autosummary ---------------------------------------
 autosummary_generate = True
 
