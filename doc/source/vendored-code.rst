@@ -1,29 +1,41 @@
 .. _included_code:
 
-Code included in PyDSM
+Code vendored in PyDSM
 ----------------------
 
-Versions 0.9.x of PyDSM include the ``cvxpy`` package by Tomas Tinoco de
-Rubira.
+Since version 0.9.0, PyDSM has vendored the original ``cvxpy`` package
+by Tomas Tinoco de Rubira.
 
-This is a discontinued library for modeling convex optimization
-problems in Python. It has been superseeded by another library by
-Steven Diamond, Eric Chu and Stephen Boyd that carries the same name,
-but has a different API.
+This was likely the first Python package to provide a modeling
+framework for convex optimization problems. It has since been
+discontinued and superseded by another package —also called ``cvxpy``—
+developed by Steven Diamond, Eric Chu, and Stephen Boyd, which follows
+a different API.
 
-Since PyDSM was developed on the API of the former ``cvxpy``, in order
-to support functionality the former ``cvxpy`` package is distributed
-inside PyDSM as a temporary solution. In the long term, PyDSM will move
-to use the newer ``cvxpy`` by Steven Diamond.
+PyDSM was originally developed against Tinoco de Rubira’s ``cvxpy``.
+When development of that package ceased and the new ``cvxpy`` emerged,
+there arose a need to maintain compatibility and ensure a smooth
+transition. The goals were:
 
-The ``cvxpy`` library provided with PyDSM was originally distributed
-under the GPL3 license by its original author. See the source files
-for further information. The PyDSM distribution installs it outside of
-the ``pydsm`` package as ``cvxpy_tinoco`` in order to avoid name
-conflicts with the newer ``cvxpy``.
+* to preserve full reproducibility of published scientific results,
+  avoiding significant variations caused by changes in the underlying
+  optimization code;
+* to allow meaningful comparison between the two codebases on the
+  optimization problems relevant to PyDSM, both in terms of accuracy
+  and computational efficiency.
 
-The version shipped is the latest available from the original author
-plus patches by Sergio Callegari and others. Some of these patches fix
-minor errors with the code. A substantial set of patches is used to make
-all the internal imports of the library relative, in order to make the
-library relocatable to a new name.
+For these reasons, PyDSM began supporting both versions of ``cvxpy``
+by vendoring the original one. Tinoco de Rubira’s ``cvxpy`` was
+originally distributed under the GPLv3 license. Its original codebase
+has now disappeared from the web, but in PyDSM it is vendored as
+:mod:`pydsm.cvxpy_tdr` to distinguish it from the newer ``cvxpy``. The
+licensing and copyright information is fully preserved. The vendored
+copy is based on the last release by the original author, with patches
+by Sergio Callegari and others. While some patches fix minor issues,
+most of them convert internal imports to relative imports, to enable
+renaming and vendoring of the package without conflicts.
+
+Now that the new ``cvxpy`` has matured, offers much better performance,
+and alternatives such as ``PICOS`` have become available, the vendoring
+of the original ``cvxpy`` is expected to be phased out in the near
+future.
