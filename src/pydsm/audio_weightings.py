@@ -97,7 +97,7 @@ evaluation of the transfer function may require special care.
 .. [1] Wikipedia (https://en.wikipedia.org/wiki/A-weighting)
 .. [2] Cross spectrum (https://www.cross-spectrum.com/audio/weighting.html)
 .. [3] Product Technology Partners ltd "Noise Measurement Briefing"
-   (https://www.ptpart.co.uk/noise-measurement-briefing/)
+   (https://web.archive.org/web/20130225/http://www.ptpart.co.uk/noise-measurement-briefing/)
 .. [4] Robert A. Wannamaker "Psychoacoustically Optimal Noise
    Shaping," J. Audio Eng. Soc., Vol. 40 No. 7/8 1992 July/August
 """

@@ -82,7 +82,7 @@ where the behavior found at 20 Hz is replicated.
    (https://www.mathworks.com/matlabcentral/fileexchange/7028)
 .. [3] Yoiti Suzuki et al, "Precise and Full-range Determination of
    Two-dimensional Equal Loudness Contours," 2003
-   (https://www.nedo.go.jp/itd/grant-e/report/00pdf/is-01e.pdf)
+   (http://www.mp3-tech.org/programmer/docs/IS-01Y-E.pdf)
 .. [4] Robert A. Wannamaker "Psychoacoustically Optimal Noise
    Shaping", J. Audio Eng. Soc., Vol. 40, N. 7/8, 1992 July/August
 """
