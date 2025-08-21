@@ -50,6 +50,7 @@ intersphinx_mapping = {
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
+
 html_static_path = ['_static']
 
 html_logo = "../Figures/pydsm_logo_small.png"
@@ -57,6 +58,7 @@ html_logo = "../Figures/pydsm_logo_small.png"
 html_show_sourcelink = False
 
 # -- Autosummary ---------------------------------------
+
 autosummary_generate = True
 
 
