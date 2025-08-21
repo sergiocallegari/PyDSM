@@ -16,7 +16,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 """
 Design optimal NTF with NTF zeros as parameters
@@ -401,8 +401,8 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
        Example),”* IEEE Transactions on Circuits and Systems - Part II:
        Express Briefs, Vol. 60, N. 11, pp. 756-760. Nov. 2013. DOI:
        `10.1109/TCSII.2013.2281892
-       <http://dx.doi.org/10.1109/TCSII.2013.2281892>`__. Pre-print
-       available on `arXiv <http://arxiv.org/abs/1309.6151>`__.
+       <https://dx.doi.org/10.1109/TCSII.2013.2281892>`__. Pre-print
+       available on `arXiv <https://arxiv.org/abs/1309.6151>`__.
 
     For the specific options taken by the modeler and optimization
     frontend ``cvxpy`` as well as the optimizers ``CVXOPT`` and

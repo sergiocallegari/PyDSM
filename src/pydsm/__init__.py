@@ -16,7 +16,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 """PyDSM Toolbox for the design and simulation of ΔΣ modulators
 ============================================================
@@ -65,7 +65,7 @@ Error handling
    pydsm.exceptions
 
 .. _DELSIG:
-   http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox
+   https://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox
 
 """
 

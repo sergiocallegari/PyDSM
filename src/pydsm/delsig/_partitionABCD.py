@@ -16,10 +16,10 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 # This file includes code ported from the DELSIG Matlab toolbox
-# (see http://www.mathworks.com/matlabcentral/fileexchange/19)
+# (see https://www.mathworks.com/matlabcentral/fileexchange/19)
 # covered by the following copyright and permission notice
 #
 # Copyright (c) 2009 Richard Schreier

@@ -16,11 +16,11 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 # This file includes code ported from the "Frequency-Domain Min-Max
 # Optimization for Delta-Sigma Modulators" Matlab toolbox by Masaaki
-# Nagahara (see http://www.mathworks.com/matlabcentral/fileexchange/36187)
+# Nagahara (see https://www.mathworks.com/matlabcentral/fileexchange/36187)
 # covered by the following copyright and permission notice
 #
 # Copyright (c) 2012, Masaaki Nagahara

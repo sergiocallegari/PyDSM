@@ -17,7 +17,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 u"""
 Computation of NTF related merit factors (:mod:`pydsm.NTFdesign.merit_factors`)
