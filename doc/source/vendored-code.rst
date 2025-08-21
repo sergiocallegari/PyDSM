@@ -28,7 +28,7 @@ For these reasons, PyDSM began supporting both versions of ``cvxpy``
 by vendoring the original one. Tinoco de Rubira’s ``cvxpy`` was
 originally distributed under the GPLv3 license. Its original codebase
 has now disappeared from the web, but in PyDSM it is vendored as
-:mod:`pydsm.cvxpy_tdr` to distinguish it from the newer ``cvxpy``. The
+``pydsm.cvxpy_tdr`` to distinguish it from the newer ``cvxpy``. The
 licensing and copyright information is fully preserved. The vendored
 copy is based on the last release by the original author, with patches
 by Sergio Callegari and others. While some patches fix minor issues,
