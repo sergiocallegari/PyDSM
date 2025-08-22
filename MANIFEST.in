@@ -5,6 +5,7 @@ exclude .dir-locals.el
 exclude README_PDM.md
 exclude TODO.md
 exclude uv.lock
+exclude .readthedocs.yaml
 prune doc
 prune examples
 exclude CHANGELOG.rst
