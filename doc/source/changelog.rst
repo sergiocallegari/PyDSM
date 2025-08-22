@@ -1,5 +1,9 @@
 Changelog
 ---------
+
+0.15.2
+   - Update the documentation and prepare it for readthedocs
+
 0.15.1
    - Link simulator extension with ``-lblas``, rather than ``-lcblas``
      on Linux, to improve compatibility with recent distros
