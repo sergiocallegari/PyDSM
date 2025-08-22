@@ -16,25 +16,20 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
-"""
-PyDSM Toolbox for the design and simulation of ΔΣ modulators
+"""PyDSM Toolbox for the design and simulation of ΔΣ modulators
 ============================================================
 
-Copyright (c) 2012-2015, Sergio Callegari
-Some code ported from the DELSIG_ toolbox, copyrighted by R. Schreier.
+PyDSM © 2012–2025 Sergio Callegari. All rights reserved.
 
-The current codebase comprises both code that is specific to PyDSM and
-code ported from the DELSIG_ Toolbox by R. Schreier. This is reflected
-in the module organization of PyDSM.
+Some code portions confined in the :mod:`pydsm.delsig` module are
+ported or reimplemented from the DELSIG_ toolbox for MATLAB,
+copyrighted by R. Schreier.
 
-Currently, the DELSIG_ port is rather limited and just includes what is
-useful for comparison to the specific PyDSM algorithms.
+PyDSM focuses on the design of Noise Transfer Functions for Digital ΔΣ
+Modulators and in the simulation of the resulting modulators.
 
-Right now, PyDSM is mostly specialized in the design of Noise Transfer
-Functions for Digital ΔΣ Modulators and in the simulation of the
-resulting modulators.
 
 Main modules
 ------------
@@ -70,7 +65,8 @@ Error handling
    pydsm.exceptions
 
 .. _DELSIG:
-   http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox
+   https://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox
+
 """
 
 # Read version info

@@ -17,7 +17,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 u"""
 Computation of NTF related merit factors (:mod:`pydsm.NTFdesign.merit_factors`)
@@ -89,7 +89,8 @@ def quantization_noise_gain(NTF, w=None, bounds=(0, 0.5), avg=False,
     .. math::
         2\int_{f=0}^{\frac{1}{2}}
         \left|\mathit{NTF}
-        \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) df
+        \left(\mathrm{e}^{\mathrm{i} 2\pi f}\right)\right|^2 w(f) \,
+        \mathrm{d}f
 
     Use an on-off weighting function :math:`w(f)` for multiband evaluation.
 

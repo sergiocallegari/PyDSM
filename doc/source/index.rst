@@ -10,11 +10,11 @@ Welcome to PyDSM's documentation!
 
    intro
    getting-started
-   reference
-   replicate-results
+   reference-guide
+   how-to-reproduce-results
    license
-   included_code
-   more-references
+   vendored-code
+   bibliographic-references
    changelog
 
 .. only:: html
@@ -24,4 +24,3 @@ Welcome to PyDSM's documentation!
 
    * :ref:`genindex`
    * :ref:`modindex`
-   * :ref:`search`

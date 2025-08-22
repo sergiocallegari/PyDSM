@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012–2024, Sergio Callegari
+# Copyright (c) 2012–2025, Sergio Callegari
 # All rights reserved.
 
 # This file is part of PyDSM.
@@ -16,10 +16,10 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 # This file includes code ported from the DELSIG Matlab toolbox
-# (see http://www.mathworks.com/matlabcentral/fileexchange/19)
+# (see https://www.mathworks.com/matlabcentral/fileexchange/19)
 # covered by the following copyright and permission notice
 #
 # Copyright (c) 2009 Richard Schreier
@@ -48,8 +48,11 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """
-Code ported from the DELSIG toolbox by R. Schreier (:mod:`pydsm.delsig`)
-========================================================================
+Code ported/reimplemented from the DELSIG toolbox (:mod:`pydsm.delsig`)
+=======================================================================
+
+The DELSIG toolbox for MATLAB is copyrighted by R. Schreier and
+distributed under the BSD license.
 
 .. currentmodule:: pydsm.delsig
 
@@ -117,6 +120,7 @@ Plumbing
    padb
    evalTF
    evalRPoly
+
 """
 
 __delsig_version__ = "7.4"

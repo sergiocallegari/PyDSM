@@ -16,7 +16,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function
 
@@ -29,7 +29,7 @@ __all__ = ["quantization_noise_gain_by_conv"]
 
 def quantization_noise_gain_by_conv(NTF, H, H_type='zpk', db=80):
     """
-    Legacy version of :func:`NTFDesign.quantization_noise_gain`
+    Legacy version of :func:`pydsm.NTFdesign.quantization_noise_gain`
 
     Computes the quantization noise power gain, based on a convolution
 

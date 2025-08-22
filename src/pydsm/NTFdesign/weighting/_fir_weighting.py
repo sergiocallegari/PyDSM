@@ -16,7 +16,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 """
 Design optimal NTF with NTF zeros as parameters
@@ -132,8 +132,7 @@ q0_weighting.default_options = {"quad_opts": {"epsabs": 1E-14,
 
 
 def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
-    """
-    Synthesize FIR NTF from quadratic form expressing noise weighting.
+    """Synthesize FIR NTF from quadratic form expressing noise weighting.
 
     Parameters
     ----------
@@ -187,10 +186,11 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
         ``feastol`` (real)
             Tolerance for feasibility conditions (defaults to 1e-6)
 
-        Do not use other options since they could break ``cvxopt`` in
+        Do not use other options since they could break ``CVXOPT`` in
         unexpected ways. These options can be passed when using the
         ``cvxpy_old`` modeler, the ``picos`` modeler or the ``cvxpy`` modeler
         with the ``cvxopt`` backend.
+
     scs_opts : dict, optional
         A dictionary of options for the ``scs`` optimizer.  Allowed options
         include:
@@ -212,15 +212,13 @@ def ntf_fir_from_q0(q0, H_inf=1.5, normalize="auto", **options):
 
     Notes
     -----
-    Default values for the options not directly documented in the function
-    call signature can be checked and updated by changing the function
-    ``default_options`` attribute.
-
-    See Also
-    --------
-    cvxopt : for the optimizer parameters
-    scs : for the optimizer parameters
-    cvxpy : for the modeler parameters
+    Default values for the options not directly documented in the
+    function call signature can be checked and updated by changing the
+    function ``default_options`` attribute. For more information on
+    the specific options taken by the ``CVXOPT`` and ``SCS``
+    optimizer, look at the corresponding documentation. Similarly, for
+    more information about the ``cvxpy`` modeler and optimization
+    frontend, look at the ``cvxpy`` documentation.
     """
     # Manage optional parameters
     opts = digested_options(
@@ -403,15 +401,16 @@ def ntf_fir_weighting(order, w, H_inf=1.5,
        Example),”* IEEE Transactions on Circuits and Systems - Part II:
        Express Briefs, Vol. 60, N. 11, pp. 756-760. Nov. 2013. DOI:
        `10.1109/TCSII.2013.2281892
-       <http://dx.doi.org/10.1109/TCSII.2013.2281892>`__. Pre-print
-       available on `arXiv <http://arxiv.org/abs/1309.6151>`__.
+       <https://dx.doi.org/10.1109/TCSII.2013.2281892>`__. Pre-print
+       available on `arXiv <https://arxiv.org/abs/1309.6151>`__.
+
+    For the specific options taken by the modeler and optimization
+    frontend ``cvxpy`` as well as the optimizers ``CVXOPT`` and
+    ``scs``, look at the documentation of the individual packages.
 
     See Also
     --------
     scipy.integrate.quad : for the meaning of the integrator parameters
-    cvxopt : for the optimizer parameters
-    scs : for the optimizer parameters
-    cvxpy : for the modeler parameters
     """
     # Manage optional parameters
     opts1 = digested_options(options, ntf_fir_weighting.default_options,
@@ -554,12 +553,13 @@ def ntf_hybrid_weighting(order, w, H_inf=1.5, poles=[],
        FIR strategies with Preassigned Poles," Signal Processing, Elsevier,
        2015. DOI:  10.1016/j.sigpro.2015.02.001.
 
+    For the specific options taken by the modeler and optimization
+    frontend ``cvxpy`` as well as the optimizers ``CVXOPT`` and
+    ``scs``, look at the documentation of the individual packages.
+
     See Also
     --------
     scipy.integrate.quad : for the meaning of the integrator parameters
-    cvxopt : for the optimizer parameters
-    scs : for the optimizer parameters
-    cvxpy : for the modeler parameters
     """
     # Manage optional parameters
     opts1 = digested_options(options, ntf_hybrid_weighting.default_options,

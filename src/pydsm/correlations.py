@@ -16,7 +16,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 """
 Correlation utilities (:mod:`pydsm.correlations`)
@@ -64,8 +64,9 @@ def raw_acorr(x, N):
     -------
     q : ndarray
         the raw (unnormalized) autocorrelation vector.
-        Assuming that m is the length of x
-        q(k) = sum_{n=k}^{m-1} x(n) x(n-k) for k = 0 ... N
+        Assuming that :math:`m` is the length of x,
+        :math:`q(k) = \\sum_{n=k}^{m-1} x(n) x(n-k)
+        \\text{ for } k = 0 \\dots N`
 
     Notes
     -----
@@ -95,8 +96,9 @@ def raw_xcorr(x, y, N):
     -------
     q : ndarray
         the raw (unnormalized) crosscorrelation vector.
-        Assuming that mx and my are the lengths of x and y
-        q(k) = sum_{n=k}^{min(mx-1,my+k-1)} x(n) y(n-k) for k = 0 ... N
+        Assuming that :math:`m_x` and :math:`m_y` are the lengths of x and y,
+        :math:`q(k) = \\sum_{n=k}^{\\min(m_x-1,m_y+k-1)}
+        x(n) y(n-k) \\text{ for } k = 0 \\dots N`
 
     Notes
     -----

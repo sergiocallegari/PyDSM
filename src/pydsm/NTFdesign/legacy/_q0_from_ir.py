@@ -16,7 +16,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function
 
@@ -27,7 +27,7 @@ __all__ = ["q0_from_filter_ir"]
 
 def q0_from_filter_ir(P, ir):
     """
-    Legacy version of :func:`NTFDesign.q0_weighting`
+    Legacy version of :func:`pydsm.NTFdesign.weighting.q0_weighting`
 
     Legacy method based on correlation for the computation of the
     description matrix for the weighting function used in FIR NTF design.

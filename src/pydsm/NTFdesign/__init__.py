@@ -16,7 +16,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 u"""
 Synthesis of the NTF of Delta Sigma modulators (:mod:`pydsm.NTFdesign`)
@@ -72,10 +72,6 @@ Key functions
 .. function:: quantization_noise_gain()
 
    shorthand for :func:`merit_factors.quantization_noise_gain`
-
-.. function:: ntf_fir_minmax()
-
-   shorthand for :func:`minmax.ntf_fir_minmax()`
 
 
 Submodules

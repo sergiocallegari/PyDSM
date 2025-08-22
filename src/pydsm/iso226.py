@@ -16,10 +16,10 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with PyDSM.  If not, see <http://www.gnu.org/licenses/>.
+# along with PyDSM.  If not, see <https://www.gnu.org/licenses/>.
 
 """
-ISO 226 loudness countours (:mod:`pysdm.iso226`)
+ISO 226 loudness countours (:mod:`pydsm.iso226`)
 ================================================
 
 Loudness contours from ISO 226.
@@ -79,10 +79,10 @@ where the behavior found at 20 Hz is replicated.
 .. [1] ISO 226:2003 "Acoustics - Normal equal-loudness-level contours"
 .. [2] Jeff Tackett, "ISO 226 Equal-Loudness-Level Contour Signal,"
    2005
-   (http://www.mathworks.com/matlabcentral/fileexchange/7028)
+   (https://www.mathworks.com/matlabcentral/fileexchange/7028)
 .. [3] Yoiti Suzuki et al, "Precise and Full-range Determination of
    Two-dimensional Equal Loudness Contours," 2003
-   (http://www.nedo.go.jp/itd/grant-e/report/00pdf/is-01e.pdf)
+   (http://www.mp3-tech.org/programmer/docs/IS-01Y-E.pdf)
 .. [4] Robert A. Wannamaker "Psychoacoustically Optimal Noise
    Shaping", J. Audio Eng. Soc., Vol. 40, N. 7/8, 1992 July/August
 """
