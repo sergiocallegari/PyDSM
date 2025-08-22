@@ -16,16 +16,13 @@ If you find the code useful, *please cite these papers in your work*. In case yo
 
 The code is available on the Python Package Index, also known as [PyPI](https://pypi.python.org/pypi), at the [PyPI PYDSM page](https://pypi.python.org/pypi/pydsm).
 
-No wheels are currently provided and the code builds from a source
-distribution. On Linux, a blas library must currently be available at
-the system level.
+No wheels are currently provided and the code builds from a source distribution. On Linux, a blas library must currently be available at the system level.
 
-The code is routinely tested on Linux (AMD64) and occasionally on Windows 11 (again AMD64). It is also expected to work on MacOS, but currently untested.
+The code is routinely tested on Linux (amd64) and occasionally on Windows 11 (again amd64). It is also expected to work on MacOS, but currently untested.
 
 ## Documentation
 
-The pre-built documentation is also available in a dedicated [PyDSM
-documentation](http://pythonhosted.org/pydsm/) page on PyPI.
+A not completely up to date version of the pre-built documentation is also available in a dedicated [PyDSM documentation page on PyPI](http://pythonhosted.org/pydsm/) page on PyPI.
 
 ## Changelog
 
@@ -33,7 +30,7 @@ See [`CHANGELOG.rst`](doc/source/changelog.rst).
 
 ## Warning
 
-Version 0.15.0 of PyDSM is substantially the same as version 0.14.0.0, with:
+Version 0.15.x of PyDSM is substantially the same as version 0.14.0.0, with:
 
 - modifications to the package build process, that now relies on modern Python practices (PEP 517);
 
@@ -49,7 +46,7 @@ Note that:
 
 - Some tests may even fail, due to incorrect setup of the accuracy related parameters of the optimizers (may happen particularly with PICOS and SCS).
 
-- The documentation now needs to be built using the `Makefile` in the `doc` directory. Only the html version of the documentation is expected to build. The documentation is substantially unchanged with respect to version 0.14.0.0, and so might be slightly misaligned with the current code. There may be also formatting issues due to the fact that the documentation source was originally written with a much older version of Sphinx in mind.
+- The documentation now needs to be built using the `Makefile` in the `doc` directory. Only the html version of the documentation can currently be built. The local documentation has been updated with respect to version 0.14.0.0.
 
 ## Licensing information
 
@@ -57,9 +54,8 @@ PyDSM is free software; you can redistribute it and/or modify it under the terms
 
 See file [`COPYING`](COPYING) for further details.
 
-Part of this code, limited to the `delsig` module, is ported from the
-[DELSIG toolbox](http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox) copyright by R. Schreier and licensed under the BSD license, as specified in the corresponding files.
+Part of this code, limited to the `delsig` module, is ported from the [DELSIG toolbox](http://www.mathworks.com/matlabcentral/fileexchange/19-delta-sigma-toolbox) copyright by R. Schreier and licensed under the BSD license, as specified in the corresponding files.
 
 Distribution temporarily includes a patched version of the `CVXPY` package by Tomas Tinoco de Rubira, that is currently discontinued, being replaced by the `CVXPY` package by Steven Diamond and Eric Chu and Stephen Boyd that provices more functionality and a different API. This code is copyright by Tomas Tinoco de Rubira and licensed under the GPLv3+, as specified in the corresponding files.
 
-PyDSM is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+PyDSM is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
