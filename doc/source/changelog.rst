@@ -1,5 +1,8 @@
 Changelog
 ---------
+0.15.1
+   - Link simulator extension with ``-lblas``, rather than ``-lcblas``
+     on Linux, to improve compatibility with recent distros
 
 0.15.0
    - build process relies on modern Python practices (PEP 517);
