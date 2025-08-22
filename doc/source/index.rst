@@ -24,4 +24,3 @@ Welcome to PyDSM's documentation!
 
    * :ref:`genindex`
    * :ref:`modindex`
-   * :ref:`search`
